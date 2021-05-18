@@ -11,24 +11,19 @@ import NotFound from '../containers/NotFound';
 
 // Components
 import Top from '../components/main/Top';
-import Menu from '../components/main/Menu';
 
 const App = () => (
   <BrowserRouter>
     <Switch>
       <Top>
         {/* Logs into App */}
-
-        <Menu>
-          {/* Main Containers */}
-          <Route exact path={['/', '/ofertas']} component={Offers} />
-          <Route exact path="/trabajadores" component={Workers} />
-          <Route exact path="/gestion" component={Manage} />
-          <Route exact path="/empresa" component={Company} />
-
-          {/* Other routes */}
-          <Route component={NotFound} />
-        </Menu>
+        {/* Main Containers */}
+        <Route exact path={['/', '/ofertas']} component={Offers} />
+        <Route exact path="/trabajadores" component={Workers} />
+        <Route exact path="/gestion" component={Manage} />
+        <Route exact path="/empresa" component={Company} />
+        {/* Other routes */}
+        <Route component={NotFound} />
       </Top>
     </Switch>
   </BrowserRouter>

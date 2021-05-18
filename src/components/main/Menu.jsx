@@ -1,70 +1,36 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import { Flex, Text } from '@chakra-ui/layout';
-import { Link, useLocation } from 'react-router-dom';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { Flex, GridItem } from '@chakra-ui/layout';
+import { Link } from 'react-router-dom';
+import MenuItem from '../ui/MenuItem';
 
-const Menu = ({ children }) => {
+const Menu = () => {
+  const currentLocation = useLocation();
+  const isHere = pathname => currentLocation.pathname.includes(pathname);
+
   return (
-    <>
-      <Flex
-        bg="#191735"
-        maxW="160px"
-        flex="1"
-        flexDirection="column"
-        alignItems="center"
-        borderRight="1px"
-        borderRightColor="#9D9EA3"
-      >
+    <GridItem colSpan="3">
+      <Flex flexDirection="column" alignItems="center">
         <Link to="/ofertas">
-          <Flex pt={4} alignItems="center" flexDirection="column">
-            <img
-              width="60px"
-              src={
-                'https://connectingclues.es/wp-content/uploads/2019/09/white-play-icon-png-7.png'
-              }
-              alt="Ofertas"
-            />
-            <Text color="white">Ofertas</Text>
-          </Flex>
+          <MenuItem text="Ofertas" image="" activeImage={isHere("ofertas") ? "" : null} />
         </Link>
         <Link to="/trabajadores">
           <Flex pt={4} alignItems="center" flexDirection="column">
-            <img
-              width="60px"
-              src={
-                'https://connectingclues.es/wp-content/uploads/2019/09/white-play-icon-png-7.png'
-              }
-              alt="Trabajadores"
-            />
-            <Text color="white">Trabajadores</Text>
+          <MenuItem text="Trabajadores" image="" activeImage={isHere("trabajadores") ? "" : null} />
           </Flex>
         </Link>
-        <Link to="/manage">
+        <Link to="/gestion">
           <Flex pt={4} alignItems="center" flexDirection="column">
-            <img
-              width="60px"
-              src={
-                'https://connectingclues.es/wp-content/uploads/2019/09/white-play-icon-png-7.png'
-              }
-              alt="Gestión"
-            />
-            <Text color="white">Gestión</Text>
+          <MenuItem text="Gestión" image="" activeImage={isHere("gestion") ? "" : null} />
           </Flex>
         </Link>
         <Link to="/empresa">
           <Flex pt={4} alignItems="center" flexDirection="column">
-            <img
-              width="60px"
-              src={
-                'https://connectingclues.es/wp-content/uploads/2019/09/white-play-icon-png-7.png'
-              }
-              alt="Mi empresa"
-            />
-            <Text color="white">Mi empresa</Text>
+            <MenuItem text="Empresa" image="" activeImage={isHere("empresa") ? "" : null} />
           </Flex>
         </Link>
       </Flex>
-      {children}
-    </>
+    </GridItem>
   );
 };
 
