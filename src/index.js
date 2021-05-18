@@ -5,7 +5,7 @@ import App from './routes/App';
 import { brandTheme } from './styles/theme';
 
 ReactDOM.render(
-  <ChakraProvider resetCSS theme={brandTheme}>
+  <ChakraProvider theme={brandTheme}>
     <App />
   </ChakraProvider>,
   document.getElementById('root')

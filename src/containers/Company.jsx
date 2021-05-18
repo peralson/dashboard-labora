@@ -11,11 +11,11 @@ const Company = () => {
       <PageGrid>
         <Menu />
         <Main>
-  
-              </Main>
+          
+        </Main>
         <Side>
-                  
-              </Side>
+
+        </Side>
       </PageGrid>
     );
   };

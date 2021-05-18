@@ -1,12 +1,12 @@
 import React from 'react';
-import { GridItem } from '@chakra-ui/layout';
+import { Box, Flex } from '@chakra-ui/layout';
 
-const Side = ({ children }) => {
-  return (
-    <GridItem colSpan="6" bg="teal">
-      {children}
-    </GridItem>
-  );
-};
+const Side = ({ children }) => (
+  <Flex flexDirection="column">
+      <Box position="fixed" bg="darkLight" height="400px" w="100%" maxW="328px" borderRadius="10px">
+        {children}
+      </Box>
+  </Flex>
+);
 
 export default Side;
