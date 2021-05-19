@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 // Chakra
 import { Box, Flex, Text } from '@chakra-ui/layout';
+import { Checkbox, CheckboxGroup } from '@chakra-ui/react';
 
 // Redux & Actions
 import { connect } from 'react-redux';
@@ -20,6 +21,10 @@ const Workers = ({ fetchWorkers }) => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [tag, setTag] = useState('');
+  const [checkedItems, setCheckedItems] = React.useState([false, false])
+
+  const allChecked = checkedItems.every(Boolean)
+  const isIndeterminate = checkedItems.some(Boolean) && !allChecked
 
   useEffect(() => {
     fetchWorkers();
@@ -83,6 +88,11 @@ const Workers = ({ fetchWorkers }) => {
     setTag(event.target.value);
   };
 
+  const handleCheck = (value) => {
+    
+  };
+
+
   return (
     <>
       <Main>
@@ -93,6 +103,7 @@ const Workers = ({ fetchWorkers }) => {
           justifyContent='space-between'
           w='100%'
           h='35px'
+          mt={4}
         >
           <SearchBar
             placeholder='Busca un trabajador'
@@ -113,10 +124,32 @@ const Workers = ({ fetchWorkers }) => {
             />
           </Box>
         </Flex>
+        <Flex
+          mb={4}
+          flexDirection='row'
+          alignItems='center'
+          justifyContent='flex-start'
+          w='100%'
+          h='40px'
+          pl={4}
+          bg='darkLight'
+          borderRadius={4}
+        >
+          <Checkbox
+            isChecked={allChecked}
+            isIndeterminate={isIndeterminate}
+            onChange={(e) => setCheckedItems([e.target.checked, e.target.checked])}
+          >Seleccionar todos</Checkbox>
+        </Flex>
         <CustomTable columns={['Nombre', 'Categoría', 'Etiquetas']}>
           {filteredWorkers.map((worker, index) => (
             <Flex key={index} p={2}>
-              <Box flex={1}></Box>
+              <Flex justifyContent='center' flex={1}>
+                <Checkbox
+                  isChecked={checkedItems[{index}]}
+                  onChange={(e) => setCheckedItems([e.target.checked, checkedItems[{index}]])}
+                />
+              </Flex>
               <Text flex={4}>{worker.name}</Text>
               <Text flex={4}>{worker.categories[0]}</Text>
               <Text flex={4}>{worker.tags[0]}</Text>
