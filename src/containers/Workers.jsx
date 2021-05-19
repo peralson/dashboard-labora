@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Chakra
 import { Box, Flex, Text } from '@chakra-ui/layout';
 
 // Redux & Actions
-import { connect } from 'react-redux'
-import { fetchWorkers } from '../store/actions/workers'
+import { connect } from 'react-redux';
+import { fetchWorkers } from '../store/actions/workers';
+import { useSelector } from 'react-redux';
 
 // Components
 import Main from '../components/main/Main';
@@ -14,17 +15,21 @@ import SearchBar from '../components/ui/SearchBar';
 import CustomTable from '../components/ui/CustomTable';
 import Separator from '../components/ui/Separator';
 
-const Workers = ({
-  fetchWorkers,
-  workers
-}) => {
-  useEffect(() => {
-    fetchWorkers()
-  }, [fetchWorkers])
+const Workers = ({ fetchWorkers }) => {
+  const workers = useSelector((state) => state.workers.allWorkers);
+  const [search, setSearch] = useState('')
 
-  const handleSearch = e => {
-    console.log(e.target.value);
+  useEffect(() => {
+    fetchWorkers();
+  }, [fetchWorkers]);
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value)
   }
+
+  const filteredWorkers = workers.filter((worker => {
+    return worker.name.toLowerCase().includes(search.toLowerCase());
+  }))
 
   return (
     <>
@@ -38,14 +43,16 @@ const Workers = ({
           <Separator top={4} />
         </Box>
         <CustomTable columns={['Nombre', 'Categoría', 'Etiquetas']}>
-          {workers.map((worker, index) => (
+          {filteredWorkers.map((worker, index) => (
             <Flex key={index} p={2}>
               <Box flex={1}></Box>
               <Text flex={4}>{worker.name}</Text>
               <Text flex={4}>{worker.categories[0]}</Text>
               <Text flex={4}>{worker.tags[0]}</Text>
               <Box flex={2}></Box>
-              <Text textAlign="right" flex={6}>Ver más</Text>
+              <Text textAlign='right' flex={6}>
+                Ver más
+              </Text>
             </Flex>
           ))}
         </CustomTable>
@@ -58,13 +65,13 @@ const Workers = ({
 };
 
 const mapDispatchToProps = {
-  fetchWorkers
-}
+  fetchWorkers,
+};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    workers: state.workers.allWorkers
-  }
-}
+    workers: state.workers.allWorkers,
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Workers);
