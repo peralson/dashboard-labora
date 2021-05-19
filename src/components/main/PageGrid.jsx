@@ -4,12 +4,10 @@ import Menu from './Menu'
 
 const PageGrid = ({ children }) => (
   <Grid
-    pt={4}
-    pb={4}
-    columnGap="10"
+    columnGap="8"
     maxW="1200px"
     width="100%"
-    templateColumns="2fr 13fr 6fr"
+    templateColumns="2fr 12fr 6fr"
     margin="0 auto"
   >
     <Menu />

@@ -1,21 +1,22 @@
 import React from 'react'
-import { Box } from '@chakra-ui/layout'
+import { Input, InputLeftAddon, InputGroup, Image } from '@chakra-ui/react'
+import SearchIcon from '../../assets/svg/search.svg'
 
 const SearchBar = ({ placeholder, onChange }) => (
-    <Box
-        flex="1"
-        bg='translucid'
-        borderRadius='4px'
-        pl={2}
-    >
-        <input placeholder={placeholder} onChange={onChange} style={inputStyle} />
-    </Box>
+    <InputGroup flex="1" borderColor="translucid" _hover={{ borderColor: 'none' }}>
+        <InputLeftAddon bg="translucid" borderRight="none" marginEnd={0} p={2}>
+            <Image w="20px" src={SearchIcon} alt="Barra de búsqueda"/>
+        </InputLeftAddon>
+        <Input
+            _hover={{ borderColor: 'none' }}
+            _focus={{ borderColor: 'none' }}
+            borderLeft="none"
+            placeholder={placeholder}
+            onChange={onChange}
+            bg="translucid"
+            pl={0}
+        />
+    </InputGroup>
 );
-
-const inputStyle = {
-    background: 'transparent',
-    height: '100%',
-    width: '100%',
-}
 
 export default SearchBar

@@ -9,7 +9,9 @@ import Logo from '../../assets/img/Logo.png';
 import offersActive from '../../assets/svg/offers-active.svg'
 import offers from '../../assets/svg/offers.svg'
 import people from '../../assets/svg/people.svg'
+import peopleActive from '../../assets/svg/people-active.svg'
 import settings from '../../assets/svg/settings.svg'
+import settingsActive from '../../assets/svg/settings-active.svg'
 
 const Menu = () => {
   const currentLocation = useLocation();
@@ -19,9 +21,9 @@ const Menu = () => {
     <Flex flexDirection="column" alignItems="center">
       <Flex position="fixed" flexDirection="column" height="92%">
         <Box flex="1">
-          <Box mb={5} p="8px 0px">
+          <Box mb={5} mt={5}>
             <Link to="/">
-              <img src={Logo} alt="Logo de Labora" width="120px" />
+              <img src={Logo} alt="Logo de Labora" width="110px" />
             </Link>
           </Box>
           <Link to="/ofertas">
@@ -36,14 +38,14 @@ const Menu = () => {
               <MenuItem
                 text="Trabajadores"
                 image={people}
-                activeImage={isHere('trabajadores') ? people : null}
+                activeImage={isHere('trabajadores') ? peopleActive : null}
               />
           </Link>
           <Link to="/gestion">
               <MenuItem
                 text="Gestión"
                 image={settings}
-                activeImage={isHere('gestion') ? settings : null}
+                activeImage={isHere('gestion') ? settingsActive : null}
               />
           </Link>
         </Box>
@@ -51,7 +53,7 @@ const Menu = () => {
               <MenuItem
                 text="Empresa"
                 image={settings}
-                activeImage={isHere('empresa') ? settings : null}
+                activeImage={isHere('empresa') ? settingsActive : null}
               />
           </Link>
       </Flex>

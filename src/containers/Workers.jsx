@@ -12,6 +12,7 @@ import Main from '../components/main/Main';
 import Side from '../components/main/Side';
 import SearchBar from '../components/ui/SearchBar';
 import CustomTable from '../components/ui/CustomTable';
+import Separator from '../components/ui/Separator';
 
 const Workers = ({
   fetchWorkers,
@@ -28,11 +29,14 @@ const Workers = ({
   return (
     <>
       <Main>
-        <Flex mb={4} flexDirection='row' alignItems="stretch" justifyContent="space-between" w='100%' h='35px'>
-          <SearchBar placeholder='Busca un trabajador' onChange={handleSearch} />
-          <Box w='120px' ml={2} h='100%' borderRadius="4px" bg='darkLight'></Box>
-          <Box w='120px' ml={2} h='100%' borderRadius="4px" bg='darkLight'></Box>
-        </Flex>
+        <Box position="sticky" top={0} pt={4} width="100%" bg="dark">
+          <Flex flexDirection='row' justifyContent="space-between">
+            <SearchBar placeholder="Busca un trabajador" onChange={handleSearch} />
+            <Box w="120px" ml={2} borderRadius="4px" bg='darkLight'></Box>
+            <Box w="120px" ml={2} borderRadius="4px" bg='darkLight'></Box>
+          </Flex>
+          <Separator top={4} />
+        </Box>
         <CustomTable columns={['Nombre', 'Categoría', 'Etiquetas']}>
           {workers.map((worker, index) => (
             <Flex key={index} p={2}>
@@ -46,7 +50,9 @@ const Workers = ({
           ))}
         </CustomTable>
       </Main>
-      <Side></Side>
+      <Side>
+        
+      </Side>
     </>
   );
 };
