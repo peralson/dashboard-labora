@@ -16,24 +16,19 @@ import CustomTable from '../components/ui/CustomTable';
 
 const Workers = ({ fetchWorkers }) => {
   const workers = useSelector((state) => state.workers.allWorkers);
-  const [filteredWorkers, setFilteredWorkers] = useState(workers);
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     fetchWorkers();
   }, [fetchWorkers]);
 
   const handleSearch = (e) => {
-    setFilteredWorkers(handleFilter(e.target.value, workers));
-  };
+    setSearch(e.target.value)
+  }
 
-  const handleFilter = (filter, workers) => {
-    const lowerFilter = filter.toLowerCase();
-    if (lowerFilter === '') {
-      return workers;
-    } else {
-      return workers.filter((e) => e.name.toLowerCase().includes(lowerFilter));
-    }
-  };
+  const filteredWorkers = workers.filter((worker => {
+    return worker.name.toLowerCase().includes(search.toLowerCase());
+  }))
 
   return (
     <>
