@@ -13,35 +13,80 @@ import Main from '../components/main/Main';
 import Side from '../components/main/Side';
 import SearchBar from '../components/ui/SearchBar';
 import CustomTable from '../components/ui/CustomTable';
-import Separator from '../components/ui/Separator';
+import SelectList from '../components/ui/SelectList';
 
 const Workers = ({ fetchWorkers }) => {
   const workers = useSelector((state) => state.workers.allWorkers);
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('');
 
   useEffect(() => {
     fetchWorkers();
   }, [fetchWorkers]);
 
   const handleSearch = (e) => {
-    setSearch(e.target.value)
-  }
+    setSearch(e.target.value);
+  };
 
-  const filteredWorkers = workers.filter((worker => {
-    return worker.name.toLowerCase().includes(search.toLowerCase());
-  }))
+  const filteredWorkers = workers.filter((worker) => {
+    if(category === '')
+      return (
+        worker.name.toLowerCase().includes(search.toLowerCase())
+      
+      );
+    else{
+      return (
+        worker.categories.includes(category) &&  worker.name.toLowerCase().includes(search.toLowerCase())
+      )
+    }
+  });
+
+  const getCategories = () => {
+    let categories = [];
+    for (var i = 0; i < workers.length; i++) {
+      for (var j = 0; j < workers[i].categories.length; j++) {
+        if (!categories.includes(workers[i].categories[j])) {
+          categories.push(workers[i].categories[j]);
+        }
+      }
+    }
+    return categories;
+  };
+
+  const handleCategory = (event) => {
+    setCategory(event.target.value);
+  };
 
   return (
     <>
       <Main>
-        <Box position="sticky" top={0} pt={4} width="100%" bg="dark">
-          <Flex flexDirection='row' justifyContent="space-between">
-            <SearchBar placeholder="Busca un trabajador" onChange={handleSearch} />
-            <Box w="120px" ml={2} borderRadius="4px" bg='darkLight'></Box>
-            <Box w="120px" ml={2} borderRadius="4px" bg='darkLight'></Box>
-          </Flex>
-          <Separator top={4} />
-        </Box>
+        <Flex
+          mb={4}
+          flexDirection='row'
+          alignItems='stretch'
+          justifyContent='space-between'
+          w='100%'
+          h='35px'
+        >
+          <SearchBar
+            placeholder='Busca un trabajador'
+            onChange={handleSearch}
+          />
+          <Box w='130px' ml={2} h='100%' borderRadius='4px' bg='darkLight'>
+            <SelectList
+              placeholder='Categorias'
+              values={getCategories()}
+              onChange={handleCategory}
+            />
+          </Box>
+          <Box
+            w='130px'
+            ml={2}
+            h='100%'
+            borderRadius='4px'
+            bg='darkLight'
+          ></Box>
+        </Flex>
         <CustomTable columns={['Nombre', 'Categoría', 'Etiquetas']}>
           {filteredWorkers.map((worker, index) => (
             <Flex key={index} p={2}>
@@ -57,9 +102,7 @@ const Workers = ({ fetchWorkers }) => {
           ))}
         </CustomTable>
       </Main>
-      <Side>
-        
-      </Side>
+      <Side></Side>
     </>
   );
 };
