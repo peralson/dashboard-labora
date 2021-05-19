@@ -16,6 +16,7 @@ const inputStyle = {
     background: 'transparent',
     height: '100%',
     width: '100%',
+    outline: 'none'
 }
 
 export default SearchBar
