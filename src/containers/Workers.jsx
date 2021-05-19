@@ -19,6 +19,7 @@ const Workers = ({ fetchWorkers }) => {
   const workers = useSelector((state) => state.workers.allWorkers);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
+  const [tag, setTag] = useState('');
 
   useEffect(() => {
     fetchWorkers();
@@ -29,16 +30,25 @@ const Workers = ({ fetchWorkers }) => {
   };
 
   const filteredWorkers = workers.filter((worker) => {
-    if(category === '')
+    if (category === '' && tag === '')
+      return worker.name.toLowerCase().includes(search.toLowerCase());
+    if (tag === '')
       return (
+        worker.categories.includes(category) &&
         worker.name.toLowerCase().includes(search.toLowerCase())
-      
       );
-    else{
+
+    if (category === '')
       return (
-        worker.categories.includes(category) &&  worker.name.toLowerCase().includes(search.toLowerCase())
-      )
-    }
+        worker.tags.includes(tag) &&
+        worker.name.toLowerCase().includes(search.toLowerCase())
+      );
+    else
+      return (
+        worker.categories.includes(category) &&
+        worker.tags.includes(tag) &&
+        worker.name.toLowerCase().includes(search.toLowerCase())
+      );
   });
 
   const getCategories = () => {
@@ -55,6 +65,22 @@ const Workers = ({ fetchWorkers }) => {
 
   const handleCategory = (event) => {
     setCategory(event.target.value);
+  };
+
+  const getTags = () => {
+    let tags = [];
+    for (var i = 0; i < workers.length; i++) {
+      for (var j = 0; j < workers[i].tags.length; j++) {
+        if (!tags.includes(workers[i].tags[j])) {
+          tags.push(workers[i].tags[j]);
+        }
+      }
+    }
+    return tags;
+  };
+
+  const handleTag = (event) => {
+    setTag(event.target.value);
   };
 
   return (
@@ -79,13 +105,13 @@ const Workers = ({ fetchWorkers }) => {
               onChange={handleCategory}
             />
           </Box>
-          <Box
-            w='130px'
-            ml={2}
-            h='100%'
-            borderRadius='4px'
-            bg='darkLight'
-          ></Box>
+          <Box w='130px' ml={2} h='100%' borderRadius='4px' bg='darkLight'>
+            <SelectList
+              placeholder='Etiquetas'
+              values={getTags()}
+              onChange={handleTag}
+            />
+          </Box>
         </Flex>
         <CustomTable columns={['Nombre', 'Categoría', 'Etiquetas']}>
           {filteredWorkers.map((worker, index) => (
