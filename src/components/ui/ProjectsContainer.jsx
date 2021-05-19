@@ -3,7 +3,7 @@ import { Box, Grid } from '@chakra-ui/layout';
 
 const ProjectsContainer = ({ children }) => (
   <Box bg="darkLight" borderRadius="20px" p={4}>
-    <Grid gap="4">{children}</Grid>
+    <Grid gap="2">{children}</Grid>
   </Box>
 );
 

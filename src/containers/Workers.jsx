@@ -9,8 +9,6 @@ import { fetchWorkers } from '../store/actions/workers';
 import { useSelector } from 'react-redux';
 
 // Components
-import PageGrid from '../components/main/PageGrid';
-import Menu from '../components/main/Menu';
 import Main from '../components/main/Main';
 import Side from '../components/main/Side';
 import SearchBar from '../components/ui/SearchBar';
@@ -38,8 +36,7 @@ const Workers = ({ fetchWorkers }) => {
   };
 
   return (
-    <PageGrid>
-      <Menu />
+    <>
       <Main>
         <Flex
           mb={4}
@@ -84,7 +81,7 @@ const Workers = ({ fetchWorkers }) => {
         </CustomTable>
       </Main>
       <Side></Side>
-    </PageGrid>
+    </>
   );
 };
 

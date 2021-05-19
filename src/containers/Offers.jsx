@@ -1,44 +1,50 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-// Hooks
-import useProjects from '../hooks/useProjects'
+// Hooks & actions
+import { connect } from 'react-redux'
+import { fetchProjects } from '../store/actions/projects'
 
 // Components
-import PageGrid from '../components/main/PageGrid';
-import Menu from '../components/main/Menu';
 import Main from '../components/main/Main';
 import Side from '../components/main/Side';
-import MultiOfferProject from '../components/ui/MultiOfferProject';
+import ProjectItem from '../components/ui/ProjectItem';
 import ProjectsContainer from '../components/ui/ProjectsContainer';
 
-const Offers = () => {
-  const projects = useProjects();
+const Offers = ({
+  projects,
+  fetchProjects
+}) => {
+
+  useEffect(() => fetchProjects(), [fetchProjects])
   
   return (
-    <PageGrid>
-      <Menu />
+    <>
       <Main>
         <ProjectsContainer>
           {projects.map(project => (
-            !project.projectData.name
-              ? <MultiOfferProject
-                  key={project.id}
-                  projectData={project.projectData}
-                  projectOffers={project.projectOffers}
-                />
-              : <MultiOfferProject
-                  key={project.id}
-                  projectData={project.projectData}
-                  projectOffers={project.projectOffers}
-                />
+            <ProjectItem
+                key={project.id}
+                projectData={project.projectData}
+                projectOffers={project.projectOffers}
+              />
           ))}
         </ProjectsContainer>
       </Main>
       <Side>
         
       </Side>
-    </PageGrid>
+    </>
   );
 };
 
-export default Offers;
+const mapStateToProps = state => {
+  return {
+    projects: state.projects.allProjects
+  }
+}
+
+const mapDispatchToProps = {
+  fetchProjects
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Offers);

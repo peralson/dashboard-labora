@@ -10,21 +10,21 @@ import Company from '../containers/Company';
 import NotFound from '../containers/NotFound';
 
 // Components
-import Top from '../components/main/Top';
+import PageGrid from '../components/main/PageGrid';
 
 const App = () => (
   <BrowserRouter>
     <Switch>
-      <Top>
-        {/* Logs into App */}
+      {/* Logs into App */}
+      <PageGrid>
         {/* Main Containers */}
         <Route exact path={['/', '/ofertas']} component={Offers} />
         <Route exact path="/trabajadores" component={Workers} />
         <Route exact path="/gestion" component={Manage} />
         <Route exact path="/empresa" component={Company} />
-        {/* Other routes */}
-        <Route component={NotFound} />
-      </Top>
+      </PageGrid>
+      {/* Other routes */}
+      <Route component={NotFound} />
     </Switch>
   </BrowserRouter>
 );
