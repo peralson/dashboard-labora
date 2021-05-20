@@ -4,6 +4,7 @@ export const fetchWorkers = () => {
 	return async (dispatch, getState) => {
 		const workers = [
 			{
+        id: 1,
 				name: 'Eloy',
 				email: 'eloy@gmail.com',
 				image: 'https://bit.ly/sage-adebayo',
@@ -12,6 +13,7 @@ export const fetchWorkers = () => {
 				tags: ['gafas', 'alto', 'delgado'],
 			},
 			{
+        id: 2,
 				name: 'Peralta',
 				email: 'peralson@gmail.com',
 				image: 'https://bit.ly/dan-abramov',
@@ -20,6 +22,7 @@ export const fetchWorkers = () => {
 				tags: ['moreno', 'delgado'],
 			},
 			{
+        id: 3,
 				name: 'Martino',
 				email: 'mpal@mail.com',
 				image: 'https://concepto.de/wp-content/uploads/2018/08/persona-e1533759204552.jpg',
@@ -28,6 +31,7 @@ export const fetchWorkers = () => {
 				tags: ['rubio', 'delgado'],
 			},
 			{
+        id: 5,
 				name: 'Peralta',
 				email: 'pe@ail.com',
 				image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHlIC6mj9KXGnVloMBpbZ5MULyumav2TarjA&usqp=CAU',

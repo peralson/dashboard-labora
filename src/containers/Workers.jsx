@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 // Chakra
 import { Box, Flex, Text } from '@chakra-ui/layout';
-import { Checkbox, CheckboxGroup } from '@chakra-ui/react';
+import { Checkbox } from '@chakra-ui/react';
 
 // Redux & Actions
 import { connect } from 'react-redux';
@@ -21,10 +21,10 @@ const Workers = ({ fetchWorkers }) => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [tag, setTag] = useState('');
-  const [checkedItems, setCheckedItems] = React.useState([false, false])
+  const [checkedItems, setCheckedItems] = useState([]);
 
-  const allChecked = checkedItems.every(Boolean)
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked
+  const allChecked = checkedItems.length === workers.length;
+  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
   useEffect(() => {
     fetchWorkers();
@@ -89,9 +89,22 @@ const Workers = ({ fetchWorkers }) => {
   };
 
   const handleCheck = (value) => {
-    
+    if (!checkedItems.includes(value)) {
+      setCheckedItems([...checkedItems, value]);
+    } else {
+      setCheckedItems(checkedItems.filter((e) => e !== value));
+    }
   };
 
+  const handleGlobalCheck = () => {
+    if (checkedItems.length === 0) {
+      setCheckedItems(filteredWorkers.map(({ id }) => id.toString()));
+    } else {
+      setCheckedItems([]);
+    }
+  };
+
+  console.log('list:', checkedItems);
 
   return (
     <>
@@ -138,16 +151,21 @@ const Workers = ({ fetchWorkers }) => {
           <Checkbox
             isChecked={allChecked}
             isIndeterminate={isIndeterminate}
-            onChange={(e) => setCheckedItems([e.target.checked, e.target.checked])}
-          >Seleccionar todos</Checkbox>
+            onChange={handleGlobalCheck}
+          >
+            {checkedItems.length === 0
+              ? 'Seleccionar todos'
+              : 'Eliminar selección'}
+          </Checkbox>
         </Flex>
         <CustomTable columns={['Nombre', 'Categoría', 'Etiquetas']}>
           {filteredWorkers.map((worker, index) => (
             <Flex key={index} p={2}>
               <Flex justifyContent='center' flex={1}>
                 <Checkbox
-                  isChecked={checkedItems[{index}]}
-                  onChange={(e) => setCheckedItems([e.target.checked, checkedItems[{index}]])}
+                  isChecked={checkedItems.includes(worker.id.toString())}
+                  name={worker.id}
+                  onChange={(e) => handleCheck(e.target.name)}
                 />
               </Flex>
               <Text flex={4}>{worker.name}</Text>
