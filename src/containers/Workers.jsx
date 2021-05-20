@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 // Chakra
-import { Box, Flex, Text } from '@chakra-ui/layout';
-import { Checkbox } from '@chakra-ui/react';
+import { Box, Flex, ListItem, Text } from '@chakra-ui/layout';
+import { Checkbox, List, Button } from '@chakra-ui/react';
 
 // Redux & Actions
 import { connect } from 'react-redux';
@@ -15,6 +15,10 @@ import Side from '../components/main/Side';
 import SearchBar from '../components/ui/SearchBar';
 import CustomTable from '../components/ui/CustomTable';
 import SelectList from '../components/ui/SelectList';
+import Popup from '../components/ui/Popup';
+
+// Icon
+import { MdShare, MdContentCopy, MdLink } from 'react-icons/md';
 
 const Workers = ({ fetchWorkers }) => {
   const workers = useSelector((state) => state.workers.allWorkers);
@@ -23,13 +27,11 @@ const Workers = ({ fetchWorkers }) => {
   const [tag, setTag] = useState('');
   const [checkedItems, setCheckedItems] = useState([]);
 
-  const allChecked = checkedItems.length === workers.length;
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
-
   useEffect(() => {
     fetchWorkers();
   }, [fetchWorkers]);
 
+  // SEARCH LOGIC
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
@@ -56,6 +58,7 @@ const Workers = ({ fetchWorkers }) => {
       );
   });
 
+  // CATEGORIES LOGIC
   const getCategories = () => {
     let categories = [];
     for (var i = 0; i < workers.length; i++) {
@@ -72,6 +75,7 @@ const Workers = ({ fetchWorkers }) => {
     setCategory(event.target.value);
   };
 
+  // TAG LOGIC
   const getTags = () => {
     let tags = [];
     for (var i = 0; i < workers.length; i++) {
@@ -87,6 +91,10 @@ const Workers = ({ fetchWorkers }) => {
   const handleTag = (event) => {
     setTag(event.target.value);
   };
+
+  // CHECKBOX LOGIC
+  const allChecked = checkedItems.length === workers.length;
+  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
   const handleCheck = (value) => {
     if (!checkedItems.includes(value)) {
@@ -157,6 +165,41 @@ const Workers = ({ fetchWorkers }) => {
               ? 'Seleccionar todos'
               : 'Eliminar selección'}
           </Checkbox>
+          {checkedItems.length > 0 && (
+            <Popup
+              leftIcon={<MdShare />}
+              mainButton={<Text>Compartir enlace</Text>}
+              title='Compartir enlace'
+            >
+              <Text mb='10px'>
+                Vas a invitar a tu lista a los siguientes trabajadores:
+              </Text>
+              <List spacing={3}>
+                {workers.map(
+                  (worker) =>
+                    checkedItems.indexOf(worker.id.toString()) >= 0 && (
+                      <ListItem key={worker.id}> - {worker.name}</ListItem>
+                    )
+                )}
+                <Button
+                  size='md'
+                  height='48px'
+                  width='100%'
+                  bg='translucid'
+                  color='grey'
+                  _focus={{ borderColor: 'none' }}
+                >
+                  <Flex
+                    w='100%'
+                    justifyContent='space-between'
+                    alignContent='center'
+                  >
+                    <MdLink /> https://wa.me/1XXXXXXXXXX? <MdContentCopy />
+                  </Flex>
+                </Button>
+              </List>
+            </Popup>
+          )}
         </Flex>
         <CustomTable columns={['Nombre', 'Categoría', 'Etiquetas']}>
           {filteredWorkers.map((worker, index) => (
