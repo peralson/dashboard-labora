@@ -16,8 +16,15 @@ import CustomTable from '../components/ui/CustomTable';
 import SelectList from '../components/ui/SelectList';
 import Popup from '../components/ui/Popup';
 import Separator from '../components/ui/Separator';
+import SideSection from '../components/ui/SideSection';
+
 // Icon
-import { MdShare, MdContentCopy, MdLink } from 'react-icons/md';
+import {
+  MdShare,
+  MdContentCopy,
+  MdLink,
+  MdKeyboardArrowRight,
+} from 'react-icons/md';
 
 const Workers = ({ fetchWorkers, workers }) => {
   const [search, setSearch] = useState('');
@@ -250,30 +257,56 @@ const Workers = ({ fetchWorkers, workers }) => {
               </Flex>
             </Flex>
             <Separator top='15px' bottom='15px' />
-            <Box
-              cursor='pointer'
-              p='2'
-              borderRadius='4px'
-              bg='translucid'
-              flexDirection='column'
-            >
-              <Text mb='10px'>Etiquetas</Text>
-              <Flex wrap='wrap'>
-                {focusedWorker.tags.map((e) => (
+            <SideSection type='column' title='Contacto'>
+              <Text>{focusedWorker.email}</Text>
+              <Text>{focusedWorker.phone}</Text>
+            </SideSection>
+            <SideSection type='wrap' title='Etiquetas' onClick='clickHandler'>
+              {focusedWorker.tags.map((e) => (
+                <Box
+                  borderRadius='4px'
+                  mr='5px'
+                  mb='5px'
+                  key={e}
+                  paddingX='20px'
+                  paddingY='10px'
+                  bg='dark'
+                  color='white'
+                >
+                  {e}
+                </Box>
+              ))}
+            </SideSection>
+            {focusedWorker.works && (
+              <SideSection type='row' title='Últimos trabajos'>
+                {focusedWorker.works.map((e) => (
                   <Box
                     borderRadius='4px'
                     mr='5px'
-                    key={e}
+                    key={e.name}
                     paddingX='20px'
                     paddingY='10px'
+                    mb='10px'
                     bg='dark'
                     color='white'
+                    cursor='pointer'
+                    w='100%'
                   >
-                    {e}
+                    <Flex
+                      w='100%'
+                      flexDirection='row'
+                      justifyContent='space-between'
+                      alignItems='center'
+                    >
+                      <Text>
+                        {e.name} ({e.date})
+                      </Text>
+                      <MdKeyboardArrowRight borderColor='red' />
+                    </Flex>
                   </Box>
                 ))}
-              </Flex>
-            </Box>
+              </SideSection>
+            )}
           </Flex>
         )}
       </Side>
