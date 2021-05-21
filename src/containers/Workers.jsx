@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 // Chakra
 import { Box, Flex, ListItem, Text } from '@chakra-ui/layout';
-import { Checkbox, List, Button } from '@chakra-ui/react';
+import { Checkbox, List, Button, Image } from '@chakra-ui/react';
 
 // Redux & Actions
 import { connect } from 'react-redux';
@@ -15,18 +15,23 @@ import SearchBar from '../components/ui/SearchBar';
 import CustomTable from '../components/ui/CustomTable';
 import SelectList from '../components/ui/SelectList';
 import Popup from '../components/ui/Popup';
+import Separator from '../components/ui/Separator';
+import SideSection from '../components/ui/SideSection';
 
 // Icon
-import { MdShare, MdContentCopy, MdLink } from 'react-icons/md';
+import {
+  MdShare,
+  MdContentCopy,
+  MdLink,
+  MdKeyboardArrowRight,
+} from 'react-icons/md';
 
-const Workers = ({
-  fetchWorkers,
-  workers
-}) => {
+const Workers = ({ fetchWorkers, workers }) => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [tag, setTag] = useState('');
   const [checkedItems, setCheckedItems] = useState([]);
+  const [focusedWorker, setFocusedWorker] = useState();
 
   useEffect(() => {
     fetchWorkers();
@@ -113,29 +118,30 @@ const Workers = ({
     }
   };
 
+  // FOCUSED WORKER LOGIC
+  const handleFocusedWorker = (worker) => {
+    console.log('WORKER ', worker);
+    setFocusedWorker(worker);
+  };
+
   return (
     <>
       <Main>
-        <Flex
-          mb={4}
-          flexDirection='row'
-          alignItems='stretch'
-          mt={4}
-        >
+        <Flex marginY={4} flexDirection='row' alignItems='stretch'>
           <SearchBar
             placeholder='Busca un trabajador'
             onChange={handleSearch}
           />
           <SelectList
             placeholder='Categorias'
-            flex="1"
+            flex='1'
             ml={2}
             values={getCategories()}
             onChange={handleCategory}
           />
           <SelectList
             placeholder='Etiquetas'
-            flex="1"
+            flex='1'
             ml={2}
             values={getTags()}
             onChange={handleTag}
@@ -199,7 +205,12 @@ const Workers = ({
         </Flex>
         <CustomTable columns={['Nombre', 'Categoría', 'Etiquetas']}>
           {filteredWorkers.map((worker, index) => (
-            <Flex key={index} p={2}>
+            <Flex
+              key={index}
+              p={2}
+              cursor='pointer'
+              onClick={() => handleFocusedWorker(worker)}
+            >
               <Flex justifyContent='center' flex={1}>
                 <Checkbox
                   isChecked={checkedItems.includes(worker.id.toString())}
@@ -218,7 +229,87 @@ const Workers = ({
           ))}
         </CustomTable>
       </Main>
-      <Side></Side>
+      <Side>
+        {focusedWorker && (
+          <Flex
+            w='100%'
+            bg='darkLight'
+            marginY={4}
+            p={4}
+            borderRadius={4}
+            flexDirection='column'
+          >
+            <Flex flexDirection='row'>
+              <Image
+                borderRadius='full'
+                boxSize='75px'
+                src={focusedWorker.image}
+                alt={focusedWorker.name}
+              />
+              <Flex
+                w='100%'
+                justifyContent='center'
+                flexDirection='column'
+                ml='10px'
+              >
+                <Text fontSize={24}>{focusedWorker.name}</Text>
+                <Text>{focusedWorker.categories[0]}</Text>
+              </Flex>
+            </Flex>
+            <Separator top='15px' bottom='15px' />
+            <SideSection type='column' title='Contacto'>
+              <Text>{focusedWorker.email}</Text>
+              <Text>{focusedWorker.phone}</Text>
+            </SideSection>
+            <SideSection type='wrap' title='Etiquetas' onClick='clickHandler'>
+              {focusedWorker.tags.map((e) => (
+                <Box
+                  borderRadius='4px'
+                  mr='5px'
+                  mb='5px'
+                  key={e}
+                  paddingX='20px'
+                  paddingY='10px'
+                  bg='dark'
+                  color='white'
+                >
+                  {e}
+                </Box>
+              ))}
+            </SideSection>
+            {focusedWorker.works && (
+              <SideSection type='row' title='Últimos trabajos'>
+                {focusedWorker.works.map((e) => (
+                  <Box
+                    borderRadius='4px'
+                    mr='5px'
+                    key={e.name}
+                    paddingX='20px'
+                    paddingY='10px'
+                    mb='10px'
+                    bg='dark'
+                    color='white'
+                    cursor='pointer'
+                    w='100%'
+                  >
+                    <Flex
+                      w='100%'
+                      flexDirection='row'
+                      justifyContent='space-between'
+                      alignItems='center'
+                    >
+                      <Text>
+                        {e.name} ({e.date})
+                      </Text>
+                      <MdKeyboardArrowRight borderColor='red' />
+                    </Flex>
+                  </Box>
+                ))}
+              </SideSection>
+            )}
+          </Flex>
+        )}
+      </Side>
     </>
   );
 };

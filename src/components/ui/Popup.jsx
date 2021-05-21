@@ -51,7 +51,7 @@ const Popup = ({ mainButton, leftIcon, title, children }) => {
             <Button colorScheme='blue' mr={3} onClick={onClose}>
               Enviar
             </Button>
-            <Button colorScheme='red'>Cerrar</Button>
+            <Button colorScheme='red' onClick={onClose}>Cerrar</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
