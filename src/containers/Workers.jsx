@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 // Chakra
 import { Box, Flex, Text } from '@chakra-ui/layout';
-import { Checkbox, CheckboxGroup } from '@chakra-ui/react';
+import { Checkbox } from '@chakra-ui/react';
 
 // Redux & Actions
 import { connect } from 'react-redux';
 import { fetchWorkers } from '../store/actions/workers';
-import { useSelector } from 'react-redux';
 
 // Components
 import Main from '../components/main/Main';
@@ -16,12 +15,14 @@ import SearchBar from '../components/ui/SearchBar';
 import CustomTable from '../components/ui/CustomTable';
 import SelectList from '../components/ui/SelectList';
 
-const Workers = ({ fetchWorkers }) => {
-  const workers = useSelector((state) => state.workers.allWorkers);
+const Workers = ({
+  fetchWorkers,
+  workers
+}) => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [tag, setTag] = useState('');
-  const [checkedItems, setCheckedItems] = React.useState([false, false])
+  const [checkedItems, setCheckedItems] = useState([false, false])
 
   const allChecked = checkedItems.every(Boolean)
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked
@@ -100,29 +101,26 @@ const Workers = ({ fetchWorkers }) => {
           mb={4}
           flexDirection='row'
           alignItems='stretch'
-          justifyContent='space-between'
-          w='100%'
-          h='35px'
           mt={4}
         >
           <SearchBar
             placeholder='Busca un trabajador'
             onChange={handleSearch}
           />
-          <Box w='130px' ml={2} h='100%' borderRadius='4px' bg='darkLight'>
-            <SelectList
-              placeholder='Categorias'
-              values={getCategories()}
-              onChange={handleCategory}
-            />
-          </Box>
-          <Box w='130px' ml={2} h='100%' borderRadius='4px' bg='darkLight'>
-            <SelectList
-              placeholder='Etiquetas'
-              values={getTags()}
-              onChange={handleTag}
-            />
-          </Box>
+          <SelectList
+            placeholder='Categorias'
+            flex="1"
+            ml={2}
+            values={getCategories()}
+            onChange={handleCategory}
+          />
+          <SelectList
+            placeholder='Etiquetas'
+            flex="1"
+            ml={2}
+            values={getTags()}
+            onChange={handleTag}
+          />
         </Flex>
         <Flex
           mb={4}
