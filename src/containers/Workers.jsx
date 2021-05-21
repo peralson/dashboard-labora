@@ -113,8 +113,6 @@ const Workers = ({
     }
   };
 
-  console.log('list:', checkedItems);
-
   return (
     <>
       <Main>

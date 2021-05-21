@@ -2,7 +2,6 @@ import React from 'react';
 
 // Chakra
 import { Button } from '@chakra-ui/react';
-import { Text } from '@chakra-ui/layout';
 import {
   Modal,
   ModalOverlay,

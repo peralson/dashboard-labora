@@ -15,11 +15,11 @@ export const fetchProjects = () => {
       }
     )
 
-    // if (!response.ok && response.status === 404) {
-    //   dispatch({ type: FETCH_PROJECTS, projects: [] })
-    //   return
-    // }
-    // if (!response.ok) throw new Error('Ha ocurrido un error.')
+    if (!response.ok && response.status === 404) {
+      dispatch({ type: FETCH_PROJECTS, projects: [] })
+      return
+    }
+    if (!response.ok) throw new Error('Ha ocurrido un error.')
 
     let projects = []
     const resData = await response.json()

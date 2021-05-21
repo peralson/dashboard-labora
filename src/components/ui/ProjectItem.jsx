@@ -39,7 +39,7 @@ const ProjectItem = ({ projectData, projectOffers }) => {
   const allApplications = getAllApplications(projectOffers)
 
   return (
-    <Box w="100%" bg="translucid" borderRadius="10px" p="4">
+    <Box bg="translucid" borderRadius={10} p={4}>
       <Flex alignItems="flex-start" justifyContent="space-between">
         <Box>
           <Text fontSize="19px" fontWeight="bold">
@@ -49,7 +49,7 @@ const ProjectItem = ({ projectData, projectOffers }) => {
             {location.address.split(',')[0]}
           </Text>
         </Box>
-        <Text
+        {/* <Text
           p='4px 8px'
           fontWeight="bold"
           borderRadius={4}
@@ -60,7 +60,7 @@ const ProjectItem = ({ projectData, projectOffers }) => {
             ? moment(dates.start._seconds).format('D MMMM')
             : `${moment(dates.start._seconds).format('D MMMM')} - ${moment(dates.end._seconds).format('D MMMM')}`
           }
-        </Text>
+        </Text> */}
       </Flex>
       {name && (
         <Box mt={4}>
@@ -158,20 +158,19 @@ const ProjectItem = ({ projectData, projectOffers }) => {
                 ml={index !== 0 && 2}
               >
                 <Flex alignItems="flex-start">
-                  {console.log(application.workerData)}
                   <Image
                     w="24px"
                     mr={2}
                     src={
-                      application.workerData.images.main.length !== 0
-                        ? application.workerData.images.main.length
+                      application.worker.workerData.images.main.length !== 0
+                        ? application.worker.workerData.images.main
                         : noPicture
                     }
-                    alt={application.workerData.name}
+                    alt={application.worker.workerData.name}
                   />
                   <Box flex="1">
-                    <Text>{application.workerData.name}</Text>
-                    <Text>{application.workerData.name}</Text>
+                    <Text>{application.worker.workerData.name}</Text>
+                    <Text>{application.worker.workerData.name}</Text>
                   </Box>
                 </Flex>
               </Box>
