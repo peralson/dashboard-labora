@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 // Chakra
 import { Box, Flex, ListItem, Text } from '@chakra-ui/layout';
-import { Checkbox, List, Button } from '@chakra-ui/react';
+import { Checkbox, List, Button, Image } from '@chakra-ui/react';
 
 // Redux & Actions
 import { connect } from 'react-redux';
@@ -15,18 +15,16 @@ import SearchBar from '../components/ui/SearchBar';
 import CustomTable from '../components/ui/CustomTable';
 import SelectList from '../components/ui/SelectList';
 import Popup from '../components/ui/Popup';
-
+import Separator from '../components/ui/Separator';
 // Icon
 import { MdShare, MdContentCopy, MdLink } from 'react-icons/md';
 
-const Workers = ({
-  fetchWorkers,
-  workers
-}) => {
+const Workers = ({ fetchWorkers, workers }) => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [tag, setTag] = useState('');
   const [checkedItems, setCheckedItems] = useState([]);
+  const [focusedWorker, setFocusedWorker] = useState();
 
   useEffect(() => {
     fetchWorkers();
@@ -113,31 +111,30 @@ const Workers = ({
     }
   };
 
-  console.log('list:', checkedItems);
+  // FOCUSED WORKER LOGIC
+  const handleFocusedWorker = (worker) => {
+    console.log('WORKER ', worker);
+    setFocusedWorker(worker);
+  };
 
   return (
     <>
       <Main>
-        <Flex
-          mb={4}
-          flexDirection='row'
-          alignItems='stretch'
-          mt={4}
-        >
+        <Flex marginY={4} flexDirection='row' alignItems='stretch'>
           <SearchBar
             placeholder='Busca un trabajador'
             onChange={handleSearch}
           />
           <SelectList
             placeholder='Categorias'
-            flex="1"
+            flex='1'
             ml={2}
             values={getCategories()}
             onChange={handleCategory}
           />
           <SelectList
             placeholder='Etiquetas'
-            flex="1"
+            flex='1'
             ml={2}
             values={getTags()}
             onChange={handleTag}
@@ -201,7 +198,12 @@ const Workers = ({
         </Flex>
         <CustomTable columns={['Nombre', 'Categoría', 'Etiquetas']}>
           {filteredWorkers.map((worker, index) => (
-            <Flex key={index} p={2}>
+            <Flex
+              key={index}
+              p={2}
+              cursor='pointer'
+              onClick={() => handleFocusedWorker(worker)}
+            >
               <Flex justifyContent='center' flex={1}>
                 <Checkbox
                   isChecked={checkedItems.includes(worker.id.toString())}
@@ -220,7 +222,61 @@ const Workers = ({
           ))}
         </CustomTable>
       </Main>
-      <Side></Side>
+      <Side>
+        {focusedWorker && (
+          <Flex
+            w='100%'
+            bg='darkLight'
+            marginY={4}
+            p={4}
+            borderRadius={4}
+            flexDirection='column'
+          >
+            <Flex flexDirection='row'>
+              <Image
+                borderRadius='full'
+                boxSize='75px'
+                src={focusedWorker.image}
+                alt={focusedWorker.name}
+              />
+              <Flex
+                w='100%'
+                justifyContent='center'
+                flexDirection='column'
+                ml='10px'
+              >
+                <Text fontSize={24}>{focusedWorker.name}</Text>
+                <Text>{focusedWorker.categories[0]}</Text>
+              </Flex>
+            </Flex>
+            <Separator top='15px' bottom='15px' />
+            <Box
+              cursor='pointer'
+              p='2'
+              borderRadius='4px'
+              bg='translucid'
+              flexDirection='column'
+            >
+              <Text mb='10px'>Etiquetas</Text>
+              <Flex wrap='wrap'>
+                {focusedWorker.tags.map((e) => (
+                  <Box
+                    borderRadius='4px'
+                    mr='5px'
+                    key={e}
+                    paddingX='20px'
+                    paddingY='10px'
+                    bg='dark'
+                    color='white'
+                  >
+                    {e}
+                  </Box>
+                ))}
+              </Flex>
+            </Box>
+          </Flex>
+        )}
+      </Side>
     </>
   );
 };
