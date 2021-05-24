@@ -22,7 +22,7 @@ const Offers = ({
   useEffect(() => {
     (async () => {
       setProjectsError(null)
-      if (!!projects) {
+      if (projects.length === 0) {
         setLoadingProjects(true)
       }
       try {

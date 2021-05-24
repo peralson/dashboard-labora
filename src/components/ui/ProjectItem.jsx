@@ -35,6 +35,8 @@ const getAllApplications = projectOffers => {
 const ProjectItem = ({ projectData, projectOffers }) => {
   const { name, dates, location } = projectData
 
+  const datesLength = dates.length;
+
   const totalApplications = countApplications(projectOffers)
   const allApplications = getAllApplications(projectOffers)
 
@@ -49,18 +51,18 @@ const ProjectItem = ({ projectData, projectOffers }) => {
             {location.address.split(',')[0]}
           </Text>
         </Box>
-        {/* <Text
+        <Text
           p='4px 8px'
           fontWeight="bold"
           borderRadius={4}
           bg="darkLight"
           fontSize="12px"
         >
-          {dates.start._seconds === dates.end._seconds
-            ? moment(dates.start._seconds).format('D MMMM')
-            : `${moment(dates.start._seconds).format('D MMMM')} - ${moment(dates.end._seconds).format('D MMMM')}`
+          {dates[0]._seconds === dates[dates.length - 1]._seconds
+            ? moment(dates[0]._seconds).format('D MMMM')
+            : `${moment(dates[0]._seconds).format('D MMMM')} - ${moment(dates[dates.length - 1]._seconds).format('D MMMM')}`
           }
-        </Text> */}
+        </Text>
       </Flex>
       {name && (
         <Box mt={4}>
