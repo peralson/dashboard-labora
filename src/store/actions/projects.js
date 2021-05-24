@@ -1,3 +1,4 @@
+import sortByDate from '../../lib/sortByDate'
 export const FETCH_PROJECTS = "FETCH_PROJECTS"
 
 export const fetchProjects = () => {
@@ -8,9 +9,7 @@ export const fetchProjects = () => {
       'https://us-central1-partime-60670.cloudfunctions.net/api/event/fullEvents',
       {
         headers: {
-          "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
-          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
         }
       }
     )
@@ -25,9 +24,11 @@ export const fetchProjects = () => {
       projects.push(project)
     })
 
+    const projectsSortByDate = sortByDate(projects)
+
 		dispatch({
 			type: FETCH_PROJECTS,
-			projects: projects
+			projects: projectsSortByDate
 		})
 	} 
 }

@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Flex, Box, Text } from '@chakra-ui/layout'
 
 // Hooks & actions
 import { connect } from 'react-redux'
 import { fetchProjects } from '../store/actions/projects'
+
+// Context
+import { SelectedItem } from '../context/SelectedItemContext'
 
 // Components
 import Main from '../components/main/Main';
@@ -11,6 +14,8 @@ import Side from '../components/main/Side';
 import ProjectItem from '../components/ui/ProjectItem';
 import ProjectsContainer from '../components/ui/ProjectsContainer';
 import SearchBar from '../components/ui/SearchBar';
+import Separator from '../components/ui/Separator';
+import ApplicationSide from '../components/ui/ApplicationSide';
 
 const Offers = ({
   projects,
@@ -18,6 +23,7 @@ const Offers = ({
 }) => {
   const [loadingProjects, setLoadingProjects] = useState(false)
   const [projectsError, setProjectsError] = useState(null)
+  const { selectedItem } = useContext(SelectedItem)
 
   useEffect(() => {
     (async () => {
@@ -42,7 +48,7 @@ const Offers = ({
     <>
       <Main>
         <Box position="sticky" top={0} pt={4} width="100%" bg="dark">
-          <Flex pb={4}>
+          <Flex>
             <SearchBar placeholder="Busca entre tus proyectos" onChange={handleSearch} />
             <Flex
               _hover={{ cursor: 'pointer' }}
@@ -55,6 +61,7 @@ const Offers = ({
               <Text lineHeight={0} fontWeight="bold" fontSize="14px">Crear oferta</Text>
             </Flex>
           </Flex>
+          <Separator top={3} />
         </Box>
         {loadingProjects
           ? <Text>loading...</Text>
@@ -81,17 +88,14 @@ const Offers = ({
           alignItems="flex-start"
           p="16px 0px"
         >
-          <Box p="8px 16px" borderRadius={8} borderColor="translucid" borderWidth={2}>
+          <Box p="8px 16px" w={"100%"} mb={3} borderRadius={8} borderColor="translucid" borderWidth={2}>
             <Text color="translucid">¿Qué puedo hacer aquí?</Text>
           </Box>
-          <Box
-            p={2}
-            mt={2}
-            borderRadius={8}
-            bg="darkLight"
-            h="100%"
-            w="100%"
-          ></Box>
+          <Box p={4} w={"100%"} borderRadius={8} bg="darkLight">
+            {selectedItem && selectedItem.offerData && <Text>Offer</Text>}
+            {selectedItem && selectedItem.offerCategory && <ApplicationSide data={selectedItem} />}
+            {!selectedItem && <Text>Selecciona algo</Text>}
+          </Box>
         </Flex>
       </Side>
     </>
