@@ -6,7 +6,11 @@ export const brandTheme = extendTheme({
     accent: "#61BC9E",
     dark: "#191735",
     darkLight: "#282950",
-    translucid: 'rgba(255, 255, 255, 0.1)',
+    red: {
+      full: "#D84D4D",
+      smooth: "rgba(216, 77, 77, 0.2)",
+    },
+    translucid: "rgba(255, 255, 255, 0.1)",
     white: "#FFFFFF",
     grey: {
       light: "#9D9EA3",
@@ -15,22 +19,22 @@ export const brandTheme = extendTheme({
   },
   styles: {
     global: {
-      "body": {
+      body: {
         fontFamily: "body",
         color: "white",
         bg: "dark",
-        lineHeight: "base"
+        lineHeight: "base",
       },
     },
-    '*::-webkit-scrollbar': {
-      width: '6px',
+    "*::-webkit-scrollbar": {
+      width: "6px",
     },
-    '*::-webkit-scrollbar-track': {
-      width: '10px',
+    "*::-webkit-scrollbar-track": {
+      width: "10px",
     },
-    '*::-webkit-scrollbar-thumb': {
-      background: 'rgba(255, 255, 255, 0.4)',
-      borderRadius: '10px',
+    "*::-webkit-scrollbar-thumb": {
+      background: "rgba(255, 255, 255, 0.4)",
+      borderRadius: "10px",
     },
-  }
+  },
 });

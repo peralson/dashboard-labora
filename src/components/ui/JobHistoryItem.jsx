@@ -10,27 +10,27 @@ const JobHistoryItem = ({ job, index }) => {
         })
     })
     return (
-        <Flex
-            mt={index === 0 ? 2 : 1}
-            w={"100%"}
-            p={"12px 8px"}
-            bg={"translucid"}
-            borderRadius={"8px"}
-            alignItems="center"
-        >
-            <Box flex="1">
-                <Text lineHeight={1} color={"primary"} fontSize={"12px"}>
-                    {job.category.toUpperCase()}
-                </Text>
-                <Text lineHeight={1} mt={2} fontSize={"14px"}>
-                    {job.eventName}
-                </Text>
-            </Box>
-            <Text lineHeight={1} fontSize={"14px"}>
-                {moment(totalHours * 1000).format("H")} horas
-            </Text>
-        </Flex>
-    )
+      <Flex
+        mt={index !== 0 && 2}
+        w={"100%"}
+        p={3.5}
+        bg={"translucid"}
+        borderRadius={10}
+        alignItems="center"
+      >
+        <Box flex="1">
+          <Text lineHeight={1} color={"primary"} fontSize={"12px"}>
+            {job.category.toUpperCase()}
+          </Text>
+          <Text lineHeight={1} mt={2} fontSize={"14px"}>
+            {job.eventName}
+          </Text>
+        </Box>
+        <Text lineHeight={1} fontSize={"14px"}>
+          {moment(totalHours * 1000).format("H")} horas
+        </Text>
+      </Flex>
+    );
 }
 
 export default JobHistoryItem

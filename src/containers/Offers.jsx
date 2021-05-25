@@ -17,6 +17,7 @@ import ProjectsContainer from '../components/ui/ProjectsContainer';
 import SearchBar from '../components/ui/SearchBar';
 import Separator from '../components/ui/Separator';
 import ApplicationSide from '../components/ui/ApplicationSide';
+import OfferSide from "../components/ui/OfferSide";
 
 const Offers = ({
   projects,
@@ -58,29 +59,34 @@ const Offers = ({
   return (
     <>
       <Main>
-        <Box position="sticky" top={0} pt={4} width="100%" bg="dark">
-          <Flex>
-            <SearchBar placeholder="Busca entre tus proyectos" onChange={handleSearch} />
+        <Box zIndex={100} position="sticky" top={0} pt={4} width="100%" bg="dark">
+          <Flex> 
+            <SearchBar
+              placeholder="Busca entre tus proyectos"
+              onChange={handleSearch}
+            />
             <Flex
-              _hover={{ cursor: 'pointer' }}
+              _hover={{ cursor: "pointer" }}
               bg="accent"
               borderRadius={8}
               ml={2}
               alignItems="center"
               p="0px 16px"
             >
-              <Text lineHeight={0} fontWeight="bold" fontSize="14px">Crear oferta</Text>
+              <Text lineHeight={0} fontWeight="bold" fontSize="14px">
+                Crear oferta
+              </Text>
             </Flex>
           </Flex>
           <Separator top={3} />
         </Box>
-        {loadingProjects
-          ? <Text>loading...</Text>
-          : projectsError
-            ? <Text>Hay un error</Text>
-            : (
+        {loadingProjects ? (
+          <Text textAlign={"center"} py={10}>Cargando...</Text>
+        ) : projectsError ? (
+          <Text textAlign={"center"}>Vaya! Ha ocurrido un error</Text>
+        ) : (
           <ProjectsContainer>
-            {filteredProjects.map(project => (
+            {filteredProjects.map((project) => (
               <ProjectItem
                 key={project.id}
                 projectData={project.projectData}
@@ -101,8 +107,12 @@ const Offers = ({
         >
           <Documentation />
           <Box p={4} w={"100%"} borderRadius={8} bg="darkLight">
-            {selectedItem && selectedItem.offerData && <Text>Offer</Text>}
-            {selectedItem && selectedItem.offerCategory && <ApplicationSide data={selectedItem} />}
+            {selectedItem && selectedItem.offerData && (
+              <OfferSide data={selectedItem} />
+            )}
+            {selectedItem && selectedItem.offerCategory && (
+              <ApplicationSide data={selectedItem} />
+            )}
             {!selectedItem && <Text>Selecciona algo</Text>}
           </Box>
         </Flex>

@@ -4,6 +4,7 @@ import CustomImg from './CustomImg'
 import moment from 'moment'
 import 'moment/locale/es'
 import JobHistoryItem from './JobHistoryItem';
+import Separator from './Separator';
 
 const ApplicationSide = ({ data }) => {
 	let totalDaysWorked = 0
@@ -18,7 +19,7 @@ const ApplicationSide = ({ data }) => {
 	})
 	return (
 		<Box>
-			<Flex alignItems="center">
+			<Flex alignItems="center" mb={4}>
 				<CustomImg
 					image={data.worker.workerData.images.main}
 					w={"80px"}
@@ -37,35 +38,46 @@ const ApplicationSide = ({ data }) => {
 					</Text>
 				</Box>
 			</Flex>
-			{data.worker.history.length !== 0 && (
-				<>
-					<Text mt={8} mb={2} fontSize={14} fontWeight="bold">Experiencia en tu empresa</Text>
-					<Flex mb={1} alignItems={"center"} justifyContent="space-between">
-						<Text fontSize={14} color="primary">
-							Horas trabajadas
-						</Text>
-						<Text fontSize={14}>
-							{moment(totalHoursInSeconds * 1000).format('H')}
-						</Text>
-					</Flex>
-					<Flex alignItems={"center"} justifyContent="space-between">
-						<Text fontSize={14} color="primary">
-							Días trabajados
-						</Text>
-						<Text fontSize={14}>
-							{totalDaysWorked}
-						</Text>
-					</Flex>
-				</>
-			)}
-			{data.tags.length !== 0 && (
-				<>
-					<Text mt={6} fontSize={14} fontWeight="bold">Etiquetas</Text>
+			<Flex mb={2}>
+				<Text
+					flex={1}
+					borderRadius={10}
+					bg={"translucid"}
+					py={1}
+					lineHeight={2}
+					fontSize={14}
+					textAlign={"center"}
+					cursor={"pointer"}
+					fontWeight={"bold"}
+					color={"white"}
+					onClick={() => console.log("Aceptado")}
+				>
+					Aceptar
+				</Text>
+				<Text
+					flex={1}
+					borderRadius={10}
+					py={1}
+					lineHeight={2}
+					fontSize={14}
+					textAlign={"center"}
+					cursor={"pointer"}
+					fontWeight={"bold"}
+					color={"red.full"}
+					onClick={() => console.log("Rechazado")}
+				>
+					Rechazar
+				</Text>
+			</Flex>
+			{data.worker.tags.length !== 0 && (
+				<Box mb={4}>
+					<Text flex={1} fontSize={16} lineHeight={2} fontWeight="bold" mb={2}>
+						Etiquetas
+					</Text>
 					<Flex>
-						{data.tags.map((tag, index) => (
+						{data.worker.tags.map((tag, index) => (
 							<Text
-								key={index}
-								mt={2}
+								key={tag}
 								fontSize={14}
 								padding={"4px 6px"}
 								bg={"translucid"}
@@ -77,11 +89,37 @@ const ApplicationSide = ({ data }) => {
 							</Text>
 						))}
 					</Flex>
-				</>
+				</Box>
+			)}
+			{data.worker.history.length !== 0 && (
+				<Box mb={4}>
+					<Text flex={1} fontSize={16} fontWeight="bold" mb={2}>
+						Más información
+					</Text>
+					<Flex>
+						<Text flex={1} fontSize={14} color={"primary"}>
+							Horas trabajadas
+						</Text>
+						<Text lineHeight={2} fontSize={14}>
+							{moment(totalHoursInSeconds * 1000).format('H')}
+						</Text>
+					</Flex>
+					<Separator top={1} bottom={1} />
+					<Flex>
+						<Text flex={1} fontSize={14} color={"primary"}>
+							Días trabajados
+						</Text>
+						<Text fontSize={14}>
+							{totalDaysWorked}
+						</Text>
+					</Flex>
+				</Box>
 			)}
 			{data.worker.history.length !== 0 && (
 				<>
-					<Text mt={6} fontSize={14} fontWeight="bold">Historial de trabajos</Text>
+					<Text flex={1} fontSize={16} lineHeight={2} fontWeight="bold" mb={2}>
+						Historial de trabajos
+					</Text>
 					<Flex alignItems={'center'} flexDirection={"column"}>
 						{data.worker.history.map(
 							(job, index) => <JobHistoryItem key={job.id} job={job.data} index={index} />

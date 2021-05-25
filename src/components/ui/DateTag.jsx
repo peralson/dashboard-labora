@@ -5,11 +5,12 @@ import 'moment/locale/es'
 
 const DateTag = ({ dates }) => (
     <Text
-        p='4px 8px'
-        fontWeight="bold"
+        px={2.5}
+        py={2}
+        fontWeight={"bold"}
         borderRadius={4}
-        bg="dark"
-        fontSize="12px"
+        bg={"dark"}
+        fontSize={12}
     >
         {dates[0]._seconds === dates[dates.length - 1]._seconds
         ? moment(dates[0]._seconds * 1000).format('D MMMM')
