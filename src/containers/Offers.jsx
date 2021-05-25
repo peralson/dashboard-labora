@@ -22,6 +22,7 @@ const Offers = ({
   projects,
   fetchProjects
 }) => {
+  const [search, setSearch] = useState('')
   const [loadingProjects, setLoadingProjects] = useState(false)
   const [projectsError, setProjectsError] = useState(null)
   const { selectedItem } = useContext(SelectedItem)
@@ -43,7 +44,16 @@ const Offers = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchProjects])
 
-  const handleSearch = e => {}
+  const filteredProjects = projects.filter(project => {
+    if (search !== '') {
+      return project.projectData.name.toLowerCase().includes(search.toLowerCase())
+    }
+    return true
+  })
+
+  const handleSearch = event => {
+    setSearch(event.target.value)
+  }
   
   return (
     <>
@@ -70,7 +80,7 @@ const Offers = ({
             ? <Text>Hay un error</Text>
             : (
           <ProjectsContainer>
-            {projects.map(project => (
+            {filteredProjects.map(project => (
               <ProjectItem
                 key={project.id}
                 projectData={project.projectData}

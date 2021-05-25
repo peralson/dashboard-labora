@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Flex, Text } from '@chakra-ui/layout';
 import { countApplications, getAllApplications, getApplicationFilter } from '../../lib/applications'
 
@@ -9,10 +9,22 @@ import SelectList from './SelectList';
 import ApplicationItem from './ApplicationItem';
 
 const ProjectItem = ({ projectData, projectOffers }) => {
+  const [offerName, setOfferName] = useState(null)
   const { name, dates, location } = projectData
 
   const totalApplications = countApplications(projectOffers)
   const allApplications = getAllApplications(projectOffers)
+
+  const handleChandleOfferName = event => {
+    setOfferName(event.target.value)
+  }
+
+  const filteredApplications = allApplications.filter(application => {
+    if (offerName) {
+      return application.offerName === offerName
+    }
+    return true
+  })
 
   return (
     <Box bg="darkLight" borderRadius={8} p={"12px 16px"}>
@@ -54,13 +66,13 @@ const ProjectItem = ({ projectData, projectOffers }) => {
                   _hover={{ borderColor: "primary", borderWidth: 1 }}
                   size="xs"
                   values={getApplicationFilter(projectOffers) || []}
-                  onChange={() => {}}
+                  onChange={handleChandleOfferName}
                 />
               </Box>
             )}
           </Flex>
           <Flex mt={2}>
-            {allApplications.map((application, index) => (
+            {filteredApplications.map((application, index) => (
               <ApplicationItem application={application} index={index} />
             ))}
           </Flex>
