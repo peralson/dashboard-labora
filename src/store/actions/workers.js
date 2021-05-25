@@ -2,89 +2,76 @@ export const FETCH_WORKERS = 'FETCH_WORKERS';
 
 export const fetchWorkers = () => {
   return async (dispatch, getState) => {
-    const workers = [
+    // const response = await fetch(
+    //   'https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/myWorkers',
+    //   {
+    //     headers: {
+    //       'Access-Control-Allow-Origin': '*',
+    //       'Content-Type': 'application/json',
+    //       'Access-Control-Allow-Headers':
+    //         'Origin, X-Requested-With, Content-Type, Accept',
+    //     },
+    //   }
+    // );
+
+    // if (!response.ok && response.status === 404)
+    //   return dispatch({ type: FETCH_WORKERS, workers: [] });
+    // if (!response.ok) throw new Error('Ha ocurrido un error.');
+
+    let workers = [];
+    
+    // const resData = await response.json();
+
+    // resData.body.forEach(worker => {
+    //   workers.push(worker)
+    // })
+
+    // Push de workers porque server error 500
+    workers.push(
       {
         id: 1,
-        name: 'Eloy',
-        email: 'eloy@gmail.com',
-        image: 'https://bit.ly/sage-adebayo',
-        phone: 77777,
         categories: ['camarero'],
+        history:[{
+          data: {
+            category: 'Azafatas',
+            companyName: 'SpaceX',
+            eventName: 'Aniversario',
+            offerName: 'Premios',
+          }
+        }],
         tags: ['gafas', 'alto', 'delgado', 'moreno'],
-        works: [
-          {
-            name: 'Bar Manolito',
-            date: '12-5-21',
-            nomina: 'pdf',
-            contrato: 'pdf',
+        workerData:{
+          images: {
+            main: 'https://bit.ly/sage-adebayo',
+            profesional: 'https://bit.ly/sage-adebayo'
           },
-          {
-            name: 'La Contentura',
-            date: '27-3-21',
-            nomina: 'pdf',
-            contrato: 'pdf',
-          },
-        ],
+          name: 'Eloy',
+        }
       },
       {
         id: 2,
-        name: 'Peralta',
-        email: 'peralson@gmail.com',
-        image: 'https://bit.ly/dan-abramov',
-        phone: 9999,
-        categories: ['limpiador'],
-        tags: ['moreno', 'delgado'],
-        works: [
-          {
-            name: 'Fiesta fin de curso',
-            date: '12-5-21',
-            nomina: 'pdf',
-            contrato: 'pdf',
+        categories: ['camarero', 'limpiador'],
+        history:[{
+          data: {
+            category: 'Azafatas',
+            companyName: 'SpaceX',
+            eventName: 'Aniversario',
+            offerName: 'Premios',
+          }
+        }],
+        tags: ['bajo', 'rubio', 'fuerte', 'moreno'],
+        workerData:{
+          images: {
+            main: 'https://bit.ly/sage-adebayo',
+            profesional: 'https://bit.ly/sage-adebayo'
           },
-        ],
-      },
-      {
-        id: 3,
-        name: 'Martino',
-        email: 'mpal@mail.com',
-        image:
-          'https://concepto.de/wp-content/uploads/2018/08/persona-e1533759204552.jpg',
-        phone: 5459,
-        categories: ['conserje'],
-        tags: ['rubio', 'delgado'],
-      },
-      {
-        id: 5,
-        name: 'Peralta',
-        email: 'pe@ail.com',
-        image:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHlIC6mj9KXGnVloMBpbZ5MULyumav2TarjA&usqp=CAU',
-        phone: 4434399,
-        categories: ['camarero'],
-        tags: ['moreno', 'delgado'],
-        works: [
-          {
-            name: 'Limpieza Hospital',
-            date: '12-5-21',
-            nomina: 'pdf',
-            contrato: 'pdf',
-          },
-          {
-            name: 'Entrega premios',
-            date: '26-4-21',
-            nomina: 'pdf',
-            contrato: 'pdf',
-          },
-          {
-            name: 'Reparto comida',
-            date: '5-3-21',
-            nomina: 'pdf',
-            contrato: 'pdf',
-          },
-        ],
-      },
-    ];
-
+          name: 'Martino',
+        }
+      }
+    )
+    
+    console.log(workers)
+    
     dispatch({
       type: FETCH_WORKERS,
       workers: workers,

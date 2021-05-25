@@ -13,6 +13,7 @@ import Main from '../components/main/Main';
 import Side from '../components/main/Side';
 import SearchBar from '../components/ui/SearchBar';
 import CustomTable from '../components/ui/CustomTable';
+import MultipleSelectList from '../components/ui/MultipleSelectList';
 import SelectList from '../components/ui/SelectList';
 import Popup from '../components/ui/Popup';
 import Separator from '../components/ui/Separator';
@@ -28,8 +29,8 @@ import {
 
 const Workers = ({ fetchWorkers, workers }) => {
   const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('');
-  const [tag, setTag] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
   const [checkedItems, setCheckedItems] = useState([]);
   const [focusedWorker, setFocusedWorker] = useState();
 
@@ -37,65 +38,74 @@ const Workers = ({ fetchWorkers, workers }) => {
     fetchWorkers();
   }, [fetchWorkers]);
 
+
   // SEARCH LOGIC
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
 
   const filteredWorkers = workers.filter((worker) => {
-    if (category === '' && tag === '')
-      return worker.name.toLowerCase().includes(search.toLowerCase());
-    if (tag === '')
+    if (categories.length === 0 && tags.length === 0)
+      return worker.workerData.name.toLowerCase().includes(search.toLowerCase());
+    if (tags.length === 0 && categories.length > 0)
       return (
-        worker.categories.includes(category) &&
-        worker.name.toLowerCase().includes(search.toLowerCase())
+        categories.every((e) => worker.categories.includes(e)) &&
+        worker.workerData.name.toLowerCase().includes(search.toLowerCase())
       );
-
-    if (category === '')
+    if (categories.length === 0 && tags.length > 0)
       return (
-        worker.tags.includes(tag) &&
-        worker.name.toLowerCase().includes(search.toLowerCase())
+        tags.every((e) => worker.tags.includes(e)) &&
+        worker.workerData.name.toLowerCase().includes(search.toLowerCase())
       );
     else
       return (
-        worker.categories.includes(category) &&
-        worker.tags.includes(tag) &&
-        worker.name.toLowerCase().includes(search.toLowerCase())
+        categories.every((e) => worker.categories.includes(e)) &&
+        tags.every((e) => worker.tags.includes(e)) &&
+        worker.workerData.name.toLowerCase().includes(search.toLowerCase())
       );
   });
 
+
   // CATEGORIES LOGIC
   const getCategories = () => {
-    let categories = [];
+    var categoryList = [];
     for (var i = 0; i < workers.length; i++) {
       for (var j = 0; j < workers[i].categories.length; j++) {
-        if (!categories.includes(workers[i].categories[j])) {
-          categories.push(workers[i].categories[j]);
+        if (!categoryList.includes(workers[i].categories[j])) {
+          categoryList.push(workers[i].categories[j]);
         }
       }
     }
-    return categories;
+    return categoryList;
   };
 
-  const handleCategory = (event) => {
-    setCategory(event.target.value);
+  const handleCategories = (event) => {
+    if (!categories.includes(event.target.name)) {
+      setCategories([...categories, event.target.name]);
+    } else {
+      setCategories(categories.filter((e) => e !== event.target.name));
+    }
   };
 
   // TAG LOGIC
   const getTags = () => {
-    let tags = [];
+    var tagList = [];
     for (var i = 0; i < workers.length; i++) {
       for (var j = 0; j < workers[i].tags.length; j++) {
-        if (!tags.includes(workers[i].tags[j])) {
-          tags.push(workers[i].tags[j]);
+        if (!tagList.includes(workers[i].tags[j])) {
+          tagList.push(workers[i].tags[j]);
         }
       }
     }
-    return tags;
+    return tagList;
   };
 
-  const handleTag = (event) => {
-    setTag(event.target.value);
+  const handleTags = (event) => {
+    if (!tags.includes(event.target.name)) {
+      setTags([...tags, event.target.name]);
+    } else {
+      setTags(tags.filter((e) => e !== event.target.name));
+    }
   };
 
   // CHECKBOX LOGIC
@@ -120,7 +130,6 @@ const Workers = ({ fetchWorkers, workers }) => {
 
   // FOCUSED WORKER LOGIC
   const handleFocusedWorker = (worker) => {
-    console.log('WORKER ', worker);
     setFocusedWorker(worker);
   };
 
@@ -132,19 +141,21 @@ const Workers = ({ fetchWorkers, workers }) => {
             placeholder='Busca un trabajador'
             onChange={handleSearch}
           />
-          <SelectList
-            placeholder='Categorias'
+          <MultipleSelectList
+            title='Categorías'
             flex='1'
             ml={2}
+            current={categories}
             values={getCategories()}
-            onChange={handleCategory}
+            onChange={handleCategories}
           />
-          <SelectList
-            placeholder='Etiquetas'
+          <MultipleSelectList
+            title='Etiquetas'
             flex='1'
             ml={2}
+            current={tags}
             values={getTags()}
-            onChange={handleTag}
+            onChange={handleTags}
           />
         </Flex>
         <Flex
@@ -180,7 +191,7 @@ const Workers = ({ fetchWorkers, workers }) => {
                 {workers.map(
                   (worker) =>
                     checkedItems.indexOf(worker.id.toString()) >= 0 && (
-                      <ListItem key={worker.id}> - {worker.name}</ListItem>
+                      <ListItem key={worker.id}> - {worker.workerData.name}</ListItem>
                     )
                 )}
                 <Button
@@ -218,7 +229,7 @@ const Workers = ({ fetchWorkers, workers }) => {
                   onChange={(e) => handleCheck(e.target.name)}
                 />
               </Flex>
-              <Text flex={4}>{worker.name}</Text>
+              <Text flex={4}>{worker.workerData.name}</Text>
               <Text flex={4}>{worker.categories[0]}</Text>
               <Text flex={4}>{worker.tags[0]}</Text>
               <Box flex={2}></Box>
@@ -243,8 +254,8 @@ const Workers = ({ fetchWorkers, workers }) => {
               <Image
                 borderRadius='full'
                 boxSize='75px'
-                src={focusedWorker.image}
-                alt={focusedWorker.name}
+                src={focusedWorker.workerData.images.profesional}
+                alt={focusedWorker.workerData.name}
               />
               <Flex
                 w='100%'
@@ -252,7 +263,7 @@ const Workers = ({ fetchWorkers, workers }) => {
                 flexDirection='column'
                 ml='10px'
               >
-                <Text fontSize={24}>{focusedWorker.name}</Text>
+                <Text fontSize={24}>{focusedWorker.workerData.name}</Text>
                 <Text>{focusedWorker.categories[0]}</Text>
               </Flex>
             </Flex>
@@ -277,13 +288,13 @@ const Workers = ({ fetchWorkers, workers }) => {
                 </Box>
               ))}
             </SideSection>
-            {focusedWorker.works && (
+            {focusedWorker.history && (
               <SideSection type='row' title='Últimos trabajos'>
-                {focusedWorker.works.map((e) => (
+                {focusedWorker.history.map((e) => (
                   <Box
                     borderRadius='4px'
                     mr='5px'
-                    key={e.name}
+                    key={e.id}
                     paddingX='20px'
                     paddingY='10px'
                     mb='10px'
@@ -299,7 +310,7 @@ const Workers = ({ fetchWorkers, workers }) => {
                       alignItems='center'
                     >
                       <Text>
-                        {e.name} ({e.date})
+                        {e.data.eventName} ({e.data.category})
                       </Text>
                       <MdKeyboardArrowRight borderColor='red' />
                     </Flex>
