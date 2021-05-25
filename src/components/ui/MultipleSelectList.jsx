@@ -15,11 +15,12 @@ import {
 
 const MultipleSelectList = (props) => {
   return (
-    <Popover isLazy >
-      <PopoverTrigger >
+    <Popover isLazy>
+      <PopoverTrigger>
         <Button
-        ml={props.ml} {...props}
-          bg='darkLight'
+          ml={props.ml}
+          {...props}
+          bg={props.bg ?? 'darkLight'}
           _hover={{ borderColor: 'translucid' }}
           _focus={{ borderColor: 'translucid' }}
         >

@@ -11,29 +11,21 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Flex
 } from '@chakra-ui/react';
 
 // Components
 import Separator from './Separator';
 
-const Popup = ({ mainButton, leftIcon, title, children }) => {
+const Popup = ({ mainButton, title, children }) => {
   const [scrollBehavior] = React.useState('inside');
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Button
-        ml='40px'
-        bg='transparent'
-        h='25px'
-        outline='none'
-        colorScheme='ghost'
-        _focus={{ borderColor: 'none' }}
-        onClick={onOpen}
-        leftIcon={leftIcon}
-      >
+      <Flex onClick={onOpen}>
         {mainButton}
-      </Button>
+      </Flex>
 
       <Modal
         closeOnOverlayClick={false}

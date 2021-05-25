@@ -14,7 +14,6 @@ import Side from '../components/main/Side';
 import SearchBar from '../components/ui/SearchBar';
 import CustomTable from '../components/ui/CustomTable';
 import MultipleSelectList from '../components/ui/MultipleSelectList';
-import SelectList from '../components/ui/SelectList';
 import Popup from '../components/ui/Popup';
 import Separator from '../components/ui/Separator';
 import SideSection from '../components/ui/SideSection';
@@ -33,11 +32,11 @@ const Workers = ({ fetchWorkers, workers }) => {
   const [tags, setTags] = useState([]);
   const [checkedItems, setCheckedItems] = useState([]);
   const [focusedWorker, setFocusedWorker] = useState();
+  const [shareCategory, setShareCategory] = useState([]);
 
   useEffect(() => {
     fetchWorkers();
   }, [fetchWorkers]);
-
 
   // SEARCH LOGIC
   const handleSearch = (e) => {
@@ -46,7 +45,9 @@ const Workers = ({ fetchWorkers, workers }) => {
 
   const filteredWorkers = workers.filter((worker) => {
     if (categories.length === 0 && tags.length === 0)
-      return worker.workerData.name.toLowerCase().includes(search.toLowerCase());
+      return worker.workerData.name
+        .toLowerCase()
+        .includes(search.toLowerCase());
     if (tags.length === 0 && categories.length > 0)
       return (
         categories.every((e) => worker.categories.includes(e)) &&
@@ -64,7 +65,6 @@ const Workers = ({ fetchWorkers, workers }) => {
         worker.workerData.name.toLowerCase().includes(search.toLowerCase())
       );
   });
-
 
   // CATEGORIES LOGIC
   const getCategories = () => {
@@ -84,6 +84,14 @@ const Workers = ({ fetchWorkers, workers }) => {
       setCategories([...categories, event.target.name]);
     } else {
       setCategories(categories.filter((e) => e !== event.target.name));
+    }
+  };
+
+  const handleShareCategory = (event) => {
+    if (!shareCategory.includes(event.target.name)) {
+      setShareCategory([...shareCategory, event.target.name]);
+    } else {
+      setShareCategory(shareCategory.filter((e) => e !== event.target.name));
     }
   };
 
@@ -157,6 +165,52 @@ const Workers = ({ fetchWorkers, workers }) => {
             values={getTags()}
             onChange={handleTags}
           />
+          <Popup
+            title='Invitar a tus listas'
+            mainButton={
+              <Flex
+                _hover={{ cursor: 'pointer' }}
+                bg='accent'
+                borderRadius={8}
+                ml={2}
+                alignItems='center'
+                p='0px 16px'
+              >
+                <Text lineHeight={0} fontWeight='bold' fontSize='14px'>
+                  Invitar
+                </Text>
+              </Flex>
+            }
+          >
+            <Text mb='10px'>
+              Selecciona categoría(s) para obtener el enlace:
+            </Text>
+            <MultipleSelectList
+              title='Categorias'
+              flex='1'
+              bg='dark'
+              mb={4}
+              current={shareCategory}
+              values={getCategories()}
+              onChange={handleShareCategory}
+            />
+            <Button
+              size='md'
+              height='48px'
+              width='100%'
+              bg='translucid'
+              color='grey'
+              _focus={{ borderColor: 'none' }}
+            >
+              <Flex
+                w='100%'
+                justifyContent='space-between'
+                alignContent='center'
+              >
+                <MdLink /> https://wa.me/1XXXXXXXXXX? <MdContentCopy />
+              </Flex>
+            </Button>
+          </Popup>
         </Flex>
         <Flex
           mb={4}
@@ -180,18 +234,32 @@ const Workers = ({ fetchWorkers, workers }) => {
           </Checkbox>
           {checkedItems.length > 0 && (
             <Popup
-              leftIcon={<MdShare />}
-              mainButton={<Text>Compartir enlace</Text>}
-              title='Compartir enlace'
+              title='Invitar a tus listas'
+              mainButton={
+                <Flex
+                  _hover={{ cursor: 'pointer' }}
+                  bg='translucid'
+                  borderRadius={8}
+                  ml={5}
+                  alignItems='center'
+                  p='0px 16px'
+                  h='30px'
+                >
+                  <MdShare />
+                  <Text ml={2} lineHeight={0} fontWeight='bold' fontSize='14px'>
+                    Compartir enlace
+                  </Text>
+                </Flex>
+              }
             >
               <Text mb='10px'>
-                Vas a invitar a tu lista a los siguientes trabajadores:
+                Vas a invitar a los siguientes trabajadores:
               </Text>
               <List spacing={3}>
                 {workers.map(
                   (worker) =>
                     checkedItems.indexOf(worker.id.toString()) >= 0 && (
-                      <ListItem key={worker.id}> - {worker.workerData.name}</ListItem>
+                      <ListItem key={worker.id}> - {worker.name}</ListItem>
                     )
                 )}
                 <Button
