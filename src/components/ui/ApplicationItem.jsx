@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Box, Flex, Text } from '@chakra-ui/layout';
 import { SelectedItem } from '../../context/SelectedItemContext'
 import CustomImg from './CustomImg'
+import { scaleFadeConfig } from '@chakra-ui/transition';
 
 const ApplicationItem = ({ application, index }) => {
     const { selectedItem, setSelectedItem } = useContext(SelectedItem)
@@ -14,6 +15,8 @@ const ApplicationItem = ({ application, index }) => {
             cursor={"pointer"}
             key={application.id}
             minW={'180px'}
+            _hover={{ border: "1px solid white", transform: "scale(1.01)" }}
+            transform={isActive && "scale(1.01)"}
             p={2}
             pt={3}
             bg="translucid"

@@ -46,8 +46,12 @@ const ProjectItem = ({ projectData, projectOffers }) => {
                 <SelectList
                   fontSize="14px"
                   color="primary"
-                  borderWidth={0}
+                  borderWidth={1}
+                  borderColor={"transparent"}
+                  borderRadius={4}
+                  cursor="pointer"
                   placeholder='Todas'
+                  _hover={{ borderColor: "primary", borderWidth: 1 }}
                   size="xs"
                   values={getApplicationFilter(projectOffers) || []}
                   onChange={() => {}}

@@ -11,6 +11,7 @@ import { SelectedItem } from '../context/SelectedItemContext'
 // Components
 import Main from '../components/main/Main';
 import Side from '../components/main/Side';
+import Documentation from '../components/main/Documentation';
 import ProjectItem from '../components/ui/ProjectItem';
 import ProjectsContainer from '../components/ui/ProjectsContainer';
 import SearchBar from '../components/ui/SearchBar';
@@ -88,9 +89,7 @@ const Offers = ({
           alignItems="flex-start"
           p="16px 0px"
         >
-          <Box p="8px 16px" w={"100%"} mb={3} borderRadius={8} borderColor="translucid" borderWidth={2}>
-            <Text color="translucid">¿Qué puedo hacer aquí?</Text>
-          </Box>
+          <Documentation />
           <Box p={4} w={"100%"} borderRadius={8} bg="darkLight">
             {selectedItem && selectedItem.offerData && <Text>Offer</Text>}
             {selectedItem && selectedItem.offerCategory && <ApplicationSide data={selectedItem} />}

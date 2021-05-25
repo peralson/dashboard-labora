@@ -16,6 +16,8 @@ const OfferItem = ({ offer, index }) => {
             justifyContent="space-between"
             key={index}
             minW={'180px'}
+            _hover={{ border: "1px solid white", transform: "scale(1.01)" }}
+            transform={isActive && "scale(1.01)"}
             p={2}
             pt={3}
             bg="translucid"

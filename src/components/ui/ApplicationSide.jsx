@@ -19,14 +19,6 @@ const ApplicationSide = ({ data }) => {
 	return (
 		<Box>
 			<Flex alignItems="center">
-				<Box flex={1} mr={4}>
-					<Text fontSize={12} lineHeight={1} mb={2} color={"primary"}>
-						{data.offerName.toUpperCase()}
-					</Text>
-					<Text fontSize={19} fontWeight={"bold"} lineHeight={1}>
-						{data.worker.workerData.name}
-					</Text>
-				</Box>
 				<CustomImg
 					image={data.worker.workerData.images.main}
 					w={"80px"}
@@ -36,6 +28,14 @@ const ApplicationSide = ({ data }) => {
 					borderColor={"dark"}
 					backgroundSize={"contain"}
 				/>
+				<Box flex={1} ml={4}>
+					<Text fontSize={12} lineHeight={1} mb={2} color={"primary"}>
+						{data.offerName.toUpperCase()}
+					</Text>
+					<Text fontSize={19} fontWeight={"bold"} lineHeight={1}>
+						{data.worker.workerData.name}
+					</Text>
+				</Box>
 			</Flex>
 			{data.worker.history.length !== 0 && (
 				<>
