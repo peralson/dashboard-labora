@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import { Flex, Text } from '@chakra-ui/layout'
+import { Image } from '@chakra-ui/image';
+import eye from '../../assets/svg/eye.svg'
 
 const Documentation = ({ content }) => {
 	const [open, setOpen] = useState(false)
 	return (
 		<Flex
 			alignItems={"center"}
-			p="8px 16px"
+			py={2}
+			px={4}
 			w={"100%"}
 			mb={3}
 			borderRadius={8}
@@ -16,17 +19,20 @@ const Documentation = ({ content }) => {
 			<Text flex={1} color="white">
 				¿Qué puedo hacer aquí?
 			</Text>
-			<Text
+			<Flex
 				onClick={() => setOpen(!open)}
 				_hover={{ background: "translucid" }}
 				bg={open && "translucid"}
 				borderRadius={10}
-				p={1}
+				py={1}
+				px={2}
 				cursor="pointer"
-				color="primary"
 			>
-				Ver
-			</Text>
+				<Text color="primary" fontSize={14}>
+					Ver
+				</Text>
+				<Image src={eye} ml={2} w={"15px"} />
+			</Flex>
 		</Flex>
 	)
 }

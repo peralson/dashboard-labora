@@ -13,8 +13,8 @@ const ApplicationItem = ({ application, index }) => {
       <Box
         cursor={"pointer"}
         minW={"180px"}
-        _hover={{ border: "1px solid white", transform: "scale(1.01)" }}
-        transform={isActive && "scale(1.01)"}
+        _hover={{ border: "1px solid white", transform: "scale(1.02)" }}
+        transform={isActive && "scale(1.02)"}
         p={3}
         pt={4}
         bg="translucid"
@@ -38,7 +38,7 @@ const ApplicationItem = ({ application, index }) => {
             alt={application.worker.workerData.name}
           />
           <Box flex="1">
-            <Text fontSize={10} color="primary" lineHeight={1}>
+            <Text fontSize={12} color="primary" lineHeight={1}>
               {application.offerName.toUpperCase()}
             </Text>
             <Text fontSize={14} lineHeight={1} mt={1}>
@@ -46,14 +46,14 @@ const ApplicationItem = ({ application, index }) => {
             </Text>
           </Box>
         </Flex>
-        <Flex mt={4}>
+        <Flex mt={5}>
           <Text
             flex={1}
             borderRadius={10}
             bg={"translucid"}
             py={1}
             lineHeight={2}
-            fontSize={12}
+            fontSize={14}
             textAlign={"center"}
             cursor={"pointer"}
             fontWeight={"bold"}
@@ -64,17 +64,13 @@ const ApplicationItem = ({ application, index }) => {
           </Text>
           <Text
             flex={1}
-            borderRadius={10}
             py={1}
             lineHeight={2}
-            fontSize={12}
+            fontSize={14}
             textAlign={"center"}
-            cursor={"pointer"}
-            fontWeight={"bold"}
-            color={"red.full"}
-            onClick={() => console.log("Rechazado")}
+            color={"primary"}
           >
-            Rechazar
+            Ver más
           </Text>
         </Flex>
       </Box>

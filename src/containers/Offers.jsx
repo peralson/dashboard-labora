@@ -10,12 +10,12 @@ import { SelectedItem } from '../context/SelectedItemContext'
 
 // Components
 import Main from '../components/main/Main';
+import TopMain from '../components/main/TopMain';
 import Side from '../components/main/Side';
 import Documentation from '../components/main/Documentation';
 import ProjectItem from '../components/ui/ProjectItem';
 import ProjectsContainer from '../components/ui/ProjectsContainer';
 import SearchBar from '../components/ui/SearchBar';
-import Separator from '../components/ui/Separator';
 import ApplicationSide from '../components/ui/ApplicationSide';
 import OfferSide from "../components/ui/OfferSide";
 
@@ -59,7 +59,7 @@ const Offers = ({
   return (
     <>
       <Main>
-        <Box zIndex={100} position="sticky" top={0} pt={4} width="100%" bg="dark">
+        <TopMain>
           <Flex> 
             <SearchBar
               placeholder="Busca entre tus proyectos"
@@ -78,8 +78,7 @@ const Offers = ({
               </Text>
             </Flex>
           </Flex>
-          <Separator top={3} />
-        </Box>
+        </TopMain>
         {loadingProjects ? (
           <Text textAlign={"center"} py={10}>Cargando...</Text>
         ) : projectsError ? (

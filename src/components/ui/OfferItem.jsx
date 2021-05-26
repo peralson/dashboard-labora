@@ -11,13 +11,13 @@ const OfferItem = ({ offer, index }) => {
     return (
       <Flex
         cursor={"pointer"}
-        flexDirection="column"
-        alignItems="flex-start"
-        justifyContent="space-between"
+        flexDirection={"column"}
+        alignItems={"flex-start"}
+        justifyContent={"space-between"}
         key={index}
-        minW={"180px"}
-        _hover={{ border: "1px solid white", transform: "scale(1.01)" }}
-        transform={isActive && "scale(1.01)"}
+        minW={180}
+        _hover={{ border: "1px solid white", transform: "scale(1.02)" }}
+        transform={isActive && "scale(1.02)"}
         p={3}
         pt={4}
         bg="translucid"
@@ -34,19 +34,19 @@ const OfferItem = ({ offer, index }) => {
       >
         <Flex alignItems="center" width="100%">
           <Box width="100%" flex="1">
-            <Text fontSize="10" color="primary" lineHeight=".5">
+            <Text fontSize={12} color="primary" lineHeight={1}>
               {offer.offerData.category.toUpperCase()}
             </Text>
-            <Text fontSize="14px" mt={2.5} lineHeight=".5">
+            <Text fontSize={14} mt={1} lineHeight={1}>
               {offer.offerData.name}
             </Text>
           </Box>
-          <Text ml={4} fontSize="14" lineHeight={0.5} borderRadius={20}>
+          <Text ml={4} fontSize={14} lineHeight={0.5} borderRadius={20}>
             {offer.offerData.already_assigned}/{offer.offerData.qty}
           </Text>
         </Flex>
         <Text
-          fontSize="12"
+          fontSize={14}
           mt={6}
           color={
             offer.offerData.already_assigned !== offer.offerData.qty
