@@ -7,6 +7,9 @@ import { formattedSalary } from "../../lib/formattedSalary";
 
 // Components
 import Separator from "./Separator";
+import FlexText from "./FlexText";
+import SideTitle from "./SideTitle";
+import Remaining from "./Remaining";
 import ScheduleDropdown from "./ScheduleDropdown";
 
 const OfferSide = ({ data }) => {
@@ -23,35 +26,19 @@ const OfferSide = ({ data }) => {
             {offerData.name}
           </Text>
         </Box>
-        {offerData.alreadyAssigned / offerData.qty === 1 ? (
-          <Text
-            lineHeight={1}
-            bg={"translucid"}
-            px={3}
-            py={2}
-            borderRadius={"20"}
-            fontSize={"14px"}
-          >
-            Oferta completa
-          </Text>
-        ) : (
-          <Text
-            lineHeight={1}
-            bg={"red.smooth"}
-            px={3}
-            py={2}
-            borderRadius={"20"}
-            fontSize={"14px"}
-            fontWeight={"bold"}
-            color={"red.full"}
-          >
-            {offerData.already_assigned} / {offerData.qty}
-          </Text>
-        )}
+        <Remaining
+          alreadyAssigned={offerData.already_assigned}
+          qty={offerData.qty}
+          success={"Oferta completa"}
+          px={3}
+          py={2}
+          fontSize={14}
+          borderRadius={20}
+        />
       </Flex>
       <Link to={`/ofertas/o/${id}`}>
         <Text
-          m={4}
+          mt={4}
           lineHeight={2}
           textAlign={"center"}
           borderRadius={10}
@@ -63,57 +50,35 @@ const OfferSide = ({ data }) => {
           Ver todo sobre esta oferta
         </Text>
       </Link>
-      <Box mb={4}>
-        <Text flex={1} fontSize={16} lineHeight={2} fontWeight="bold" mb={2}>
-          Horario
-        </Text>
-        <Flex flexDirection={"column"}>
-          {offerData.schedule.map((sche, index) => (
-            <ScheduleDropdown key={index} sche={sche} />
-          ))}
-        </Flex>
-      </Box>
-      <Text flex={1} fontSize={16} lineHeight={2} fontWeight="bold" mb={2}>
+      <Separator top={4} bottom={2} />
+      <SideTitle>
+        Horario
+      </SideTitle>
+      <Flex flexDirection={"column"} mb={4}>
+        {offerData.schedule.map((sche, index) => (
+          <ScheduleDropdown key={index} sche={sche} />
+        ))}
+      </Flex>
+      <SideTitle>
         Más información
-      </Text>
-      <Flex>
-        <Text flex={1} fontSize={14} lineHeight={2} fontWeight="bold">
-          Salario
-        </Text>
-        <Text lineHeight={2} fontSize={14}>
-          {formattedSalary(offerData.salary)}€
-        </Text>
-      </Flex>
+      </SideTitle>
+      <FlexText left={"Salario"} right={formattedSalary(offerData.salary) + "€"} />
       <Separator top={1} bottom={1} />
-      <Flex>
-        <Text flex={1} fontSize={14} lineHeight={2} fontWeight="bold">
-          Horas extra
-        </Text>
-        <Text lineHeight={2} fontSize={14}>
-          {formattedSalary(offerData.extraSalary)}€
-        </Text>
-      </Flex>
+      <FlexText left={"Horas extra"} right={formattedSalary(offerData.extraSalary) + "€"} />
       <Separator top={1} bottom={1} />
       {offerData.extras.map(
         (extra, index) =>
           extra.amount > 0 && (
             <Box key={index}>
               {index !== 0 && <Separator top={1} bottom={1} />}
-              <Flex>
-                <Text flex={1} fontSize={14} lineHeight={2} fontWeight="bold">
-                  {extra.name}
-                </Text>
-                <Text lineHeight={2} fontSize={14}>
-                  {formattedSalary(extra.amount)}€
-                </Text>
-              </Flex>
-            </Box>
+              <FlexText left={extra.name} right={formattedSalary(extra.amount) + "€"} />
+            </Box> 
           ),
       )}
       {offerData.description && (
         <>
           <Separator top={1} bottom={1} />
-          <Text mb={1} fontSize={14} lineHeight={2} fontWeight="bold">
+          <Text mb={1} fontSize={14} lineHeight={2} fontWeight="medium">
             Requisitos
           </Text>
           <Text lineHeight={1.7} fontSize={14}>
