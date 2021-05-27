@@ -60,7 +60,7 @@ const Offers = ({
     <>
       <Main>
         <TopMain>
-          <Flex> 
+          <Flex>
             <SearchBar
               placeholder="Busca entre tus proyectos"
               onChange={handleSearch}
@@ -80,7 +80,9 @@ const Offers = ({
           </Flex>
         </TopMain>
         {loadingProjects ? (
-          <Text textAlign={"center"} py={10}>Cargando...</Text>
+          <Text textAlign={"center"} py={10}>
+            Cargando...
+          </Text>
         ) : projectsError ? (
           <Text textAlign={"center"}>Vaya! Ha ocurrido un error</Text>
         ) : (
@@ -88,6 +90,7 @@ const Offers = ({
             {filteredProjects.map((project) => (
               <ProjectItem
                 key={project.id}
+                id={project.id}
                 projectData={project.projectData}
                 projectOffers={project.projectOffers}
               />

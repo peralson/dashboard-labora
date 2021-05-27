@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Flex, Box, Text, Link, Grid } from "@chakra-ui/layout";
+import { Flex, Box, Text, Grid } from "@chakra-ui/layout";
 import { Image } from '@chakra-ui/image';
 import { Input } from "@chakra-ui/input";
 import { Textarea } from "@chakra-ui/textarea";
+import { Link } from "react-router-dom";
 
 // Custom
 import { formattedSalary } from '../lib/formattedSalary'
@@ -58,17 +59,24 @@ const OneOffer = ({ match, history }) => {
                 cursor={"pointer"}
                 onClick={() => history.goBack()}
               >
-                <Image src={back} mr={2} w={'14px'} />
-                <Text fontSize={16} color={"primary"}>Volver</Text>
+                <Image src={back} mr={2} w={"14px"} />
+                <Text fontSize={16} color={"primary"}>
+                  Volver
+                </Text>
               </Flex>
             </Box>
             <Box flex="1">
-              <Text fontSize={19} lineHeight={2} fontWeight={"bold"} textAlign={"center"}>
+              <Text
+                fontSize={19}
+                lineHeight={2}
+                fontWeight={"bold"}
+                textAlign={"center"}
+              >
                 {!loading
                   ? error
                     ? error
                     : offer.offerData.name
-                  : 'Cargando oferta...'}
+                  : "Cargando oferta..."}
               </Text>
             </Box>
             <Box maxW={"100%"}>
@@ -80,22 +88,38 @@ const OneOffer = ({ match, history }) => {
                 borderRadius={10}
                 cursor={"pointer"}
               >
-                <Text fontSize={16} color={"primary"}>Editar</Text>
-                <Image src={edit} ml={2} w={'14px'} />
+                <Text fontSize={16} color={"primary"}>
+                  Editar
+                </Text>
+                <Image src={edit} ml={2} w={"14px"} />
               </Flex>
             </Box>
           </Flex>
         </TopMain>
-        {error && <Text pt={8} textAlign={"center"}>Ha ocurrido algo</Text>}
+        {error && (
+          <Text pt={8} textAlign={"center"}>
+            Ha ocurrido algo
+          </Text>
+        )}
         {!loading && !error && (
           <Box pb={10}>
             {offer.eventData.name && (
-              <Text textAlign={"right"} fontSize={14} mt={2}>
-                Esta oferta pertenece al proyecto: 
-                <Link href={`/p/${offer.offerData.id_event}`} color={"primary"} ml={2}>
-                  {offer.eventData.name}
+              <Flex mt={2} alignItems={"flex-end"} justifyContent={"flex-end"}>
+                <Text fontSize={14} lineHeight={1.5}>
+                  Esta oferta pertenece al proyecto:
+                </Text>
+                <Link to={`../../ofertas/p/${offer.offerData.id_event}`}>
+                  <Text
+                    color={"primary"}
+                    ml={2}
+                    fontSize={14}
+                    lineHeight={1.35}
+                    _hover={{ textDecoration: "underline" }}
+                  >
+                    {offer.eventData.name}
+                  </Text>
                 </Link>
-              </Text>
+              </Flex>
             )}
             <Grid
               columnGap={8}
@@ -104,36 +128,65 @@ const OneOffer = ({ match, history }) => {
               my={4}
             >
               <Box>
-                <Grid
-                  gap={4}
-                  width={"100%"}
-                  templateColumns={"1fr 1fr"}
-                  mb={4}
-                >
+                <Grid gap={4} width={"100%"} templateColumns={"1fr 1fr"} mb={4}>
                   <Box>
-                    <Text mb={2} fontSize={14} fontWeight={"bold"}>Nombre</Text>
-                    <Input borderColor={"darkLight"} placeholder={offer.offerData.name} />
+                    <Text mb={2} fontSize={14} fontWeight={"bold"}>
+                      Nombre
+                    </Text>
+                    <Input
+                      borderColor={"darkLight"}
+                      placeholder={offer.offerData.name}
+                    />
                   </Box>
                   <Box>
-                    <Text mb={2} fontSize={14} fontWeight={"bold"}>Categoría</Text>
-                    <Input borderColor={"darkLight"} placeholder={offer.offerData.category} />
+                    <Text mb={2} fontSize={14} fontWeight={"bold"}>
+                      Categoría
+                    </Text>
+                    <Input
+                      borderColor={"darkLight"}
+                      placeholder={offer.offerData.category}
+                    />
                   </Box>
                   <Box>
-                    <Text mb={2} fontSize={14} fontWeight={"bold"}>Salario</Text>
-                    <Input borderColor={"darkLight"} placeholder={formattedSalary(offer.offerData.salary) + "€"} />
+                    <Text mb={2} fontSize={14} fontWeight={"bold"}>
+                      Salario
+                    </Text>
+                    <Input
+                      borderColor={"darkLight"}
+                      placeholder={
+                        formattedSalary(offer.offerData.salary) + "€"
+                      }
+                    />
                   </Box>
                   <Box>
-                    <Text mb={2} fontSize={14} fontWeight={"bold"}>Horas extra</Text>
-                    <Input borderColor={"darkLight"} placeholder={formattedSalary(offer.offerData.extraSalary) + "€"} />
+                    <Text mb={2} fontSize={14} fontWeight={"bold"}>
+                      Horas extra
+                    </Text>
+                    <Input
+                      borderColor={"darkLight"}
+                      placeholder={
+                        formattedSalary(offer.offerData.extraSalary) + "€"
+                      }
+                    />
                   </Box>
                   <Box>
-                    <Text mb={2} fontSize={14} fontWeight={"bold"}>Cantidad</Text>
-                    <Input borderColor={"darkLight"} placeholder={offer.offerData.qty} />
+                    <Text mb={2} fontSize={14} fontWeight={"bold"}>
+                      Cantidad
+                    </Text>
+                    <Input
+                      borderColor={"darkLight"}
+                      placeholder={offer.offerData.qty}
+                    />
                   </Box>
                 </Grid>
                 <Box>
-                  <Text mb={2} fontSize={14} fontWeight={"bold"}>Requerimientos</Text>
-                  <Textarea borderColor={"darkLight"} placeholder={offer.offerData.description} />
+                  <Text mb={2} fontSize={14} fontWeight={"bold"}>
+                    Requerimientos
+                  </Text>
+                  <Textarea
+                    borderColor={"darkLight"}
+                    placeholder={offer.offerData.description}
+                  />
                 </Box>
               </Box>
               <Box>
@@ -167,12 +220,17 @@ const OneOffer = ({ match, history }) => {
                 <Text fontSize={19} mb={2} fontWeight={"bold"} lineHeight={2}>
                   Solicitudes de esta oferta
                 </Text>
-                <Grid w={"100%"} templateColumns={"1fr 1fr 1fr 1fr"} columnGap={4} rowGap={4}>
-                  <OneOfferApplication name="Eloy Gómez"/>
-                  <OneOfferApplication name="Pablo Martino"/>
-                  <OneOfferApplication name="Vicente Roch"/>
-                  <OneOfferApplication name="Javier Fesser"/>
-                  <OneOfferApplication name="Pablo Peralta"/>
+                <Grid
+                  w={"100%"}
+                  templateColumns={"1fr 1fr 1fr 1fr"}
+                  columnGap={4}
+                  rowGap={4}
+                >
+                  <OneOfferApplication name="Eloy Gómez" />
+                  <OneOfferApplication name="Pablo Martino" />
+                  <OneOfferApplication name="Vicente Roch" />
+                  <OneOfferApplication name="Javier Fesser" />
+                  <OneOfferApplication name="Pablo Peralta" />
                 </Grid>
               </>
             )}
@@ -192,7 +250,9 @@ const OneOffer = ({ match, history }) => {
           {!loading && (
             <Box w={"100%"} py={3} px={4} bg={"darkLight"} borderRadius={10}>
               {!selectedItemIndie && <Text>Pick smt!</Text>}
-              {selectedItemIndie && <Text>{selectedItemIndie} has been selected</Text>}
+              {selectedItemIndie && (
+                <Text>{selectedItemIndie} has been selected</Text>
+              )}
             </Box>
           )}
         </Flex>

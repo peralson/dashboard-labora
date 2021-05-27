@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Box, Flex, Text } from '@chakra-ui/layout';
+import { Link } from 'react-router-dom'
 
 // lib
 import {
@@ -18,7 +19,7 @@ import OfferItem from './OfferItem';
 import SelectList from './SelectList';
 import ApplicationItem from './ApplicationItem';
 
-const ProjectItem = ({ projectData, projectOffers }) => {
+const ProjectItem = ({ id, projectData, projectOffers }) => {
   const { selectedItem } = useContext(SelectedItem)
   const [offerName, setOfferName] = useState('')
   const { name, dates, location } = projectData
@@ -57,9 +58,11 @@ const ProjectItem = ({ projectData, projectOffers }) => {
     <Box bg="darkLight" borderRadius={8} py={3} px={4}>
       <Flex alignItems="center" justifyContent="space-between" mb={2}>
         <DateTag dates={dates} />
+        <Link to={`/ofertas/p/${id}`}>
         <Options>
           Más información
         </Options>
+        </Link>
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Box>
@@ -71,7 +74,7 @@ const ProjectItem = ({ projectData, projectOffers }) => {
           </Text>
         </Box>
         <Remaining
-          alreadyAssigned={alreadyAssigned}
+          alreadyassigned={alreadyAssigned}
           qty={qty}
           success={"Equipo completo"}
           px={4}

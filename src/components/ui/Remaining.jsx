@@ -3,7 +3,7 @@ import { Text } from "@chakra-ui/layout";
 
 const Remaining = (props) => (
   <>
-    {props.alreadyAssigned / props.qty === 1 ? (
+    {props.alreadyassigned / props.qty === 1 ? (
       <Text lineHeight={1} bg={"translucid"} {...props}>
         {props.success}
       </Text>
@@ -15,7 +15,7 @@ const Remaining = (props) => (
         color={"red.full"}
         {...props}
       >
-        {props.alreadyAssigned} / {props.qty}
+        {props.alreadyassigned} / {props.qty}
       </Text>
     )}
   </>

@@ -5,7 +5,7 @@ import { Image } from "@chakra-ui/react";
 // SVG
 import Menu from "../../assets/svg/ellypsis-vertical.svg";
 
-const Options = ({ children, onSelect }) => {
+const Options = ({ children }) => {
   const [info, setInfo] = useState(false);
   return (
     <Flex
@@ -16,8 +16,6 @@ const Options = ({ children, onSelect }) => {
       onMouseLeave={() => setInfo(false)}
       px={3}
       py={2}
-      cursor="pointer"
-      onClick={onSelect}
     >
       <Text fontSize={14} display={!info && "none"} lineHeight={1} mr={2}>
         {children}
