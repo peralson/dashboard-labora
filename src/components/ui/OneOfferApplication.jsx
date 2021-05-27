@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Flex, Box, Text } from "@chakra-ui/layout";
-import { Image } from "@chakra-ui/image";
+import React, { useContext } from "react";
+import { Box, Text } from "@chakra-ui/layout";
 import { SelectedItemIndie } from "../../context/SelectedItemContext";
 
 const OneOfferApplication = ({ name }) => {

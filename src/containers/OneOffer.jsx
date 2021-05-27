@@ -31,7 +31,7 @@ const OneOffer = ({ match, history }) => {
   const [offer, setOffer] = useState(null)
   const [error, setError] = useState(null)
 
-  const { selectedItemIndie, setSelectedItemIndie } = useContext(SelectedItemIndie)
+  const { selectedItemIndie } = useContext(SelectedItemIndie);
   
   useEffect(() => {
     setError(null)
