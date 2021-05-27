@@ -18,7 +18,7 @@ import Popup from '../components/ui/Popup';
 import Separator from '../components/ui/Separator';
 import SideSection from '../components/ui/SideSection';
 
-// Icon
+// Icons
 import {
   MdShare,
   MdContentCopy,
@@ -151,7 +151,7 @@ const Workers = ({ fetchWorkers, workers }) => {
           />
           <MultipleSelectList
             title='Categorías'
-            flex='1'
+            // flex='1'
             ml={2}
             current={categories}
             values={getCategories()}
@@ -159,7 +159,7 @@ const Workers = ({ fetchWorkers, workers }) => {
           />
           <MultipleSelectList
             title='Etiquetas'
-            flex='1'
+            // flex='1'
             ml={2}
             current={tags}
             values={getTags()}
@@ -259,7 +259,7 @@ const Workers = ({ fetchWorkers, workers }) => {
                 {workers.map(
                   (worker) =>
                     checkedItems.indexOf(worker.id.toString()) >= 0 && (
-                      <ListItem key={worker.id}> - {worker.name}</ListItem>
+                      <ListItem key={worker.id}> - {worker.workerData.name}</ListItem>
                     )
                 )}
                 <Button

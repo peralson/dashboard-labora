@@ -1,44 +1,41 @@
 import React from 'react';
 import {
   Checkbox,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverArrow,
-  PopoverCloseButton,
   Button,
   Text,
   Flex,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from '@chakra-ui/react';
+
+// Icon
+import { MdKeyboardArrowDown } from 'react-icons/md';
 
 const MultipleSelectList = (props) => {
   return (
-    <Popover isLazy>
-      <PopoverTrigger>
-        <Button
-          ml={props.ml}
-          {...props}
-          bg={props.bg ?? 'darkLight'}
-          _hover={{ borderColor: 'translucid' }}
-          _focus={{ borderColor: 'translucid' }}
-        >
-          {props.title}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        bg='darkLight'
+    <Menu closeOnSelect={false} > 
+      <MenuButton
+        ml={props.ml}
+        {...props}
+        minWidth={35}
+        bg={props.bg ?? 'darkLight'}
         _hover={{ borderColor: 'translucid' }}
         _focus={{ borderColor: 'translucid' }}
+        as={Button}
+        rightIcon={<MdKeyboardArrowDown />}
       >
-        <PopoverHeader fontWeight='semibold'>
-          Selecciona {props.title}
-        </PopoverHeader>
-        <PopoverArrow />
-        <PopoverCloseButton />
-        <PopoverBody>
-          {props.values.map((e) => (
+        {props.title}
+      </MenuButton>
+      <MenuList
+        bg='darkLight'
+        _hover={{ borderColor: 'none' }}
+        _focus={{ borderColor: 'none' }}
+      >
+        {props.values.map((e) => (
+          <MenuItem _hover={{ borderColor: 'translucid' }}
+          _focus={{ borderColor: 'translucid' }}>
             <Flex key={e}>
               <Checkbox
                 isChecked={props.current.includes(e)}
@@ -47,10 +44,10 @@ const MultipleSelectList = (props) => {
               />
               <Text ml='3'>{e}</Text>
             </Flex>
-          ))}
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
+          </MenuItem>
+        ))}
+      </MenuList>
+    </Menu>
   );
 };
 
