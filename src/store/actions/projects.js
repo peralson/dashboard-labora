@@ -1,34 +1,120 @@
-import sortByDate from '../../lib/sortByDate'
-export const FETCH_PROJECTS = "FETCH_PROJECTS"
+import sortByDate from '../../lib/sortByDate';
+export const FETCH_PROJECTS = 'FETCH_PROJECTS';
+export const FETCH_PAST_PROJECTS = 'FETCH_PAST_PROJECTS';
 
 export const fetchProjects = () => {
-	return async (dispatch, getState) => {
+  return async (dispatch, getState) => {
     // const token = getState().auth.token
 
     const response = await fetch(
       'https://us-central1-partime-60670.cloudfunctions.net/api/event/fullEvents',
       {
         headers: {
-          "Content-Type": "application/json",
-        }
+          'Content-Type': 'application/json',
+        },
       }
-    )
+    );
 
-    if (!response.ok && response.status === 404) return dispatch({ type: FETCH_PROJECTS, projects: [] })
-    if (!response.ok) throw new Error('Ha ocurrido un error.')
+    if (!response.ok && response.status === 404)
+      return dispatch({ type: FETCH_PROJECTS, projects: [] });
+    if (!response.ok) throw new Error('Ha ocurrido un error.');
 
-    let projects = []
-    const resData = await response.json()
+    let projects = [];
+    const resData = await response.json();
 
-    resData.body.forEach(project => {
-      projects.push(project)
-    })
+    resData.body.forEach((project) => {
+      projects.push(project);
+    });
 
-    const projectsSortByDate = sortByDate(projects)
+    const projectsSortByDate = sortByDate(projects);
 
-		dispatch({
-			type: FETCH_PROJECTS,
-			projects: projectsSortByDate
-		})
-	} 
-}
+    dispatch({
+      type: FETCH_PROJECTS,
+      projects: projectsSortByDate,
+    });
+  };
+};
+
+export const fetchPastProject = () => {
+  return async (dispatch, getState) => {
+    let pastProjects = [];
+    pastProjects.push(
+      {
+        id: 1,
+        name: 'Caja Mágica',
+        direction: 'Madrid',
+        date: '25-may - 1jun',
+        workers: 35,
+        cost: 1537,
+        status: 'finished',
+        offers: [
+          {
+            id: 1,
+            name: 'Camarero de barra',
+            hours: 12,
+            cost: 600,
+          },
+          {
+            id: 1,
+            name: 'Camarero de barra',
+            hours: 12,
+            cost: 600,
+          },
+          {
+            id: 1,
+            name: 'Limpieza',
+            hours: 12,
+            cost: 300,
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: 'Boda Gómez',
+        direction: 'Alcalá',
+        date: '22-may - 3jun',
+        workers: 3,
+        cost: 132,
+        status: 'finished',
+        offers: [
+          {
+            id: 1,
+            name: 'Camarero de barra',
+            hours: 12,
+            cost: 600,
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Catering',
+        direction: 'Córdoba',
+        date: '18jun',
+        workers: 4,
+        cost: 200,
+        status: 'finished',
+        offers: [
+          {
+            id: 1,
+            name: 'Camarero de barra',
+            hours: 12,
+            cost: 600,
+          },
+          {
+            id: 1,
+            name: 'Camarero de barra',
+            hours: 12,
+            cost: 600,
+          },
+        ],
+      }
+    );
+
+    console.log(pastProjects);
+
+    dispatch({
+      type: FETCH_PAST_PROJECTS,
+      pastProjects: pastProjects,
+    });
+  };
+};

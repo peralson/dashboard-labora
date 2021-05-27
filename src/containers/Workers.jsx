@@ -151,7 +151,7 @@ const Workers = ({ fetchWorkers, workers }) => {
           />
           <MultipleSelectList
             title='Categorías'
-            flex='1'
+            // flex='1'
             ml={2}
             current={categories}
             values={getCategories()}
@@ -159,7 +159,7 @@ const Workers = ({ fetchWorkers, workers }) => {
           />
           <MultipleSelectList
             title='Etiquetas'
-            flex='1'
+            // flex='1'
             ml={2}
             current={tags}
             values={getTags()}

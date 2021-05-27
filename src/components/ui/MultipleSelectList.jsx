@@ -19,6 +19,7 @@ const MultipleSelectList = (props) => {
       <MenuButton
         ml={props.ml}
         {...props}
+        minWidth={35}
         bg={props.bg ?? 'darkLight'}
         _hover={{ borderColor: 'translucid' }}
         _focus={{ borderColor: 'translucid' }}

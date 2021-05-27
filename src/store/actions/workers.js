@@ -2,31 +2,31 @@ export const FETCH_WORKERS = 'FETCH_WORKERS';
 
 export const fetchWorkers = () => {
   return async (dispatch, getState) => {
-    // const response = await fetch(
-    //   'https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/myWorkers',
-    //   {
-    //     headers: {
-    //       'Access-Control-Allow-Origin': '*',
-    //       'Content-Type': 'application/json',
-    //       'Access-Control-Allow-Headers':
-    //         'Origin, X-Requested-With, Content-Type, Accept',
-    //     },
-    //   }
-    // );
+    const response = await fetch(
+      'https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/myWorkers',
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Headers':
+            'Origin, X-Requested-With, Content-Type, Accept',
+        },
+      }
+    );
 
-    // if (!response.ok && response.status === 404)
-    //   return dispatch({ type: FETCH_WORKERS, workers: [] });
-    // if (!response.ok) throw new Error('Ha ocurrido un error.');
+    if (!response.ok && response.status === 404)
+      return dispatch({ type: FETCH_WORKERS, workers: [] });
+    if (!response.ok) throw new Error('Ha ocurrido un error.');
 
     let workers = [];
     
-    // const resData = await response.json();
+    const resData = await response.json();
 
-    // resData.body.forEach(worker => {
-    //   workers.push(worker)
-    // })
+    resData.body.forEach(worker => {
+      workers.push(worker)
+    })
 
-    // Push de workers porque server error 500
+    // Push de workers con etiquetas y categorias
     workers.push(
       {
         id: 1,
