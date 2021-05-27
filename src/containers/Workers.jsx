@@ -259,7 +259,7 @@ const Workers = ({ fetchWorkers, workers }) => {
                 {workers.map(
                   (worker) =>
                     checkedItems.indexOf(worker.id.toString()) >= 0 && (
-                      <ListItem key={worker.id}> - {worker.name}</ListItem>
+                      <ListItem key={worker.id}> - {worker.workerData.name}</ListItem>
                     )
                 )}
                 <Button
