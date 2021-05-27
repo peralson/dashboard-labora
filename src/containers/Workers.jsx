@@ -18,7 +18,7 @@ import Popup from '../components/ui/Popup';
 import Separator from '../components/ui/Separator';
 import SideSection from '../components/ui/SideSection';
 
-// Icon
+// Icons
 import {
   MdShare,
   MdContentCopy,
