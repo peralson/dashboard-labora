@@ -19,12 +19,14 @@ import team from "../assets/svg/team.svg";
 import Main from "../components/main/Main";
 import TopMain from "../components/main/TopMain";
 import Side from "../components/main/Side";
+import SideSticky from "../components/main/SideSticky";
 import Documentation from "../components/main/Documentation";
 import SideSelectorOffer from "../components/ui/SideSelectorOffer";
 import OneOfferApplication from "../components/ui/OneOfferApplication";
 import TextInfo from "../components/ui/TextInfo";
 import ScheduleSide from "../components/ui/ScheduleSide";
 import LegalSide from "../components/ui/LegalSide";
+import BeCurious from "../components/ui/BeCurious";
 
 const OneOffer = ({ match, history }) => {
   const { id } = match.params;
@@ -142,7 +144,11 @@ const OneOffer = ({ match, history }) => {
                   />
                   <TextInfo title="Cantidad" info={offer.offerData.qty} />
                 </Grid>
-                <TextInfo title="Requerimientos" info={offer.offerData.description} minH={"120px"} /> 
+                <TextInfo
+                  title="Requerimientos"
+                  info={offer.offerData.description}
+                  minH={"120px"}
+                />
               </Box>
               <Box>
                 <SideSelectorOffer
@@ -193,23 +199,18 @@ const OneOffer = ({ match, history }) => {
         )}
       </Main>
       <Side>
-        <Flex
-          position="sticky"
-          top={0}
-          maxH="100vh"
-          flexDirection="column"
-          alignItems="flex-start"
-          p="16px 0px"
-        >
+        <SideSticky>
           <Documentation />
           {!loading && (
-            <Box w={"100%"} py={3} px={4} bg={"darkLight"} borderRadius={8}>
-              {!selectedItemIndie && <Text>Pick smt!</Text>}
+            <Box w={"100%"} p={4} bg={"darkLight"} borderRadius={8}>
+              {!selectedItemIndie && <BeCurious text={"Selecciona alguna solicitud o característica de esta oferta"} />}
               {selectedItemIndie && selectedItemIndie === "Legal" && (
-                <LegalSide
+                <LegalSide 
                   id={id}
                   salary={formattedSalary(offer.offerData.salary) + "€"}
-                  extraSalary={formattedSalary(offer.offerData.extraSalary) + "€"}
+                  extraSalary={
+                    formattedSalary(offer.offerData.extraSalary) + "€"
+                  }
                   extras={offer.offerData.extras}
                 />
               )}
@@ -218,7 +219,7 @@ const OneOffer = ({ match, history }) => {
               )}
             </Box>
           )}
-        </Flex>
+        </SideSticky>
       </Side>
     </>
   );

@@ -2,14 +2,13 @@ export const FETCH_WORKERS = 'FETCH_WORKERS';
 
 export const fetchWorkers = () => {
   return async (dispatch, getState) => {
+    // const token = getState().auth.token
+
     const response = await fetch(
       "https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/myWorkers",
       {
         headers: {
-          "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
-          "Access-Control-Allow-Headers":
-            "Origin, X-Requested-With, Content-Type, Accept",
         },
       },
     );
@@ -23,58 +22,10 @@ export const fetchWorkers = () => {
     const resData = await response.json();
 
     resData.body.forEach((worker) => {
-      workers.push(worker);
+      workers.push({ ...worker, tags: ["Gordo", "Feo"], categories: ["Camarero", "Azafato"]});
     });
 
-    // Push de workers con etiquetas y categorias
-    workers.push(
-      {
-        id: 1,
-        categories: ["camarero"],
-        history: [
-          {
-            data: {
-              category: "Azafatas",
-              companyName: "SpaceX",
-              eventName: "Aniversario",
-              offerName: "Premios",
-            },
-          },
-        ],
-        tags: ["gafas", "alto", "delgado", "moreno"],
-        workerData: {
-          images: {
-            main: "https://bit.ly/sage-adebayo",
-            profesional: "https://bit.ly/sage-adebayo",
-          },
-          name: "Eloy",
-        },
-      },
-      {
-        id: 2,
-        categories: ["camarero", "limpiador"],
-        history: [
-          {
-            data: {
-              category: "Azafatas",
-              companyName: "SpaceX",
-              eventName: "Aniversario",
-              offerName: "Premios",
-            },
-          },
-        ],
-        tags: ["bajo", "rubio", "fuerte", "moreno"],
-        workerData: {
-          images: {
-            main: "https://bit.ly/sage-adebayo",
-            profesional: "https://bit.ly/sage-adebayo",
-          },
-          name: "Martino",
-        },
-      },
-    );
-
-    dispatch({
+    dispatch({ 
       type: FETCH_WORKERS,
       workers: workers,
     });

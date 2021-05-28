@@ -59,16 +59,20 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
       <Flex alignItems="center" justifyContent="space-between" mb={2}>
         <DateTag dates={dates} />
         <Link to={`/ofertas/p/${id}`}>
-        <Options>
-          Más información
-        </Options>
+          <Options>Más información</Options>
         </Link>
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Box>
-          <Text fontSize={21} fontWeight="bold">
-            {name ? name : projectOffers[0].offerData.name}
-          </Text>
+          <Link to={`/ofertas/p/${id}`}>
+            <Text
+              fontSize={21}
+              fontWeight="bold"
+              cursor={"pointer"}
+            >
+              {name ? name : projectOffers[0].offerData.name}
+            </Text>
+          </Link>
           <Text fontSize={14} color="primary">
             {location.address.split(",")[0]}
           </Text>

@@ -12,14 +12,16 @@ import Company from '../containers/Company';
 import NotFound from '../containers/NotFound';
 
 // Contexts
-import { SelectedItem, SelectedItemIndie } from '../context/SelectedItemContext'
+import { SelectedItem, SelectedItemIndie, SelectedWorker } from '../context/SelectedItemContext'
 
 // Components
 import PageGrid from '../components/main/PageGrid';
 
 const App = () => {
   const [selectedItem, setSelectedItem] = useState(null)
+  const [selectedWorker, setSelectedWorker] = useState(null)
   const [selectedItemIndie, setSelectedItemIndie] = useState(null)
+  
   return (
     <BrowserRouter>
       <Switch>
@@ -33,7 +35,9 @@ const App = () => {
             <Route exact path={"/ofertas/o/:id"} component={Offer} /> 
           </SelectedItemIndie.Provider>
           <Route exact path={"/ofertas/p/:id"} component={Project} />
-          <Route exact path="/trabajadores" component={Workers} />
+          <SelectedWorker.Provider value={{ selectedWorker, setSelectedWorker }}>
+            <Route exact path="/trabajadores" component={Workers} />
+          </SelectedWorker.Provider>
           <Route exact path="/gestion" component={Manage} />
           <Route exact path="/empresa" component={Company} />
         </PageGrid>

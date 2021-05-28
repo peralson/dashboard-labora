@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { Box, Flex, Text } from '@chakra-ui/layout';
 
-// Chakra
-import { Box, Flex, ListItem, Text } from '@chakra-ui/layout';
-import { Checkbox, List, Button, Image } from '@chakra-ui/react';
+import { SelectedWorker } from '../context/SelectedItemContext'
+
+// Lib
+import { getTagsAndCategoriesFromWorker } from '../lib/workers'
 
 // Redux & Actions
 import { connect } from 'react-redux';
@@ -10,113 +12,92 @@ import { fetchWorkers } from '../store/actions/workers';
 
 // Components
 import Main from '../components/main/Main';
+import TopMain from '../components/main/TopMain';
 import Side from '../components/main/Side';
+import SideSticky from '../components/main/SideSticky';
 import SearchBar from '../components/ui/SearchBar';
-import CustomTable from '../components/ui/CustomTable';
+import WorkersTableGuide from '../components/ui/WorkersTableGuide';
+import WorkersTable from '../components/ui/WorkersTable';
 import MultipleSelectList from '../components/ui/MultipleSelectList';
-import Popup from '../components/ui/Popup';
-import Separator from '../components/ui/Separator';
-import SideSection from '../components/ui/SideSection';
-
-// Icons
-import {
-  MdShare,
-  MdContentCopy,
-  MdLink,
-  MdKeyboardArrowRight,
-} from 'react-icons/md';
+import WorkerSide from '../components/ui/WorkerSide';
+import BeCurious from '../components/ui/BeCurious';
+import AccentButton from '../components/ui/AccentButton';
+import Documentation from '../components/main/Documentation';
 
 const Workers = ({ fetchWorkers, workers }) => {
-  const [search, setSearch] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [tags, setTags] = useState([]);
-  const [checkedItems, setCheckedItems] = useState([]);
-  const [focusedWorker, setFocusedWorker] = useState();
-  const [shareCategory, setShareCategory] = useState([]);
+  const { selectedWorker } = useContext(SelectedWorker);
+  const { tags, categories } = getTagsAndCategoriesFromWorker(workers);
+
+  const [workersError, setWorkersError] = useState(null);
+  const [workersLoading, setWorkersLoading] = useState(false);
 
   useEffect(() => {
-    fetchWorkers();
-  }, [fetchWorkers]);
+    (async () => {
+      setWorkersError(null)
+      if (workers.length === 0) {
+        setWorkersLoading(true)
+      }
+      try {
+        await fetchWorkers()
+      } catch (error) {
+        setWorkersError(error.message)
+      } finally {
+        setWorkersLoading(false)
+      }
+    })()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchWorkers])
 
-  // SEARCH LOGIC
+  // SEARCH & FILTER LOGIC
+  const [search, setSearch] = useState('');
+  const [filterCategories, setFilterCategories] = useState([]);
+  const [filterTags, setFilterTags] = useState([]);
+
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
 
+  const handleCategories = (event) => {
+    if (!filterCategories.includes(event.target.name)) {
+      setFilterCategories([...filterCategories, event.target.name]);
+    } else {
+      setFilterCategories(filterCategories.filter((e) => e !== event.target.name));
+    }
+  };
+
+  const handleTags = (event) => {
+    if (!filterTags.includes(event.target.name)) {
+      setFilterTags([...filterTags, event.target.name]);
+    } else {
+      setFilterTags(filterTags.filter((e) => e !== event.target.name));
+    }
+  };
+
   const filteredWorkers = workers.filter((worker) => {
-    if (categories.length === 0 && tags.length === 0)
+    if (filterCategories.length === 0 && filterTags.length === 0)
       return worker.workerData.name
         .toLowerCase()
         .includes(search.toLowerCase());
-    if (tags.length === 0 && categories.length > 0)
+    if (filterTags.length === 0 && filterCategories.length > 0)
       return (
-        categories.every((e) => worker.categories.includes(e)) &&
+        filterCategories.every((e) => worker.categories.includes(e)) &&
         worker.workerData.name.toLowerCase().includes(search.toLowerCase())
       );
-    if (categories.length === 0 && tags.length > 0)
+    if (filterCategories.length === 0 && filterTags.length > 0)
       return (
-        tags.every((e) => worker.tags.includes(e)) &&
+        filterTags.every((e) => worker.tags.includes(e)) &&
         worker.workerData.name.toLowerCase().includes(search.toLowerCase())
       );
     else
       return (
-        categories.every((e) => worker.categories.includes(e)) &&
-        tags.every((e) => worker.tags.includes(e)) &&
+        filterCategories.every((e) => worker.categories.includes(e)) &&
+        filterTags.every((e) => worker.tags.includes(e)) &&
         worker.workerData.name.toLowerCase().includes(search.toLowerCase())
       );
   });
 
-  // CATEGORIES LOGIC
-  const getCategories = () => {
-    var categoryList = [];
-    for (var i = 0; i < workers.length; i++) {
-      for (var j = 0; j < workers[i].categories.length; j++) {
-        if (!categoryList.includes(workers[i].categories[j])) {
-          categoryList.push(workers[i].categories[j]);
-        }
-      }
-    }
-    return categoryList;
-  };
-
-  const handleCategories = (event) => {
-    if (!categories.includes(event.target.name)) {
-      setCategories([...categories, event.target.name]);
-    } else {
-      setCategories(categories.filter((e) => e !== event.target.name));
-    }
-  };
-
-  const handleShareCategory = (event) => {
-    if (!shareCategory.includes(event.target.name)) {
-      setShareCategory([...shareCategory, event.target.name]);
-    } else {
-      setShareCategory(shareCategory.filter((e) => e !== event.target.name));
-    }
-  };
-
-  // TAG LOGIC
-  const getTags = () => {
-    var tagList = [];
-    for (var i = 0; i < workers.length; i++) {
-      for (var j = 0; j < workers[i].tags.length; j++) {
-        if (!tagList.includes(workers[i].tags[j])) {
-          tagList.push(workers[i].tags[j]);
-        }
-      }
-    }
-    return tagList;
-  };
-
-  const handleTags = (event) => {
-    if (!tags.includes(event.target.name)) {
-      setTags([...tags, event.target.name]);
-    } else {
-      setTags(tags.filter((e) => e !== event.target.name));
-    }
-  };
-
   // CHECKBOX LOGIC
+  const [checkedItems, setCheckedItems] = useState([]);
   const allChecked = checkedItems.length === workers.length;
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
@@ -129,265 +110,69 @@ const Workers = ({ fetchWorkers, workers }) => {
   };
 
   const handleGlobalCheck = () => {
+    console.log(checkedItems);
     if (checkedItems.length === 0) {
-      setCheckedItems(filteredWorkers.map(({ id }) => id.toString()));
+      setCheckedItems(filteredWorkers.map(({ id }) => id));
     } else {
       setCheckedItems([]);
     }
   };
 
-  // FOCUSED WORKER LOGIC
-  const handleFocusedWorker = (worker) => {
-    setFocusedWorker(worker);
-  };
-
   return (
     <>
       <Main>
-        <Flex marginY={4} flexDirection='row' alignItems='stretch'>
-          <SearchBar
-            placeholder='Busca un trabajador'
-            onChange={handleSearch}
-          />
-          <MultipleSelectList
-            title='Categorías'
-            // flex='1'
-            ml={2}
-            current={categories}
-            values={getCategories()}
-            onChange={handleCategories}
-          />
-          <MultipleSelectList
-            title='Etiquetas'
-            // flex='1'
-            ml={2}
-            current={tags}
-            values={getTags()}
-            onChange={handleTags}
-          />
-          <Popup
-            title='Invitar a tus listas'
-            mainButton={
-              <Flex
-                _hover={{ cursor: 'pointer' }}
-                bg='accent'
-                borderRadius={8}
-                ml={2}
-                alignItems='center'
-                p='0px 16px'
-              >
-                <Text lineHeight={0} fontWeight='bold' fontSize='14px'>
-                  Invitar
-                </Text>
-              </Flex>
-            }
-          >
-            <Text mb='10px'>
-              Selecciona categoría(s) para obtener el enlace:
-            </Text>
-            <MultipleSelectList
-              title='Categorias'
-              flex='1'
-              bg='dark'
-              mb={4}
-              current={shareCategory}
-              values={getCategories()}
-              onChange={handleShareCategory}
+        <TopMain pb={0}>
+          <Flex>
+            <SearchBar
+              placeholder='Busca un trabajador'
+              onChange={handleSearch}
             />
-            <Button
-              size='md'
-              height='48px'
-              width='100%'
-              bg='translucid'
-              color='grey'
-              _focus={{ borderColor: 'none' }}
-            >
-              <Flex
-                w='100%'
-                justifyContent='space-between'
-                alignContent='center'
-              >
-                <MdLink /> https://wa.me/1XXXXXXXXXX? <MdContentCopy />
-              </Flex>
-            </Button>
-          </Popup>
-        </Flex>
-        <Flex
-          mb={4}
-          flexDirection='row'
-          alignItems='center'
-          justifyContent='flex-start'
-          w='100%'
-          h='40px'
-          pl={4}
-          bg='darkLight'
-          borderRadius={4}
-        >
-          <Checkbox
+            {categories.length !== 0 && (
+              <MultipleSelectList
+                title='Categorías'
+                ml={2}
+                current={filterCategories}
+                values={categories}
+                onChange={handleCategories}
+              />
+            )}
+            {tags.length !== 0 && (
+              <MultipleSelectList
+                title='Etiquetas'
+                ml={2}
+                current={filterTags}
+                values={tags}
+                onChange={handleTags}
+              />
+            )}
+            <AccentButton>Invitar trabajadores</AccentButton>
+          </Flex>
+          <WorkersTableGuide
             isChecked={allChecked}
             isIndeterminate={isIndeterminate}
-            onChange={handleGlobalCheck}
-          >
-            {checkedItems.length === 0
-              ? 'Seleccionar todos'
-              : 'Eliminar selección'}
-          </Checkbox>
-          {checkedItems.length > 0 && (
-            <Popup
-              title='Invitar a tus listas'
-              mainButton={
-                <Flex
-                  _hover={{ cursor: 'pointer' }}
-                  bg='translucid'
-                  borderRadius={8}
-                  ml={5}
-                  alignItems='center'
-                  p='0px 16px'
-                  h='30px'
-                >
-                  <MdShare />
-                  <Text ml={2} lineHeight={0} fontWeight='bold' fontSize='14px'>
-                    Compartir enlace
-                  </Text>
-                </Flex>
-              }
-            >
-              <Text mb='10px'>
-                Vas a invitar a los siguientes trabajadores:
-              </Text>
-              <List spacing={3}>
-                {workers.map(
-                  (worker) =>
-                    checkedItems.indexOf(worker.id.toString()) >= 0 && (
-                      <ListItem key={worker.id}> - {worker.workerData.name}</ListItem>
-                    )
-                )}
-                <Button
-                  size='md'
-                  height='48px'
-                  width='100%'
-                  bg='translucid'
-                  color='grey'
-                  _focus={{ borderColor: 'none' }}
-                >
-                  <Flex
-                    w='100%'
-                    justifyContent='space-between'
-                    alignContent='center'
-                  >
-                    <MdLink /> https://wa.me/1XXXXXXXXXX? <MdContentCopy />
-                  </Flex>
-                </Button>
-              </List>
-            </Popup>
-          )}
-        </Flex>
-        <CustomTable columns={['Nombre', 'Categoría', 'Etiquetas']}>
-          {filteredWorkers.map((worker, index) => (
-            <Flex
-              key={index}
-              p={2}
-              cursor='pointer'
-              onClick={() => handleFocusedWorker(worker)}
-            >
-              <Flex justifyContent='center' flex={1}>
-                <Checkbox
-                  isChecked={checkedItems.includes(worker.id.toString())}
-                  name={worker.id}
-                  onChange={(e) => handleCheck(e.target.name)}
-                />
-              </Flex>
-              <Text flex={4}>{worker.workerData.name}</Text>
-              <Text flex={4}>{worker.categories[0]}</Text>
-              <Text flex={4}>{worker.tags[0]}</Text>
-              <Box flex={2}></Box>
-              <Text textAlign='right' flex={6}>
-                Ver más
-              </Text>
-            </Flex>
-          ))}
-        </CustomTable>
+            handleGlobalCheck={handleGlobalCheck}
+          />
+        </TopMain>
+        {workersLoading
+          ? <Text>Cargando...</Text>
+          : workersError
+            ? <Text>Ha ocurrido un error</Text>
+            : (
+          <WorkersTable
+            filteredWorkers={filteredWorkers}
+            checkedItems={checkedItems}
+            handleCheck={handleCheck}
+          />
+        )}
       </Main>
       <Side>
-        {focusedWorker && (
-          <Flex
-            w='100%'
-            bg='darkLight'
-            marginY={4}
-            p={4}
-            borderRadius={4}
-            flexDirection='column'
-          >
-            <Flex flexDirection='row'>
-              <Image
-                borderRadius='full'
-                boxSize='75px'
-                src={focusedWorker.workerData.images.profesional}
-                alt={focusedWorker.workerData.name}
-              />
-              <Flex
-                w='100%'
-                justifyContent='center'
-                flexDirection='column'
-                ml='10px'
-              >
-                <Text fontSize={24}>{focusedWorker.workerData.name}</Text>
-                <Text>{focusedWorker.categories[0]}</Text>
-              </Flex>
-            </Flex>
-            <Separator top='15px' bottom='15px' />
-            <SideSection type='column' title='Contacto'>
-              <Text>{focusedWorker.email}</Text>
-              <Text>{focusedWorker.phone}</Text>
-            </SideSection>
-            <SideSection type='wrap' title='Etiquetas' onClick='clickHandler'>
-              {focusedWorker.tags.map((e) => (
-                <Box
-                  borderRadius='4px'
-                  mr='5px'
-                  mb='5px'
-                  key={e}
-                  paddingX='20px'
-                  paddingY='10px'
-                  bg='dark'
-                  color='white'
-                >
-                  {e}
-                </Box>
-              ))}
-            </SideSection>
-            {focusedWorker.history && (
-              <SideSection type='row' title='Últimos trabajos'>
-                {focusedWorker.history.map((e) => (
-                  <Box
-                    borderRadius='4px'
-                    mr='5px'
-                    key={e.id}
-                    paddingX='20px'
-                    paddingY='10px'
-                    mb='10px'
-                    bg='dark'
-                    color='white'
-                    cursor='pointer'
-                    w='100%'
-                  >
-                    <Flex
-                      w='100%'
-                      flexDirection='row'
-                      justifyContent='space-between'
-                      alignItems='center'
-                    >
-                      <Text>
-                        {e.data.eventName} ({e.data.category})
-                      </Text>
-                      <MdKeyboardArrowRight borderColor='red' />
-                    </Flex>
-                  </Box>
-                ))}
-              </SideSection>
-            )}
-          </Flex>
-        )}
+        <SideSticky>
+          <Documentation />
+          <Box p={4} w={"100%"} borderRadius={8} bg={"darkLight"}>
+            {!selectedWorker && <BeCurious text={"Prueba a seleccionar a uno o varios trabajadores"} />}
+            {selectedWorker && <WorkerSide data={selectedWorker} />}
+          </Box> 
+        </SideSticky>
       </Side>
     </>
   );

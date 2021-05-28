@@ -12,12 +12,14 @@ import { SelectedItem } from '../context/SelectedItemContext'
 import Main from '../components/main/Main';
 import TopMain from '../components/main/TopMain';
 import Side from '../components/main/Side';
+import SideSticky from '../components/main/SideSticky';
 import Documentation from '../components/main/Documentation';
-import ProjectItem from '../components/ui/ProjectItem';
 import ProjectsContainer from '../components/ui/ProjectsContainer';
 import SearchBar from '../components/ui/SearchBar';
 import ApplicationSide from '../components/ui/ApplicationSide';
 import OfferSide from "../components/ui/OfferSide";
+import AccentButton from "../components/ui/AccentButton";
+import BeCurious from "../components/ui/BeCurious";
 
 const Offers = ({
   projects,
@@ -46,10 +48,16 @@ const Offers = ({
   }, [fetchProjects])
 
   const filteredProjects = projects.filter(project => {
-    if (search !== '') {
-      return project.projectData.name.toLowerCase().includes(search.toLowerCase())
+    if (search !== "") {
+      return (
+        project.projectData.name.toLowerCase().includes(search.toLowerCase()) ||
+        project.projectOffers.some((offer) =>
+          offer.offerData.name.toLowerCase().includes(search.toLowerCase()),
+        )
+      );
     }
-    return true
+
+    return true;
   })
 
   const handleSearch = event => {
@@ -65,59 +73,31 @@ const Offers = ({
               placeholder="Busca entre tus proyectos"
               onChange={handleSearch}
             />
-            <Flex
-              _hover={{ cursor: "pointer" }}
-              bg="accent"
-              borderRadius={8}
-              ml={2}
-              alignItems="center"
-              p="0px 16px"
-            >
-              <Text lineHeight={0} fontWeight="bold" fontSize="14px">
-                Crear oferta
-              </Text>
-            </Flex>
+            <AccentButton>
+              Crear oferta
+            </AccentButton>
           </Flex>
         </TopMain>
-        {loadingProjects ? (
-          <Text textAlign={"center"} py={10}>
-            Cargando...
-          </Text>
-        ) : projectsError ? (
-          <Text textAlign={"center"}>Vaya! Ha ocurrido un error</Text>
-        ) : (
-          <ProjectsContainer>
-            {filteredProjects.map((project) => (
-              <ProjectItem
-                key={project.id}
-                id={project.id}
-                projectData={project.projectData}
-                projectOffers={project.projectOffers}
-              />
-            ))}
-          </ProjectsContainer>
-        )}
+        {loadingProjects
+          ? <Text textAlign={"center"} py={10}>Cargando...</Text>
+          : projectsError
+            ? <Text textAlign={"center"}>Vaya! Ha ocurrido un error</Text>
+            : <ProjectsContainer filteredProjects={filteredProjects} />
+        }
       </Main>
       <Side>
-        <Flex
-          position="sticky"
-          top={0}
-          h="100vh"
-          flexDirection="column"
-          alignItems="flex-start"
-          p="16px 0px"
-        >
+        <SideSticky>
           <Documentation />
-          <Box p={4} w={"100%"} borderRadius={8} bg="darkLight">
+          <Box p={4} w={"100%"} borderRadius={8} bg={"darkLight"}>
             {selectedItem && selectedItem.offerData && (
               <OfferSide data={selectedItem} />
             )}
             {selectedItem && selectedItem.offerCategory && (
               <ApplicationSide data={selectedItem} />
             )}
-            {!selectedItem && <Text>Selecciona algo</Text>}
-          </Box>
-        </Flex>
+            {!selectedItem && <BeCurious text={"Prueba a seleccionar alguna solicitud o una oferta de algún proyecto"} />}
+          </Box> 
+        </SideSticky>
       </Side>
     </>
   );

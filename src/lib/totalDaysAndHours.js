@@ -36,3 +36,15 @@ export const daysAndHoursFromOffer = (offerSchedules) => {
 
   return { totalDaysWorked, totalHoursAndMins };
 };
+
+
+export const getTotalHoursOneJob = (schedule) => {
+  let totalHours = 0;
+  schedule.forEach((sche) => {
+    sche.shifts.forEach((shift) => {
+      totalHours = totalHours + (shift.end._seconds - shift.start._seconds);
+    });
+  });
+
+  return moment(totalHours * 1000).format("H");
+};
