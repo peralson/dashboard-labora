@@ -1,25 +1,24 @@
 import React from 'react';
 import { Flex, Box, Text } from '@chakra-ui/layout'
-import CustomImg from './CustomImg'
+
+// Lib
+import { daysAndHoursFromHistory } from '../../lib/totalDaysAndHours'
 import moment from 'moment'
 import 'moment/locale/es'
+
+// Components
 import JobHistoryItem from './JobHistoryItem';
+import CustomImg from './CustomImg'
+import FlexText from './FlexText'
+import SideTitle from './SideTitle'
 import Separator from './Separator';
 
 const ApplicationSide = ({ data }) => {
-	let totalDaysWorked = 0
-	let totalHoursInSeconds = 0
-	data.worker.history.forEach(job => {
-		job.data.schedule.forEach(day => {
-			totalDaysWorked = totalDaysWorked + 1
-			day.shifts.forEach(shift => {
-				totalHoursInSeconds = totalHoursInSeconds + (shift.end._seconds - shift.start._seconds)
-			})
-		})
-	})
+	const { totalDaysWorked, totalHoursInSeconds } = daysAndHoursFromHistory(data.worker.history)
+
 	return (
 		<Box>
-			<Flex alignItems="center" mb={4}>
+			<Flex alignItems="center" mb={3}>
 				<CustomImg
 					image={data.worker.workerData.images.main}
 					w={"80px"}
@@ -38,7 +37,7 @@ const ApplicationSide = ({ data }) => {
 					</Text>
 				</Box>
 			</Flex>
-			<Flex mb={2}>
+			<Flex>
 				<Text
 					flex={1}
 					borderRadius={10}
@@ -69,11 +68,12 @@ const ApplicationSide = ({ data }) => {
 					Rechazar
 				</Text>
 			</Flex>
+			<Separator top={3} bottom={1} />
 			{data.worker.tags.length !== 0 && (
 				<Box mb={4}>
-					<Text flex={1} fontSize={16} lineHeight={2} fontWeight="bold" mb={2}>
+					<SideTitle mb={2}>
 						Etiquetas
-					</Text>
+					</SideTitle>
 					<Flex>
 						{data.worker.tags.map((tag, index) => (
 							<Text
@@ -91,34 +91,25 @@ const ApplicationSide = ({ data }) => {
 					</Flex>
 				</Box>
 			)}
-			{data.worker.history.length !== 0 && (
-				<Box mb={4}>
-					<Text flex={1} fontSize={16} fontWeight="bold" mb={2}>
-						Más información
-					</Text>
-					<Flex>
-						<Text flex={1} fontSize={14} color={"primary"}>
-							Horas trabajadas
-						</Text>
-						<Text lineHeight={2} fontSize={14}>
-							{moment(totalHoursInSeconds * 1000).format('H')}
-						</Text>
-					</Flex>
-					<Separator top={1} bottom={1} />
-					<Flex>
-						<Text flex={1} fontSize={14} color={"primary"}>
-							Días trabajados
-						</Text>
-						<Text fontSize={14}>
-							{totalDaysWorked}
-						</Text>
-					</Flex>
-				</Box>
-			)}
+			<Box mb={4}>
+				<SideTitle mb={2}>
+					Contacto
+				</SideTitle>
+				<FlexText left={"Teléfono"} right={data.worker.workerData.contact.phoneNumber} />
+      			<Separator top={1} bottom={1} />
+				<FlexText left={"Email"} right={data.worker.workerData.contact.email} />
+			</Box>
 			{data.worker.history.length !== 0 && (
 				<>
-					<Text flex={1} fontSize={16} lineHeight={2} fontWeight="bold" mb={2}>
-						Historial de trabajos
+					<SideTitle mb={2}>
+						Experiencia laboral
+					</SideTitle>
+					<FlexText left={"Horas trabajadas"} right={moment(totalHoursInSeconds * 1000).format('H')} />
+      				<Separator top={1} bottom={1} />
+					<FlexText left={"Días trabajados"} right={totalDaysWorked} />
+					<Separator top={1} bottom={1} />
+					<Text mb={1} fontSize={14} lineHeight={2} fontWeight="medium">
+						Historial
 					</Text>
 					<Flex alignItems={'center'} flexDirection={"column"}>
 						{data.worker.history.map(

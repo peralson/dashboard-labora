@@ -27,7 +27,7 @@ const OfferSide = ({ data }) => {
           </Text>
         </Box>
         <Remaining
-          alreadyAssigned={offerData.already_assigned}
+          alreadyassigned={offerData.already_assigned}
           qty={offerData.qty}
           success={"Oferta completa"}
           px={3}
@@ -51,28 +51,33 @@ const OfferSide = ({ data }) => {
         </Text>
       </Link>
       <Separator top={4} bottom={2} />
-      <SideTitle>
-        Horario
-      </SideTitle>
+      <SideTitle>Horario</SideTitle>
       <Flex flexDirection={"column"} mb={4}>
         {offerData.schedule.map((sche, index) => (
           <ScheduleDropdown key={index} sche={sche} />
         ))}
       </Flex>
-      <SideTitle>
-        Más información
-      </SideTitle>
-      <FlexText left={"Salario"} right={formattedSalary(offerData.salary) + "€"} />
+      <SideTitle>Más información</SideTitle>
+      <FlexText
+        left={"Salario"}
+        right={formattedSalary(offerData.salary) + "€"}
+      />
       <Separator top={1} bottom={1} />
-      <FlexText left={"Horas extra"} right={formattedSalary(offerData.extraSalary) + "€"} />
+      <FlexText
+        left={"Horas extra"}
+        right={formattedSalary(offerData.extraSalary) + "€"}
+      />
       <Separator top={1} bottom={1} />
       {offerData.extras.map(
         (extra, index) =>
           extra.amount > 0 && (
             <Box key={index}>
               {index !== 0 && <Separator top={1} bottom={1} />}
-              <FlexText left={extra.name} right={formattedSalary(extra.amount) + "€"} />
-            </Box> 
+              <FlexText
+                left={extra.name}
+                right={formattedSalary(extra.amount) + "€"}
+              />
+            </Box>
           ),
       )}
       {offerData.description && (

@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Flex, Box, Text, Grid } from "@chakra-ui/layout";
 import { Image } from '@chakra-ui/image';
-import { Input } from "@chakra-ui/input";
-import { Textarea } from "@chakra-ui/textarea";
 import { Link } from "react-router-dom";
 
 // Custom
@@ -24,6 +22,9 @@ import Side from "../components/main/Side";
 import Documentation from "../components/main/Documentation";
 import SideSelectorOffer from "../components/ui/SideSelectorOffer";
 import OneOfferApplication from "../components/ui/OneOfferApplication";
+import TextInfo from "../components/ui/TextInfo";
+import ScheduleSide from "../components/ui/ScheduleSide";
+import LegalSide from "../components/ui/LegalSide";
 
 const OneOffer = ({ match, history }) => {
   const { id } = match.params;
@@ -129,69 +130,23 @@ const OneOffer = ({ match, history }) => {
             >
               <Box>
                 <Grid gap={4} width={"100%"} templateColumns={"1fr 1fr"} mb={4}>
-                  <Box>
-                    <Text mb={2} fontSize={14} fontWeight={"bold"}>
-                      Nombre
-                    </Text>
-                    <Input
-                      borderColor={"darkLight"}
-                      placeholder={offer.offerData.name}
-                    />
-                  </Box>
-                  <Box>
-                    <Text mb={2} fontSize={14} fontWeight={"bold"}>
-                      Categoría
-                    </Text>
-                    <Input
-                      borderColor={"darkLight"}
-                      placeholder={offer.offerData.category}
-                    />
-                  </Box>
-                  <Box>
-                    <Text mb={2} fontSize={14} fontWeight={"bold"}>
-                      Salario
-                    </Text>
-                    <Input
-                      borderColor={"darkLight"}
-                      placeholder={
-                        formattedSalary(offer.offerData.salary) + "€"
-                      }
-                    />
-                  </Box>
-                  <Box>
-                    <Text mb={2} fontSize={14} fontWeight={"bold"}>
-                      Horas extra
-                    </Text>
-                    <Input
-                      borderColor={"darkLight"}
-                      placeholder={
-                        formattedSalary(offer.offerData.extraSalary) + "€"
-                      }
-                    />
-                  </Box>
-                  <Box>
-                    <Text mb={2} fontSize={14} fontWeight={"bold"}>
-                      Cantidad
-                    </Text>
-                    <Input
-                      borderColor={"darkLight"}
-                      placeholder={offer.offerData.qty}
-                    />
-                  </Box>
-                </Grid>
-                <Box>
-                  <Text mb={2} fontSize={14} fontWeight={"bold"}>
-                    Requerimientos
-                  </Text>
-                  <Textarea
-                    borderColor={"darkLight"}
-                    placeholder={offer.offerData.description}
+                  <TextInfo title="Nombre" info={offer.offerData.name} />
+                  <TextInfo title="Categoría" info={offer.offerData.category} />
+                  <TextInfo
+                    title="Salario"
+                    info={formattedSalary(offer.offerData.salary) + "€"}
                   />
-                </Box>
+                  <TextInfo
+                    title="Horas extra"
+                    info={formattedSalary(offer.offerData.extraSalary) + "€"}
+                  />
+                  <TextInfo title="Cantidad" info={offer.offerData.qty} />
+                </Grid>
+                <TextInfo title="Requerimientos" info={offer.offerData.description} minH={"120px"} /> 
               </Box>
               <Box>
                 <SideSelectorOffer
-                  mb={3}
+                  mb={4}
                   title={"Legal"}
                   desc={"Contrato, nóminas..."}
                   image={legal}
@@ -241,17 +196,25 @@ const OneOffer = ({ match, history }) => {
         <Flex
           position="sticky"
           top={0}
-          h="100vh"
+          maxH="100vh"
           flexDirection="column"
           alignItems="flex-start"
           p="16px 0px"
         >
           <Documentation />
           {!loading && (
-            <Box w={"100%"} py={3} px={4} bg={"darkLight"} borderRadius={10}>
+            <Box w={"100%"} py={3} px={4} bg={"darkLight"} borderRadius={8}>
               {!selectedItemIndie && <Text>Pick smt!</Text>}
-              {selectedItemIndie && (
-                <Text>{selectedItemIndie} has been selected</Text>
+              {selectedItemIndie && selectedItemIndie === "Legal" && (
+                <LegalSide
+                  id={id}
+                  salary={formattedSalary(offer.offerData.salary) + "€"}
+                  extraSalary={formattedSalary(offer.offerData.extraSalary) + "€"}
+                  extras={offer.offerData.extras}
+                />
+              )}
+              {selectedItemIndie && selectedItemIndie === "Horario" && (
+                <ScheduleSide schedules={offer.offerData.schedule} />
               )}
             </Box>
           )}

@@ -53,6 +53,7 @@ const ScheduleDropdown = ({ sche, index }) => {
           >
             {sche.shifts.map((shift, index) => (
               <Flex
+                key={index}
                 mt={index !== 0 && 2}
                 alignItems={"center"}
                 justifyContent={"space-between"}
