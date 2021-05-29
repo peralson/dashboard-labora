@@ -8,6 +8,9 @@ import { fetchContracts } from '../store/actions/contracts';
 import { fetchPayrolls } from '../store/actions/payrolls';
 import { fetchTemplates } from '../store/actions/templates';
 
+// Context
+import { SelectedItemManage } from '../context/SelectedItemContext'
+
 // Components
 import Main from '../components/main/Main';
 import Side from '../components/main/Side';
@@ -15,30 +18,16 @@ import SideSticky from '../components/main/SideSticky';
 import Documentation from '../components/main/Documentation';
 import BeCurious from '../components/ui/BeCurious';
 import SearchBar from '../components/ui/SearchBar';
+import CustomTab from '../components/ui/CustomTab';
+import ContractSide from '../components/ui/ContractSide';
+
+// Inner Containers
 import ManageProjects from './innerContainers/ManageProjects';
 import ManageContracts from './innerContainers/ManageContracts';
 import ManagePayrolls from './innerContainers/ManagePayrolls';
 import ManageTemplates from './innerContainers/ManageTemplates';
 
-const CustomTab = (props) => {
-  return (
-    <Box
-      w='auto'
-      h='auto'
-      py={2}
-      px={3}
-      mr={4}
-      cursor='pointer'
-      bg={props.active ? 'translucid' : 'darkLight'}
-      {...props}
-      color='white'
-      borderRadius={8}
-      onClick={props.onClick}
-    >
-      {props.title}
-    </Box>
-  );
-};
+
 
 const Manage = ({
   fetchPastProjects,
@@ -51,8 +40,7 @@ const Manage = ({
   templates
 }) => {
   const [search, setSearch] = useState('');
-  const [loadingProjects, setLoadingProjects] = useState(false);
-  const [projectsError, setProjectsError] = useState(null);
+  const { selectedItemManage } = useContext(SelectedItemManage)
   const [selectedTab, setSelectedTab] = useState(0);
 
   const tabs = [
@@ -64,17 +52,7 @@ const Manage = ({
 
   useEffect(() => {
     (async () => {
-      setProjectsError(null);
-      if (pastProjects.length === 0) {
-        setLoadingProjects(true);
-      }
-      try {
-        await fetchPastProjects();
-      } catch (error) {
-        setProjectsError(error.message);
-      } finally {
-        setLoadingProjects(false);
-      }
+      await fetchPastProjects();
     })();
 
     (async () => {
@@ -145,11 +123,13 @@ const Manage = ({
         <SideSticky>
           <Documentation />
           <Box p={4} w={'100%'} borderRadius={8} bg={'darkLight'}>
-            {
-              <BeCurious
-                text={'Prueba a seleccionar a uno o varios trabajadores'}
-              />
-            }
+          {/* {selectedItemManage && selectedItemManage.offerData && (
+              <PayrollSide data={selectedItemManage} />
+            )} */}
+            {selectedItemManage && selectedItemManage.pdf && (
+              <ContractSide data={selectedItemManage} />
+            )}
+            {!selectedItemManage && <BeCurious text={"Prueba a seleccionar alguna solicitud o una oferta de algún proyecto"} />}
           </Box>
         </SideSticky>
       </Side>

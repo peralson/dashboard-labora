@@ -1,7 +1,6 @@
 import React from 'react';
-import { Flex, Box, Text } from '@chakra-ui/layout';
+import { Flex, Text } from '@chakra-ui/layout';
 import { Image } from '@chakra-ui/image';
-import Separator from '../../components/ui/Separator';
 import legal from '../../assets/svg/legal.svg';
 
 import { MdAdd } from 'react-icons/md';
@@ -18,8 +17,8 @@ const ContractTemplateCard = (props) => {
       mr={4}
       mb={4}
       cursor={'pointer'}
-      w={130}
-      h={130}
+      w={120}
+      h={120}
       alignItems={'center'}
       justifyContent={'center'}
       borderRadius={8}

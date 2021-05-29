@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Flex, Box, Text } from '@chakra-ui/layout';
+import { SelectedItemManage } from '../../context/SelectedItemContext'
 
-const ContractCard = (props) => {
-  const { data } = props;
-  const isSelected = false;
+const ContractCard = ({data}) => {
+  const { selectedItemManage, setSelectedItemManage } = useContext(SelectedItemManage)
+    const isActive = selectedItemManage
+        ? selectedItemManage.id === data.id
+        : false
 
   return (
     <Flex
@@ -14,8 +17,15 @@ const ContractCard = (props) => {
       mt={2}
       alignItems={'center'}
       border={'1px solid'}
-      borderColor={isSelected ? 'white' : 'darkLight'}
+      borderColor={isActive ? 'white' : 'darkLight'}
       _hover={{ borderColor: 'white' }}
+      onClick={() => {
+        if (isActive) {
+          setSelectedItemManage(null);
+        } else {
+          setSelectedItemManage(data);
+        }
+      }}
     >
       <Text flex={2} fontSize={12} mr={2}>
         {data.date}

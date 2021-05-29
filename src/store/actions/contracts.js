@@ -17,9 +17,9 @@ export const fetchContracts = () => {
     // if (!response.ok && response.status === 404)
     //   return dispatch({ type: FETCH_CONTRACTS, contracts: [] });
     // if (!response.ok) throw new Error("Ha ocurrido un error.");
-    
+
     // const resData = await response.json();
-    
+
     let contracts = [];
 
     // resData.body.forEach((worker) => {
@@ -29,37 +29,67 @@ export const fetchContracts = () => {
     contracts = [
       {
         id: 1,
+        pdf: 'pdf',
         category: 'Camarero',
         event: 'Evento de mercedes',
         worker: {
           image: 'https://avatars.githubusercontent.com/u/43375266?v=4',
-          name: 'Eloy Gomez'
+          name: 'Eloy Gomez',
         },
         date: '25 may 2021',
         hours: 12,
-        cost: 155,
+        costs: {
+          total: 160,
+          salary: 110,
+          extraSalary: 20,
+          extras: [
+            {
+              name: 'Desplazamiento',
+              amount: 20,
+            },
+            {
+              name: 'Nocturnidad',
+              amount: 10,
+            },
+          ],
+        },
         fee: 'Precio por convenio',
         type: 'Eventual por circunstancias de la producción',
-        status: 'finished'
+        status: 'finished',
       },
       {
         id: 2,
+        pdf: 'pdf',
         category: 'Camarero',
-        event: 'Evento de mercedes',
+        event: 'Boda de Paco',
         worker: {
           image: 'https://avatars.githubusercontent.com/u/43375266?v=4',
-          name: 'Eloy Gomez'
+          name: 'Eloy Gomez',
         },
         date: '25 may 2021',
         hours: 12,
-        cost: 155,
+        costs: {
+          total: 160,
+          salary: 110,
+          extraSalary: 20,
+          extras: [
+            {
+              name: 'Desplazamiento',
+              amount: 20,
+            },
+            {
+              name: 'Nocturnidad',
+              amount: 10,
+            },
+          ],
+        },
         fee: 'Precio por convenio',
         type: 'Eventual por circunstancias de la producción',
-        status: 'pending'
-      }
-    ]
+        status: 'pending',
+      },
+    ];
 
-    dispatch({ 
+    dispatch({
       type: FETCH_CONTRACTS,
       contracts: contracts,
     });

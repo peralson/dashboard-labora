@@ -37,10 +37,15 @@ export const fetchPayrolls = () => {
         date: '14 oct 2020',
         hours: 12,
         costs: {
-          total: 160,
-          neto: 110,
-          extra: 20,
-          issues: 30,
+          salary: 110,
+          extraSalary: 20,
+          extras: [{
+            name: 'Desplazamiento',
+            amount: 20
+          },{
+            name: 'Nocturnidad',
+            amount: 10
+          }]
         },
         fee: 'Precio por convenio',
         type: 'Eventual por circunstancias de la producción',
@@ -57,10 +62,15 @@ export const fetchPayrolls = () => {
         date: '25 may 2021',
         hours: 12,
         costs: {
-          total: 160,
-          neto: 110,
-          extra: 20,
-          issues: 30,
+          salary: 110,
+          extraSalary: 20,
+          extras: [{
+            name: 'Desplazamiento',
+            amount: 20
+          },{
+            name: 'Nocturnidad',
+            amount: 10
+          }]
         },
         fee: 'Precio por convenio',
         type: 'Eventual por circunstancias de la producción',
@@ -77,10 +87,15 @@ export const fetchPayrolls = () => {
         date: '25 may 2021',
         hours: 12,
         costs: {
-          total: 160,
-          neto: 110,
-          extra: 20,
-          issues: 30,
+          salary: 110,
+          extraSalary: 20,
+          extras: [{
+            name: 'Desplazamiento',
+            amount: 20
+          },{
+            name: 'Nocturnidad',
+            amount: 10
+          }]
         },
         fee: 'Precio por convenio',
         type: 'Eventual por circunstancias de la producción',
