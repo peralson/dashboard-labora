@@ -40,6 +40,7 @@ const ContractCard = (props) => {
 
 const ManageContracts = (props) => {
   const { data } = props;
+  console.log('contrsdsd:', data)
   return (
     <Flex w='100%' flexDirection='column'>
       {data.map((e) => {

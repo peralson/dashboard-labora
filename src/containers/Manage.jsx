@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { fetchPastProjects } from '../store/actions/projects';
 import { fetchContracts } from '../store/actions/contracts';
 import { fetchPayrolls } from '../store/actions/payrolls';
+import { fetchContractTemplates } from '../store/actions/contracts';
 
 // Components
 import Main from '../components/main/Main';
@@ -20,7 +21,6 @@ import ManagePayrolls from './innerContainers/ManagePayrolls';
 import ManageTemplates from './innerContainers/ManageTemplates';
 
 const CustomTab = (props) => {
-  console.log('active:', props.active);
   return (
     <Box
       w='auto'
@@ -47,6 +47,8 @@ const Manage = ({
   contracts,
   fetchPayrolls,
   payrolls,
+  fetchContractTemplates,
+  contractTemplates,
 }) => {
   const [search, setSearch] = useState('');
   const [loadingProjects, setLoadingProjects] = useState(false);
@@ -57,7 +59,7 @@ const Manage = ({
     <ManageProjects data={pastProjects} />,
     <ManageContracts data={contracts} />,
     <ManagePayrolls data={payrolls} />,
-    <ManageTemplates />,
+    <ManageTemplates data={contractTemplates}/>,
   ];
 
   useEffect(() => {
@@ -82,8 +84,18 @@ const Manage = ({
     (async () => {
       await fetchPayrolls();
     })();
+
+    (async () => {
+      await fetchContractTemplates();
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchPastProjects, fetchContracts, fetchPayrolls]);
+  }, [
+    fetchPastProjects,
+    fetchContracts,
+    fetchPayrolls,
+    fetchContractTemplates,
+  ]);
+  console.log('manage contracts: ', contracts)
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
@@ -150,6 +162,7 @@ const mapDispatchToProps = {
   fetchPastProjects,
   fetchContracts,
   fetchPayrolls,
+  fetchContractTemplates,
 };
 
 const mapStateToProps = (state) => {
@@ -157,6 +170,7 @@ const mapStateToProps = (state) => {
     pastProjects: state.projects.pastProjects,
     contracts: state.contracts.contracts,
     payrolls: state.payrolls.payrolls,
+    contractTemplates: state.contracts.contractTemplates,
   };
 };
 

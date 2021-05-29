@@ -47,7 +47,7 @@ export const fetchPayrolls = () => {
         status: 'pending'
       },
       {
-        id: 1,
+        id: 2,
         category: 'Limpiador',
         worker: {
           image: 'https://avatars.githubusercontent.com/u/43375266?v=4',
@@ -67,7 +67,7 @@ export const fetchPayrolls = () => {
         status: 'paid'
       },
       {
-        id: 1,
+        id: 3,
         category: 'Limpiador',
         worker: {
           image: 'https://avatars.githubusercontent.com/u/43375266?v=4',

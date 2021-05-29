@@ -1,8 +1,12 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { FETCH_CONTRACTS } from '../actions/contracts';
+import {
+  FETCH_CONTRACTS,
+  FETCH_CONTRACT_TEMPLATES,
+} from '../actions/contracts';
 
 const initialState = {
   contracts: [],
+  contractTemplates: [],
 };
 
 export default (state = initialState, action) => {
@@ -11,7 +15,10 @@ export default (state = initialState, action) => {
       return {
         contracts: action.contracts,
       };
-
+    case FETCH_CONTRACT_TEMPLATES:
+      return{
+        contractTemplates: action.contractTemplates,
+      }
     default:
       return state;
   }

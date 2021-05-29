@@ -1,4 +1,5 @@
 export const FETCH_CONTRACTS = 'FETCH_CONTRACTS';
+export const FETCH_CONTRACT_TEMPLATES = 'FETCH_CONTRACT_TEMPLATES';
 
 export const fetchContracts = () => {
   return async (dispatch, getState) => {
@@ -42,7 +43,7 @@ export const fetchContracts = () => {
         status: 'finished'
       },
       {
-        id: 1,
+        id: 2,
         category: 'Camarero',
         event: 'Evento de mercedes',
         worker: {
@@ -61,6 +62,61 @@ export const fetchContracts = () => {
     dispatch({ 
       type: FETCH_CONTRACTS,
       contracts: contracts,
+    });
+  };
+};
+
+export const fetchContractTemplates = () => {
+  return async (dispatch, getState) => {
+    // const token = getState().auth.token
+
+    // const response = await fetch(
+    //   "https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/myWorkers",
+    //   {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   },
+    // );
+
+    // if (!response.ok && response.status === 404)
+    //   return dispatch({ type: FETCH_CONTRACTS, contracts: [] });
+    // if (!response.ok) throw new Error("Ha ocurrido un error.");
+    
+    // const resData = await response.json();
+    
+    let contractTemplates = [];
+
+    // resData.body.forEach((worker) => {
+    //   workers.push({ ...worker, tags: ["Gordo", "Feo"], categories: ["Camarero", "Azafato"]});
+    // });
+
+    contractTemplates = [
+      {
+        id: 1,
+        category: 'Camarero',
+        template: 'https://www.seas.es/blog/wp-content/uploads/2014/04/imagen1.jpg'
+      },
+      {
+        id: 2,
+        category: 'Limpiador',
+        template: 'https://www.seas.es/blog/wp-content/uploads/2014/04/imagen1.jpg'
+      },
+      {
+        id: 3,
+        category: 'Azafata',
+        template: 'https://www.seas.es/blog/wp-content/uploads/2014/04/imagen1.jpg'
+      },
+      {
+        id: 5,
+        category: 'Repartidor',
+        template: 'https://www.seas.es/blog/wp-content/uploads/2014/04/imagen1.jpg'
+      },
+    ]
+
+    dispatch({ 
+      type: FETCH_CONTRACT_TEMPLATES,
+      contractTemplates: contractTemplates,
     });
   };
 };

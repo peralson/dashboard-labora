@@ -1,5 +1,6 @@
-import { createContext } from 'react'
+import { createContext } from 'react';
 
-export const SelectedItem = createContext(null)
+export const SelectedItem = createContext(null);
 export const SelectedWorker = createContext(null);
 export const SelectedItemIndie = createContext(null);
+export const SelectedItemManage = createContext(null);
