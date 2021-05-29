@@ -4,6 +4,8 @@ import { Flex, Box, Text } from '@chakra-ui/layout';
 // Redux & Actions
 import { connect } from 'react-redux';
 import { fetchPastProjects } from '../store/actions/projects';
+import { fetchContracts } from '../store/actions/contracts';
+import { fetchPayrolls } from '../store/actions/payrolls';
 
 // Components
 import Main from '../components/main/Main';
@@ -18,7 +20,7 @@ import ManagePayrolls from './innerContainers/ManagePayrolls';
 import ManageTemplates from './innerContainers/ManageTemplates';
 
 const CustomTab = (props) => {
-  console.log('active:', props.active)
+  console.log('active:', props.active);
   return (
     <Box
       w='auto'
@@ -38,7 +40,14 @@ const CustomTab = (props) => {
   );
 };
 
-const Manage = ({ fetchPastProjects, pastProjects }) => {
+const Manage = ({
+  fetchPastProjects,
+  pastProjects,
+  fetchContracts,
+  contracts,
+  fetchPayrolls,
+  payrolls,
+}) => {
   const [search, setSearch] = useState('');
   const [loadingProjects, setLoadingProjects] = useState(false);
   const [projectsError, setProjectsError] = useState(null);
@@ -46,8 +55,8 @@ const Manage = ({ fetchPastProjects, pastProjects }) => {
 
   const tabs = [
     <ManageProjects data={pastProjects} />,
-    <ManageContracts />,
-    <ManagePayrolls />,
+    <ManageContracts data={contracts} />,
+    <ManagePayrolls data={payrolls} />,
     <ManageTemplates />,
   ];
 
@@ -65,8 +74,16 @@ const Manage = ({ fetchPastProjects, pastProjects }) => {
         setLoadingProjects(false);
       }
     })();
+
+    (async () => {
+      await fetchContracts();
+    })();
+
+    (async () => {
+      await fetchPayrolls();
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchPastProjects]);
+  }, [fetchPastProjects, fetchContracts, fetchPayrolls]);
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
@@ -131,11 +148,15 @@ const Manage = ({ fetchPastProjects, pastProjects }) => {
 
 const mapDispatchToProps = {
   fetchPastProjects,
+  fetchContracts,
+  fetchPayrolls,
 };
 
 const mapStateToProps = (state) => {
   return {
     pastProjects: state.projects.pastProjects,
+    contracts: state.contracts.contracts,
+    payrolls: state.payrolls.payrolls,
   };
 };
 

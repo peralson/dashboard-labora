@@ -11,11 +11,15 @@ import ReduxThunk from 'redux-thunk'
 // Reducers
 import workersReducer from './store/reducers/workers'
 import projectsReducer from './store/reducers/projects'
+import contractsReducer from './store/reducers/contracts'
+import payrollsReducer from './store/reducers/payrolls'
 
 // Introducimos todos nuestros reducers en un global
 const rootReducer = combineReducers({
     workers: workersReducer,
     projects: projectsReducer,
+    contracts: contractsReducer,
+    payrolls: payrollsReducer,
 })
 
 // y agregamos nuestro reducer global al store de Redux
