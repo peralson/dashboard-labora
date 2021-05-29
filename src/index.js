@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ChakraProvider } from '@chakra-ui/react';
-import App from './routes/App';
+
+// Chakra
+import { ChakraProvider } from "@chakra-ui/react";
 import { brandTheme } from './styles/theme';
+
 // Redux
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
@@ -14,6 +16,9 @@ import projectsReducer from './store/reducers/projects'
 import contractsReducer from './store/reducers/contracts'
 import payrollsReducer from './store/reducers/payrolls'
 import templatesReducer from './store/reducers/templates'
+
+// App
+import App from './routes/App';
 
 // Introducimos todos nuestros reducers en un global
 const rootReducer = combineReducers({

@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Flex, Box, Text, Grid } from "@chakra-ui/layout";
-import { Image } from '@chakra-ui/image';
+import { Image } from "@chakra-ui/image";
 import { Link } from "react-router-dom";
 
 // Custom
-import { formattedSalary } from '../lib/formattedSalary'
-import useOffer from '../hooks/useOffer'
-import { SelectedItemIndie } from '../context/SelectedItemContext'
+import { formattedSalary } from "../lib/formattedSalary";
+import useOffer from "../hooks/useOffer";
+
+// Context
+import { SelectedItemIndie } from "../context/SelectedItemContext";
 
 // SVG
 import back from "../assets/svg/back.svg";
@@ -31,24 +33,24 @@ import BeCurious from "../components/ui/BeCurious";
 const OneOffer = ({ match, history }) => {
   const { id } = match.params;
 
-  const [loading, setLoading] = useState(true)
-  const [offer, setOffer] = useState(null)
-  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(true);
+  const [offer, setOffer] = useState(null);
+  const [error, setError] = useState(null);
 
-  const { selectedItemIndie } = useContext(SelectedItemIndie);
-  
+  const [selectedItemIndie, setSelectedItemIndie] = useState(null);;
+
   useEffect(() => {
-    setError(null)
-		setLoading(true)
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		useOffer(id)
-      .then(res => setOffer(res))
-      .catch(err => setError(err.message))
-      .finally(() => setLoading(false))
-  }, [id])
+    setError(null);
+    setLoading(true);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useOffer(id)
+      .then((res) => setOffer(res))
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, [id]);
 
   return (
-    <>
+    <SelectedItemIndie.Provider value={{ selectedItemIndie, setSelectedItemIndie }}>
       <Main>
         <TopMain>
           <Flex alignItems={"center"} justifyContent={"space-evenly"}>
@@ -203,9 +205,15 @@ const OneOffer = ({ match, history }) => {
           <Documentation />
           {!loading && (
             <Box w={"100%"} p={4} bg={"darkLight"} borderRadius={8}>
-              {!selectedItemIndie && <BeCurious text={"Selecciona alguna solicitud o característica de esta oferta"} />}
+              {!selectedItemIndie && (
+                <BeCurious
+                  text={
+                    "Selecciona alguna solicitud o característica de esta oferta"
+                  }
+                />
+              )}
               {selectedItemIndie && selectedItemIndie === "Legal" && (
-                <LegalSide 
+                <LegalSide
                   id={id}
                   salary={formattedSalary(offer.offerData.salary) + "€"}
                   extraSalary={
@@ -221,7 +229,7 @@ const OneOffer = ({ match, history }) => {
           )}
         </SideSticky>
       </Side>
-    </>
+    </SelectedItemIndie.Provider>
   );
 };
 

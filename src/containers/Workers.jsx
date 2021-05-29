@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Flex, Text } from '@chakra-ui/layout';
 
+// Context
 import { SelectedWorker } from '../context/SelectedItemContext'
 
 // Lib
@@ -25,7 +26,7 @@ import AccentButton from '../components/ui/AccentButton';
 import Documentation from '../components/main/Documentation';
 
 const Workers = ({ fetchWorkers, workers }) => {
-  const { selectedWorker } = useContext(SelectedWorker);
+  const [selectedWorker, setSelectedWorker] = useState(null)
   const { tags, categories } = getTagsAndCategoriesFromWorker(workers);
 
   const [workersError, setWorkersError] = useState(null);
@@ -61,7 +62,9 @@ const Workers = ({ fetchWorkers, workers }) => {
     if (!filterCategories.includes(event.target.name)) {
       setFilterCategories([...filterCategories, event.target.name]);
     } else {
-      setFilterCategories(filterCategories.filter((e) => e !== event.target.name));
+      setFilterCategories(
+        filterCategories.filter((cat) => cat !== event.target.name),
+      );
     }
   };
 
@@ -74,26 +77,31 @@ const Workers = ({ fetchWorkers, workers }) => {
   };
 
   const filteredWorkers = workers.filter((worker) => {
-    if (filterCategories.length === 0 && filterTags.length === 0)
+    if (filterCategories.length === 0 && filterTags.length === 0) {
       return worker.workerData.name
         .toLowerCase()
         .includes(search.toLowerCase());
-    if (filterTags.length === 0 && filterCategories.length > 0)
+    }
+
+    if (filterTags.length === 0 && filterCategories.length > 0) {
       return (
-        filterCategories.every((e) => worker.categories.includes(e)) &&
+        filterCategories.every((cat) => worker.categories.includes(cat)) &&
         worker.workerData.name.toLowerCase().includes(search.toLowerCase())
       );
-    if (filterCategories.length === 0 && filterTags.length > 0)
+    }
+
+    if (filterCategories.length === 0 && filterTags.length > 0) {
       return (
-        filterTags.every((e) => worker.tags.includes(e)) &&
+        filterTags.every((tag) => worker.tags.includes(tag)) &&
         worker.workerData.name.toLowerCase().includes(search.toLowerCase())
       );
-    else
-      return (
-        filterCategories.every((e) => worker.categories.includes(e)) &&
-        filterTags.every((e) => worker.tags.includes(e)) &&
-        worker.workerData.name.toLowerCase().includes(search.toLowerCase())
-      );
+    }
+
+    return (
+      filterCategories.every((cat) => worker.categories.includes(cat)) &&
+      filterTags.every((tag) => worker.tags.includes(tag)) &&
+      worker.workerData.name.toLowerCase().includes(search.toLowerCase())
+    );
   });
 
   // CHECKBOX LOGIC
@@ -110,7 +118,6 @@ const Workers = ({ fetchWorkers, workers }) => {
   };
 
   const handleGlobalCheck = () => {
-    console.log(checkedItems);
     if (checkedItems.length === 0) {
       setCheckedItems(filteredWorkers.map(({ id }) => id));
     } else {
@@ -119,7 +126,7 @@ const Workers = ({ fetchWorkers, workers }) => {
   };
 
   return (
-    <>
+    <SelectedWorker.Provider value={{ selectedWorker, setSelectedWorker }}>
       <Main>
         <TopMain pb={0}>
           <Flex>
@@ -174,7 +181,7 @@ const Workers = ({ fetchWorkers, workers }) => {
           </Box> 
         </SideSticky>
       </Side>
-    </>
+    </SelectedWorker.Provider>
   );
 };
 

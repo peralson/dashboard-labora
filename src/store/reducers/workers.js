@@ -2,17 +2,17 @@
 import { FETCH_WORKERS } from '../actions/workers'
 
 const initialState = {
-    allWorkers: []
-}
+  allWorkers: [],
+};
 
 export default (state = initialState, action) => {
-    switch (action.type) {
-        case FETCH_WORKERS:
-            return {
-                allWorkers: action.workers,
-            }
-        
-        default:
-            return state
-    }
+	switch (action.type) {
+    case FETCH_WORKERS:
+      return {
+        allWorkers: action.workers,
+      };
+
+    default:
+      return state;
+  }
 }

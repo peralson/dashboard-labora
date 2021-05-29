@@ -22,7 +22,11 @@ export const fetchWorkers = () => {
     const resData = await response.json();
 
     resData.body.forEach((worker) => {
-      workers.push({ ...worker, tags: ["Gordo", "Feo"], categories: ["Camarero", "Azafato"]});
+      workers.push({
+        ...worker,
+        tags: ["Gordo", "Feo"],
+        categories: ["Camarero", "Runner"],
+      });
     });
 
     dispatch({ 

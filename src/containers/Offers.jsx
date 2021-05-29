@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Flex, Box, Text } from '@chakra-ui/layout'
+import React, { useState, useEffect } from 'react';
+import { Flex, Box, Text } from '@chakra-ui/layout';
+
+// Context
+import { SelectedItem } from '../context/SelectedItemContext'
 
 // Hooks & actions
 import { connect } from 'react-redux'
 import { fetchProjects } from '../store/actions/projects'
-
-// Context
-import { SelectedItem } from '../context/SelectedItemContext'
 
 // Components
 import Main from '../components/main/Main';
@@ -25,10 +25,9 @@ const Offers = ({
   projects,
   fetchProjects
 }) => {
-  const [search, setSearch] = useState('')
+  const [selectedItem, setSelectedItem] = useState(null)
   const [loadingProjects, setLoadingProjects] = useState(false)
   const [projectsError, setProjectsError] = useState(null)
-  const { selectedItem } = useContext(SelectedItem)
 
   useEffect(() => {
     (async () => {
@@ -47,6 +46,9 @@ const Offers = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchProjects])
 
+  // SEARCH LOGIC
+  const [search, setSearch] = useState('')
+
   const filteredProjects = projects.filter(project => {
     if (search !== "") {
       return (
@@ -58,14 +60,12 @@ const Offers = ({
     }
 
     return true;
-  })
+  });
 
-  const handleSearch = event => {
-    setSearch(event.target.value)
-  }
+  const handleSearch = event => setSearch(event.target.value)
   
   return (
-    <>
+    <SelectedItem.Provider value={{ selectedItem, setSelectedItem }}>
       <Main>
         <TopMain>
           <Flex>
@@ -99,13 +99,13 @@ const Offers = ({
           </Box> 
         </SideSticky>
       </Side>
-    </>
+    </SelectedItem.Provider>
   );
 };
 
 const mapStateToProps = state => {
   return {
-    projects: state.projects.allProjects
+    projects: state.projects.allProjects,
   }
 }
 

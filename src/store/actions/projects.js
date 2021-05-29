@@ -1,4 +1,5 @@
 import sortByDate from '../../lib/sortByDate';
+
 export const FETCH_PROJECTS = 'FETCH_PROJECTS';
 export const FETCH_PAST_PROJECTS = 'FETCH_PAST_PROJECTS';
 
@@ -38,6 +39,7 @@ export const fetchProjects = () => {
 export const fetchPastProjects = () => {
   return async (dispatch, getState) => {
     let pastProjects = [];
+
     pastProjects.push(
       {
         id: 1,
@@ -69,23 +71,6 @@ export const fetchPastProjects = () => {
         ],
       },
       {
-        id: 2,
-        name: 'Boda Gómez',
-        direction: 'Alcalá',
-        date: '22-may - 3jun',
-        workers: 3,
-        cost: 132,
-        status: 'finished',
-        offers: [
-          {
-            id: 1,
-            name: 'Camarero de barra',
-            hours: 12,
-            cost: 600,
-          },
-        ],
-      },
-      {
         id: 3,
         name: 'Catering',
         direction: 'Córdoba',
@@ -110,7 +95,51 @@ export const fetchPastProjects = () => {
       }
     );
 
-    console.log(pastProjects);
+    pastProjects.push(
+      {
+        id: 2,
+        name: 'Boda Gómez',
+        direction: 'Alcalá',
+        date: '22-may - 3jun',
+        workers: 3,
+        cost: 132,
+        status: 'finished',
+        offers: [
+          {
+            id: 1,
+            name: 'Camarero de barra',
+            hours: 12,
+            cost: 600,
+          },
+        ],
+      },
+    );
+
+    pastProjects.push(
+      {
+        id: 3,
+        name: 'Catering',
+        direction: 'Córdoba',
+        date: '18jun',
+        workers: 4,
+        cost: 200,
+        status: 'finished',
+        offers: [
+          {
+            id: 1,
+            name: 'Camarero de barra',
+            hours: 12,
+            cost: 600,
+          },
+          {
+            id: 1,
+            name: 'Camarero de barra',
+            hours: 12,
+            cost: 600,
+          },
+        ],
+      }
+    );
 
     dispatch({
       type: FETCH_PAST_PROJECTS,

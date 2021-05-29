@@ -1,5 +1,5 @@
 // React
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 // Containers
@@ -11,37 +11,20 @@ import Manage from '../containers/Manage';
 import Company from '../containers/Company';
 import NotFound from '../containers/NotFound';
 
-// Contexts
-import { SelectedItem, SelectedItemIndie, SelectedWorker, SelectedItemManage } from '../context/SelectedItemContext'
-
 // Components
 import PageGrid from '../components/main/PageGrid';
 
-const App = () => {
-  const [selectedItem, setSelectedItem] = useState(null)
-  const [selectedWorker, setSelectedWorker] = useState(null)
-  const [selectedItemIndie, setSelectedItemIndie] = useState(null)
-  const [selectedItemManage, setSelectedItemManage] = useState(null)
-  
-  return (
+const App = () => (
     <BrowserRouter>
       <Switch>
         {/* Logs into App */}
         <PageGrid>
           {/* Main Containers */}
-          <SelectedItem.Provider value={{ selectedItem, setSelectedItem }}>
-            <Route exact path={["/", "/ofertas"]} component={Offers} />
-          </SelectedItem.Provider>
-          <SelectedItemIndie.Provider value={{ selectedItemIndie, setSelectedItemIndie }}>
-            <Route exact path={"/ofertas/o/:id"} component={Offer} /> 
-          </SelectedItemIndie.Provider>
+          <Route exact path={["/", "/ofertas"]} component={Offers} /> 
+          <Route exact path={"/ofertas/o/:id"} component={Offer} />
           <Route exact path={"/ofertas/p/:id"} component={Project} />
-          <SelectedWorker.Provider value={{ selectedWorker, setSelectedWorker }}>
-            <Route exact path="/trabajadores" component={Workers} />
-          </SelectedWorker.Provider>
-          <SelectedItemManage.Provider value={{ selectedItemManage, setSelectedItemManage }}>
+          <Route exact path="/trabajadores" component={Workers} />
           <Route exact path="/gestion" component={Manage} />
-          </SelectedItemManage.Provider>
           <Route exact path="/empresa" component={Company} />
         </PageGrid>
         {/* Other routes */}
@@ -49,6 +32,5 @@ const App = () => {
       </Switch>
     </BrowserRouter>
   );
-};
 
 export default App;

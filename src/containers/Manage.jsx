@@ -1,32 +1,32 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Flex, Box, Text } from '@chakra-ui/layout';
+import React, { useState, useEffect } from "react";
+import { Flex, Box, Text } from "@chakra-ui/layout";
 
 // Redux & Actions
-import { connect } from 'react-redux';
-import { fetchPastProjects } from '../store/actions/projects';
-import { fetchContracts } from '../store/actions/contracts';
-import { fetchPayrolls } from '../store/actions/payrolls';
-import { fetchTemplates } from '../store/actions/templates';
+import { connect } from "react-redux";
+import { fetchPastProjects } from "../store/actions/projects";
+import { fetchContracts } from "../store/actions/contracts";
+import { fetchPayrolls } from "../store/actions/payrolls";
+import { fetchTemplates } from "../store/actions/templates";
 
 // Context
-import { SelectedItemManage } from '../context/SelectedItemContext';
+import { SelectedItemManage } from "../context/SelectedItemContext";
 
 // Components
-import Main from '../components/main/Main';
-import Side from '../components/main/Side';
-import SideSticky from '../components/main/SideSticky';
-import Documentation from '../components/main/Documentation';
-import BeCurious from '../components/ui/BeCurious';
-import SearchBar from '../components/ui/SearchBar';
-import CustomTab from '../components/ui/CustomTab';
-import PayrollSide from '../components/ui/PayrollSide';
-import ContractSide from '../components/ui/ContractSide';
+import Main from "../components/main/Main";
+import Side from "../components/main/Side";
+import SideSticky from "../components/main/SideSticky";
+import Documentation from "../components/main/Documentation";
+import BeCurious from "../components/ui/BeCurious";
+import SearchBar from "../components/ui/SearchBar";
+import CustomTab from "../components/ui/CustomTab";
+import PayrollSide from "../components/ui/PayrollSide";
+import ContractSide from "../components/ui/ContractSide";
 
 // Inner Containers
-import ManageProjects from './innerContainers/ManageProjects';
-import ManageContracts from './innerContainers/ManageContracts';
-import ManagePayrolls from './innerContainers/ManagePayrolls';
-import ManageTemplates from './innerContainers/ManageTemplates';
+import ManageProjects from "./innerContainers/ManageProjects";
+import ManageContracts from "./innerContainers/ManageContracts";
+import ManagePayrolls from "./innerContainers/ManagePayrolls";
+import ManageTemplates from "./innerContainers/ManageTemplates";
 
 const Manage = ({
   fetchPastProjects,
@@ -38,25 +38,25 @@ const Manage = ({
   fetchTemplates,
   templates,
 }) => {
-  const [search, setSearch] = useState('');
-  const { selectedItemManage } = useContext(SelectedItemManage);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedItemManage, setSelectedItemManage] = useState(null);
   const [selectedTab, setSelectedTab] = useState(0);
 
   useEffect(() => {
     (async () => {
-      await fetchPastProjects();
-    })();
-
-    (async () => {
-      await fetchContracts();
-    })();
-
-    (async () => {
-      await fetchPayrolls();
-    })();
-
-    (async () => {
-      await fetchTemplates();
+      setError(null)
+      try {
+        await fetchPastProjects();
+        await fetchContracts();
+        await fetchPayrolls();
+        await fetchTemplates();
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchPastProjects, fetchContracts, fetchPayrolls, fetchTemplates]);
@@ -65,37 +65,27 @@ const Manage = ({
     setSearch(event.target.value.toLowerCase());
   };
 
-  console.log('srac', search);
+  const filteredPastProjects = pastProjects.filter((project) => (
+    project.name.toLowerCase().includes(search) ||
+    project.direction.toLowerCase().includes(search) ||
+    project.offers.some((offer) => offer.name.toLowerCase().includes(search))
+  ));
 
-  const filteredPastProjects = pastProjects.filter((e) => {
-    return (
-      e.name.toLowerCase().includes(search) ||
-      e.direction.toLowerCase().includes(search) ||
-      e.offers.some((o) => o.name.toLowerCase().includes(search))
-    );
-  });
+  const filteredContracts = contracts.filter((contract) => (
+    contract.category.toLowerCase().includes(search) ||
+    contract.worker.name.toLowerCase().includes(search)
+  ));
 
-  const filteredContracts = contracts.filter((e) => {
-    return(
-      e.category.toLowerCase().includes(search) ||
-      e.worker.name.toLowerCase().includes(search)
-    )
-  })
+  const filteredPayrolls = payrolls.filter((payroll) => (
+    payroll.category.toLowerCase().includes(search) ||
+    payroll.worker.name.toLowerCase().includes(search) ||
+    payroll.event.toLowerCase().includes(search)
+  ));
 
-  const filteredPayrolls = payrolls.filter((e) => {
-    return(
-      e.category.toLowerCase().includes(search) ||
-      e.worker.name.toLowerCase().includes(search) ||
-      e.event.toLowerCase().includes(search)
-    )
-  })
-
-  const filteredTemplates = templates.filter((e) => {
-    return(
-      e.category.toLowerCase().includes(search) ||
-      e.type.toLowerCase().includes(search)
-    )
-  })
+  const filteredTemplates = templates.filter((template) => (
+    template.category.toLowerCase().includes(search) ||
+    template.type.toLowerCase().includes(search)
+  ));
 
   const tabs = [
     <ManageProjects data={filteredPastProjects} />,
@@ -105,50 +95,53 @@ const Manage = ({
   ];
 
   return (
-    <>
+    <SelectedItemManage.Provider
+      value={{ selectedItemManage, setSelectedItemManage }}
+    >
       <Main>
         <Box
           zIndex={100}
-          position={'sticky'}
+          position={"sticky"}
           top={0}
           pt={4}
-          width={'100%'}
-          bg={'dark'}
+          width={"100%"}
+          bg={"dark"}
           pb={2.5}
         >
           <SearchBar
-            placeholder='Busca por nombre, dirección, localización...'
+            placeholder={"Busca por nombre, dirección, localización..."}
             onChange={handleSearch}
           />
         </Box>
-        <Flex flexDirection='row' w='100%' my={4}>
+        <Flex flexDirection={"row"} w={"100%"} my={4}>
           <CustomTab
-            title='Proyectos'
+            title="Proyectos"
             active={selectedTab === 0}
             onClick={() => setSelectedTab(0)}
           />
           <CustomTab
-            title='Contratos'
+            title="Contratos"
             active={selectedTab === 1}
             onClick={() => setSelectedTab(1)}
           />
           <CustomTab
-            title='Nóminas'
+            title="Nóminas"
             active={selectedTab === 2}
             onClick={() => setSelectedTab(2)}
           />
           <CustomTab
-            title='Plantillas'
+            title="Plantillas"
             active={selectedTab === 3}
             onClick={() => setSelectedTab(3)}
           />
         </Flex>
-        {tabs[selectedTab]}
+        {!loading && !error && tabs[selectedTab]}
+        {!loading && error && <Text>Ha ocurrido un error</Text>}
       </Main>
       <Side>
         <SideSticky>
           <Documentation />
-          <Box p={4} w={'100%'} borderRadius={8} bg={'darkLight'}>
+          <Box p={4} w={"100%"} borderRadius={8} bg={"darkLight"}>
             {selectedItemManage && selectedItemManage.type && (
               <ContractSide data={selectedItemManage} />
             )}
@@ -158,14 +151,14 @@ const Manage = ({
             {!selectedItemManage && (
               <BeCurious
                 text={
-                  'Prueba a seleccionar alguna solicitud o una oferta de algún proyecto'
+                  "Prueba a seleccionar alguna solicitud o una oferta de algún proyecto"
                 }
               />
             )}
           </Box>
         </SideSticky>
       </Side>
-    </>
+    </SelectedItemManage.Provider>
   );
 };
 
