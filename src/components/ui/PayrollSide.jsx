@@ -9,19 +9,25 @@ import Separator from './Separator';
 import SideTitle from './SideTitle';
 import FlexText from './FlexText';
 
-const ContractSide = ({ data }) => {
+const PayrollSide = ({ data }) => {
+  console.log('sideData:', data);
   return (
     <Box>
       <Flex alignItems={'center'} justifyContent={'space-between'}>
-        <Text fontSize={12} lineHeight={1.5} color={'primary'}>
-          {data.category.toUpperCase()}
-        </Text>
+        <Box>
+          <Text fontSize={12} lineHeight={1.5} color={'primary'}>
+            {data.category.toUpperCase()}
+          </Text>
+          <Text fontSize={19} fontWeight={'bold'} lineHeight={1.5}>
+            {data.event}
+          </Text>
+        </Box>
       </Flex>
+      <Separator top={4} bottom={2} />
       <SideTitle>Nombre</SideTitle>
       <Flex flexDirection={'column'} mb={4}>
         {data.worker.name}
       </Flex>
-      <Separator top={4} bottom={2} />
       <SideTitle>Tipo de contrato</SideTitle>
       <Flex flexDirection={'column'} mb={4}>
         {data.type}
@@ -69,4 +75,4 @@ const ContractSide = ({ data }) => {
   );
 };
 
-export default ContractSide;
+export default PayrollSide;

@@ -28,6 +28,7 @@ export const fetchPayrolls = () => {
     payrolls = [
       {
         id: 1,
+        pdf: 'http://www.africau.edu/images/default/sample.pdf',
         category: 'Limpiador',
         worker: {
           image: 'https://avatars.githubusercontent.com/u/43375266?v=4',
@@ -37,6 +38,7 @@ export const fetchPayrolls = () => {
         date: '14 oct 2020',
         hours: 12,
         costs: {
+          total: 160,
           salary: 110,
           extraSalary: 20,
           extras: [{
@@ -48,11 +50,11 @@ export const fetchPayrolls = () => {
           }]
         },
         fee: 'Precio por convenio',
-        type: 'Eventual por circunstancias de la producción',
         status: 'pending'
       },
       {
         id: 2,
+        pdf: 'http://www.africau.edu/images/default/sample.pdf',
         category: 'Limpiador',
         worker: {
           image: 'https://avatars.githubusercontent.com/u/43375266?v=4',
@@ -62,6 +64,7 @@ export const fetchPayrolls = () => {
         date: '25 may 2021',
         hours: 12,
         costs: {
+          total: 160,
           salary: 110,
           extraSalary: 20,
           extras: [{
@@ -73,11 +76,11 @@ export const fetchPayrolls = () => {
           }]
         },
         fee: 'Precio por convenio',
-        type: 'Eventual por circunstancias de la producción',
         status: 'paid'
       },
       {
         id: 3,
+        pdf: 'http://www.africau.edu/images/default/sample.pdf',
         category: 'Limpiador',
         worker: {
           image: 'https://avatars.githubusercontent.com/u/43375266?v=4',
@@ -87,6 +90,7 @@ export const fetchPayrolls = () => {
         date: '25 may 2021',
         hours: 12,
         costs: {
+          total: 160,
           salary: 110,
           extraSalary: 20,
           extras: [{
@@ -98,7 +102,6 @@ export const fetchPayrolls = () => {
           }]
         },
         fee: 'Precio por convenio',
-        type: 'Eventual por circunstancias de la producción',
         status: 'pending'
       },
     ]

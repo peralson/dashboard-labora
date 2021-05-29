@@ -9,7 +9,7 @@ import { fetchPayrolls } from '../store/actions/payrolls';
 import { fetchTemplates } from '../store/actions/templates';
 
 // Context
-import { SelectedItemManage } from '../context/SelectedItemContext'
+import { SelectedItemManage } from '../context/SelectedItemContext';
 
 // Components
 import Main from '../components/main/Main';
@@ -19,6 +19,7 @@ import Documentation from '../components/main/Documentation';
 import BeCurious from '../components/ui/BeCurious';
 import SearchBar from '../components/ui/SearchBar';
 import CustomTab from '../components/ui/CustomTab';
+import PayrollSide from '../components/ui/PayrollSide';
 import ContractSide from '../components/ui/ContractSide';
 
 // Inner Containers
@@ -26,8 +27,6 @@ import ManageProjects from './innerContainers/ManageProjects';
 import ManageContracts from './innerContainers/ManageContracts';
 import ManagePayrolls from './innerContainers/ManagePayrolls';
 import ManageTemplates from './innerContainers/ManageTemplates';
-
-
 
 const Manage = ({
   fetchPastProjects,
@@ -37,17 +36,17 @@ const Manage = ({
   fetchPayrolls,
   payrolls,
   fetchTemplates,
-  templates
+  templates,
 }) => {
   const [search, setSearch] = useState('');
-  const { selectedItemManage } = useContext(SelectedItemManage)
+  const { selectedItemManage } = useContext(SelectedItemManage);
   const [selectedTab, setSelectedTab] = useState(0);
 
   const tabs = [
     <ManageProjects data={pastProjects} />,
     <ManageContracts data={contracts} />,
     <ManagePayrolls data={payrolls} />,
-    <ManageTemplates data={templates}/>,
+    <ManageTemplates data={templates} />,
   ];
 
   useEffect(() => {
@@ -67,12 +66,7 @@ const Manage = ({
       await fetchTemplates();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    fetchPastProjects,
-    fetchContracts,
-    fetchPayrolls,
-    fetchTemplates
-  ]);
+  }, [fetchPastProjects, fetchContracts, fetchPayrolls, fetchTemplates]);
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
@@ -123,13 +117,19 @@ const Manage = ({
         <SideSticky>
           <Documentation />
           <Box p={4} w={'100%'} borderRadius={8} bg={'darkLight'}>
-          {/* {selectedItemManage && selectedItemManage.offerData && (
-              <PayrollSide data={selectedItemManage} />
-            )} */}
-            {selectedItemManage && selectedItemManage.pdf && (
+            {selectedItemManage && selectedItemManage.type && (
               <ContractSide data={selectedItemManage} />
             )}
-            {!selectedItemManage && <BeCurious text={"Prueba a seleccionar alguna solicitud o una oferta de algún proyecto"} />}
+            {selectedItemManage && !selectedItemManage.type && (
+              <PayrollSide data={selectedItemManage} />
+            )}
+            {!selectedItemManage && (
+              <BeCurious
+                text={
+                  'Prueba a seleccionar alguna solicitud o una oferta de algún proyecto'
+                }
+              />
+            )}
           </Box>
         </SideSticky>
       </Side>
@@ -141,7 +141,7 @@ const mapDispatchToProps = {
   fetchPastProjects,
   fetchContracts,
   fetchPayrolls,
-  fetchTemplates
+  fetchTemplates,
 };
 
 const mapStateToProps = (state) => {
@@ -149,7 +149,7 @@ const mapStateToProps = (state) => {
     pastProjects: state.projects.pastProjects,
     contracts: state.contracts.contracts,
     payrolls: state.payrolls.payrolls,
-    templates: state.templates.templates
+    templates: state.templates.templates,
   };
 };
 

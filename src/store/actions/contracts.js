@@ -29,9 +29,8 @@ export const fetchContracts = () => {
     contracts = [
       {
         id: 1,
-        pdf: 'pdf',
+        pdf: 'http://www.africau.edu/images/default/sample.pdf',
         category: 'Camarero',
-        event: 'Evento de mercedes',
         worker: {
           image: 'https://avatars.githubusercontent.com/u/43375266?v=4',
           name: 'Eloy Gomez',
@@ -59,9 +58,8 @@ export const fetchContracts = () => {
       },
       {
         id: 2,
-        pdf: 'pdf',
+        pdf: 'http://www.africau.edu/images/default/sample.pdf',
         category: 'Camarero',
-        event: 'Boda de Paco',
         worker: {
           image: 'https://avatars.githubusercontent.com/u/43375266?v=4',
           name: 'Eloy Gomez',
