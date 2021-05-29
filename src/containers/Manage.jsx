@@ -1,94 +1,142 @@
-import React, { useState } from "react";
-import { Flex, Box, Text } from "@chakra-ui/layout";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import React, { useState, useEffect, useContext } from 'react';
+import { Flex, Box, Text } from '@chakra-ui/layout';
+
+// Redux & Actions
+import { connect } from 'react-redux';
+import { fetchPastProjects } from '../store/actions/projects';
 
 // Components
-import Main from "../components/main/Main";
-import Side from "../components/main/Side";
-import SearchBar from "../components/ui/SearchBar";
-import Separator from "../components/ui/Separator";
-import ManageProjects from "./innerContainers/ManageProjects";
-import ManageContracts from "./innerContainers/ManageContracts";
-import ManagePayrolls from "./innerContainers/ManagePayrolls";
+import Main from '../components/main/Main';
+import Side from '../components/main/Side';
+import SideSticky from '../components/main/SideSticky';
+import Documentation from '../components/main/Documentation';
+import BeCurious from '../components/ui/BeCurious';
+import SearchBar from '../components/ui/SearchBar';
+import ManageProjects from './innerContainers/ManageProjects';
+import ManageContracts from './innerContainers/ManageContracts';
+import ManagePayrolls from './innerContainers/ManagePayrolls';
+import ManageTemplates from './innerContainers/ManageTemplates';
 
 const CustomTab = (props) => {
+  console.log('active:', props.active)
   return (
-    <Tab
-      _hover={{ borderColor: "translucid" }}
-      _focus={{ borderColor: "translucid" }}
-      bg="darkLight"
+    <Box
+      w='auto'
+      h='auto'
+      py={2}
+      px={3}
+      mr={4}
+      cursor='pointer'
+      bg={props.active ? 'translucid' : 'darkLight'}
       {...props}
-      color="white"
-      borderRadius={16}
+      color='white'
+      borderRadius={8}
+      onClick={props.onClick}
     >
       {props.title}
-    </Tab>
+    </Box>
   );
 };
 
-const Manage = () => {
-  const [search, setSearch] = useState("");
+const Manage = ({ fetchPastProjects, pastProjects }) => {
+  const [search, setSearch] = useState('');
+  const [loadingProjects, setLoadingProjects] = useState(false);
+  const [projectsError, setProjectsError] = useState(null);
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  const tabs = [
+    <ManageProjects data={pastProjects} />,
+    <ManageContracts />,
+    <ManagePayrolls />,
+    <ManageTemplates />,
+  ];
+
+  useEffect(() => {
+    (async () => {
+      setProjectsError(null);
+      if (pastProjects.length === 0) {
+        setLoadingProjects(true);
+      }
+      try {
+        await fetchPastProjects();
+      } catch (error) {
+        setProjectsError(error.message);
+      } finally {
+        setLoadingProjects(false);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchPastProjects]);
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
-
-  console.log(search);
 
   return (
     <>
       <Main>
         <Box
           zIndex={100}
-          position={"sticky"}
+          position={'sticky'}
           top={0}
           pt={4}
-          width={"100%"}
-          bg={"dark"}
+          width={'100%'}
+          bg={'dark'}
           pb={2.5}
         >
-          <Flex>
-            <SearchBar
-              placeholder="Busca proyectos, nóminas, contratos..."
-              onChange={handleSearch}
-            />
-            <Flex
-              _hover={{ cursor: "pointer" }}
-              bg="translucid"
-              borderRadius={8}
-              ml={2}
-              alignItems="center"
-              p="0px 16px"
-            >
-              <Text lineHeight={0} fontWeight="bold" fontSize="14px">
-                Mis plantillas
-              </Text>
-            </Flex>
-          </Flex>
+          <SearchBar
+            placeholder='Busca proyectos, nóminas, contratos...'
+            onChange={handleSearch}
+          />
         </Box>
-        <Tabs variant="soft-rounded" defaultIndex={1}>
-          <TabList>
-            <CustomTab title="Proyectos" mr={8} />
-            <CustomTab title="Contratos" mr={8} />
-            <CustomTab title="Nóminas" />
-          </TabList>
-          <Separator top="10px" bottom="10px" />
-          <TabPanels p={0} m={0}>
-            <TabPanel>
-              <ManageProjects />
-            </TabPanel>
-            <TabPanel>
-              <ManageContracts />
-            </TabPanel>
-            <TabPanel>
-              <ManagePayrolls />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        <Flex flexDirection='row' w='100%' my={4}>
+          <CustomTab
+            title='Proyectos'
+            active={selectedTab === 0}
+            onClick={() => setSelectedTab(0)}
+          />
+          <CustomTab
+            title='Contratos'
+            active={selectedTab === 1}
+            onClick={() => setSelectedTab(1)}
+          />
+          <CustomTab
+            title='Nóminas'
+            active={selectedTab === 2}
+            onClick={() => setSelectedTab(2)}
+          />
+          <CustomTab
+            title='Plantillas'
+            active={selectedTab === 3}
+            onClick={() => setSelectedTab(3)}
+          />
+        </Flex>
+        {tabs[selectedTab]}
       </Main>
-      <Side></Side>
+      <Side>
+        <SideSticky>
+          <Documentation />
+          <Box p={4} w={'100%'} borderRadius={8} bg={'darkLight'}>
+            {
+              <BeCurious
+                text={'Prueba a seleccionar a uno o varios trabajadores'}
+              />
+            }
+          </Box>
+        </SideSticky>
+      </Side>
     </>
   );
 };
 
-export default Manage;
+const mapDispatchToProps = {
+  fetchPastProjects,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    pastProjects: state.projects.pastProjects,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Manage);

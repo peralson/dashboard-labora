@@ -1,11 +1,17 @@
-import React from 'react'
+import React from 'react';
+import { Flex } from '@chakra-ui/layout';
+import PastProjectCard from '../../components/ui/PastProjectCard';
 
-function ManageProjects() {
+const ManageProjects = (props) => {
+  const { data } = props;
+  console.log('data',data)
   return (
-    <div>
-      <p className="">proyectos</p>
-    </div>
-  )
-}
+    <Flex w='100%' flexDirection='column'>
+      {data.map((e) => {
+        return <PastProjectCard key={e.id} data={e} />;
+      })}
+    </Flex>
+  );
+};
 
-export default ManageProjects
+export default ManageProjects;

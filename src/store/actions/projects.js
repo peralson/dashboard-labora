@@ -35,7 +35,7 @@ export const fetchProjects = () => {
   };
 };
 
-export const fetchPastProject = () => {
+export const fetchPastProjects = () => {
   return async (dispatch, getState) => {
     let pastProjects = [];
     pastProjects.push(

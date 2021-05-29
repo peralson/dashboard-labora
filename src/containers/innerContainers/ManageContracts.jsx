@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react';
 
-function ManageContracts() {
+const ManageContracts = (contracts) => {
+
   return (
     <div>
       <p>contratos</p>
