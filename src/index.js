@@ -13,6 +13,7 @@ import workersReducer from './store/reducers/workers'
 import projectsReducer from './store/reducers/projects'
 import contractsReducer from './store/reducers/contracts'
 import payrollsReducer from './store/reducers/payrolls'
+import templatesReducer from './store/reducers/templates'
 
 // Introducimos todos nuestros reducers en un global
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     projects: projectsReducer,
     contracts: contractsReducer,
     payrolls: payrollsReducer,
+    templates: templatesReducer,
 })
 
 // y agregamos nuestro reducer global al store de Redux

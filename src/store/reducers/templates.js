@@ -1,17 +1,17 @@
 /* eslint-disable import/no-anonymous-default-export */
 import {
-  FETCH_CONTRACTS,
-} from '../actions/contracts';
+  FETCH_TEMPLATES,
+} from '../actions/templates';
 
 const initialState = {
-  contracts: [],
+  templates: []
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_CONTRACTS:
+    case FETCH_TEMPLATES:
       return {
-        contracts: action.contracts,
+        templates: action.templates,
       };
     default:
       return state;
