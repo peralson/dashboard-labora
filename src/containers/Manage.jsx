@@ -42,13 +42,6 @@ const Manage = ({
   const { selectedItemManage } = useContext(SelectedItemManage);
   const [selectedTab, setSelectedTab] = useState(0);
 
-  const tabs = [
-    <ManageProjects data={pastProjects} />,
-    <ManageContracts data={contracts} />,
-    <ManagePayrolls data={payrolls} />,
-    <ManageTemplates data={templates} />,
-  ];
-
   useEffect(() => {
     (async () => {
       await fetchPastProjects();
@@ -69,8 +62,47 @@ const Manage = ({
   }, [fetchPastProjects, fetchContracts, fetchPayrolls, fetchTemplates]);
 
   const handleSearch = (event) => {
-    setSearch(event.target.value);
+    setSearch(event.target.value.toLowerCase());
   };
+
+  console.log('srac', search);
+
+  const filteredPastProjects = pastProjects.filter((e) => {
+    return (
+      e.name.toLowerCase().includes(search) ||
+      e.direction.toLowerCase().includes(search) ||
+      e.offers.some((o) => o.name.toLowerCase().includes(search))
+    );
+  });
+
+  const filteredContracts = contracts.filter((e) => {
+    return(
+      e.category.toLowerCase().includes(search) ||
+      e.worker.name.toLowerCase().includes(search)
+    )
+  })
+
+  const filteredPayrolls = payrolls.filter((e) => {
+    return(
+      e.category.toLowerCase().includes(search) ||
+      e.worker.name.toLowerCase().includes(search) ||
+      e.event.toLowerCase().includes(search)
+    )
+  })
+
+  const filteredTemplates = templates.filter((e) => {
+    return(
+      e.category.toLowerCase().includes(search) ||
+      e.type.toLowerCase().includes(search)
+    )
+  })
+
+  const tabs = [
+    <ManageProjects data={filteredPastProjects} />,
+    <ManageContracts data={filteredContracts} />,
+    <ManagePayrolls data={filteredPayrolls} />,
+    <ManageTemplates data={filteredTemplates} />,
+  ];
 
   return (
     <>
@@ -85,7 +117,7 @@ const Manage = ({
           pb={2.5}
         >
           <SearchBar
-            placeholder='Busca proyectos, nóminas, contratos...'
+            placeholder='Busca por nombre, dirección, localización...'
             onChange={handleSearch}
           />
         </Box>
