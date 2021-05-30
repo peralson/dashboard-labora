@@ -25,36 +25,40 @@ const Offers = ({
   projects,
   fetchProjects
 }) => {
-  const [selectedItem, setSelectedItem] = useState(null)
-  const [loadingProjects, setLoadingProjects] = useState(false)
-  const [projectsError, setProjectsError] = useState(null)
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [loadingProjects, setLoadingProjects] = useState(false);
+  const [projectsError, setProjectsError] = useState(null);
 
   useEffect(() => {
     (async () => {
-      setProjectsError(null)
+      setProjectsError(null);
       if (projects.length === 0) {
-        setLoadingProjects(true)
+        setLoadingProjects(true);
       }
       try {
-        await fetchProjects()
+        await fetchProjects();
       } catch (error) {
-        setProjectsError(error.message)
+        setProjectsError(error.message);
       } finally {
-        setLoadingProjects(false)
-      }
-    })()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchProjects])
+        setLoadingProjects(false);
+      } 
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchProjects]); 
 
   // SEARCH LOGIC
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState("");
+  const [displayFilters, setDisplayFilters] = useState(false);
 
-  const filteredProjects = projects.filter(project => {
+  const filteredProjects = projects.filter((project) => {
     if (search !== "") {
       return (
         project.projectData.name.toLowerCase().includes(search.toLowerCase()) ||
-        project.projectOffers.some((offer) =>
-          offer.offerData.name.toLowerCase().includes(search.toLowerCase()),
+        project.projectData.location.address
+          .toLowerCase()
+          .includes(search.toLowerCase()) ||
+        project.projectOffers.some(({ offerData }) =>
+          offerData.name.toLowerCase().includes(search.toLowerCase()),
         )
       );
     }
@@ -62,28 +66,72 @@ const Offers = ({
     return true;
   });
 
-  const handleSearch = event => setSearch(event.target.value)
-  
   return (
     <SelectedItem.Provider value={{ selectedItem, setSelectedItem }}>
       <Main>
         <TopMain>
           <Flex>
             <SearchBar
-              placeholder="Busca entre tus proyectos"
-              onChange={handleSearch}
+              placeholder={"Busca por proyectos, ofertas o localización"}
+              onChange={(event) => setSearch(event.target.value)}
             />
+            <Flex
+              borderRadius={8}
+              _hover={{ cursor: "pointer" }}
+              border={"1px solid"}
+              borderColor={"translucid"}
+              bg={displayFilters && "darkLight"}
+              ml={2}
+              alignItems={"center"}
+              px={4}
+              onClick={() => setDisplayFilters(!displayFilters)}
+            >
+              <Text lineHeight={0} fontWeight="bold" fontSize={14}>
+                {!displayFilters 
+                  ? "Filtros"
+                  : "Cerrar"
+                }
+              </Text>
+            </Flex>
             <AccentButton>
               Crear oferta
             </AccentButton>
           </Flex>
+          {displayFilters && (
+            <Flex mt={2} alignItems={"center"}>
+              {true && (
+                <Flex flex={1} justifyContent={"flex-end"}>
+                  <Text
+                    color={"red.full"}
+                    fontSize={14}
+                    ml={2}
+                    borderRadius={8}
+                    _hover={{ bg: "red.smooth" }}
+                    cursor={"pointer"}
+                    border={"1px solid"}
+                    borderColor={"translucid"}
+                    px={4}
+                    py={2}
+                    onClick={() => {
+                      setDisplayFilters(false)
+                    }}
+                  >
+                    Deshacer filtros
+                  </Text>
+                </Flex>
+              )}
+            </Flex>
+          )}
         </TopMain>
-        {loadingProjects
-          ? <Text textAlign={"center"} py={10}>Cargando...</Text>
-          : projectsError
-            ? <Text textAlign={"center"}>Vaya! Ha ocurrido un error</Text>
-            : <ProjectsContainer filteredProjects={filteredProjects} />
-        }
+        {loadingProjects ? (
+          <Text textAlign={"center"} py={10}>
+            Cargando...
+          </Text>
+        ) : projectsError ? (
+          <Text textAlign={"center"}>Vaya! Ha ocurrido un error</Text>
+        ) : (
+          <ProjectsContainer filteredProjects={filteredProjects} />
+        )}
       </Main>
       <Side>
         <SideSticky>
@@ -95,8 +143,14 @@ const Offers = ({
             {selectedItem && selectedItem.offerCategory && (
               <ApplicationSide data={selectedItem} />
             )}
-            {!selectedItem && <BeCurious text={"Prueba a seleccionar alguna solicitud o una oferta de algún proyecto"} />}
-          </Box> 
+            {!selectedItem && (
+              <BeCurious
+                text={
+                  "Prueba a seleccionar alguna solicitud o una oferta de algún proyecto"
+                }
+              />
+            )}
+          </Box>
         </SideSticky>
       </Side>
     </SelectedItem.Provider>

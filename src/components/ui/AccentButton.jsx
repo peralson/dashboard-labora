@@ -11,7 +11,7 @@ const AccentButton = ({ children, onClick }) => (
     px={4}
     onClick={onClick}
   >
-    <Text lineHeight={0} fontWeight="bold" fontSize="14px">
+    <Text lineHeight={0} fontWeight="bold" fontSize={14}>
       {children}
     </Text>
   </Flex>

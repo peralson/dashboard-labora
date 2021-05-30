@@ -51,12 +51,10 @@ const Workers = ({ fetchWorkers, workers }) => {
 
   // SEARCH & FILTER LOGIC
   const [search, setSearch] = useState('');
+  const [displayFilters, setDisplayFilters] = useState(false);
   const [filterCategories, setFilterCategories] = useState([]);
   const [filterTags, setFilterTags] = useState([]);
-
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-  };
+  const totalFilters = filterCategories.length + filterTags.length;
 
   const handleCategories = (event) => {
     if (!filterCategories.includes(event.target.name)) {
@@ -113,13 +111,13 @@ const Workers = ({ fetchWorkers, workers }) => {
     if (!checkedItems.includes(value)) {
       setCheckedItems([...checkedItems, value]);
     } else {
-      setCheckedItems(checkedItems.filter((e) => e !== value));
+      setCheckedItems(checkedItems.filter((item) => item !== value));
     }
   };
 
   const handleGlobalCheck = () => {
     if (checkedItems.length === 0) {
-      setCheckedItems(filteredWorkers.map(({ id }) => id));
+      setCheckedItems(filteredWorkers.map((worker) => worker.id));
     } else {
       setCheckedItems([]);
     }
@@ -131,40 +129,94 @@ const Workers = ({ fetchWorkers, workers }) => {
         <TopMain pb={0}>
           <Flex>
             <SearchBar
-              placeholder='Busca un trabajador'
-              onChange={handleSearch}
+              placeholder={"Busca trabajadores por su nombre"}
+              onChange={(event) => setSearch(event.target.value)}
             />
-            {categories.length !== 0 && (
-              <MultipleSelectList
-                title='Categorías'
-                ml={2}
-                current={filterCategories}
-                values={categories}
-                onChange={handleCategories}
-              />
-            )}
-            {tags.length !== 0 && (
-              <MultipleSelectList
-                title='Etiquetas'
-                ml={2}
-                current={filterTags}
-                values={tags}
-                onChange={handleTags}
-              />
-            )}
-            <AccentButton>Invitar trabajadores</AccentButton>
+            <Flex
+              borderRadius={8}
+              _hover={{ cursor: "pointer" }}
+              border={"1px solid"}
+              borderColor={"translucid"}
+              bg={(displayFilters || totalFilters > 0) && "darkLight"}
+              ml={2}
+              alignItems={"center"}
+              px={4}
+              onClick={() => setDisplayFilters(!displayFilters)}
+            >
+              <Text lineHeight={0} fontWeight="bold" fontSize={14}>
+                {!displayFilters 
+                  ? totalFilters > 0
+                    ? `Filtros (${totalFilters})`
+                    : 'Filtros'
+                  : "Cerrar"
+                }
+              </Text>
+            </Flex>
+            <AccentButton>
+              Invitar trabajadores
+            </AccentButton>
           </Flex>
+          {displayFilters && (
+            <Flex mt={2} alignItems={"center"}>
+              {categories.length !== 0 && (
+                <MultipleSelectList
+                  title={`Categorías${filterCategories.length > 0 ? ` (${filterCategories.length})` : ''}`}
+                  bg={filterCategories.length !== 0 && "darkLight"}
+                  current={filterCategories}
+                  values={categories}
+                  onChange={handleCategories}
+                />
+              )}
+              {tags.length !== 0 && (
+                <MultipleSelectList
+                  title={`Etiquetas${filterTags.length > 0 ? ` (${filterTags.length})` : ''}`}
+                  ml={2}
+                  bg={filterTags.length !== 0 && "darkLight"}
+                  current={filterTags}
+                  values={tags}
+                  onChange={handleTags}
+                />
+              )}
+              {totalFilters !== 0 && (
+                <Flex flex={1} justifyContent={"flex-end"}>
+                  <Text
+                    color={"red.full"}
+                    fontSize={14}
+                    ml={2}
+                    borderRadius={8}
+                    _hover={{ bg: "red.smooth" }}
+                    cursor={"pointer"}
+                    border={"1px solid"}
+                    borderColor={"translucid"}
+                    px={4}
+                    py={2}
+                    onClick={() => {
+                      setFilterCategories([])
+                      setFilterTags([])
+                      setDisplayFilters(false)
+                    }}
+                  >
+                    Deshacer filtros
+                  </Text>
+                </Flex>
+              )}
+            </Flex>
+          )}
           <WorkersTableGuide
             isChecked={allChecked}
             isIndeterminate={isIndeterminate}
             handleGlobalCheck={handleGlobalCheck}
           />
         </TopMain>
-        {workersLoading
-          ? <Text>Cargando...</Text>
-          : workersError
-            ? <Text>Ha ocurrido un error</Text>
-            : (
+        {workersLoading ? (
+          <Text textAlign={"center"} py={10}>
+            Cargando...
+          </Text>
+        ) : workersError ? (
+          <Text textAlign={"center"} py={10}>
+            Ha ocurrido un error
+          </Text>
+        ) : (
           <WorkersTable
             filteredWorkers={filteredWorkers}
             checkedItems={checkedItems}
@@ -176,9 +228,13 @@ const Workers = ({ fetchWorkers, workers }) => {
         <SideSticky>
           <Documentation />
           <Box p={4} w={"100%"} borderRadius={8} bg={"darkLight"}>
-            {!selectedWorker && <BeCurious text={"Prueba a seleccionar a uno o varios trabajadores"} />}
+            {!selectedWorker && (
+              <BeCurious
+                text={"Prueba a seleccionar a uno o varios trabajadores"}
+              />
+            )}
             {selectedWorker && <WorkerSide data={selectedWorker} />}
-          </Box> 
+          </Box>
         </SideSticky>
       </Side>
     </SelectedWorker.Provider>
