@@ -1,19 +1,21 @@
 import React from 'react';
 import { Flex, Text } from '@chakra-ui/layout';
+import { Image } from "@chakra-ui/image";
 
-const MenuItem = ({ text, image, activeImage, top }) => (
+const MenuItem = ({ text, image, activeImage }) => (
   <Flex
-    mt={top ? null : 4}
-    py={2}
-    px={1}
-    borderRadius={10}
-    alignItems="center"
-    flexDirection="column"
-    bg={activeImage && "translucid"}
-    _hover={{ bg: "translucid" }}
+    py={3}
+    px={0.5}
+    borderRightWidth={2}
+    borderRightColor={activeImage ? "primary" : "transparent"}
+    alignItems={"center"}
+    flexDirection={"column"}
+    _hover={{ borderRightColor: !activeImage && "darkLight" }}
   >
-    <img width={"30px"} src={activeImage ? activeImage : image} alt={text} />
-    <Text mt={0.5} fontWeight={activeImage ? 'bold' : 'normal'} fontSize="12px">{text}</Text>
+    <Image w={"30px"} src={activeImage ? activeImage : image} alt={text} />
+    <Text mt={0.5} fontWeight={activeImage && "bold"} fontSize={12}>
+      {text}
+    </Text>
   </Flex>
 );
 

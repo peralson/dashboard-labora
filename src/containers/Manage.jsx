@@ -15,6 +15,7 @@ import { SelectedItemManage } from "../context/SelectedItemContext";
 import Main from "../components/main/Main";
 import Side from "../components/main/Side";
 import SideSticky from "../components/main/SideSticky";
+import SideBoxContainer from "../components/ui/SideBoxContainer";
 import Documentation from "../components/main/Documentation";
 import BeCurious from "../components/ui/BeCurious";
 import SearchBar from "../components/ui/SearchBar";
@@ -141,7 +142,7 @@ const Manage = ({
       <Side>
         <SideSticky>
           <Documentation />
-          <Box p={4} w={"100%"} borderRadius={8} bg={"darkLight"}>
+          <SideBoxContainer>
             {selectedItemManage && selectedItemManage.type && (
               <ContractSide data={selectedItemManage} />
             )}
@@ -155,7 +156,7 @@ const Manage = ({
                 }
               />
             )}
-          </Box>
+          </SideBoxContainer>
         </SideSticky>
       </Side>
     </SelectedItemManage.Provider>

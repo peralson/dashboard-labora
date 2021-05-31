@@ -12,15 +12,14 @@ const ApplicationItem = ({ application, index }) => {
     return (
       <Box
         cursor={"pointer"}
-        minW={"180px"}
         _hover={{ border: "1px solid white", transform: "scale(1.02)" }}
         transform={isActive && "scale(1.02)"}
         p={3}
         pt={4}
-        bg="translucid"
         borderRadius={10}
         ml={index !== 0 && 2}
-        border={isActive ? "1px solid white" : "1px solid transparent"}
+        border={"1px solid"}
+        borderColor={isActive ? "white" : "darkLight"}
         onClick={() => setSelectedItem(application)}
       >
         <Flex alignItems="center">

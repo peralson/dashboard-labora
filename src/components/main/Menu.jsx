@@ -20,7 +20,7 @@ const Menu = () => {
   return (
     <Flex flexDirection="column" alignItems="center" height="100vh">
       <Box position="fixed">
-        <Box mb={5} mt={5}>
+        <Box mb={6} mt={5}>
           <Link to="/">
             <img src={Logo} alt="Logo de Labora" width="110px" />
           </Link>
@@ -29,29 +29,32 @@ const Menu = () => {
           <MenuItem
             text="Ofertas"
             image={offers}
-            activeImage={isHere('ofertas') || currentLocation.pathname === '/' ? offersActive : null}
-            top
+            activeImage={
+              isHere("ofertas") || currentLocation.pathname === "/"
+                ? offersActive
+                : null
+            }
           />
         </Link>
         <Link to="/trabajadores">
-            <MenuItem
-              text="Trabajadores"
-              image={people}
-              activeImage={isHere('trabajadores') ? peopleActive : null}
-            />
+          <MenuItem
+            text="Trabajadores"
+            image={people}
+            activeImage={isHere("trabajadores") ? peopleActive : null}
+          />
         </Link>
         <Link to="/gestion">
-            <MenuItem
-              text="Gestión"
-              image={settings}
-              activeImage={isHere('gestion') ? settingsActive : null}
-            />
+          <MenuItem
+            text="Gestión"
+            image={settings}
+            activeImage={isHere("gestion") ? settingsActive : null}
+          />
         </Link>
         <Link to="/empresa">
           <MenuItem
             text="Empresa"
             image={settings}
-            activeImage={isHere('empresa') ? settingsActive : null}
+            activeImage={isHere("empresa") ? settingsActive : null}
           />
         </Link>
       </Box>

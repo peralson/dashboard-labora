@@ -20,9 +20,9 @@ const OfferItem = ({ offer, index }) => {
         transform={isActive && "scale(1.02)"}
         p={3}
         pt={4}
-        bg="translucid"
         borderRadius={10}
-        border={isActive ? "1px solid white" : "1px solid transparent"}
+        border={"1px solid"}
+        borderColor={isActive ? "white" : "darkLight"}
         ml={index !== 0 && 2}
         onClick={() => {
           if (isActive) {

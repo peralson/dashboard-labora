@@ -10,7 +10,7 @@ export const brandTheme = extendTheme({
       full: "#D84D4D",
       smooth: "rgba(216, 77, 77, 0.2)",
     },
-    translucid: "rgba(255, 255, 255, 0.1)",
+    translucid: "rgba(255, 255, 255, 0.07)",
     white: "#FFFFFF",
     grey: {
       light: "#9D9EA3",

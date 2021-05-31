@@ -16,8 +16,6 @@ import Separator from './Separator';
 const ApplicationSide = ({ data }) => {
 	const { totalDaysWorked, totalHoursInSeconds } = daysAndHoursFromHistory(data.worker.history)
 
-  console.log(data);
-
 	return (
     <Box>
       <Flex alignItems="center" mb={3}>

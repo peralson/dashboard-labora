@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Flex, Text } from '@chakra-ui/layout';
+import { Flex, Text } from "@chakra-ui/layout";
 
 // Context
 import { SelectedWorker } from '../context/SelectedItemContext'
@@ -16,6 +16,7 @@ import Main from '../components/main/Main';
 import TopMain from '../components/main/TopMain';
 import Side from '../components/main/Side';
 import SideSticky from '../components/main/SideSticky';
+import SideBoxContainer from "../components/ui/SideBoxContainer";
 import SearchBar from '../components/ui/SearchBar';
 import WorkersTableGuide from '../components/ui/WorkersTableGuide';
 import WorkersTable from '../components/ui/WorkersTable';
@@ -230,14 +231,14 @@ const Workers = ({ fetchWorkers, workers }) => {
       <Side>
         <SideSticky>
           <Documentation />
-          <Box p={4} w={"100%"} borderRadius={8} bg={"darkLight"}>
+          <SideBoxContainer>
             {!selectedWorker && (
               <BeCurious
                 text={"Prueba a seleccionar a uno o varios trabajadores"}
               />
             )}
             {selectedWorker && <WorkerSide data={selectedWorker} />}
-          </Box>
+          </SideBoxContainer>
         </SideSticky>
       </Side>
     </SelectedWorker.Provider>

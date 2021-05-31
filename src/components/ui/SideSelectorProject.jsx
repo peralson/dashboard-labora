@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { Flex, Text } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
-import { SelectedItemIndie } from '../../context/SelectedItemContext'
+import { SelectedProject } from "../../context/SelectedItemContext";
 
-const SideSelectorOffer = (props) => {
-  const { selectedItemIndie, setSelectedItemIndie } = useContext(SelectedItemIndie)
-  const isActive = selectedItemIndie === props.title
+const SideSelectorProject = (props) => {
+  const { selectedItemIndie, setSelectedItemIndie } =
+    useContext(SelectedProject);
+  const isActive = selectedItemIndie === props.title;
 
   return (
     <Flex
@@ -42,4 +43,4 @@ const SideSelectorOffer = (props) => {
     </Flex>
   );
 };
-export default SideSelectorOffer;
+export default SideSelectorProject;

@@ -4,19 +4,20 @@ import moment from 'moment'
 import 'moment/locale/es'
 
 const DateTag = ({ dates }) => (
-    <Text
-        px={2.5}
-        py={2}
-        fontWeight={"bold"}
-        borderRadius={4}
-        bg={"dark"}
-        fontSize={12}
-    >
-        {dates[0]._seconds === dates[dates.length - 1]._seconds
-        ? moment(dates[0]._seconds * 1000).format('D MMMM')
-        : `${moment(dates[0]._seconds * 1000).format('D MMMM')} - ${moment(dates[dates.length - 1]._seconds * 1000).format('D MMMM')}`
-        }
-    </Text>
-)
+  <Text
+    px={2.5}
+    py={2}
+    fontWeight={"bold"}
+    borderRadius={10}
+    bg={"darkLight"}
+    fontSize={12}
+  >
+    {dates[0]._seconds === dates[dates.length - 1]._seconds
+      ? moment(dates[0]._seconds * 1000).format("D MMMM")
+      : `${moment(dates[0]._seconds * 1000).format("D MMMM")} - ${moment(
+          dates[dates.length - 1]._seconds * 1000,
+        ).format("D MMMM")}`}
+  </Text>
+);
 
 export default DateTag

@@ -18,9 +18,11 @@ const ApplicationSide = ({ data }) => {
     data.history,
   );
 
+  console.log(data);
+
   return (
     <Box>
-      <Flex alignItems="center" mb={4}>
+      <Flex alignItems={"center"} mb={4}>
         <CustomImg
           image={data.workerData.images.main}
           w={"80px"}
@@ -75,7 +77,7 @@ const ApplicationSide = ({ data }) => {
           </Flex>
         </Box>
       )}
-      <Box mb={4}>
+      <Box>
         <SideTitle mb={2}>Contacto</SideTitle>
         <FlexText
           left={"Teléfono"}
@@ -85,7 +87,7 @@ const ApplicationSide = ({ data }) => {
         <FlexText left={"Email"} right={data.workerData.contact.email} />
       </Box>
       {data.history.length !== 0 && (
-        <>
+        <Box mt={4}>
           <SideTitle mb={2}>Experiencia laboral</SideTitle>
           <FlexText
             left={"Horas trabajadas"}
@@ -102,7 +104,7 @@ const ApplicationSide = ({ data }) => {
               <JobHistoryItem key={job.id} job={job.data} index={index} />
             ))}
           </Flex>
-        </>
+        </Box>
       )}
     </Box>
   );

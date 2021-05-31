@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Box, Flex, Text } from '@chakra-ui/layout';
+import { Box, Flex, Grid, Text } from '@chakra-ui/layout';
 import { Link } from 'react-router-dom'
 
 // lib
@@ -55,14 +55,14 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
   )
 
   return (
-    <Box bg="darkLight" borderRadius={8} py={3} px={4}>
-      <Flex alignItems="center" justifyContent="space-between" mb={2}>
-        <DateTag dates={dates} />
+    <Box border={"2px solid"} borderColor={"darkLight"} borderRadius={20} p={4}>
+      <Flex alignItems={"center"} justifyContent={"space-between"} mb={2}>
+        <DateTag dates={dates} /> 
         <Link to={`/ofertas/p/${id}`}>
           <Options>Más información</Options>
         </Link>
       </Flex>
-      <Flex alignItems="center" justifyContent="space-between">
+      <Flex alignItems={"center"} justifyContent={"space-between"}>
         <Box>
           <Link to={`/ofertas/p/${id}`}>
             <Text fontSize={21} fontWeight="bold" cursor={"pointer"}>
@@ -88,11 +88,11 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
           <Text fontSize={18} fontWeight="bold" lineHeight={2} mb={2}>
             Ofertas
           </Text>
-          <Flex>
+          <Grid w={"100%"} templateColumns={"1fr 1fr 1fr"} columnGap={2}>
             {projectOffers.map((offer, index) => (
               <OfferItem key={offer.id} offer={offer} index={index} />
             ))}
-          </Flex>
+          </Grid>
         </Box>
       )}
       {totalApplications !== 0 && (
@@ -141,7 +141,7 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
               </Flex>
             )}
           </Flex>
-          <Flex mt={2}>
+          <Grid w={"100%"} templateColumns={"1fr 1fr 1fr"} columnGap={2}>
             {filteredApplications.map((application, index) => (
               <ApplicationItem
                 key={application.id}
@@ -149,7 +149,7 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
                 index={index}
               />
             ))}
-          </Flex>
+          </Grid>
         </Box>
       )}
     </Box>

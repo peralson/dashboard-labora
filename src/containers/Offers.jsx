@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Flex, Box, Text } from '@chakra-ui/layout';
+import { Flex, Text } from '@chakra-ui/layout';
 
 // Context
 import { SelectedItem } from '../context/SelectedItemContext'
@@ -19,6 +19,7 @@ import Main from '../components/main/Main';
 import TopMain from '../components/main/TopMain';
 import Side from '../components/main/Side';
 import SideSticky from '../components/main/SideSticky';
+import SideBoxContainer from '../components/ui/SideBoxContainer';
 import Documentation from '../components/main/Documentation';
 import ProjectsContainer from '../components/ui/ProjectsContainer';
 import SearchBar from '../components/ui/SearchBar';
@@ -139,14 +140,17 @@ const Offers = ({
               _hover={{ cursor: "pointer" }}
               border={"1px solid"}
               borderColor={"translucid"}
-              bg={displayFilters && "darkLight"}
+              bg={(displayFilters || totalFilters > 0) && "darkLight"}
               ml={2}
               alignItems={"center"}
               px={4}
               onClick={() => setDisplayFilters(!displayFilters)}
             >
               <Text lineHeight={0} fontSize={14}>
-                {!displayFilters ? "Filtros" : "Cerrar filtros"}
+                {!displayFilters
+                  ? `Filtros${totalFilters > 0 ? ` (${totalFilters})` : ""}`
+                  : "Cerrar filtros"
+                }
               </Text>
             </Flex>
             <AccentButton>Crear oferta</AccentButton>
@@ -166,7 +170,7 @@ const Offers = ({
                   onChange={handleCategories}
                 />
               )}
-              {!hasIndieOffers && (
+              {hasIndieOffers && (
                 <Flex>
                   <Text
                     fontSize={14}
@@ -180,7 +184,7 @@ const Offers = ({
                     py={2}
                     onClick={() => setOnlyOffers(!onlyOffers)}
                   >
-                    Ver solo las ofertas
+                    Solo ofertas individuales
                   </Text>
                 </Flex>
               )}
@@ -223,7 +227,7 @@ const Offers = ({
       <Side>
         <SideSticky>
           <Documentation />
-          <Box p={4} w={"100%"} borderRadius={8} bg={"darkLight"}>
+          <SideBoxContainer>
             {selectedItem && selectedItem.offerData && (
               <OfferSide data={selectedItem} />
             )}
@@ -237,7 +241,7 @@ const Offers = ({
                 }
               />
             )}
-          </Box>
+          </SideBoxContainer>
         </SideSticky>
       </Side>
     </SelectedItem.Provider>
