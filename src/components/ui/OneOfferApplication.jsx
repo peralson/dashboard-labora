@@ -19,25 +19,30 @@ const OneOfferApplication = ({ application }) => {
     <Flex
       _hover={{ borderColor: "white" }}
       cursor={"pointer"}
-      border={"1px solid"}
-      borderColor={isActive ? "white" : "darkLight"}
+      borderWidth={1}
+      bg={"darkLight"}
+      borderColor={isActive ? "white" : "translucid"}
       borderRadius={20}
       w={"100%"}
       p={4}
       flexDirection={"column"}
       alignItems={"center"}
-      onClick={() => isActive ? setSelectedItemIndie(null) : setSelectedItemIndie(application)} 
+      onClick={() =>
+        isActive
+          ? setSelectedItemIndie(null)
+          : setSelectedItemIndie(application)
+      }
     >
       <CustomImg
         image={application.worker.workerData.images.main}
         borderRadius={50}
-        border={"2px solid"}
+        borderWidth={2}
         borderColor={"translucid"}
         alt={application.worker.workerData.name}
-        maxH={"62px"}
-        maxW={"62px"}
+        maxH={"64px"}
+        maxW={"64px"}
       />
-      <Text textAlign={"center"} mt={2} fontSize={16} fontWeight={"bold"}>
+      <Text textAlign={"center"} mt={3} fontSize={16} fontWeight={"bold"}>
         {application.worker.workerData.name}
       </Text>
       {application.worker.tags.length !== 0 && (
@@ -49,7 +54,7 @@ const OneOfferApplication = ({ application }) => {
               mr={1}
               fontSize={12}
               color={"primary"}
-              bg={"darkLight"}
+              bg={"dark"}
               p={1}
               borderRadius={4}
             >

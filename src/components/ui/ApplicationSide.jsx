@@ -41,7 +41,7 @@ const ApplicationSide = ({ data }) => {
         <Text
           flex={1}
           borderRadius={10}
-          bg={"translucid"}
+          bg={"darkLight"}
           py={1}
           lineHeight={2}
           fontSize={14}
@@ -78,7 +78,7 @@ const ApplicationSide = ({ data }) => {
                 key={tag}
                 fontSize={14}
                 padding={"4px 6px"}
-                bg={"translucid"}
+                bg={"darkLight"}
                 color="primary"
                 ml={index !== 0 && 1}
                 borderRadius={4}

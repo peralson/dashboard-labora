@@ -17,9 +17,10 @@ const WorkerListItem = ({ worker, handleCheck, checkedItems }) => {
       p={2}
       pl={0}
       mt={2}
+      bg={"darkLight"}
       alignItems={"center"}
       border={"1px solid"}
-      borderColor={isSelected ? "white" : "darkLight"}
+      borderColor={isSelected ? "white" : "translucid"}
       _hover={{ borderColor: "white" }}
       onClick={() => {
         if (isSelected) {
@@ -68,7 +69,7 @@ const WorkerListItem = ({ worker, handleCheck, checkedItems }) => {
                 key={index}
                 ml={index !== 0 && 1}
                 color={"accent"}
-                bg={"darkLight"}
+                bg={"dark"}
                 py={1}
                 px={2}
                 borderRadius={4}
@@ -88,7 +89,7 @@ const WorkerListItem = ({ worker, handleCheck, checkedItems }) => {
                 key={index}
                 ml={index !== 0 && 1}
                 color={"primary"}
-                bg={"darkLight"}
+                bg={"dark"}
                 py={1}
                 px={2}
                 borderRadius={4}

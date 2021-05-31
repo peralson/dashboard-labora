@@ -16,11 +16,12 @@ const ProjectOfferItem = ({ offer }) => {
       justifyContent={"space-between"}
       _hover={{ borderColor: "white", transform: "scale(1.02)" }}
       transform={isActive && "scale(1.02)"}
+      bg={"darkLight"}
       px={3}
       py={4}
       borderRadius={10}
-      border={"1px solid"}
-      borderColor={isActive ? "white" : "darkLight"}
+      borderWidth={1}
+      borderColor={isActive ? "white" : "translucid"}
       onClick={() => {
         if (isActive) {
           setSelectedItemIndie(null);

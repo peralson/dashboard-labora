@@ -45,7 +45,7 @@ const OfferSide = ({ data }) => {
           py={1}
           fontSize={14}
           fontWeight={"bold"}
-          bg={"translucid"}
+          bg={"darkLight"}
         >
           Ver todo sobre esta oferta
         </Text>

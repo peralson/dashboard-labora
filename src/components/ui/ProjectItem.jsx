@@ -55,9 +55,9 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
   )
 
   return (
-    <Box border={"2px solid"} borderColor={"darkLight"} borderRadius={20} p={4}>
+    <Box borderWidth={2} borderColor={"darkLight"} borderRadius={20} p={4}> 
       <Flex alignItems={"center"} justifyContent={"space-between"} mb={2}>
-        <DateTag dates={dates} /> 
+        <DateTag dates={dates} />
         <Link to={`/ofertas/p/${id}`}>
           <Options>Más información</Options>
         </Link>

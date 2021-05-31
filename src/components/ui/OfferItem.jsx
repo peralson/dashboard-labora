@@ -16,13 +16,14 @@ const OfferItem = ({ offer, index }) => {
         justifyContent={"space-between"}
         key={index}
         minW={180}
+        bg={"darkLight"}
         _hover={{ border: "1px solid white", transform: "scale(1.02)" }}
         transform={isActive && "scale(1.02)"}
         p={3}
         pt={4}
         borderRadius={10}
-        border={"1px solid"}
-        borderColor={isActive ? "white" : "darkLight"}
+        borderWidth={1}
+        borderColor={isActive ? "white" : "translucid"}
         ml={index !== 0 && 2}
         onClick={() => {
           if (isActive) {

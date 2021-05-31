@@ -5,21 +5,20 @@ import CustomImg from "./CustomImg";
 
 const ApplicationItem = ({ application, index }) => {
     const { selectedItem, setSelectedItem } = useContext(SelectedItem)
-    const isActive = selectedItem
-        ? selectedItem.id === application.id
-        : false
+    const isActive = selectedItem ? selectedItem.id === application.id : false;
 
     return (
       <Box
         cursor={"pointer"}
         _hover={{ border: "1px solid white", transform: "scale(1.02)" }}
         transform={isActive && "scale(1.02)"}
+        bg={"darkLight"}
         p={3}
         pt={4}
         borderRadius={10}
         ml={index !== 0 && 2}
-        border={"1px solid"}
-        borderColor={isActive ? "white" : "darkLight"}
+        borderWidth={1}
+        borderColor={isActive ? "white" : "translucid"}
         onClick={() => setSelectedItem(application)}
       >
         <Flex alignItems="center">
@@ -27,7 +26,7 @@ const ApplicationItem = ({ application, index }) => {
             w={7}
             h={7}
             borderRadius={15}
-            border={"1px solid"}
+            borderWidth={2}
             borderColor={"darkLight"}
             backgroundPosition={"center"}
             backgroundRepeat={"no-repeat"}

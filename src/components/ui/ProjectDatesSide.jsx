@@ -30,19 +30,20 @@ const ProjectDatesSide = ({ id, dates }) => (
           p={2}
           borderRadius={10}
           border={"2px solid"}
-          borderColor={"translucid"}
+          borderColor={"darkLight"}
         >
           {moment(date._seconds * 1000).format("D MMMM YYYY")}
         </Text>
       ))}
       <Flex
         w={"100%"}
-        py={1}
+        mt={1}
+        py={1.5}
         alignItems={"center"}
         justifyContent={"center"}
         cursor={"pointer"}
         borderRadius={8}
-        _hover={{ bg: "translucid" }}
+        _hover={{ bg: "darkLight" }}
         onClick={() => console.log("Añadiendo fecha")}
       >
         <Text fontSize={14} color={"primary"} lineHeight={1.6}>

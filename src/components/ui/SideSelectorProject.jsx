@@ -15,12 +15,13 @@ const SideSelectorProject = (props) => {
       py={4}
       px={2}
       cursor={"pointer"}
+      bg={"darkLight"}
       w={"100%"}
       alignItems={"center"}
       justifyContent={"center"}
       borderRadius={10}
-      border={"1px solid"}
-      borderColor={isActive ? "white" : "darkLight"}
+      borderWidth={1}
+      borderColor={isActive ? "white" : "translucid"}
       onClick={() => {
         isActive
           ? setSelectedItemIndie(null)
