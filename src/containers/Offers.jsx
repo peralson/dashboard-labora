@@ -5,7 +5,10 @@ import { Flex, Box, Text } from '@chakra-ui/layout';
 import { SelectedItem } from '../context/SelectedItemContext'
 
 // Lib
-import { hasIndividualOffers } from '../lib/filtersValidation'
+import {
+  hasIndividualOffers,
+  getCategoriesFromProjects,
+} from "../lib/filtersValidation";
 
 // Hooks & actions
 import { connect } from 'react-redux'
@@ -22,6 +25,7 @@ import SearchBar from '../components/ui/SearchBar';
 import ApplicationSide from '../components/ui/ApplicationSide';
 import OfferSide from "../components/ui/OfferSide";
 import AccentButton from "../components/ui/AccentButton";
+import MultipleSelectList from "../components/ui/MultipleSelectList";
 import BeCurious from "../components/ui/BeCurious";
 
 const Offers = ({
@@ -50,35 +54,74 @@ const Offers = ({
   }, [fetchProjects]); 
 
   // SEARCH LOGIC
-  const [search, setSearch] = useState("");
-
-  const hasIndieOffers = hasIndividualOffers(projects);
-  const [onlyOffers, setOnlyOffers] = useState(false);
-
   const [displayFilters, setDisplayFilters] = useState(false);
+  const [search, setSearch] = useState("");
+  const categories = getCategoriesFromProjects(projects);
+  const [onlyOffers, setOnlyOffers] = useState(false);
+  const hasIndieOffers = hasIndividualOffers(projects);
+  const [filterCategories, setFilterCategories] = useState([]);
+  const totalFilters = onlyOffers ? filterCategories.length + 1 : filterCategories.length
+
+  const handleCategories = (event) => {
+    if (!filterCategories.includes(event.target.name)) {
+      setFilterCategories([...filterCategories, event.target.name]);
+    } else {
+      setFilterCategories(
+        filterCategories.filter((cat) => cat !== event.target.name),
+      );
+    }
+  };
 
   const filteredProjects = projects.filter((project) => {
-    if (onlyOffers) {
+    if (onlyOffers && filterCategories.length !== 0) {
       return (
-        project.projectData.name === null &&
         (
-          project.projectData.location.address
-          .toLowerCase()
-          .includes(search.toLowerCase()) ||
-          project.projectOffers.some(({ offerData }) =>
-            offerData.name.toLowerCase().includes(search.toLowerCase()),
+          project.projectData.name === null &&
+          filterCategories.every(
+            (cat) => project.projectOffers.some(({ offerData }) => offerData.category.includes(cat))
           )
+        ) && (
+          project.projectData.location.address
+            .toLowerCase()
+            .includes(search.toLowerCase()) ||
+          project.projectOffers.some(({ offerData }) => offerData.name.toLowerCase().includes(search.toLowerCase()),
+        )
+      ))
+    }
+
+    if (!onlyOffers && filterCategories.length !== 0) {
+      return (
+          filterCategories.every(
+            (cat) => project.projectOffers.some(({ offerData }) => offerData.category.includes(cat))
+          )
+        ) && (
+          project.projectData.name.toLowerCase().includes(search.toLowerCase()) ||
+          project.projectData.location.address
+            .toLowerCase()
+            .includes(search.toLowerCase()) ||
+          project.projectOffers.some(({ offerData }) => offerData.name.toLowerCase().includes(search.toLowerCase())
         )
       );
     }
+
+    if (onlyOffers && filterCategories.length === 0) {
+      return (
+          project.projectData.name === null
+        ) && (
+          project.projectData.location.address
+            .toLowerCase()
+            .includes(search.toLowerCase()) ||
+          project.projectOffers.some(({ offerData }) => offerData.name.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
+
     return (
       project.projectData.name.toLowerCase().includes(search.toLowerCase()) ||
       project.projectData.location.address
         .toLowerCase()
         .includes(search.toLowerCase()) ||
-      project.projectOffers.some(({ offerData }) =>
-        offerData.name.toLowerCase().includes(search.toLowerCase()),
-      )
+      project.projectOffers.some(({ offerData }) => offerData.name.toLowerCase().includes(search.toLowerCase()))
     );
   });
 
@@ -103,21 +146,35 @@ const Offers = ({
               onClick={() => setDisplayFilters(!displayFilters)}
             >
               <Text lineHeight={0} fontSize={14}>
-                {!displayFilters ? "Filtros" : "Cerrar"}
+                {!displayFilters ? "Filtros" : "Cerrar filtros"}
               </Text>
             </Flex>
             <AccentButton>Crear oferta</AccentButton>
           </Flex>
           {displayFilters && (
             <Flex mt={2} alignItems={"center"}>
+              {categories.length !== 0 && (
+                <MultipleSelectList
+                  title={`Categorías${
+                    filterCategories.length > 0
+                      ? ` (${filterCategories.length})`
+                      : ""
+                  }`}
+                  bg={filterCategories.length !== 0 && "darkLight"}
+                  current={filterCategories}
+                  values={categories}
+                  onChange={handleCategories}
+                />
+              )}
               {!hasIndieOffers && (
                 <Flex>
                   <Text
                     fontSize={14}
+                    ml={2}
                     borderRadius={8}
                     cursor={"pointer"}
                     border={"1px solid"}
-                    borderColor={"translucid"}
+                    borderColor={onlyOffers ? "translucid" : "darkLight"}
                     bg={onlyOffers && "darkLight"}
                     px={4}
                     py={2}
@@ -127,7 +184,7 @@ const Offers = ({
                   </Text>
                 </Flex>
               )}
-              {true && (
+              {totalFilters > 0 && (
                 <Flex flex={1} justifyContent={"flex-end"}>
                   <Text
                     color={"red.full"}
@@ -141,6 +198,7 @@ const Offers = ({
                     px={4}
                     py={2}
                     onClick={() => {
+                      setFilterCategories([]);
                       setOnlyOffers(false);
                       setDisplayFilters(false);
                     }}

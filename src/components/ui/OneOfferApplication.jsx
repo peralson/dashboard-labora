@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Flex, Text } from "@chakra-ui/layout";
 
 // Context
 import { SelectedItemIndie } from "../../context/SelectedItemContext";
@@ -12,8 +12,6 @@ const OneOfferApplication = ({ application }) => {
     selectedItemIndie,
     setSelectedItemIndie
   } = useContext(SelectedItemIndie);
-
-  console.log(application.worker.workerData);
 
   const isActive = selectedItemIndie && selectedItemIndie.id === application.id;
 
@@ -42,22 +40,24 @@ const OneOfferApplication = ({ application }) => {
       <Text textAlign={"center"} mt={2} fontSize={16} fontWeight={"bold"}>
         {application.worker.workerData.name}
       </Text>
-      <Flex flexWrap={"wrap"} mt={1}>
-        {application.worker.tags.map((tag, index) => (
-          <Text
-            key={index}
-            mt={1}
-            mr={1}
-            fontSize={12}
-            color={"primary"}
-            bg={"darkLight"}
-            p={1}
-            borderRadius={4}
-          >
-            #{tag}
-          </Text>
-        ))}
-      </Flex>
+      {application.worker.tags.length !== 0 && (
+        <Flex flexWrap={"wrap"} mt={1} alignItems={"center"}>
+          {application.worker.tags.map((tag, index) => (
+            <Text
+              key={index}
+              mt={1}
+              mr={1}
+              fontSize={12}
+              color={"primary"}
+              bg={"darkLight"}
+              p={1}
+              borderRadius={4}
+            >
+              #{tag}
+            </Text>
+          ))}
+        </Flex>
+      )}
       <Text
         w={"100%"}
         mt={4}

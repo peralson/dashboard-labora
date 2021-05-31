@@ -17,6 +17,7 @@ const MultipleSelectList = (props) => (
       {...props}
       border={"1px solid"}
       borderColor={"darkLight"}
+      borderRadius={8}
       fontSize={14}
       as={Button}
       _hover={{ borderColor: "translucid" }}
