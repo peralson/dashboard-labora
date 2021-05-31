@@ -143,24 +143,25 @@ const Workers = ({ fetchWorkers, workers }) => {
               px={4}
               onClick={() => setDisplayFilters(!displayFilters)}
             >
-              <Text lineHeight={0} fontWeight="bold" fontSize={14}>
-                {!displayFilters 
+              <Text lineHeight={0} fontSize={14}>
+                {!displayFilters
                   ? totalFilters > 0
                     ? `Filtros (${totalFilters})`
-                    : 'Filtros'
-                  : "Cerrar"
-                }
+                    : "Filtros"
+                  : "Cerrar"}
               </Text>
             </Flex>
-            <AccentButton>
-              Invitar trabajadores
-            </AccentButton>
+            <AccentButton>Invitar trabajadores</AccentButton>
           </Flex>
           {displayFilters && (
             <Flex mt={2} alignItems={"center"}>
               {categories.length !== 0 && (
                 <MultipleSelectList
-                  title={`Categorías${filterCategories.length > 0 ? ` (${filterCategories.length})` : ''}`}
+                  title={`Categorías${
+                    filterCategories.length > 0
+                      ? ` (${filterCategories.length})`
+                      : ""
+                  }`}
                   bg={filterCategories.length !== 0 && "darkLight"}
                   current={filterCategories}
                   values={categories}
@@ -169,7 +170,9 @@ const Workers = ({ fetchWorkers, workers }) => {
               )}
               {tags.length !== 0 && (
                 <MultipleSelectList
-                  title={`Etiquetas${filterTags.length > 0 ? ` (${filterTags.length})` : ''}`}
+                  title={`Etiquetas${
+                    filterTags.length > 0 ? ` (${filterTags.length})` : ""
+                  }`}
                   ml={2}
                   bg={filterTags.length !== 0 && "darkLight"}
                   current={filterTags}
@@ -191,9 +194,9 @@ const Workers = ({ fetchWorkers, workers }) => {
                     px={4}
                     py={2}
                     onClick={() => {
-                      setFilterCategories([])
-                      setFilterTags([])
-                      setDisplayFilters(false)
+                      setFilterCategories([]);
+                      setFilterTags([]);
+                      setDisplayFilters(false);
                     }}
                   >
                     Deshacer filtros

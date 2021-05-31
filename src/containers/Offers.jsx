@@ -4,6 +4,9 @@ import { Flex, Box, Text } from '@chakra-ui/layout';
 // Context
 import { SelectedItem } from '../context/SelectedItemContext'
 
+// Lib
+import { hasIndividualOffers } from '../lib/filtersValidation'
+
 // Hooks & actions
 import { connect } from 'react-redux'
 import { fetchProjects } from '../store/actions/projects'
@@ -48,22 +51,35 @@ const Offers = ({
 
   // SEARCH LOGIC
   const [search, setSearch] = useState("");
+
+  const hasIndieOffers = hasIndividualOffers(projects);
+  const [onlyOffers, setOnlyOffers] = useState(false);
+
   const [displayFilters, setDisplayFilters] = useState(false);
 
   const filteredProjects = projects.filter((project) => {
-    if (search !== "") {
+    if (onlyOffers) {
       return (
-        project.projectData.name.toLowerCase().includes(search.toLowerCase()) ||
-        project.projectData.location.address
+        project.projectData.name === null &&
+        (
+          project.projectData.location.address
           .toLowerCase()
           .includes(search.toLowerCase()) ||
-        project.projectOffers.some(({ offerData }) =>
-          offerData.name.toLowerCase().includes(search.toLowerCase()),
+          project.projectOffers.some(({ offerData }) =>
+            offerData.name.toLowerCase().includes(search.toLowerCase()),
+          )
         )
       );
     }
-
-    return true;
+    return (
+      project.projectData.name.toLowerCase().includes(search.toLowerCase()) ||
+      project.projectData.location.address
+        .toLowerCase()
+        .includes(search.toLowerCase()) ||
+      project.projectOffers.some(({ offerData }) =>
+        offerData.name.toLowerCase().includes(search.toLowerCase()),
+      )
+    );
   });
 
   return (
@@ -86,19 +102,31 @@ const Offers = ({
               px={4}
               onClick={() => setDisplayFilters(!displayFilters)}
             >
-              <Text lineHeight={0} fontWeight="bold" fontSize={14}>
-                {!displayFilters 
-                  ? "Filtros"
-                  : "Cerrar"
-                }
+              <Text lineHeight={0} fontSize={14}>
+                {!displayFilters ? "Filtros" : "Cerrar"}
               </Text>
             </Flex>
-            <AccentButton>
-              Crear oferta
-            </AccentButton>
+            <AccentButton>Crear oferta</AccentButton>
           </Flex>
           {displayFilters && (
             <Flex mt={2} alignItems={"center"}>
+              {!hasIndieOffers && (
+                <Flex>
+                  <Text
+                    fontSize={14}
+                    borderRadius={8}
+                    cursor={"pointer"}
+                    border={"1px solid"}
+                    borderColor={"translucid"}
+                    bg={onlyOffers && "darkLight"}
+                    px={4}
+                    py={2}
+                    onClick={() => setOnlyOffers(!onlyOffers)}
+                  >
+                    Ver solo las ofertas
+                  </Text>
+                </Flex>
+              )}
               {true && (
                 <Flex flex={1} justifyContent={"flex-end"}>
                   <Text
@@ -113,7 +141,8 @@ const Offers = ({
                     px={4}
                     py={2}
                     onClick={() => {
-                      setDisplayFilters(false)
+                      setOnlyOffers(false);
+                      setDisplayFilters(false);
                     }}
                   >
                     Deshacer filtros
