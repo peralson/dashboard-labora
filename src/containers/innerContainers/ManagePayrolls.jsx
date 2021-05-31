@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
 import { Flex, Box, Text } from '@chakra-ui/layout';
-import { SelectedItemManage } from '../../context/SelectedItemContext'
+import { SelectedItemManage } from '../../context/SelectedItemContext';
+import Separator from '../../components/ui/Separator';
 
-const PayrollCard = ({data}) => {
-  const { selectedItemManage, setSelectedItemManage } = useContext(SelectedItemManage)
-    const isActive = selectedItemManage
-        ? selectedItemManage.id === data.id
-        : false
+const PayrollCard = ({ data }) => {
+  const { selectedItemManage, setSelectedItemManage } =
+    useContext(SelectedItemManage);
+  const isActive = selectedItemManage
+    ? selectedItemManage.id === data.id
+    : false;
 
   return (
     <Flex
@@ -36,6 +38,7 @@ const PayrollCard = ({data}) => {
       <Text flex={2} fontSize={12} mr={2}>
         {data.worker.name}
       </Text>
+      <Flex flex={1}>
       <Box
         w={'30px'}
         h={'30px'}
@@ -44,19 +47,37 @@ const PayrollCard = ({data}) => {
         borderColor='darkLight'
         bg={data.status === 'paid' ? 'green' : 'yellow'}
       />
+      </Flex>
+      
     </Flex>
   );
 };
 
-
 const ManagePayrolls = ({ data }) => {
   return (
-    <Flex w='100%' flexDirection='column'>
-      {data.map((e) => {
-        return <PayrollCard key={e.id} data={e} />;
-      })}
-    </Flex>
+    <>
+      <Flex alignItems={'center'} p={2} pl={2} mt={2}>
+        <Text flex={2} mr={2} fontWeight={'medium'} fontSize={14}>
+          Fecha
+        </Text>
+        <Text flex={2} mr={2} fontWeight={'medium'} fontSize={14}>
+          Categoría
+        </Text>
+        <Text flex={2} mr={2} fontWeight={'medium'} fontSize={14}>
+          Trabajador
+        </Text>
+        <Text flex={1} mr={2} fontWeight={'medium'} fontSize={14}>
+          Estado
+        </Text>
+      </Flex>
+      <Separator />
+      <Flex w='100%' flexDirection='column'>
+        {data.map((e) => {
+          return <PayrollCard key={e.id} data={e} />;
+        })}
+      </Flex>
+    </>
   );
-}
+};
 
-export default ManagePayrolls
+export default ManagePayrolls;
