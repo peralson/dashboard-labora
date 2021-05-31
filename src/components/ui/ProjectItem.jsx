@@ -65,16 +65,12 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
       <Flex alignItems="center" justifyContent="space-between">
         <Box>
           <Link to={`/ofertas/p/${id}`}>
-            <Text
-              fontSize={21}
-              fontWeight="bold"
-              cursor={"pointer"}
-            >
+            <Text fontSize={21} fontWeight="bold" cursor={"pointer"}>
               {name ? name : projectOffers[0].offerData.name}
             </Text>
           </Link>
           <Text fontSize={14} color="primary">
-            {location.address.split(",")[0]}
+            {location.address}
           </Text>
         </Box>
         <Remaining
