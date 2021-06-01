@@ -1,5 +1,9 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { FETCH_PROJECTS, FETCH_PAST_PROJECTS } from '../actions/projects';
+import {
+  FETCH_PROJECTS,
+  FETCH_PAST_PROJECTS,
+  CREATE_NEW_PROJECT,
+} from "../actions/projects";
 
 const initialState = {
   allProjects: [],
@@ -13,6 +17,12 @@ export default (state = initialState, action) => {
         ...state,
         allProjects: action.projects,
       };
+
+    case CREATE_NEW_PROJECT:
+      return {
+        ...state,
+      };
+
     case FETCH_PAST_PROJECTS:
       return {
         ...state,

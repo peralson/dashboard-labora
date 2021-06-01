@@ -3,9 +3,7 @@ import { Flex } from "@chakra-ui/layout";
 
 const SideSticky = ({ children }) => (
   <Flex
-    position={"sticky"}
-    top={0}
-    h={"100vh"}
+    maxH={"100vh"}
     flexDirection={"column"}
     alignItems={"flex-start"}
     py={4}

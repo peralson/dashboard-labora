@@ -2,6 +2,7 @@ import sortByDate from '../../lib/sortByDate';
 
 export const FETCH_PROJECTS = 'FETCH_PROJECTS';
 export const FETCH_PAST_PROJECTS = 'FETCH_PAST_PROJECTS';
+export const CREATE_NEW_PROJECT = "CREATE_NEW_PROJECT";
 
 export const fetchProjects = () => {
   return async (dispatch, getState) => {
@@ -144,6 +145,15 @@ export const fetchPastProjects = () => {
     dispatch({
       type: FETCH_PAST_PROJECTS,
       pastProjects: pastProjects,
+    });
+  };
+};
+
+export const createProject = (newProject) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: CREATE_NEW_PROJECT,
+      id: "lalala",
     });
   };
 };
