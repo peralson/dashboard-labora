@@ -1,50 +1,35 @@
-import React from 'react';
-
-// Chakra
-import { Button } from '@chakra-ui/react';
+import React, { useState } from 'react';
 import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
   ModalCloseButton,
-  useDisclosure,
-  Flex
+  Flex,
+  Text
 } from '@chakra-ui/react';
 
-// Components
-import Separator from './Separator';
-
-const Popup = ({ mainButton, title, children }) => {
-  const [scrollBehavior] = React.useState('inside');
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const Popup = ({ body, title, children }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <Flex onClick={onOpen}>
-        {mainButton}
+      <Flex onClick={() => setIsOpen(true)}>
+        {children}
       </Flex>
 
       <Modal
         closeOnOverlayClick={false}
         isOpen={isOpen}
-        onClose={onClose}
-        scrollBehavior={scrollBehavior}
+        onClose={() => setIsOpen(false)}
+        scrollBehavior={"inside"}
       >
         <ModalOverlay />
-        <ModalContent bg='darkLight'>
-          <ModalHeader>{title}</ModalHeader>
-          <Separator />
-          <ModalCloseButton />
-          <ModalBody>{children}</ModalBody>
-          <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-              Enviar
-            </Button>
-            <Button colorScheme='red' onClick={onClose}>Cerrar</Button>
-          </ModalFooter>
+        <ModalContent bg='darkLight' p={4}>
+          <Text fontSize={19} mb={4} fontWeight={"bold"}>
+            {title}
+          </Text>
+          <ModalCloseButton _focus={{ borderWidth: 0 }}  />
+          {body}
         </ModalContent>
       </Modal>
     </>

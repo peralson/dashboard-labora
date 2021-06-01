@@ -14,6 +14,9 @@ import {
 import { connect } from 'react-redux'
 import { fetchProjects } from '../store/actions/projects'
 
+// Svg
+import plus from "../assets/svg/plus-white.svg";
+
 // Components
 import Main from '../components/main/Main';
 import TopMain from '../components/main/TopMain';
@@ -25,9 +28,11 @@ import ProjectsContainer from '../components/ui/ProjectsContainer';
 import SearchBar from '../components/ui/SearchBar';
 import ApplicationSide from '../components/ui/ApplicationSide';
 import OfferSide from "../components/ui/OfferSide";
+import Popup from "../components/ui/Popup";
 import AccentButton from "../components/ui/AccentButton";
 import MultipleSelectList from "../components/ui/MultipleSelectList";
 import BeCurious from "../components/ui/BeCurious";
+import ProjectOrOffer from "../components/modals/ProjectOrOffer";
 
 const Offers = ({
   projects,
@@ -149,11 +154,12 @@ const Offers = ({
               <Text lineHeight={0} fontSize={14}>
                 {!displayFilters
                   ? `Filtros${totalFilters > 0 ? ` (${totalFilters})` : ""}`
-                  : "Cerrar filtros"
-                }
+                  : "Cerrar filtros"}
               </Text>
             </Flex>
-            <AccentButton>Crear oferta</AccentButton>
+            <Popup title={"¿Qué quieres crear?"} body={<ProjectOrOffer />}>
+              <AccentButton iconRight={plus}>Crear oferta</AccentButton>
+            </Popup>
           </Flex>
           {displayFilters && (
             <Flex mt={2} alignItems={"center"}>
