@@ -46,10 +46,10 @@ const ProjectDatesSide = ({ id, dates }) => (
         _hover={{ bg: "darkLight" }}
         onClick={() => console.log("Añadiendo fecha")}
       >
+        <Image src={plus} alt={"Añadir día"} mr={2} w={"12px"} />
         <Text fontSize={14} color={"primary"} lineHeight={1.6}>
           Añadir día
         </Text>
-        <Image src={plus} alt={"Añadir día"} ml={2} w={"12px"} />
       </Flex>
     </Flex>
   </Box>

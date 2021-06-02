@@ -19,8 +19,10 @@ export default (state = initialState, action) => {
       };
 
     case CREATE_NEW_PROJECT:
+      const newAllProjects = [...state.allProjects, action.payload];
       return {
         ...state,
+        allProjects: newAllProjects,
       };
 
     case FETCH_PAST_PROJECTS:

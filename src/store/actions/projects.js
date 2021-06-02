@@ -151,9 +151,51 @@ export const fetchPastProjects = () => {
 
 export const createProject = (newProject) => {
   return async (dispatch, getState) => {
+    // const token = getState().auth.token;
+
+    const response = await fetch(
+      "https://us-central1-partime-60670.cloudfunctions.net/api/event/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: newProject.name,
+          dates: newProject.dates,
+          location: {
+            address: newProject.location.address,
+            lat: newProject.location.lat,
+            lng: newProject.location.lng,
+          },
+          description: newProject.description,
+        }),
+      },
+    );
+
+    // if (!response.ok) throw new Error("Ha habido un error en la conexión");
+
+    const resData = await response.json();
+    const id = resData.body;
+
     dispatch({
       type: CREATE_NEW_PROJECT,
-      id: "lalala",
+      payload: {
+        id: id,
+        projectData: {
+          ...newProject,
+          dates: [{
+            _seconds: parseInt(new Date(newProject.dates[0]).getTime() / 1000)
+          }],
+          id_company: "2T3NK8AYAphTK3LWTleV9aH8C6G3",
+          id: id,
+          jobs: 0,
+        },
+        projectOffers: [], 
+      },
     });
+
+    return id;
   };
-};
+};;

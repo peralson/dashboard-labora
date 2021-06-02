@@ -22,9 +22,7 @@ const TopButton = ({
     onClick={onSelect}
   >
     {left && <Image src={icon} mr={2} w={"12px"} />}
-    <Text fontSize={16} color={danger ? "red.full" : "primary"}>
-      {children}
-    </Text>
+    <Text color={danger ? "red.full" : "primary"}>{children}</Text>
     {right && <Image src={icon} ml={2} w={"12px"} />}
   </Flex>
 );

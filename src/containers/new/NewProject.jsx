@@ -1,6 +1,6 @@
-import React, { useReducer } from "react";
+import React, { useState, useReducer } from "react";
 import { Link } from "react-router-dom";
-import { Box, Grid, Text, Input } from "@chakra-ui/react";
+import { Grid, Text, Box } from "@chakra-ui/react";
 
 // Redux
 import { connect } from "react-redux";
@@ -10,23 +10,52 @@ import { createProject } from "../../store/actions/projects";
 import { NewProjectContext } from "../../context/newCreations";
 import { initialState, reducer, validateForm } from "../../lib/newProjectState";
 
-// svg
+// SVG
 import plus from "../../assets/svg/plus.svg";
+
+// ENV & GMaps
+import { firebaseConfig, LIBRARIES } from "../../env";
+import { useLoadScript } from "@react-google-maps/api";
 
 // Components
 import Main from "../../components/main/Main";
 import TopMain from "../../components/main/TopMain";
-import NewTopHeaderBar from "../../components/new/NewTopHeaderBar";
 import Side from "../../components/main/Side";
-import TopButton from "../../components/ui/TopButton";
 import SideSticky from "../../components/main/SideSticky";
+import NewTopHeaderBar from "../../components/new/NewTopHeaderBar";
+import TopButton from "../../components/ui/TopButton";
 import SideBoxContainer from "../../components/ui/SideBoxContainer";
+import CustomInput from "../../components/new/CustomInput";
 import ProjectValidation from "../../components/new/ProjectValidation";
+import PlacesAutocompleteInput from "../../components/new/PlacesAutocompleteInput";
+import ProjectPickDates from "../../components/new/ProjectPickDates";
+
+const handleTurnDates = dates => {
+  return dates
+}
 
 const NewProject = ({ history, createProject }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { isValid } = validateForm(state);
 
-  const isValid = validateForm(state);
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: firebaseConfig.apiKey,
+    libraries: LIBRARIES,
+  });
+
+  const handleCreateProject = async () => {
+    setError(null)
+    if (isValid) {
+      setLoading(true)
+      const turnDate = state.dates.length === 1 ? state.dates : handleTurnDates(state.dates)
+      createProject({ ...state, dates: turnDate })
+        .then(id => history.push(`../p/${id}`))
+        .catch((e) => setError(e.message))
+        .finally(() => setLoading(false))
+    }
+  }
 
   return (
     <NewProjectContext.Provider value={{ state, dispatch }}>
@@ -41,35 +70,59 @@ const NewProject = ({ history, createProject }) => {
               </Link>
             }
             rightButton={
-              <TopButton
-                right
-                inactive={!isValid}
-                icon={plus}
-                onSelect={() => {
-                  if (isValid) {
-                    createProject(state);
-                    history.push("../../");
-                  }
-                }}
-              >
-                Crear
-              </TopButton>
+              !loading
+                ? <TopButton
+                  right
+                  inactive={!isValid}
+                  icon={plus}
+                  onSelect={handleCreateProject}
+                >
+                  Crear
+                </TopButton>
+                : <Text py={1} px={2} color={"primary"}>Creando proyecto...</Text>
             }
           >
             Nuevo Proyecto
           </NewTopHeaderBar>
         </TopMain>
-        <Grid w={"100%"} rowGap={4} mt={2}>
-          <Box>
-            <Text mb={2}>Nombre</Text>
-            <Input
-              value={state.name}
-              placeholder={"Nombre del proyecto"}
-              onChange={(e) =>
-                dispatch({ type: "editName", payload: e.target.value })
-              }
-            />
-          </Box>
+        <Grid w={"100%"} maxW={"600px"} mx={"auto"} rowGap={4} my={4}>
+          {error && (
+            <Box py={2} px={4} borderRadius={10} bg={"red.smooth"}>
+              <Text fontWeight={"bold"} color={"red.full"} mb={2}>
+                Oh! Vaya... algo salió mal
+              </Text>
+              <Text color={"red.full"}>
+                Error: {error}
+              </Text>
+            </Box>
+          )}
+          <CustomInput
+            title={"Nombre"}
+            value={state.name}
+            placeholder={"Introduce el nombre del proyecto"}
+            onChange={(e) =>
+              dispatch({ type: "editName", payload: e.target.value })
+            }
+          />
+          {!isLoaded
+            ? <Text>Cargando...</Text>
+            : loadError
+              ? <Text>Ha ocurrido un error</Text>
+              : (<PlacesAutocompleteInput
+            title={"Dirección"}
+            placeholder={"Introduce la dirección"}
+          />)}
+          <CustomInput
+            title={"Descripción"}
+            optional
+            multiline
+            value={state.description}
+            placeholder={"Describe de qué trata el proyecto"}
+            onChange={(e) =>
+              dispatch({ type: "editDescription", payload: e.target.value })
+            }
+          />
+          <ProjectPickDates />
         </Grid>
       </Main>
       <Side>

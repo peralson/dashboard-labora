@@ -158,7 +158,7 @@ const Offers = ({
               </Text>
             </Flex>
             <Popup title={"¿Qué quieres crear?"} body={<ProjectOrOffer />}>
-              <AccentButton iconRight={plus}>Crear oferta</AccentButton>
+              <AccentButton iconLeft={plus}>Crear oferta</AccentButton>
             </Popup>
           </Flex>
           {displayFilters && (

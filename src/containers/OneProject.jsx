@@ -36,7 +36,10 @@ const OneProject = ({ match, history, projects }) => {
     <SelectedProject.Provider value={{ selectedItemIndie, setSelectedItemIndie }}>
       <Main>
         <TopMain>
-          <TopHeaderBar history={history} onEdit={() => console.log("Editing")}>
+          <TopHeaderBar
+            onGoBack={() => project.projectOffers.length !== 0 ? history.goBack() : history.push(`../../`)}
+            onEdit={() => console.log("Editing")}
+          >
             Proyecto
           </TopHeaderBar>
         </TopMain>
@@ -45,7 +48,7 @@ const OneProject = ({ match, history, projects }) => {
             columnGap={8}
             width={"100%"}
             templateColumns={"3fr 1fr"}
-            my={4}
+            my={6}
           >
             <Box>
               <TextInfo title="Nombre" info={project.projectData.name} mb={4} />
@@ -65,31 +68,27 @@ const OneProject = ({ match, history, projects }) => {
               />
             </Box>
           </Grid>
-          {project.projectOffers.length > 0 && (
-            <>
-              <Flex mb={2} alignItems={"center"}>
-                <Text flex={1} fontSize={19} fontWeight={"bold"} lineHeight={2}>
-                  Ofertas de este proyecto
-                </Text>
-                <Flex py={0.5} px={2} cursor={"pointer"} borderRadius={8} _hover={{ bg: "translucid" }}>
-                  <Image src={plus} alt={"Añadir día"} mr={2} w={"12px"} />
-                  <Text fontSize={14} color={"primary"} lineHeight={2}>
-                    Añadir nueva oferta
-                  </Text>
-                </Flex>
-              </Flex>
-              <Grid
-                w={"100%"}
-                templateColumns={"1fr 1fr 1fr"}
-                columnGap={4}
-                rowGap={4}
-              >
-                {project.projectOffers.map(offer => (
-                  <ProjectOfferItem key={offer.id} offer={offer} />
-                ))}
-              </Grid>
-            </>
-          )}
+          <Flex mb={2} alignItems={"center"}>
+            <Text flex={1} fontSize={19} fontWeight={"bold"} lineHeight={2}>
+              Ofertas de este proyecto
+            </Text>
+            <Flex py={0.5} px={2} cursor={"pointer"} borderRadius={8} _hover={{ bg: "translucid" }}>
+              <Image src={plus} alt={"Añadir día"} mr={2} w={"12px"} />
+              <Text fontSize={14} color={"primary"} lineHeight={2}>
+                Añadir nueva oferta
+              </Text>
+            </Flex>
+          </Flex>
+          <Grid
+            w={"100%"}
+            templateColumns={"1fr 1fr 1fr"}
+            columnGap={4}
+            rowGap={4}
+          >
+            {project.projectOffers.map(offer => (
+              <ProjectOfferItem key={offer.id} offer={offer} />
+            ))}
+          </Grid>
         </Box>
       </Main>
       <Side>

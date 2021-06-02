@@ -83,9 +83,9 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
           borderRadius={20}
         />
       </Flex>
-      {name && (
+      {name && projectOffers.length !== 0 && (
         <Box mt={6}>
-          <Text fontSize={18} fontWeight="bold" lineHeight={2} mb={2}>
+          <Text fontWeight={"bold"} lineHeight={2} mb={2}>
             Ofertas
           </Text>
           <Grid w={"100%"} templateColumns={"1fr 1fr 1fr"} columnGap={2}>
@@ -98,7 +98,7 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
       {totalApplications !== 0 && (
         <Box mt={6}>
           <Flex mb={2} alignItems={"center"} justifyContent={"space-between"}>
-            <Text fontSize={18} fontWeight="bold" lineHeight={2}>
+            <Text fontWeight={"bold"} lineHeight={2}>
               {!offerName
                 ? "Todas las solicitudes"
                 : `Solicitudes de ${offerName}`}

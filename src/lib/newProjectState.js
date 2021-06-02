@@ -3,14 +3,28 @@ export const initialState = {
   location: {
     lat: null,
     lng: null,
-    address: null,
+    address: "",
   },
   description: "",
   dates: [],
 };
 
 export const validateForm = (state) => {
-  return true;
+  const hasName = state.name !== "";
+  const isNameLong = state.name.length >= 3;
+  const hasAddress =
+    state.location.address !== "" &&
+    state.location.lat !== null &&
+    state.location.lng !== null;
+  const hasDates = state.dates.length !== 0;
+
+  return {
+    isValid: hasName && hasAddress && hasDates && isNameLong,
+    hasName: hasName,
+    hasAddress: hasAddress,
+    hasDates: hasDates,
+    isNameLong: isNameLong,
+  };
 };
 
 export const reducer = (state, action) => {
@@ -27,16 +41,16 @@ export const reducer = (state, action) => {
         description: action.payload,
       };
 
-    case "addDate":
+    case "setAddress":
       return {
         ...state,
-        dates: state.dates.push(action.payload),
+        location: action.payload,
       };
 
-    case "removeDate":
+    case "setDates":
       return {
         ...state,
-        dates: state.dates.filter((date) => date !== action.payload),
+        dates: action.payload,
       };
 
     default:

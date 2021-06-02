@@ -8,7 +8,7 @@ const PageGrid = ({ children }) => (
     maxW="1400px"
     width="100vw"
     p={"0px 24px"}
-    templateColumns="2fr 12fr 6fr"
+    templateColumns="3fr 13fr 6fr"
     margin="0 auto"
   >
     <Menu />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Flex, Box } from '@chakra-ui/layout';
+import { Flex, Box, Image } from "@chakra-ui/react";
 import { Link } from 'react-router-dom';
 import MenuItem from '../ui/MenuItem';
 
@@ -18,11 +18,16 @@ const Menu = () => {
   const isHere = pathname => currentLocation.pathname.includes(pathname);
 
   return (
-    <Flex flexDirection="column" alignItems="center" height="100vh">
-      <Box position="fixed">
+    <Flex flexDirection="column" alignItems="flex-end">
+      <Box
+        position={"fixed"}
+        borderRightWidth={2}
+        borderRightColor={"translucid"}
+        height={"100vh"}
+      >
         <Box mb={6} mt={5}>
           <Link to="/">
-            <img src={Logo} alt="Logo de Labora" width="110px" />
+            <Image src={Logo} alt="Logo de Labora" w="115px" />
           </Link>
         </Box>
         <Link to="/ofertas">

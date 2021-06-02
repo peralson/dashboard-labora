@@ -9,26 +9,16 @@ import edit from "../../assets/svg/edit.svg";
 import TopHeaderTitle from "./TopHeaderTitle";
 import TopButton from "./TopButton";
 
-const TopHeaderBar = ({ history, children, onEdit }) => (
+const TopHeaderBar = ({ onGoBack, children, onEdit }) => (
   <Flex alignItems={"center"} justifyContent={"space-evenly"}>
     <Box maxW={"100%"}>
-      <TopButton
-        left
-        icon={back}
-        onSelect={() => history.goBack()}
-      >
+      <TopButton left icon={back} onSelect={onGoBack}>
         Volver
       </TopButton>
     </Box>
-    <TopHeaderTitle>
-      {children}
-    </TopHeaderTitle>
+    <TopHeaderTitle>{children}</TopHeaderTitle>
     <Box maxW={"100%"}>
-      <TopButton
-        rigth
-        icon={edit}
-        onSelect={() => {}}
-      >
+      <TopButton rigth icon={edit} onSelect={onEdit}>
         Editar
       </TopButton>
     </Box>

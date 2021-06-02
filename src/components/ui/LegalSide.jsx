@@ -38,10 +38,10 @@ const LegalSide = ({ id, salary, extraSalary, extras }) => {
           borderRadius={10}
           alignItems={"center"}
         >
-          <Text mr={2} color={"primary"} fontSize={14}>
+          <Image src={download} alt={"Descargar contrato"} w={"12px"} />
+          <Text ml={2} color={"primary"} fontSize={14}>
             Descargar
           </Text>
-          <Image src={download} alt={"Descargar contrato"} w={"13px"} />
         </Flex>
       </Flex>
       <SideTitle>Detalles de la nómina</SideTitle>
