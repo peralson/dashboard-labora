@@ -30,10 +30,6 @@ import ProjectValidation from "../../components/new/ProjectValidation";
 import PlacesAutocompleteInput from "../../components/new/PlacesAutocompleteInput";
 import ProjectPickDates from "../../components/new/ProjectPickDates";
 
-const handleTurnDates = dates => {
-  return dates
-}
-
 const NewProject = ({ history, createProject }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [loading, setLoading] = useState(false);
@@ -49,11 +45,10 @@ const NewProject = ({ history, createProject }) => {
     setError(null)
     if (isValid) {
       setLoading(true)
-      const turnDate = state.dates.length === 1 ? state.dates : handleTurnDates(state.dates)
-      createProject({ ...state, dates: turnDate })
-        .then(id => history.push(`../p/${id}`))
+      createProject(state)
+        .then((id) => history.push(`../p/${id}`))
         .catch((e) => setError(e.message))
-        .finally(() => setLoading(false))
+        .finally(() => setLoading(false));
     }
   }
 

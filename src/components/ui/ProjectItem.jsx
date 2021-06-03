@@ -63,7 +63,7 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
         </Link>
       </Flex>
       <Flex alignItems={"center"} justifyContent={"space-between"}>
-        <Box>
+        <Box flex={1}>
           <Link to={`/ofertas/p/${id}`}>
             <Text fontSize={21} fontWeight="bold" cursor={"pointer"}>
               {name ? name : projectOffers[0].offerData.name}
@@ -73,15 +73,17 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
             {location.address}
           </Text>
         </Box>
-        <Remaining
-          alreadyassigned={alreadyAssigned}
-          qty={qty}
-          success={"Equipo completo"}
-          px={4}
-          py={2.5}
-          fontSize={16}
-          borderRadius={20}
-        />
+        {projectOffers.length !== 0 && (
+          <Remaining
+            alreadyassigned={alreadyAssigned}
+            qty={qty}
+            success={"Equipo completo"}
+            px={4}
+            py={2.5}
+            fontSize={16}
+            borderRadius={20}
+          />
+        )}
       </Flex>
       {name && projectOffers.length !== 0 && (
         <Box mt={6}>

@@ -5,10 +5,13 @@ import { Image } from "@chakra-ui/image";
 // Custom
 import { SelectedProject } from '../context/SelectedItemContext'
 import { connect } from "react-redux";
+import { deleteProject } from "../store/actions/projects";
 
 // SVG
 import calendar from "../assets/svg/calendar.svg";
 import plus from "../assets/svg/plus.svg";
+import plusWhite from "../assets/svg/plus-white.svg";
+import task from "../assets/svg/task-to-do.svg";
 
 // Components
 import Main from "../components/main/Main";
@@ -24,35 +27,67 @@ import Documentation from "../components/main/Documentation";
 import ProjectDatesSide from "../components/ui/ProjectDatesSide";
 import OfferSide from "../components/ui/OfferSide";
 import ProjectOfferItem from "../components/ui/ProjectOfferItem";
+import AccentButton from "../components/ui/AccentButton";
+import DeleteButton from "../components/ui/DeleteButton";
 
-const OneProject = ({ match, history, projects }) => {
+const OneProject = ({
+  match,
+  history,
+  projects,
+  deleteProject
+}) => {
   const { id } = match.params;
   
   const project = projects.find(p => p.id === id);
 
+  const [loadingDel, setLoadingDel] = useState(false);
+  const [errorDel, setErrorDel] = useState(false);
   const [selectedItemIndie, setSelectedItemIndie] = useState(null);
 
+  if (!project) return <Box></Box>;
+
+  const handleDeleteProject = () => {
+    setErrorDel(null)
+    setLoadingDel(true)
+    deleteProject(id)
+      .then(() => history.push('../../'))
+      .catch(e => console.log(true))
+      .finally(() => setLoadingDel(false))
+  }
+
   return (
-    <SelectedProject.Provider value={{ selectedItemIndie, setSelectedItemIndie }}>
+    <SelectedProject.Provider
+      value={{ selectedItemIndie, setSelectedItemIndie }}
+    >
       <Main>
         <TopMain>
           <TopHeaderBar
-            onGoBack={() => project.projectOffers.length !== 0 ? history.goBack() : history.push(`../../`)}
+            onGoBack={() =>
+              project.projectOffers.length !== 0
+                ? history.goBack()
+                : history.push(`../../`)
+            }
             onEdit={() => console.log("Editing")}
           >
             Proyecto
           </TopHeaderBar>
         </TopMain>
         <Box pb={10}>
-          <Grid
-            columnGap={8}
-            width={"100%"}
-            templateColumns={"3fr 1fr"}
-            my={6}
-          >
+          {errorDel && (
+            <Box py={3} px={4} borderRadius={10} bg={"red.smooth"} mt={4}>
+              <Text color={"red.full"}>
+                Ha habido un problema al borrar el proyecto. Inténtalo más tarde.
+              </Text>
+            </Box>
+          )}
+          <Grid columnGap={8} width={"100%"} templateColumns={"3fr 1fr"} my={6} mt={errorDel ? 4 : 6}>
             <Box>
               <TextInfo title="Nombre" info={project.projectData.name} mb={4} />
-              <TextInfo title="Dirección" info={project.projectData.location.address} mb={4} />
+              <TextInfo
+                title="Dirección"
+                info={project.projectData.location.address}
+                mb={4}
+              />
               <TextInfo
                 title="Descripción"
                 info={project.projectData.description}
@@ -68,27 +103,49 @@ const OneProject = ({ match, history, projects }) => {
               />
             </Box>
           </Grid>
-          <Flex mb={2} alignItems={"center"}>
-            <Text flex={1} fontSize={19} fontWeight={"bold"} lineHeight={2}>
+          <Flex mb={4} alignItems={"center"}>
+            <Text flex={1} fontSize={19} fontWeight={"bold"}>
               Ofertas de este proyecto
             </Text>
-            <Flex py={0.5} px={2} cursor={"pointer"} borderRadius={8} _hover={{ bg: "translucid" }}>
-              <Image src={plus} alt={"Añadir día"} mr={2} w={"12px"} />
-              <Text fontSize={14} color={"primary"} lineHeight={2}>
-                Añadir nueva oferta
-              </Text>
-            </Flex>
+            {project.projectOffers.length === 0 && <AccentButton iconLeft={plusWhite} py={3.5}> 
+              Añadir una oferta
+            </AccentButton>}
           </Flex>
-          <Grid
-            w={"100%"}
-            templateColumns={"1fr 1fr 1fr"}
-            columnGap={4}
-            rowGap={4}
-          >
-            {project.projectOffers.map(offer => (
-              <ProjectOfferItem key={offer.id} offer={offer} />
-            ))}
-          </Grid>
+          {project.projectOffers.length !== 0 ? (
+            <Grid
+              w={"100%"}
+              templateColumns={"1fr 1fr 1fr"}
+              columnGap={4}
+              rowGap={4}
+            >
+              {project.projectOffers.map((offer) => (
+                <ProjectOfferItem key={offer.id} offer={offer} />
+              ))}
+              <Flex
+                cursor={"pointer"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                py={4}
+                borderRadius={10}
+                borderWidth={1}
+                borderColor={"primary"}
+              >
+                <Image src={plus} mr={2} w={"19px"} />
+                <Text fontSize={19} color={"primary"}>
+                  Añadir oferta
+                </Text>
+              </Flex>
+            </Grid>
+          ) : (
+            <Flex w={"100%"} my={6} alignItems={"center"} justifyContent={"center"} flexDirection={"column"}>
+              <Image src={task} mb={4} w={"140px"} />
+            </Flex>
+          )}
+          <Flex w={"100%"} mt={10}>
+            <DeleteButton onDelete={handleDeleteProject} type={"el proyecto"}>
+              {loadingDel ? 'Borrando...' : 'Eliminar proyecto'}
+            </DeleteButton>
+          </Flex>
         </Box>
       </Main>
       <Side>
@@ -99,7 +156,10 @@ const OneProject = ({ match, history, projects }) => {
               <BeCurious text={"Selecciona alguna oferta de este proyecto"} />
             )}
             {selectedItemIndie && selectedItemIndie === "Fechas" && (
-              <ProjectDatesSide id={project.id} dates={project.projectData.dates} />
+              <ProjectDatesSide
+                id={project.id}
+                dates={project.projectData.dates}
+              />
             )}
             {selectedItemIndie && selectedItemIndie.offerData && (
               <OfferSide data={selectedItemIndie} />
@@ -117,6 +177,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  deleteProject
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OneProject);

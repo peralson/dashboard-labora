@@ -3,6 +3,7 @@ import {
   FETCH_PROJECTS,
   FETCH_PAST_PROJECTS,
   CREATE_NEW_PROJECT,
+  DELETE_PROJECT,
 } from "../actions/projects";
 
 const initialState = {
@@ -23,6 +24,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         allProjects: newAllProjects,
+      };
+
+    case DELETE_PROJECT:
+      const deletedAllProjects = state.allProjects.filter(
+        (project) => project.id !== action.id,
+      );
+      return {
+        ...state,
+        allProjects: deletedAllProjects,
       };
 
     case FETCH_PAST_PROJECTS:

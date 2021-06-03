@@ -3,6 +3,7 @@ import sortByDate from '../../lib/sortByDate';
 export const FETCH_PROJECTS = 'FETCH_PROJECTS';
 export const FETCH_PAST_PROJECTS = 'FETCH_PAST_PROJECTS';
 export const CREATE_NEW_PROJECT = "CREATE_NEW_PROJECT";
+export const DELETE_PROJECT = "DELETE_PROJECT";
 
 export const fetchProjects = () => {
   return async (dispatch, getState) => {
@@ -152,6 +153,7 @@ export const fetchPastProjects = () => {
 export const createProject = (newProject) => {
   return async (dispatch, getState) => {
     // const token = getState().auth.token;
+    // const companyId = getState().auth.id;
 
     const response = await fetch(
       "https://us-central1-partime-60670.cloudfunctions.net/api/event/",
@@ -174,7 +176,7 @@ export const createProject = (newProject) => {
       },
     );
 
-    // if (!response.ok) throw new Error("Ha habido un error en la conexión");
+    if (!response.ok) throw new Error("Ha habido un error en la conexión");
 
     const resData = await response.json();
     const id = resData.body;
@@ -185,9 +187,7 @@ export const createProject = (newProject) => {
         id: id,
         projectData: {
           ...newProject,
-          dates: [{
-            _seconds: parseInt(new Date(newProject.dates[0]).getTime() / 1000)
-          }],
+          dates: newProject.dates.map(date => ({ _seconds: date / 1000 })),
           id_company: "2T3NK8AYAphTK3LWTleV9aH8C6G3",
           id: id,
           jobs: 0,
@@ -198,4 +198,29 @@ export const createProject = (newProject) => {
 
     return id;
   };
-};;
+};
+
+export const deleteProject = (projectId) => {
+  return async (dispatch, getState) => {
+    // const token = getState().auth.token;
+    // const companyId = getState().auth.id;
+
+    const response = await fetch(
+      `https://us-central1-partime-60670.cloudfunctions.net/api/event/${projectId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    if (!response.ok) throw new Error();
+
+    dispatch({
+      type: DELETE_PROJECT,
+      id: projectId
+    });
+  };
+};

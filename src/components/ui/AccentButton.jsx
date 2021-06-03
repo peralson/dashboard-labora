@@ -2,7 +2,7 @@ import React from "react";
 import { Flex, Text } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
 
-const AccentButton = ({ children, onClick, iconLeft, iconRight }) => (
+const AccentButton = (props) => (
   <Flex
     _hover={{ cursor: "pointer" }}
     bg={"accent"}
@@ -10,13 +10,14 @@ const AccentButton = ({ children, onClick, iconLeft, iconRight }) => (
     ml={2}
     alignItems={"center"}
     px={4}
-    onClick={onClick}
+    onClick={props.onClick}
+    {...props}
   >
-    {iconLeft && <Image src={iconLeft} w={"10px"} mr={2} />}
+    {props.iconLeft && <Image src={props.iconLeft} w={"10px"} mr={2} />}
     <Text lineHeight={0} fontWeight="bold" fontSize={14}>
-      {children}
+      {props.children}
     </Text>
-    {iconRight && <Image src={iconRight} w={"10px"} ml={2} />}
+    {props.iconRight && <Image src={props.iconRight} w={"10px"} ml={2} />}
   </Flex>
 );
 
