@@ -44,7 +44,10 @@ const OneOffer = ({ match, history, projects }) => {
     >
       <Main>
         <TopMain>
-          <TopHeaderBar history={history} onEdit={() => console.log("Editing")}>
+          <TopHeaderBar
+            onGoBack={() => history.push(`../../`)}
+            onEdit={() => console.log("Editing")}
+          >
             Oferta
           </TopHeaderBar>
         </TopMain>
