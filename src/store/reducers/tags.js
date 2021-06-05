@@ -1,15 +1,15 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { FETCH_WORKERS } from '../actions/workers';
+import { FETCH_TAGS } from '../actions/tags';
 
 const initialState = {
-  allWorkers: [],
+  allTags: [],
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_WORKERS:
+    case FETCH_TAGS:
       return {
-        allWorkers: action.workers,
+        allTags: action.tags,
       };
 
     default:

@@ -21,6 +21,8 @@ import projectsReducer from "./store/reducers/projects";
 import contractsReducer from "./store/reducers/contracts";
 import payrollsReducer from "./store/reducers/payrolls";
 import templatesReducer from "./store/reducers/templates";
+import tagsReducer from "./store/reducers/tags";
+import categoriesReducer from "./store/reducers/categories";
 
 // App
 import App from './routes/App';
@@ -40,6 +42,8 @@ const rootReducer = combineReducers({
   contracts: contractsReducer,
   payrolls: payrollsReducer,
   templates: templatesReducer,
+  tags: tagsReducer,
+  categories: categoriesReducer,
 });
 
 // y agregamos nuestro reducer global al store de Redux

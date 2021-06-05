@@ -1,16 +1,16 @@
 export const getTagsAndCategoriesFromWorker = (workers) => {
-  let categories = [];
-  let tags = [];
+  let currentCategories = [];
+  let currentTags = [];
   workers.forEach((worker) => {
     worker.tags.forEach((tag) => {
-      if (tags.includes(tag)) return;
-      tags.push(tag);
+      if (currentTags.includes(tag)) return;
+      currentTags.push(tag);
     });
     worker.categories.forEach((cat) => {
-      if (categories.includes(cat)) return;
-      categories.push(cat);
+      if (currentCategories.includes(cat)) return;
+      currentCategories.push(cat);
     });
   });
 
-  return { categories, tags };
+  return { currentCategories, currentTags };
 };

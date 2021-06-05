@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Flex, Text } from "@chakra-ui/layout";
+import { Flex, Text } from '@chakra-ui/layout';
 
 // Context
-import { SelectedWorker } from '../context/SelectedItemContext'
+import { SelectedWorker } from '../context/SelectedItemContext';
 
 // Lib
-import { getTagsAndCategoriesFromWorker } from '../lib/workers'
+import { getTagsAndCategoriesFromWorker } from '../lib/workers';
 
 // Redux & Actions
 import { connect } from 'react-redux';
 import { fetchWorkers } from '../store/actions/workers';
+import { fetchTags } from '../store/actions/tags';
+import { fetchCategories } from '../store/actions/categories';
 
 // Components
 import Main from '../components/main/Main';
 import TopMain from '../components/main/TopMain';
 import Side from '../components/main/Side';
 import SideSticky from '../components/main/SideSticky';
-import SideBoxContainer from "../components/ui/SideBoxContainer";
+import SideBoxContainer from '../components/ui/SideBoxContainer';
 import SearchBar from '../components/ui/SearchBar';
 import WorkersTableGuide from '../components/ui/WorkersTableGuide';
 import WorkersTable from '../components/ui/WorkersTable';
@@ -25,30 +27,42 @@ import WorkerSide from '../components/ui/WorkerSide';
 import BeCurious from '../components/ui/BeCurious';
 import AccentButton from '../components/ui/AccentButton';
 import Documentation from '../components/main/Documentation';
+import Popup from "../components/ui/Popup";
+import ShareLink from '../components/modals/ShareLink';
 
-const Workers = ({ fetchWorkers, workers }) => {
-  const [selectedWorker, setSelectedWorker] = useState(null)
-  const { tags, categories } = getTagsAndCategoriesFromWorker(workers);
+const Workers = ({
+  fetchWorkers,
+  workers,
+  fetchTags,
+  tags,
+  fetchCategories,
+  categories,
+}) => {
+  const [selectedWorker, setSelectedWorker] = useState(null);
+  const { currentTags, currentCategories } =
+    getTagsAndCategoriesFromWorker(workers);
 
   const [workersError, setWorkersError] = useState(null);
   const [workersLoading, setWorkersLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
-      setWorkersError(null)
+      setWorkersError(null);
       if (workers.length === 0) {
-        setWorkersLoading(true)
+        setWorkersLoading(true);
       }
       try {
-        await fetchWorkers()
+        await fetchWorkers();
+        await fetchTags();
+        await fetchCategories();
       } catch (error) {
-        setWorkersError(error.message)
+        setWorkersError(error.message);
       } finally {
-        setWorkersLoading(false)
+        setWorkersLoading(false);
       }
-    })()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchWorkers])
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchWorkers, fetchTags, fetchCategories]);
 
   // SEARCH & FILTER LOGIC
   const [search, setSearch] = useState('');
@@ -62,7 +76,7 @@ const Workers = ({ fetchWorkers, workers }) => {
       setFilterCategories([...filterCategories, event.target.name]);
     } else {
       setFilterCategories(
-        filterCategories.filter((cat) => cat !== event.target.name),
+        filterCategories.filter((cat) => cat !== event.target.name)
       );
     }
   };
@@ -130,17 +144,17 @@ const Workers = ({ fetchWorkers, workers }) => {
         <TopMain pb={0}>
           <Flex>
             <SearchBar
-              placeholder={"Busca trabajadores por su nombre"}
+              placeholder={'Busca trabajadores por su nombre'}
               onChange={(event) => setSearch(event.target.value)}
             />
             <Flex
               borderRadius={8}
-              _hover={{ cursor: "pointer" }}
-              border={"1px solid"}
-              borderColor={"translucid"}
-              bg={(displayFilters || totalFilters > 0) && "darkLight"}
+              _hover={{ cursor: 'pointer' }}
+              border={'1px solid'}
+              borderColor={'translucid'}
+              bg={(displayFilters || totalFilters > 0) && 'darkLight'}
               ml={2}
-              alignItems={"center"}
+              alignItems={'center'}
               px={4}
               onClick={() => setDisplayFilters(!displayFilters)}
             >
@@ -148,50 +162,52 @@ const Workers = ({ fetchWorkers, workers }) => {
                 {!displayFilters
                   ? totalFilters > 0
                     ? `Filtros (${totalFilters})`
-                    : "Filtros"
-                  : "Cerrar"}
+                    : 'Filtros'
+                  : 'Cerrar'}
               </Text>
             </Flex>
-            <AccentButton>Invitar trabajadores</AccentButton>
+            <Popup title={"Invitar trabajadores"} body={<ShareLink data={categories.map((e) => e.id)}/>}>
+              <AccentButton>Invitar trabajadores</AccentButton>
+            </Popup>
           </Flex>
           {displayFilters && (
-            <Flex mt={2} alignItems={"center"}>
-              {categories.length !== 0 && (
+            <Flex mt={2} alignItems={'center'}>
+              {currentCategories.length !== 0 && (
                 <MultipleSelectList
                   title={`Categorías${
                     filterCategories.length > 0
                       ? ` (${filterCategories.length})`
-                      : ""
+                      : ''
                   }`}
-                  bg={filterCategories.length !== 0 && "darkLight"}
+                  bg={filterCategories.length !== 0 && 'darkLight'}
                   current={filterCategories}
-                  values={categories}
+                  values={currentCategories}
                   onChange={handleCategories}
                 />
               )}
-              {tags.length !== 0 && (
+              {currentTags.length !== 0 && (
                 <MultipleSelectList
                   title={`Etiquetas${
-                    filterTags.length > 0 ? ` (${filterTags.length})` : ""
+                    filterTags.length > 0 ? ` (${filterTags.length})` : ''
                   }`}
                   ml={2}
-                  bg={filterTags.length !== 0 && "darkLight"}
+                  bg={filterTags.length !== 0 && 'darkLight'}
                   current={filterTags}
-                  values={tags}
+                  values={currentTags}
                   onChange={handleTags}
                 />
               )}
               {totalFilters !== 0 && (
-                <Flex flex={1} justifyContent={"flex-end"}>
+                <Flex flex={1} justifyContent={'flex-end'}>
                   <Text
-                    color={"red.full"}
+                    color={'red.full'}
                     fontSize={14}
                     ml={2}
                     borderRadius={8}
-                    _hover={{ bg: "red.smooth" }}
-                    cursor={"pointer"}
-                    border={"1px solid"}
-                    borderColor={"translucid"}
+                    _hover={{ bg: 'red.smooth' }}
+                    cursor={'pointer'}
+                    border={'1px solid'}
+                    borderColor={'translucid'}
                     px={4}
                     py={2}
                     onClick={() => {
@@ -213,11 +229,11 @@ const Workers = ({ fetchWorkers, workers }) => {
           />
         </TopMain>
         {workersLoading ? (
-          <Text textAlign={"center"} py={10}>
+          <Text textAlign={'center'} py={10}>
             Cargando...
           </Text>
         ) : workersError ? (
-          <Text textAlign={"center"} py={10}>
+          <Text textAlign={'center'} py={10}>
             Ha ocurrido un error
           </Text>
         ) : (
@@ -234,7 +250,7 @@ const Workers = ({ fetchWorkers, workers }) => {
           <SideBoxContainer>
             {!selectedWorker && (
               <BeCurious
-                text={"Prueba a seleccionar a uno o varios trabajadores"}
+                text={'Prueba a seleccionar a uno o varios trabajadores'}
               />
             )}
             {selectedWorker && <WorkerSide data={selectedWorker} />}
@@ -247,11 +263,15 @@ const Workers = ({ fetchWorkers, workers }) => {
 
 const mapDispatchToProps = {
   fetchWorkers,
+  fetchTags,
+  fetchCategories,
 };
 
 const mapStateToProps = (state) => {
   return {
     workers: state.workers.allWorkers,
+    tags: state.tags.allTags,
+    categories: state.categories.allCategories,
   };
 };
 
