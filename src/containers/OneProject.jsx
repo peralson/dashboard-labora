@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Box, Text, Grid, Flex } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
 
@@ -107,9 +108,13 @@ const OneProject = ({
             <Text flex={1} fontSize={19} fontWeight={"bold"}>
               Ofertas de este proyecto
             </Text>
-            {project.projectOffers.length === 0 && <AccentButton iconLeft={plusWhite} py={3.5}> 
-              Añadir una oferta
-            </AccentButton>}
+            {project.projectOffers.length === 0 && (
+              <Link to={`./${id}/nueva-oferta/`}>
+                <AccentButton iconLeft={plusWhite} py={3.5}> 
+                  Añadir una oferta
+                </AccentButton>
+              </Link>
+            )}
           </Flex>
           {project.projectOffers.length !== 0 ? (
             <Grid
@@ -121,20 +126,21 @@ const OneProject = ({
               {project.projectOffers.map((offer) => (
                 <ProjectOfferItem key={offer.id} offer={offer} />
               ))}
-              <Flex
-                cursor={"pointer"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                py={4}
-                borderRadius={10}
-                borderWidth={1}
-                borderColor={"primary"}
-              >
-                <Image src={plus} mr={2} w={"19px"} />
-                <Text fontSize={19} color={"primary"}>
-                  Añadir oferta
-                </Text>
-              </Flex>
+              <Link to={`./${id}/nueva-oferta/`}>
+                <Flex
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  py={4}
+                  borderRadius={10}
+                  borderWidth={1}
+                  borderColor={"primary"}
+                >
+                  <Image src={plus} mr={2} w={"19px"} />
+                  <Text fontSize={19} color={"primary"}>
+                    Añadir oferta
+                  </Text>
+                </Flex>
+              </Link>
             </Grid>
           ) : (
             <Flex w={"100%"} my={6} alignItems={"center"} justifyContent={"center"} flexDirection={"column"}>

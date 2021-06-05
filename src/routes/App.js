@@ -7,6 +7,7 @@ import Offers from '../containers/Offers';
 import Offer from "../containers/OneOffer";
 import Project from "../containers/OneProject";
 import NewProject from "../containers/new/NewProject";
+import NewProjectOffer from "../containers/new/NewProjectOffer";
 import NewOffer from "../containers/new/NewOffer";
 import Workers from '../containers/Workers';
 import Manage from '../containers/Manage';
@@ -24,10 +25,11 @@ const App = () => {
         <PageGrid>
           {/* Main Containers */}
           <Route exact path={["/", "/ofertas"]} component={Offers} />
-          <Route exact path={"/ofertas/nuevaOferta"} component={NewOffer} />
-          <Route exact path={"/ofertas/nuevoProyecto"} component={NewProject} />
+          <Route exact path={"/ofertas/nueva-oferta"} component={NewOffer} /> 
+          <Route exact path={"/ofertas/nuevo-proyecto"} component={NewProject} />
           <Route exact path={"/ofertas/o/:id"} component={Offer} />
           <Route exact path={"/ofertas/p/:id"} component={Project} />
+          <Route exact path={"/ofertas/p/:id/nueva-oferta"} component={NewProjectOffer} />
           <Route exact path="/trabajadores" component={Workers} />
           <Route exact path="/gestion" component={Manage} />
           <Route exact path="/empresa" component={Company} />

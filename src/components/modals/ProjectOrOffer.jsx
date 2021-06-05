@@ -1,13 +1,11 @@
 import React from "react";
 import { Flex, Text, Box } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
-import { Image } from "@chakra-ui/image";
-import next from "../../assets/svg/next.svg";
 
 const ProjectOrOffer = () => {
   return (
     <Box>
-      <Link to={`../ofertas/nuevaOferta/`}>
+      <Link to={`../ofertas/nueva-oferta/`}>
         <Flex
           mb={2}
           py={2}
@@ -23,15 +21,9 @@ const ProjectOrOffer = () => {
             <Text fontWeight={"bold"}>Oferta</Text>
             <Text fontSize={14}>Una oferta individual</Text>
           </Box>
-          <Flex ml={2} alignItems={"center"}>
-            <Text fontSize={14} color={"primary"} mr={1.5}>
-              Crear
-            </Text>
-            <Image src={next} alt={"Crear"} w={"12px"} />
-          </Flex>
         </Flex>
       </Link>
-      <Link to={`../ofertas/nuevoProyecto/`}>
+      <Link to={`../ofertas/nuevo-proyecto/`}>
         <Flex
           py={2}
           px={4}
@@ -51,12 +43,6 @@ const ProjectOrOffer = () => {
               Selección más popular
             </Text>
           </Box>
-          <Flex ml={2} alignItems={"center"}>
-            <Text fontSize={14} color={"primary"} mr={1.5}>
-              Crear
-            </Text>
-            <Image src={next} alt={"Crear"} w={"12px"} />
-          </Flex>
         </Flex>
       </Link>
     </Box>

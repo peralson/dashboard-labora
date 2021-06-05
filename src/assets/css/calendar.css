@@ -101,9 +101,9 @@
 
 /* MAIN STYLES */
 
-.rmdp-wrapper {
+.rmdp-wrapper { 
   width: 100%!important;
-  background: none!important;
+  background: #191735!important;
   border: 2px solid #282950!important;
   box-shadow: none!important;
   border-radius: 10px!important;

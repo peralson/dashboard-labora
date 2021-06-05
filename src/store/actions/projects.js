@@ -3,6 +3,7 @@ import sortByDate from '../../lib/sortByDate';
 export const FETCH_PROJECTS = 'FETCH_PROJECTS';
 export const FETCH_PAST_PROJECTS = 'FETCH_PAST_PROJECTS';
 export const CREATE_NEW_PROJECT = "CREATE_NEW_PROJECT";
+export const CREATE_PROJECT_OFFER = "CREATE_PROJECT_OFFER";
 export const DELETE_PROJECT = "DELETE_PROJECT";
 
 export const fetchProjects = () => {
@@ -223,4 +224,8 @@ export const deleteProject = (projectId) => {
       id: projectId
     });
   };
+};
+
+export const createProjectOffer = (projectId, offerData) => {
+  return async (dispatch, getState) => {};
 };

@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import { Flex, Box, Text } from '@chakra-ui/layout';
-import { SelectedItemManage } from '../../context/SelectedItemContext';
-import Separator from '../../components/ui/Separator';
+import React, { useContext } from "react";
+import { Flex, Box, Text } from "@chakra-ui/layout";
+import { SelectedItemManage } from "../../../context/SelectedItemContext";
+import Separator from "../../../components/ui/Separator";
 
 const ContractCard = ({ data }) => {
   const { selectedItemManage, setSelectedItemManage } =
@@ -12,15 +12,15 @@ const ContractCard = ({ data }) => {
 
   return (
     <Flex
-      cursor={'pointer'}
+      cursor={"pointer"}
       borderRadius={8}
       p={2}
       pl={2}
       mt={2}
-      alignItems={'center'}
-      border={'1px solid'}
-      borderColor={isActive ? 'white' : 'darkLight'}
-      _hover={{ borderColor: 'white' }}
+      alignItems={"center"}
+      border={"1px solid"}
+      borderColor={isActive ? "white" : "darkLight"}
+      _hover={{ borderColor: "white" }}
       onClick={() => {
         if (isActive) {
           setSelectedItemManage(null);
@@ -40,12 +40,12 @@ const ContractCard = ({ data }) => {
       </Text>
       <Flex flex={1}>
         <Box
-          w={'30px'}
-          h={'30px'}
+          w={"30px"}
+          h={"30px"}
           borderRadius={1000}
-          border={'2px solid'}
-          borderColor='darkLight'
-          bg={data.status === 'finished' ? 'green' : 'yellow'}
+          border={"2px solid"}
+          borderColor="darkLight"
+          bg={data.status === "finished" ? "green" : "yellow"}
         />
       </Flex>
     </Flex>
@@ -56,22 +56,22 @@ const ManageContracts = (props) => {
   const { data } = props;
   return (
     <>
-      <Flex alignItems={'center'} p={2} pl={2} mt={2}>
-        <Text flex={2} mr={2} fontWeight={'medium'} fontSize={14}>
+      <Flex alignItems={"center"} p={2} pl={2} mt={2}>
+        <Text flex={2} mr={2} fontWeight={"medium"} fontSize={14}>
           Fecha
         </Text>
-        <Text flex={2} mr={2} fontWeight={'medium'} fontSize={14}>
+        <Text flex={2} mr={2} fontWeight={"medium"} fontSize={14}>
           Categoría
         </Text>
-        <Text flex={2} mr={2} fontWeight={'medium'} fontSize={14}>
+        <Text flex={2} mr={2} fontWeight={"medium"} fontSize={14}>
           Trabajador
         </Text>
-        <Text flex={1} mr={2} fontWeight={'medium'} fontSize={14}>
+        <Text flex={1} mr={2} fontWeight={"medium"} fontSize={14}>
           Estado
         </Text>
       </Flex>
       <Separator />
-      <Flex w='100%' flexDirection='column'>
+      <Flex w="100%" flexDirection="column">
         {data.map((e) => {
           return <ContractCard key={e.id} data={e} />;
         })}

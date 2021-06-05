@@ -4,6 +4,7 @@ import { Box, Text, Input } from "@chakra-ui/react";
 // Context
 import { NewProjectContext } from "../../context/newCreations";
 
+// GMaps
 import usePlacesAutocomplete, {
   getLatLng,
   getGeocode,

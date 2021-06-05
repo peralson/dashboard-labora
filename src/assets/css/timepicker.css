@@ -1,0 +1,26 @@
+.rmdp-calendar {
+    display: none;
+}
+
+.rmdp-time-picker {
+    padding: 4px 0px!important;
+    margin-bottom: 0px!important;
+}
+
+.rmdp-container .ep-arrow::after {
+    box-shadow: none;
+}
+
+.rmdp-input {
+    border-radius: 10px;
+    padding: 4px 8px;
+    background: #191735;
+    border: 2px solid #282950;
+    margin: 0px;
+    height: auto;
+    cursor: pointer;
+}
+
+.rmdp-input:hover {
+    border: 2px solid #fff;
+}

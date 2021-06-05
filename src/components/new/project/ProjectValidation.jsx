@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import { NewProjectContext } from "../../context/newCreations";
-import { validateForm } from "../../lib/newProjectState";
-import Separator from "../ui/Separator";
+import { NewProjectContext } from "../../../context/newCreations";
+import { validateForm } from "../../../lib/forms/newProjectState";
+import Separator from "../../ui/Separator";
 
 // svg
-import cancel from "../../assets/svg/cancel.svg";
-import correct from "../../assets/svg/correct.svg";
+import cancel from "../../../assets/svg/cancel.svg";
+import correct from "../../../assets/svg/correct.svg";
 
 const ProjectValidation = () => {
   const { state } = useContext(NewProjectContext);

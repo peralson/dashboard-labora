@@ -24,10 +24,10 @@ import PayrollSide from "../components/ui/PayrollSide";
 import ContractSide from "../components/ui/ContractSide";
 
 // Inner Containers
-import ManageProjects from "./innerContainers/ManageProjects";
-import ManageContracts from "./innerContainers/ManageContracts";
-import ManagePayrolls from "./innerContainers/ManagePayrolls";
-import ManageTemplates from "./innerContainers/ManageTemplates";
+import ManageProjects from "./innerContainers/manage/ManageProjects";
+import ManageContracts from "./innerContainers/manage/ManageContracts";
+import ManagePayrolls from "./innerContainers/manage/ManagePayrolls";
+import ManageTemplates from "./innerContainers/manage/ManageTemplates";
 
 const Manage = ({
   fetchPastProjects,

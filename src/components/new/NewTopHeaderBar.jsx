@@ -1,5 +1,7 @@
 import React from "react";
 import { Flex, Box } from "@chakra-ui/layout";
+
+// Components
 import TopHeaderTitle from "../ui/TopHeaderTitle";
 
 const NewTopHeaderBar = ({ children, leftButton, rightButton }) => (

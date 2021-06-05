@@ -1,4 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
+import sortByDate from "../../lib/sortByDate";
 import {
   FETCH_PROJECTS,
   FETCH_PAST_PROJECTS,
@@ -20,7 +21,7 @@ export default (state = initialState, action) => {
       };
 
     case CREATE_NEW_PROJECT:
-      const newAllProjects = [...state.allProjects, action.payload];
+      const newAllProjects = sortByDate([...state.allProjects, action.payload]);
       return {
         ...state,
         allProjects: newAllProjects,

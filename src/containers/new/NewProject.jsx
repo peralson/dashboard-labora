@@ -8,7 +8,11 @@ import { createProject } from "../../store/actions/projects";
 
 // Custom
 import { NewProjectContext } from "../../context/newCreations";
-import { initialState, reducer, validateForm } from "../../lib/newProjectState";
+import {
+  initialState,
+  reducer,
+  validateForm,
+} from "../../lib/forms/newProjectState";
 
 // SVG
 import plus from "../../assets/svg/plus.svg";
@@ -26,9 +30,9 @@ import NewTopHeaderBar from "../../components/new/NewTopHeaderBar";
 import TopButton from "../../components/ui/TopButton";
 import SideBoxContainer from "../../components/ui/SideBoxContainer";
 import CustomInput from "../../components/new/CustomInput";
-import ProjectValidation from "../../components/new/ProjectValidation";
+import ProjectValidation from "../../components/new/project/ProjectValidation";
 import PlacesAutocompleteInput from "../../components/new/PlacesAutocompleteInput";
-import ProjectPickDates from "../../components/new/ProjectPickDates";
+import ProjectPickDates from "../../components/new/project/ProjectPickDates";
 
 const NewProject = ({ history, createProject }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
