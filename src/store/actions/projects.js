@@ -2,9 +2,10 @@ import sortByDate from '../../lib/sortByDate';
 
 export const FETCH_PROJECTS = 'FETCH_PROJECTS';
 export const FETCH_PAST_PROJECTS = 'FETCH_PAST_PROJECTS';
-export const CREATE_NEW_PROJECT = "CREATE_NEW_PROJECT";
-export const CREATE_PROJECT_OFFER = "CREATE_PROJECT_OFFER";
-export const DELETE_PROJECT = "DELETE_PROJECT";
+export const CREATE_NEW_PROJECT = 'CREATE_NEW_PROJECT';
+export const CREATE_PROJECT_OFFER = 'CREATE_PROJECT_OFFER';
+export const DELETE_PROJECT = 'DELETE_PROJECT';
+export const EDIT_ONE_OFFER = 'EDIT_ONE_OFFER';
 
 export const fetchProjects = () => {
   return async (dispatch, getState) => {
@@ -43,7 +44,7 @@ export const fetchPastProjects = () => {
   return async (dispatch, getState) => {
     // const token = getState().auth.token
 
-    console.log('antes del fetch')
+    console.log('antes del fetch');
 
     const response = await fetch(
       'https://us-central1-partime-60670.cloudfunctions.net/api/event/fullEvents',
@@ -53,7 +54,7 @@ export const fetchPastProjects = () => {
         },
       }
     );
-    
+
     if (!response.ok && response.status === 404)
       return dispatch({ type: FETCH_PAST_PROJECTS, pastProjects: [] });
     if (!response.ok) throw new Error('Ha ocurrido un error.');
@@ -64,7 +65,7 @@ export const fetchPastProjects = () => {
     resData.body.forEach((project) => {
       pastProjects.push(project);
     });
-    
+
     dispatch({
       type: FETCH_PAST_PROJECTS,
       pastProjects: pastProjects,
@@ -78,11 +79,11 @@ export const createProject = (newProject) => {
     // const companyId = getState().auth.id;
 
     const response = await fetch(
-      "https://us-central1-partime-60670.cloudfunctions.net/api/event/",
+      'https://us-central1-partime-60670.cloudfunctions.net/api/event/',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           // Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
@@ -95,10 +96,10 @@ export const createProject = (newProject) => {
           },
           description: newProject.description,
         }),
-      },
+      }
     );
 
-    if (!response.ok) throw new Error("Ha habido un error en la conexión");
+    if (!response.ok) throw new Error('Ha habido un error en la conexión');
 
     const resData = await response.json();
     const id = resData.body;
@@ -109,12 +110,12 @@ export const createProject = (newProject) => {
         id: id,
         projectData: {
           ...newProject,
-          dates: newProject.dates.map(date => ({ _seconds: date / 1000 })),
-          id_company: "2T3NK8AYAphTK3LWTleV9aH8C6G3",
+          dates: newProject.dates.map((date) => ({ _seconds: date / 1000 })),
+          id_company: '2T3NK8AYAphTK3LWTleV9aH8C6G3',
           id: id,
           jobs: 0,
         },
-        projectOffers: [], 
+        projectOffers: [],
       },
     });
 
@@ -130,23 +131,42 @@ export const deleteProject = (projectId) => {
     const response = await fetch(
       `https://us-central1-partime-60670.cloudfunctions.net/api/event/${projectId}`,
       {
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           // Authorization: `Bearer ${token}`,
         },
-      },
+      }
     );
 
     if (!response.ok) throw new Error();
 
     dispatch({
       type: DELETE_PROJECT,
-      id: projectId
+      id: projectId,
     });
   };
 };
 
 export const createProjectOffer = (projectId, offerData) => {
   return async (dispatch, getState) => {};
+};
+
+export const editOffer = (
+  projectId,
+  offerId,
+  name,
+  category,
+  salary,
+  extra,
+  qty,
+  description
+) => {
+  return async (dispatch, getState) => {
+    // const currentProject = getState().projects.find((p) => p.id === projectId);
+    // const currentOffer = currentProject.projectOffers.find(
+    //   (offer) => offer.id === offerId
+    // );
+    // console.log('currentOffer:', currentOffer);
+  };
 };

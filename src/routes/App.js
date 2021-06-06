@@ -11,6 +11,7 @@ import NewProjectOffer from "../containers/new/NewProjectOffer";
 import NewOffer from "../containers/new/NewOffer";
 import Workers from '../containers/Workers';
 import Manage from '../containers/Manage';
+import EditOffer from '../containers/edit/EditOffer';
 import Company from '../containers/Company';
 import NotFound from '../containers/NotFound';
 
@@ -28,6 +29,7 @@ const App = () => {
           <Route exact path={"/ofertas/nueva-oferta"} component={NewOffer} /> 
           <Route exact path={"/ofertas/nuevo-proyecto"} component={NewProject} />
           <Route exact path={"/ofertas/o/:id"} component={Offer} />
+          <Route exact path={"/ofertas/o/edit/:id"} component={EditOffer} />
           <Route exact path={"/ofertas/p/:id"} component={Project} />
           <Route exact path={"/ofertas/p/:id/nueva-oferta"} component={NewProjectOffer} />
           <Route exact path="/trabajadores" component={Workers} />
