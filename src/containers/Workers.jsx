@@ -47,6 +47,7 @@ const Workers = ({
   const [workersLoading, setWorkersLoading] = useState(false);
   const [tagModalOpen, setTagModalOpen] = useState(false);
   const [catModalOpen, setCatModalOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -174,8 +175,10 @@ const Workers = ({
             <Popup
               title={'Invitar trabajadores'}
               body={<ShareLink data={categories.map((e) => e.id)} />}
+              show={shareModalOpen}
+              handleShow={setShareModalOpen}
             >
-              <AccentButton>Invitar trabajadores</AccentButton>
+              <AccentButton onClick={() => setShareModalOpen(true)}>Invitar trabajadores</AccentButton>
             </Popup>
           </Flex>
           {displayFilters && (
