@@ -1,20 +1,30 @@
 const HOUR_IN_SECONDS = 3600;
 
+const EXTRAS = [
+  { id: "1", amount: null, name: "Desplazamiento" },
+  { id: "2", amount: null, name: "Nocturnidad" },
+];
+
 export const initialState = {
   name: "",
   category: "",
   description: "",
   schedule: [],
-  extras: [],
+  extras: EXTRAS,
   qty: 1,
-  salary: 0,
-  extraSalary: 0,
+  salary: null,
+  extraSalary: null,
   contractId: "",
   tags: [],
 };
 
 export const validateForm = (state) => {
-  return true;
+  return (
+    validateNameDescCat(state) &&
+    validateSchedule(state) &&
+    validateLegalPayrolls(state) &&
+    validateQtyTags(state)
+  );
 };
 
 export const validateNameDescCat = (state) => {
@@ -80,6 +90,50 @@ export const validateSchedule = (state) => {
   };
 };
 
+export const validateLegalPayrolls = (state) => {
+  const hasSalary = state.salary && state.salary > 0;
+  const hasSalaryOverMin = state.salary && state.salary > 5.75;
+  const hasExtraSalary = state.extraSalary && state.extraSalary > 0;
+  const hasExtraSalaryOverMin =
+    state.salary &&
+    state.extraSalary &&
+    state.extraSalary >= state.salary * 1.1;
+  const hasContract = state.contractId.length !== 0;
+
+  return {
+    isLegalPayrollValid:
+      hasSalary &&
+      hasSalaryOverMin &&
+      hasExtraSalary &&
+      hasExtraSalaryOverMin &&
+      hasContract,
+    hasSalary: hasSalary,
+    hasSalaryOverMin: hasSalaryOverMin,
+    hasExtraSalary: hasExtraSalary,
+    hasExtraSalaryOverMin: hasExtraSalaryOverMin,
+    hasContract: hasContract,
+  };
+};
+
+export const validateQtyTags = (state) => {
+  return {
+    isQtyTagsValid: false,
+  };
+};
+
+const getParsedSalary = (salary) => {
+  let parsedSalary;
+  if (salary.includes(",")) {
+    parsedSalary = parseFloat(salary.split(",").join(".")).toFixed(2);
+  } else {
+    parsedSalary = parseFloat(salary).toFixed(2);
+  }
+  if (isNaN(parsedSalary)) {
+    parsedSalary = 0;
+  }
+  return parsedSalary;
+};
+
 export const reducer = (state, action) => {
   switch (action.type) {
     case "editName":
@@ -135,10 +189,10 @@ export const reducer = (state, action) => {
         (sche) => sche.day === action.date,
       );
       const totalShifts = dateToBePushed.shifts.length;
-      const lastTime = dateToBePushed.shifts[totalShifts - 1].end._seconds;
+      const lastShiftTime = dateToBePushed.shifts[totalShifts - 1].end._seconds;
       dateToBePushed.shifts.push({
-        start: { _seconds: lastTime + HOUR_IN_SECONDS },
-        end: { _seconds: lastTime + HOUR_IN_SECONDS * 2 },
+        start: { _seconds: lastShiftTime + HOUR_IN_SECONDS },
+        end: { _seconds: lastShiftTime + HOUR_IN_SECONDS * 2 },
       });
       return { ...state };
 
@@ -159,7 +213,28 @@ export const reducer = (state, action) => {
       state.schedule[action.index].shifts.splice(-1, 1);
       return { ...state };
 
+    case "editSalary":
+      return {
+        ...state,
+        salary: getParsedSalary(action.payload),
+      };
+
+    case "editExtraSalary":
+      return {
+        ...state,
+        extraSalary: getParsedSalary(action.payload),
+      };
+
+    case "editExtraItem":
+      const extraItem = state.extras.find((item) => item.id === action.id);
+      extraItem.amount = getParsedSalary(action.payload);
+      return { ...state };
+
+    case "setContract":
+      const isSameContract = state.contractId === action.payload;
+      return { ...state, contractId: isSameContract ? "" : action.payload };
+
     default:
       return state;
   }
-};
+};;

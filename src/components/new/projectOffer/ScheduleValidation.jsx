@@ -19,7 +19,7 @@ const ScheduleValidation = () => {
           Días
         </Text>
         <Flex alignItems={"center"} justifyContent={"space-between"} w={"100%"}>
-          <Text fontSize={14} lineHeight={1.6}>
+          <Text fontSize={14} lineHeight={1.6} mr={4}>
             Selecciona al menos un día
           </Text>
           <Image src={hasSchedule ? correct : cancel} w={"12px"} />
@@ -31,7 +31,7 @@ const ScheduleValidation = () => {
           Horario
         </Text>
         <Flex alignItems={"center"} justifyContent={"space-between"} w={"100%"}>
-          <Text fontSize={14} lineHeight={1.6}>
+          <Text fontSize={14} lineHeight={1.6} mr={4}>
             Los turnos han de ser consecutivos
           </Text>
           <Image src={allConsecutiveShifts ? correct : cancel} w={"12px"} />
@@ -42,7 +42,7 @@ const ScheduleValidation = () => {
           justifyContent={"space-between"}
           w={"100%"}
         >
-          <Text fontSize={14} lineHeight={1.6}>
+          <Text fontSize={14} lineHeight={1.6} mr={4}>
             Los turnos suman más de 1 hora
           </Text>
           <Image src={shiftsLongerThanHour ? correct : cancel} w={"12px"} />

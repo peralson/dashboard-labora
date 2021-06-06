@@ -19,7 +19,7 @@ const EditWorkerLists = ({ data, workers, type, handleShow }) => {
   const title = type === 'tag' ? 'Etiquetas' : 'Categorías';
   const [selectedItems, setSelectedItems] = useState([]);
   const [option, setOption] = useState('');
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   // const onClose = () => setIsOpen(false);
@@ -38,7 +38,7 @@ const EditWorkerLists = ({ data, workers, type, handleShow }) => {
 
   const handleSubmit = async () => {
     const userList = workers.map((e) => e.id);
-    setError(null);
+    // setError(null);
     if (option && selectedItems.length > 0) {
       const action = option === 'Añadir' ? 'update' : 'remove';
       setLoading(true);

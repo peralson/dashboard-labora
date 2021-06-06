@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Flex, Text } from "@chakra-ui/layout";
 import Popup from "./Popup";
 
@@ -23,23 +23,28 @@ const AreYourSure = ({ onDelete, type }) => (
   </Flex>
 );
 
-const DeleteButton = ({ onDelete, children, type }) => (
-  <Popup
-    title={"¿Estas seguro?"}
-    body={<AreYourSure onDelete={onDelete} type={type} />}
-  >
-    <Text
-      py={2}
-      px={3}
-      borderRadius={10}
-      fontSize={14}
-      cursor={"pointer"}
-      _hover={{ bg: "red.smooth" }}
-      color={"red"}
+const DeleteButton = ({ onDelete, children, type }) => {
+  const [open, setOpen] = useState(false);;;
+  return (
+    <Popup
+      title={"¿Estas seguro?"}
+      body={<AreYourSure onDelete={onDelete} type={type} />}
+      show={open}
+      handleShow={setOpen}
     >
-      {children}
-    </Text>
-  </Popup>
-);
+      <Text
+        py={2}
+        px={3}
+        borderRadius={10}
+        fontSize={14}
+        cursor={"pointer"}
+        _hover={{ bg: "red.smooth" }}
+        color={"red"}
+      >
+        {children}
+      </Text>
+    </Popup>
+  );
+};
 
 export default DeleteButton;
