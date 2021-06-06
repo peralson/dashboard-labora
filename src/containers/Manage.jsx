@@ -132,28 +132,34 @@ const Manage = ({
               onChange={handleSearch}
             />
           </Box>
-          <Flex flexDirection={'row'} w={'100%'} my={4}>
-            <CustomTab
-              title='Proyectos'
-              active={selectedTab === 0}
-              onClick={() => setSelectedTab(0)}
-            />
-            <CustomTab
-              title='Contratos'
-              active={selectedTab === 1}
-              onClick={() => setSelectedTab(1)}
-            />
-            <CustomTab
-              title='Nóminas'
-              active={selectedTab === 2}
-              onClick={() => setSelectedTab(2)}
-            />
-            <CustomTab
-              title='Plantillas'
-              active={selectedTab === 3}
-              onClick={() => setSelectedTab(3)}
-            />
-          </Flex>
+          {loading ? (
+            <Text textAlign={'center'} py={10}>
+              Cargando...
+            </Text>
+          ) : (
+            <Flex flexDirection={'row'} w={'100%'} my={4}>
+              <CustomTab
+                title='Proyectos'
+                active={selectedTab === 0}
+                onClick={() => setSelectedTab(0)}
+              />
+              <CustomTab
+                title='Contratos'
+                active={selectedTab === 1}
+                onClick={() => setSelectedTab(1)}
+              />
+              <CustomTab
+                title='Nóminas'
+                active={selectedTab === 2}
+                onClick={() => setSelectedTab(2)}
+              />
+              <CustomTab
+                title='Plantillas'
+                active={selectedTab === 3}
+                onClick={() => setSelectedTab(3)}
+              />
+            </Flex>
+          )}
           {!loading && !error && tabs[selectedTab]}
           {!loading && error && <Text>Ha ocurrido un error</Text>}
         </Main>
