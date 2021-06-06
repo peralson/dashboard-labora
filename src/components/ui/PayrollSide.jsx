@@ -10,7 +10,6 @@ import SideTitle from './SideTitle';
 import FlexText from './FlexText';
 
 const PayrollSide = ({ data }) => {
-  console.log('sideData:', data);
   return (
     <Box>
       <Flex alignItems={'center'} justifyContent={'space-between'}>
@@ -70,6 +69,25 @@ const PayrollSide = ({ data }) => {
       <SideTitle>Coste total</SideTitle>
       <Flex flexDirection={'column'} mb={4}>
         {formattedSalary(data.costs.total) + '€'}
+      </Flex>
+      <Flex flexDirection='row'>
+        <a href={data.pdf} target='_blank' rel='noopener noreferrer'>
+          <Flex
+            w='100%'
+            borderRadius={8}
+            _hover={{ cursor: 'pointer' }}
+            border={'1px solid'}
+            borderColor={'translucid'}
+            bg={'darkLight'}
+            mr={4}
+            justifyContent={'center'}
+            alignItems={'center'}
+            px={4}
+            py={2}
+          >
+            Ver pdf
+          </Flex>
+        </a>
       </Flex>
     </Box>
   );
