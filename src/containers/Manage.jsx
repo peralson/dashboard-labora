@@ -177,22 +177,6 @@ const Manage = ({
                   }
                 />
               )}
-              {/* {selectedItemManage && selectedItemManage.type && (
-              <ContractSide data={selectedItemManage} />
-            )}
-            {selectedItemManage && !selectedItemManage.type && (
-              <PayrollSide data={selectedItemManage} />
-            )}
-            {selectedItemManage && !selectedItemManage.offerData && (
-              <PastProjectSide data={selectedItemManage} />
-            )}
-            {!selectedItemManage && (
-              <BeCurious
-                text={
-                  'Prueba a seleccionar alguna solicitud o una oferta de algún proyecto'
-                }
-              />
-            )} */}
             </SideBoxContainer>
           </SideSticky>
         </Side>
