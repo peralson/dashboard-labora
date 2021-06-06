@@ -41,109 +41,30 @@ export const fetchProjects = () => {
 
 export const fetchPastProjects = () => {
   return async (dispatch, getState) => {
+    // const token = getState().auth.token
+
+    console.log('antes del fetch')
+
+    const response = await fetch(
+      'https://us-central1-partime-60670.cloudfunctions.net/api/event/fullEvents',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    
+    if (!response.ok && response.status === 404)
+      return dispatch({ type: FETCH_PAST_PROJECTS, pastProjects: [] });
+    if (!response.ok) throw new Error('Ha ocurrido un error.');
+
     let pastProjects = [];
+    const resData = await response.json();
 
-    pastProjects.push(
-      {
-        id: 1,
-        name: 'Caja Mágica',
-        direction: 'Madrid',
-        date: '25-may - 1jun',
-        workers: 35,
-        cost: 1537,
-        status: 'finished',
-        offers: [
-          {
-            id: 1,
-            name: 'Camarero de barra',
-            hours: 12,
-            cost: 600,
-          },
-          {
-            id: 1,
-            name: 'Camarero de barra',
-            hours: 12,
-            cost: 600,
-          },
-          {
-            id: 1,
-            name: 'Limpieza',
-            hours: 12,
-            cost: 300,
-          },
-        ],
-      },
-      {
-        id: 3,
-        name: 'Catering',
-        direction: 'Córdoba',
-        date: '18jun',
-        workers: 4,
-        cost: 200,
-        status: 'finished',
-        offers: [
-          {
-            id: 1,
-            name: 'Camarero de barra',
-            hours: 12,
-            cost: 600,
-          },
-          {
-            id: 1,
-            name: 'Camarero de barra',
-            hours: 12,
-            cost: 600,
-          },
-        ],
-      }
-    );
-
-    pastProjects.push(
-      {
-        id: 2,
-        name: 'Boda Gómez',
-        direction: 'Alcalá',
-        date: '22-may - 3jun',
-        workers: 3,
-        cost: 132,
-        status: 'finished',
-        offers: [
-          {
-            id: 1,
-            name: 'Camarero de barra',
-            hours: 12,
-            cost: 600,
-          },
-        ],
-      },
-    );
-
-    pastProjects.push(
-      {
-        id: 3,
-        name: 'Catering',
-        direction: 'Córdoba',
-        date: '18jun',
-        workers: 4,
-        cost: 200,
-        status: 'finished',
-        offers: [
-          {
-            id: 1,
-            name: 'Camarero de barra',
-            hours: 12,
-            cost: 600,
-          },
-          {
-            id: 1,
-            name: 'Camarero de barra',
-            hours: 12,
-            cost: 600,
-          },
-        ],
-      }
-    );
-
+    resData.body.forEach((project) => {
+      pastProjects.push(project);
+    });
+    
     dispatch({
       type: FETCH_PAST_PROJECTS,
       pastProjects: pastProjects,
