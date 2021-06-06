@@ -11,7 +11,6 @@ export default (state = initialState, action) => {
       return {
         allTags: action.tags,
       };
-
     default:
       return state;
   }

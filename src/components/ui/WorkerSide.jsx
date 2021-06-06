@@ -13,7 +13,7 @@ import FlexText from "./FlexText";
 import SideTitle from "./SideTitle";
 import Separator from "./Separator";
 
-const ApplicationSide = ({ data }) => {
+const WorkerSide = ({ data }) => {
   const { totalDaysWorked, totalHoursInSeconds } = daysAndHoursFromHistory(
     data.history,
   );
@@ -110,4 +110,4 @@ const ApplicationSide = ({ data }) => {
   );
 };
 
-export default ApplicationSide;
+export default WorkerSide;

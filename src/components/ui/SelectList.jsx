@@ -11,6 +11,7 @@ const SelectList = (props) => (
     _hover={{ borderColor: "translucid" }}
     _focus={{ borderColor: "translucid" }}
     {...props}
+    color='black'
   >
     {props.values.map((e) => (
       <option key={e} value={e}>

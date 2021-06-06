@@ -42,7 +42,7 @@ const MultipleSelectList = (props) => (
         >
           <Flex>
             <Checkbox
-              // isChecked={props.current.includes(value)}
+              isChecked={props.current.includes(value)}
               name={value}
               onChange={props.onChange}
             />

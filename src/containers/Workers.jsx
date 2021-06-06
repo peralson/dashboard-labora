@@ -27,8 +27,9 @@ import WorkerSide from '../components/ui/WorkerSide';
 import BeCurious from '../components/ui/BeCurious';
 import AccentButton from '../components/ui/AccentButton';
 import Documentation from '../components/main/Documentation';
-import Popup from "../components/ui/Popup";
+import Popup from '../components/ui/Popup';
 import ShareLink from '../components/modals/ShareLink';
+import EditWorkerLists from '../components/modals/EditWorkerLists';
 
 const Workers = ({
   fetchWorkers,
@@ -44,6 +45,8 @@ const Workers = ({
 
   const [workersError, setWorkersError] = useState(null);
   const [workersLoading, setWorkersLoading] = useState(false);
+  const [tagModalOpen, setTagModalOpen] = useState(false);
+  const [catModalOpen, setCatModalOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -122,21 +125,23 @@ const Workers = ({
   const allChecked = checkedItems.length === workers.length;
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
-  const handleCheck = (value) => {
-    if (!checkedItems.includes(value)) {
-      setCheckedItems([...checkedItems, value]);
+  const handleCheck = (worker) => {
+    if (!checkedItems.includes(worker)) {
+      setCheckedItems([...checkedItems, worker]);
     } else {
-      setCheckedItems(checkedItems.filter((item) => item !== value));
+      setCheckedItems(checkedItems.filter((item) => item.id !== worker.id));
     }
   };
 
   const handleGlobalCheck = () => {
     if (checkedItems.length === 0) {
-      setCheckedItems(filteredWorkers.map((worker) => worker.id));
+      setCheckedItems(filteredWorkers.map((worker) => worker));
     } else {
       setCheckedItems([]);
     }
   };
+
+  // TAG & CATEGORIES LOGIC
 
   return (
     <SelectedWorker.Provider value={{ selectedWorker, setSelectedWorker }}>
@@ -166,7 +171,10 @@ const Workers = ({
                   : 'Cerrar'}
               </Text>
             </Flex>
-            <Popup title={"Invitar trabajadores"} body={<ShareLink data={categories.map((e) => e.id)}/>}>
+            <Popup
+              title={'Invitar trabajadores'}
+              body={<ShareLink data={categories.map((e) => e.id)} />}
+            >
               <AccentButton>Invitar trabajadores</AccentButton>
             </Popup>
           </Flex>
@@ -220,6 +228,66 @@ const Workers = ({
                   </Text>
                 </Flex>
               )}
+            </Flex>
+          )}
+          {checkedItems.length > 0 && (
+            <Flex mt={2} alignItems={'center'}>
+              <Popup
+                title={'Editar Etiquetas'}
+                body={
+                  <EditWorkerLists
+                    data={tags.map((e) => e.id)}
+                    workers={checkedItems}
+                    type='tag'
+                    handleShow={setTagModalOpen}
+                  />
+                }
+                show={tagModalOpen}
+                handleShow={setTagModalOpen}
+              >
+                <Flex
+                  _hover={{ cursor: 'pointer' }}
+                  bg={'accent'}
+                  borderRadius={8}
+                  fontWeight='bold'
+                  fontSize={14}
+                  mr={2}
+                  alignItems={'center'}
+                  px={4}
+                  py={2}
+                  onClick={() => setTagModalOpen(true)}
+                >
+                  Editar Etiquetas
+                </Flex>
+              </Popup>
+              <Popup
+                title={'Editar categorias'}
+                body={
+                  <EditWorkerLists
+                    data={categories.map((e) => e.id)}
+                    workers={checkedItems}
+                    type='categories'
+                    handleShow={setCatModalOpen}
+                  />
+                }
+                show={catModalOpen}
+                handleShow={setCatModalOpen}
+              >
+                <Flex
+                  _hover={{ cursor: 'pointer' }}
+                  bg={'accent'}
+                  borderRadius={8}
+                  fontWeight='bold'
+                  fontSize={14}
+                  mr={2}
+                  alignItems={'center'}
+                  px={4}
+                  py={2}
+                  onClick={() => setCatModalOpen(true)}
+                >
+                  Editar Categorías
+                </Flex>
+              </Popup>
             </Flex>
           )}
           <WorkersTableGuide

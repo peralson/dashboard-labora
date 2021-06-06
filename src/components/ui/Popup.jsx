@@ -8,19 +8,18 @@ import {
   Text
 } from '@chakra-ui/react';
 
-const Popup = ({ body, title, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Popup = ({ body, title, children, show, handleShow }) => {
 
   return (
     <>
-      <Flex onClick={() => setIsOpen(true)}>
+      <Flex onClick={() => handleShow(true)}>
         {children}
       </Flex>
 
       <Modal
         closeOnOverlayClick={false}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        isOpen={show}
+        onClose={() => handleShow(false)}
         scrollBehavior={"inside"}
       >
         <ModalOverlay />

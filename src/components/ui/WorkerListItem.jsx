@@ -35,11 +35,11 @@ const WorkerListItem = ({ worker, handleCheck, checkedItems }) => {
           h={"30px"}
           borderRadius={1000}
           border={"2px solid"}
-          onClick={() => handleCheck(worker.id)}
+          onClick={() => handleCheck(worker)}
           borderColor={checkedItems.includes(worker.id) ? "white" : "darkLight"}
           overflow={"hidden"}
         >
-          {checkedItems.includes(worker.id) ? (
+          {checkedItems.includes(worker) ? (
             <Flex
               alignItems={"center"}
               justifyContent={"center"}

@@ -10,7 +10,7 @@ const WorkersTable = ({ filteredWorkers, checkedItems, handleCheck }) => (
         key={worker.id}
         worker={worker}
         checkedItems={checkedItems}
-        handleCheck={handleCheck}
+        handleCheck={() => handleCheck(worker)}
       />
     ))}
   </Box>
