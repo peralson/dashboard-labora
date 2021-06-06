@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Flex, Text, Box } from '@chakra-ui/layout';
 import {Button} from '@chakra-ui/react';
 import MultipleSelectList from '../ui/MultipleSelectList';
-import {MdLink, MdContentCopy} from "react-icons/md";
+import { MdLink, MdContentCopy } from "react-icons/md";
 
 const ShareLink = ({data}) => {
   const [selectedItems, setSelectedItems] = useState([]);

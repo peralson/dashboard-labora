@@ -8,6 +8,7 @@ const CustomInput = ({
   value,
   placeholder,
   onChange,
+  type = "text",
 }) => {
   let InputComponent = multiline ? Textarea : Input;
 
@@ -21,6 +22,7 @@ const CustomInput = ({
         value={value}
         placeholder={placeholder}
         onChange={onChange}
+        type={type && type}
         py={2}
         px={3}
         borderRadius={8}

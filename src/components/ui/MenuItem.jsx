@@ -5,7 +5,7 @@ import { Image } from "@chakra-ui/image";
 const MenuItem = ({ text, image, activeImage }) => (
   <Flex
     py={3}
-    pr={4}
+    pr={3}
     w={"100%"}
     borderRightWidth={2}
     borderRightColor={activeImage ? "primary" : "transparent"}
@@ -13,8 +13,8 @@ const MenuItem = ({ text, image, activeImage }) => (
     flexDirection={"row"}
     _hover={{ borderRightColor: !activeImage && "darkLight" }}
   >
-    <Image w={"21px"} src={activeImage ? activeImage : image} alt={text} />
-    <Text ml={2} fontWeight={activeImage && "bold"} fontSize={16}>
+    <Image w={"20px"} src={activeImage ? activeImage : image} alt={text} />
+    <Text ml={2} fontSize={16}>
       {text}
     </Text>
   </Flex>

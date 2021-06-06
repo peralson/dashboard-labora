@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
+import React from "react";
 import {
   Modal,
   ModalOverlay,
   ModalContent,
   ModalCloseButton,
   Flex,
-  Text
-} from '@chakra-ui/react';
+  Text,
+} from "@chakra-ui/react";
 
 const Popup = ({ body, title, children, show, handleShow }) => {
-
   return (
     <>
-      <Flex onClick={() => handleShow(true)}>
-        {children}
-      </Flex>
+      <Flex onClick={() => handleShow(true)}>{children}</Flex>
 
       <Modal
         closeOnOverlayClick={false}
@@ -23,11 +20,11 @@ const Popup = ({ body, title, children, show, handleShow }) => {
         scrollBehavior={"inside"}
       >
         <ModalOverlay />
-        <ModalContent bg='darkLight' p={4}>
+        <ModalContent bg="darkLight" p={4}>
           <Text fontSize={19} mb={4} fontWeight={"bold"}>
             {title}
           </Text>
-          <ModalCloseButton _focus={{ borderWidth: 0 }}  />
+          <ModalCloseButton _focus={{ borderWidth: 0 }} />
           {body}
         </ModalContent>
       </Modal>

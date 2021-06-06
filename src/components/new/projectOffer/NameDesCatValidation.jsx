@@ -18,7 +18,7 @@ const NameDescCatValidation = () => {
           Nombre
         </Text>
         <Flex alignItems={"center"} justifyContent={"space-between"} w={"100%"}>
-          <Text fontSize={14} lineHeight={1.6}>
+          <Text fontSize={14} lineHeight={1.6} mr={4}>
             Introduce un nombre
           </Text>
           <Image src={hasName ? correct : cancel} w={"12px"} />
@@ -29,7 +29,7 @@ const NameDescCatValidation = () => {
           justifyContent={"space-between"}
           w={"100%"}
         >
-          <Text fontSize={14} lineHeight={1.6}>
+          <Text fontSize={14} lineHeight={1.6} mr={4}>
             Más de 3 caracteres
           </Text>
           <Image src={isNameLong ? correct : cancel} w={"12px"} />
@@ -41,7 +41,7 @@ const NameDescCatValidation = () => {
           Categoría
         </Text>
         <Flex alignItems={"center"} justifyContent={"space-between"} w={"100%"}>
-          <Text fontSize={14} lineHeight={1.6}>
+          <Text fontSize={14} lineHeight={1.6} mr={4}>
             Selecciona entre las categorías
           </Text>
           <Image src={hasCategory ? correct : cancel} w={"12px"} />

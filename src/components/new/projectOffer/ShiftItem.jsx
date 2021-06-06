@@ -5,6 +5,8 @@ import { Text, Flex } from "@chakra-ui/react";
 import { NewProjectOfferContext } from "../../../context/newCreations";
 
 // Lib
+import moment from "moment";
+import "moment/locale/es";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 
@@ -42,14 +44,14 @@ const ShiftItem = ({ index, shift, day }) => {
               de
             </Text>
             <DatePicker
-              className={"red bg-dark"}
+              className={"red bg-dark none"}
               value={start}
               disableDayPicker
+              locale={"es"}
               format={"HH:mm A"}
               plugins={[<TimePicker hideSeconds />]}
-              locale={"es"}
               onChange={(d) => {
-                setStart(d);
+                setStart(new Date(d).getTime());
                 dispatch({
                   type: "setShift",
                   payload: {
@@ -60,7 +62,9 @@ const ShiftItem = ({ index, shift, day }) => {
                   },
                 });
               }}
-            />
+            >
+              <Text color={"primary"}>{moment(start).format("dddd, D")}</Text>
+            </DatePicker>
           </Flex>
           <Flex
             maxW={"320px"}
@@ -72,14 +76,14 @@ const ShiftItem = ({ index, shift, day }) => {
               a
             </Text>
             <DatePicker
-              className={"red bg-dark"}
+              className={"red bg-dark none"}
               value={end}
               disableDayPicker
               format={"HH:mm A"}
               plugins={[<TimePicker hideSeconds />]}
               locale={"es"}
               onChange={(d) => {
-                setEnd(d);
+                setEnd(new Date(d).getTime());
                 dispatch({
                   type: "setShift",
                   payload: {
@@ -90,7 +94,9 @@ const ShiftItem = ({ index, shift, day }) => {
                   },
                 });
               }}
-            />
+              >
+              <Text color={"primary"}>{moment(end).format("dddd, D")}</Text>
+            </DatePicker>
           </Flex>
         </Flex>
       </Flex>

@@ -12,6 +12,9 @@ import {
   reducer,
   validateNameDescCat,
   validateSchedule,
+  validateLegalPayrolls,
+  validateQtyTags,
+  validateForm,
 } from "../../lib/forms/newProjectOfferState";
 
 // SVG
@@ -21,10 +24,14 @@ import back from "../../assets/svg/back.svg";
 // Containers
 import NameDescCat from "../innerContainers/new/projectOffer/NameDescCat";
 import SchedulePicker from "../innerContainers/new/projectOffer/SchedulePicker";
+import LegalPayrolls from "../innerContainers/new/projectOffer/LegalPayrolls";
+import QtyTags from "../innerContainers/new/projectOffer/QtyTags";
 
 // Validation
 import NameDescCatValidation from "../../components/new/projectOffer/NameDesCatValidation";
 import ScheduleValidation from "../../components/new/projectOffer/ScheduleValidation";
+import LegalPayrollsValidation from "../../components/new/projectOffer/LegalPayrollsValidation";
+import QtyTagsValidation from "../../components/new/projectOffer/QtyTagsValidation";
 
 // Components
 import Main from "../../components/main/Main";
@@ -42,6 +49,8 @@ const NewProjectOffer = ({ match, history, createProject }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { isNameDescCatValid } = validateNameDescCat(state);
   const { isScheduleValid } = validateSchedule(state);
+  const { isLegalPayrollValid } = validateLegalPayrolls(state);
+  const { isQtyTagsValid } = validateQtyTags(state);
 
   return (
     <NewProjectOfferContext.Provider value={{ state, dispatch }}>
@@ -84,7 +93,25 @@ const NewProjectOffer = ({ match, history, createProject }) => {
                 >
                   Siguiente
                 </TopButton>
-              ) : null
+              ) : process === 3 ? (
+                <TopButton
+                  right
+                  inactive={!isLegalPayrollValid}
+                  icon={next}
+                  onSelect={() => isLegalPayrollValid && setProcess(4)}
+                >
+                  Siguiente
+                </TopButton>
+              ) : (
+                <TopButton
+                  inactive={!isQtyTagsValid}
+                  onSelect={() =>
+                    isQtyTagsValid && validateForm(state) && setProcess(4)
+                  }
+                >
+                  Crear
+                </TopButton>
+              )
             }
           >
             Nueva Oferta
@@ -92,12 +119,16 @@ const NewProjectOffer = ({ match, history, createProject }) => {
         </TopMain>
         {process === 1 && <NameDescCat />}
         {process === 2 && <SchedulePicker projectId={projectId} />}
+        {process === 3 && <LegalPayrolls projectId={projectId} />}
+        {process === 4 && <QtyTags projectId={projectId} />}
       </Main>
       <Side>
         <SideSticky>
           <SideBoxContainer>
             {process === 1 && <NameDescCatValidation />}
             {process === 2 && <ScheduleValidation />}
+            {process === 3 && <LegalPayrollsValidation />}
+            {process === 4 && <QtyTagsValidation />}
           </SideBoxContainer>
         </SideSticky>
       </Side>
