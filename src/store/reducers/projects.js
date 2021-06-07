@@ -5,6 +5,7 @@ import {
   FETCH_PAST_PROJECTS,
   CREATE_NEW_PROJECT,
   DELETE_PROJECT,
+  CREATE_PROJECT_OFFER,
 } from "../actions/projects";
 
 const initialState = {
@@ -40,6 +41,17 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pastProjects: action.pastProjects,
+      };
+
+    case CREATE_PROJECT_OFFER:
+      const project = state.allProjects.find((p) => p.id === action.projectId);
+      project.projectOffers.push({
+        id: action.offerId,
+        offerData: action.data,
+        offerApplications: [],
+      });
+      return {
+        ...state,
       };
 
     default:

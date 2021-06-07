@@ -82,7 +82,6 @@ const OfferSide = ({ data }) => {
       )}
       {offerData.description && (
         <>
-          <Separator top={1} bottom={1} />
           <Text mb={1} fontSize={14} lineHeight={2} fontWeight="medium">
             Requisitos
           </Text>

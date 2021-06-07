@@ -152,6 +152,85 @@ export const createProjectOffer = (projectId, offerData) => {
   return async (dispatch, getState) => {
     console.log(projectId);
     console.log(offerData);
+    // const token = getState().auth.token
+
+    const formattedSchedule = offerData.schedule.map((sche) => {
+      const day = sche.day._seconds * 1000;
+      let shifts = [];
+      sche.shifts.forEach((shift) => {
+        shifts.push({
+          start: shift.start._seconds * 1000,
+          end: shift.end._seconds * 1000,
+        });
+      });
+      return {
+        day,
+        shifts,
+      };
+    });
+
+    const response = await fetch(
+      "https://us-central1-partime-60670.cloudfunctions.net/api/offer/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id_event: projectId,
+          name: offerData.name,
+          category: offerData.category,
+          description: offerData.description,
+          requirements: {},
+          location: offerData.location,
+          salary: offerData.salary,
+          extraSalary: offerData.extraSalary,
+          schedule: formattedSchedule,
+          qty: offerData.qty,
+          contractId: offerData.contractId,
+          tags: offerData.tags,
+          extras: offerData.extras,
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      console.log("ERROR");
+      const resData = await response.json();
+      console.error(resData);
+      throw new Error("Ha habido un problema...");
+    }
+
+    const resData = await response.json();
+    const offerId = resData.body;
+
+    console.log(resData);
+
+    dispatch({
+      type: CREATE_PROJECT_OFFER,
+      projectId,
+      offerId,
+      data: {
+        id: offerId,
+        id_event: projectId,
+        name: offerData.name,
+        category: offerData.category,
+        description: offerData.description,
+        requirements: {},
+        location: offerData.location,
+        salary: offerData.salary,
+        extraSalary: offerData.extraSalary,
+        schedule: offerData.schedule,
+        qty: offerData.qty,
+        contractId: offerData.contractId,
+        tags: offerData.tags,
+        extras: offerData.extras,
+        already_assigned: 0,
+        jobs: 0,
+        number_applies: 0,
+      },
+    });
   };
 };
 
