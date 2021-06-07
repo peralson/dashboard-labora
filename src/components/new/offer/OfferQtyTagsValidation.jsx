@@ -1,15 +1,15 @@
 import React, { useContext } from "react";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import { NewProjectOfferContext } from "../../../context/newCreations";
-import { validateQtyTags } from "../../../lib/forms/newProjectOfferState";
+import { NewOfferContext } from "../../../context/newCreations";
+import { validateQtyTags } from "../../../lib/forms/newOfferState";
 import Separator from "../../ui/Separator";
 
 // svg
 import cancel from "../../../assets/svg/cancel.svg";
 import correct from "../../../assets/svg/correct.svg";
 
-const QtyTagsValidation = () => {
-  const { state } = useContext(NewProjectOfferContext);
+const OfferQtyTagsValidation = () => {
+  const { state } = useContext(NewOfferContext);
   const { hasQty, hasEnough } = validateQtyTags(state);
   return (
     <Box>
@@ -40,4 +40,4 @@ const QtyTagsValidation = () => {
   );
 };
 
-export default QtyTagsValidation;
+export default OfferQtyTagsValidation;

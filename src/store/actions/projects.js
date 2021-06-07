@@ -149,7 +149,16 @@ export const deleteProject = (projectId) => {
 };
 
 export const createProjectOffer = (projectId, offerData) => {
-  return async (dispatch, getState) => {};
+  return async (dispatch, getState) => {
+    console.log(projectId);
+    console.log(offerData);
+  };
+};
+
+export const createOfferSingle = (data) => {
+  return async (dispatch, getState) => {
+    console.log(data);
+  };
 };
 
 export const editOffer = (

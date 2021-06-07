@@ -1,9 +1,5 @@
-const HOUR_IN_SECONDS = 3600;
-
-const EXTRAS = [
-  { id: "1", amount: null, name: "Desplazamiento" },
-  { id: "2", amount: null, name: "Nocturnidad" },
-];
+import { EXTRAS, HOUR_IN_SECONDS } from "../Constants";
+import { getParsedSalary, getTotalHours, hasConsecutiveShifts } from "./utils";
 
 export const initialState = {
   name: "",
@@ -16,6 +12,7 @@ export const initialState = {
   extraSalary: null,
   contractId: "",
   tags: [],
+  totalWorkers: null,
 };
 
 export const validateForm = (state) => {
@@ -38,40 +35,6 @@ export const validateNameDescCat = (state) => {
     isNameLong: isNameLong,
     hasCategory: hasCategory,
   };
-};
-
-const getTotalHours = (schedules) => {
-  let timeInSeconds = 0;
-  schedules.forEach((sche) => {
-    sche.shifts.forEach((shift) => {
-      const shiftTimeInSeconds = shift.end._seconds - shift.start._seconds;
-      timeInSeconds = timeInSeconds + shiftTimeInSeconds;
-    });
-  });
-  return timeInSeconds;
-};
-
-const hasConsecutiveShifts = (schedules) => {
-  let shiftsArePositive = true;
-  let shiftsAreConsecutive = true;
-  schedules.forEach((sche) => {
-    sche.shifts.forEach((shift) => {
-      const shiftTimeInSeconds = shift.end._seconds - shift.start._seconds;
-      if (shiftTimeInSeconds <= 0) {
-        shiftsArePositive = false;
-      }
-    });
-    if (sche.shifts.length > 1) {
-      sche.shifts.forEach((item, index) => {
-        if (index !== 0) {
-          if (item.start._seconds <= sche.shifts[index - 1].end._seconds) {
-            shiftsAreConsecutive = false;
-          }
-        }
-      });
-    }
-  });
-  return shiftsArePositive && shiftsAreConsecutive;
 };
 
 export const validateSchedule = (state) => {
@@ -116,22 +79,14 @@ export const validateLegalPayrolls = (state) => {
 };
 
 export const validateQtyTags = (state) => {
-  return {
-    isQtyTagsValid: false,
-  };
-};
+  const hasQty = state.qty >= 1;
+  const hasEnough = state.qty <= state.totalWorkers;
 
-const getParsedSalary = (salary) => {
-  let parsedSalary;
-  if (salary.includes(",")) {
-    parsedSalary = parseFloat(salary.split(",").join(".")).toFixed(2);
-  } else {
-    parsedSalary = parseFloat(salary).toFixed(2);
-  }
-  if (isNaN(parsedSalary)) {
-    parsedSalary = 0;
-  }
-  return parsedSalary;
+  return {
+    isQtyTagsValid: hasQty && hasEnough,
+    hasQty: hasQty,
+    hasEnough: hasEnough,
+  };
 };
 
 export const reducer = (state, action) => {
@@ -234,7 +189,16 @@ export const reducer = (state, action) => {
       const isSameContract = state.contractId === action.payload;
       return { ...state, contractId: isSameContract ? "" : action.payload };
 
+    case "setTotalWorker":
+      return { ...state, totalWorkers: action.payload };
+
+    case "addQty":
+      return { ...state, qty: state.qty + 1 };
+
+    case "subtractQty":
+      return { ...state, qty: state.qty - 1 };
+
     default:
       return state;
   }
-};;
+};

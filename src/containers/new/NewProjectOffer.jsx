@@ -42,7 +42,7 @@ import NewTopHeaderBar from "../../components/new/NewTopHeaderBar";
 import TopButton from "../../components/ui/TopButton";
 import SideBoxContainer from "../../components/ui/SideBoxContainer";
 
-const NewProjectOffer = ({ match, history, createProject }) => {
+const NewProjectOffer = ({ match, history, createProjectOffer }) => {
   const projectId = match.params.id;
 
   const [process, setProcess] = useState(1);
@@ -51,6 +51,7 @@ const NewProjectOffer = ({ match, history, createProject }) => {
   const { isScheduleValid } = validateSchedule(state);
   const { isLegalPayrollValid } = validateLegalPayrolls(state);
   const { isQtyTagsValid } = validateQtyTags(state);
+  const isValid = validateForm(state);
 
   return (
     <NewProjectOfferContext.Provider value={{ state, dispatch }}>
@@ -104,10 +105,12 @@ const NewProjectOffer = ({ match, history, createProject }) => {
                 </TopButton>
               ) : (
                 <TopButton
-                  inactive={!isQtyTagsValid}
-                  onSelect={() =>
-                    isQtyTagsValid && validateForm(state) && setProcess(4)
-                  }
+                  inactive={!isQtyTagsValid && isValid}
+                  onSelect={async () => {
+                    if (isQtyTagsValid && isValid) {
+                      await createProjectOffer(projectId, state);
+                    }
+                  }}
                 >
                   Crear
                 </TopButton>

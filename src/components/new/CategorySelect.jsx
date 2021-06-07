@@ -4,10 +4,12 @@ import { Box, Select, Text } from "@chakra-ui/react";
 const CategorySelect = ({ title, placeholder, onChange }) => {
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (categories.length === 0) {
       setError(null);
+      setLoading(true);
       (async () => {
         await fetch(
           "https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/categories",
@@ -15,8 +17,9 @@ const CategorySelect = ({ title, placeholder, onChange }) => {
         )
           .then((res) => res.json())
           .then((data) => setCategories(data.body))
-          .catch((err) => setError(err.message));
-      })();
+          .catch((err) => setError(err.message))
+          .finally(() => setLoading(false));
+      })(); 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -27,7 +30,9 @@ const CategorySelect = ({ title, placeholder, onChange }) => {
         {title} *
       </Text>
       <Select
-        placeholder={error ? "Ha habido un error" : placeholder}
+        placeholder={
+          loading ? "Cargando..." : error ? "Ha habido un error" : placeholder
+        }
         onChange={onChange}
         borderRadius={8}
         borderWidth={2}

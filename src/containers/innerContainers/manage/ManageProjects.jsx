@@ -3,8 +3,7 @@ import { Flex, Box, Text } from '@chakra-ui/layout';
 import {
   SelectedItemManage,
   SelectedManageSide,
-} from '../../../context/SelectedItemContext';
-import { Link } from 'react-router-dom';
+} from "../../../context/SelectedItemContext";
 
 // Components
 import DateTag from '../../../components/ui/DateTag';

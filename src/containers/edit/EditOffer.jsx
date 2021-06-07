@@ -88,7 +88,7 @@ const EditOffer = ({ match, history, projects }) => {
             }
             rightButton={
               <TopButton right icon={edit} onSelect={formik.submitForm}>
-                Guardar
+                {isLoading ? "Guardando..." : "Guardar"}
               </TopButton>
             }
           >
@@ -97,63 +97,63 @@ const EditOffer = ({ match, history, projects }) => {
         </TopMain>
         <Box pb={10}>
           {project.projectData.name && (
-            <Flex mt={2} alignItems={'flex-end'} justifyContent={'flex-end'}>
+            <Flex mt={2} alignItems={"flex-end"} justifyContent={"flex-end"}>
               <Text fontSize={14} lineHeight={1.5}>
                 Esta oferta pertenece al proyecto:
               </Text>
               <Link to={`../../ofertas/p/${project.id}`}>
                 <Text
-                  color={'primary'}
+                  color={"primary"}
                   ml={2}
                   fontSize={14}
                   lineHeight={1.35}
-                  _hover={{ textDecoration: 'underline' }}
+                  _hover={{ textDecoration: "underline" }}
                 >
                   {project.projectData.name}
                 </Text>
               </Link>
             </Flex>
           )}
-          <Grid columnGap={8} width={'100%'} templateColumns={'1r 1fr'} my={4}>
+          <Grid columnGap={8} width={"100%"} templateColumns={"1r 1fr"} my={4}>
             <Box>
-              <Grid gap={4} width={'100%'} templateColumns={'1fr 1fr'} mb={4}>
+              <Grid gap={4} width={"100%"} templateColumns={"1fr 1fr"} mb={4}>
                 <CustomInput
-                  title='Nombre'
+                  title="Nombre"
                   value={formik.values.name}
                   optional
-                  onChange={formik.handleChange('name')}
+                  onChange={formik.handleChange("name")}
                 />
                 <CustomInput
-                  title='Categoría'
+                  title="Categoría"
                   value={formik.values.category}
                   optional
-                  onChange={formik.handleChange('category')}
+                  onChange={formik.handleChange("category")}
                 />
                 <CustomInput
-                  title='Salario'
+                  title="Salario"
                   value={formik.values.salary}
                   optional
-                  onChange={formik.handleChange('salary')}
+                  onChange={formik.handleChange("salary")}
                 />
                 <CustomInput
-                  title='Horas extra'
+                  title="Horas extra"
                   optional
                   value={formik.values.extra}
-                  onChange={formik.handleChange('extra')}
+                  onChange={formik.handleChange("extra")}
                 />
                 <CustomInput
                   optional
-                  title='Cantidad'
+                  title="Cantidad"
                   value={formik.values.qty}
-                  onChange={formik.handleChange('qty')}
+                  onChange={formik.handleChange("qty")}
                 />
               </Grid>
               <CustomInput
                 multiline
                 optional
-                title='Requisitos'
+                title="Requisitos"
                 value={formik.values.description}
-                onChange={formik.handleChange('description')}
+                onChange={formik.handleChange("description")}
               />
             </Box>
           </Grid>
@@ -163,7 +163,7 @@ const EditOffer = ({ match, history, projects }) => {
         <SideSticky>
           <Documentation />
           <SideBoxContainer>
-            <BeCurious text={'Edita las características de tu oferta'} />
+            <BeCurious text={"Edita las características de tu oferta"} />
           </SideBoxContainer>
         </SideSticky>
       </Side>

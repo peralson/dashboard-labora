@@ -2,14 +2,14 @@ import React, { useContext } from "react";
 import { Grid } from "@chakra-ui/react";
 
 // Custom
-import { NewProjectOfferContext } from "../../../../context/newCreations";
+import { NewOfferContext } from "../../../../context/newCreations";
 
 // Components
 import CustomInput from "../../../../components/new/CustomInput";
-import ContractPicker from "../../../../components/new/projectOffer/ContractPicker";
+import OfferContractPicker from "../../../../components/new/offer/OfferContractPicker";
 
-const LegalPayrolls = ({ projectId }) => {
-  const { state, dispatch } = useContext(NewProjectOfferContext);
+const OfferLegalPayrolls = () => {
+  const { state, dispatch } = useContext(NewOfferContext);
 
   return (
     <Grid w={"100%"} maxW={"600px"} mx={"auto"} rowGap={4} my={4}>
@@ -32,7 +32,7 @@ const LegalPayrolls = ({ projectId }) => {
         />
       </Grid>
       <Grid w={"100%"} columnGap={4} templateColumns={"1fr 1fr"}>
-        {state.extras.map((extra, index) => (
+        {state.offerData.extras.map((extra, index) => (
           <CustomInput
             key={index}
             title={extra.name}
@@ -49,9 +49,9 @@ const LegalPayrolls = ({ projectId }) => {
           />
         ))}
       </Grid>
-      <ContractPicker projectId={projectId} />
+      <OfferContractPicker />
     </Grid>
   );
 };
 
-export default LegalPayrolls;
+export default OfferLegalPayrolls;

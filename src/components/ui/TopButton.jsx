@@ -12,7 +12,7 @@ const TopButton = ({
   inactive,
 }) => (
   <Flex
-    justifyContent={"flex-end"}
+    justifyContent={left ? "flex-start" : "flex-end"}
     _hover={{ background: danger ? "red.smooth" : "translucid" }}
     opacity={inactive && 0.4}
     px={2.5}
@@ -21,9 +21,9 @@ const TopButton = ({
     cursor={"pointer"}
     onClick={onSelect}
   >
-    {left && <Image src={icon} mr={2} w={"12px"} />}
+    {left && icon && <Image src={icon} mr={2} w={"12px"} />}
     <Text color={danger ? "red.full" : "primary"}>{children}</Text>
-    {right && <Image src={icon} ml={2} w={"12px"} />}
+    {right && icon && <Image src={icon} ml={2} w={"12px"} />}
   </Flex>
 );
 

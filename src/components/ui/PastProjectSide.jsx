@@ -2,8 +2,7 @@ import React from 'react';
 import { Flex, Box, Text } from '@chakra-ui/layout';
 
 // Lib
-import { formattedSalary } from '../../lib/formattedSalary';
-import Link from 'react-router-dom';
+import { formattedSalary } from "../../lib/formattedSalary";
 
 // Components
 import Separator from './Separator';
@@ -82,41 +81,40 @@ const OfferItem = ({ data }) => {
 };
 
 const PastProjectSide = ({ data }) => {
-  const [show, setShow] = React.useState(false);
+  // const [show, setShow] = React.useState(false);
+  // const handleToggle = () => setShow(!show);
 
-  const handleToggle = () => setShow(!show);
-  
   return (
     <Box>
-      <Flex alignItems={'center'} justifyContent={'space-between'} mb={2}>
+      <Flex alignItems={"center"} justifyContent={"space-between"} mb={2}>
         <DateTag dates={data.projectData.dates} />
       </Flex>
-      <Flex flexDirection={'column'} mb={4}>
-        <Text fontWeight='bold'>
+      <Flex flexDirection={"column"} mb={4}>
+        <Text fontWeight="bold">
           {data.projectData.name
             ? data.projectData.name
             : data.projectOffers[0].offerData.name}
         </Text>
-        <Text fontSize={14} color='primary'>
+        <Text fontSize={14} color="primary">
           {data.projectData.location.address}
         </Text>
       </Flex>
       <Text
         mt={4}
         lineHeight={2}
-        textAlign={'center'}
+        textAlign={"center"}
         borderRadius={10}
         py={1}
         fontSize={14}
-        fontWeight={'bold'}
-        bg={'darkLight'}
-        cursor='pointer'
+        fontWeight={"bold"}
+        bg={"darkLight"}
+        cursor="pointer"
       >
         Ver todo sobre este proyecto
       </Text>
       <Separator top={4} bottom={2} />
       {data.projectOffers.length > 0 && (
-        <Flex flexDirection='column'>
+        <Flex flexDirection="column">
           <SideTitle>Ofertas</SideTitle>
           {data.projectOffers.map((offer) => (
             <OfferItem data={offer} />
@@ -126,58 +124,58 @@ const PastProjectSide = ({ data }) => {
       <SideTitle>Costes</SideTitle>
       {data.projectOffers.length > 0 && (
         <Box>
-          <FlexText left={'Salario camareros'} right={'150,00 €'} />
-          <FlexText left={'Extras camareros'} right={'15,00 €'} />
-          <FlexText left={'Total horas camareros'} right={'35 h'} />
-          <FlexText left={'Salario azafatas'} right={'15.00 €'} />
-          <FlexText left={'Extras azafatas'} right={'15.00 €'} />
-          <FlexText left={'Total horas azafatas'} right={'21 h'} />
+          <FlexText left={"Salario camareros"} right={"150,00 €"} />
+          <FlexText left={"Extras camareros"} right={"15,00 €"} />
+          <FlexText left={"Total horas camareros"} right={"35 h"} />
+          <FlexText left={"Salario azafatas"} right={"15.00 €"} />
+          <FlexText left={"Extras azafatas"} right={"15.00 €"} />
+          <FlexText left={"Total horas azafatas"} right={"21 h"} />
           <FlexText
             left={<SideTitle>Coste total</SideTitle>}
             right={<SideTitle>1453,00 €</SideTitle>}
           />
         </Box>
       )}
-      <Flex flexDirection='row' mt={4}>
+      <Flex flexDirection="row" mt={4}>
         <a
           href={
-            'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
           }
-          target='_blank'
-          rel='noopener noreferrer'
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <Flex
             borderRadius={8}
-            _hover={{ cursor: 'pointer' }}
-            border={'1px solid'}
-            borderColor={'translucid'}
-            bg={'darkLight'}
-            alignItems={'center'}
+            _hover={{ cursor: "pointer" }}
+            border={"1px solid"}
+            borderColor={"translucid"}
+            bg={"darkLight"}
+            alignItems={"center"}
             px={4}
             mr={4}
             py={2}
-            justifyContent='center'
-            textAlign='center'
+            justifyContent="center"
+            textAlign="center"
           >
             Descargar contratos
           </Flex>
         </a>
         <a
           href={
-            'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
           }
-          target='_blank'
-          rel='noopener noreferrer'
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <Flex
-            textAlign='center'
-            justifyContent='center'
+            textAlign="center"
+            justifyContent="center"
             borderRadius={8}
-            _hover={{ cursor: 'pointer' }}
-            border={'1px solid'}
-            borderColor={'translucid'}
-            bg={'darkLight'}
-            alignItems={'center'}
+            _hover={{ cursor: "pointer" }}
+            border={"1px solid"}
+            borderColor={"translucid"}
+            bg={"darkLight"}
+            alignItems={"center"}
             px={4}
             py={2}
           >
