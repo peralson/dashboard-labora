@@ -198,6 +198,9 @@ export const reducer = (state, action) => {
     case "subtractQty":
       return { ...state, qty: state.qty - 1 };
 
+    case "setTags":
+      return { ...state, tags: action.payload };
+
     default:
       return state;
   }

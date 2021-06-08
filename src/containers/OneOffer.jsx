@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 // Custom
 import { connect } from 'react-redux';
-import { deleteProjectOffer } from '../store/actions/projects'
+import { deleteProjectOffer, deleteProject } from '../store/actions/projects'
 import { formattedSalary } from '../lib/formattedSalary';
 
 // Context
@@ -33,7 +33,7 @@ import BeCurious from '../components/ui/BeCurious';
 import DeleteButton from '../components/ui/DeleteButton';
 import ErrorMessage from '../components/ui/ErrorMessage';
 
-const OneOffer = ({ match, history, projects, deleteProjectOffer }) => {
+const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject }) => {
   const { id } = match.params;
 
   const [loadingDel, setLoadingDel] = useState(false);
@@ -43,17 +43,27 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer }) => {
   const project = projects.find(({ projectOffers }) =>
     projectOffers.some((offer) => offer.id === id)
   );
+
+  if (!project) return <Box></Box>;
+
   const offer = project.projectOffers.find((offer) => offer.id === id);
 
-  if (!offer || !project) return <Box></Box>;
+  if (!offer) return <Box></Box>;
 
   const handleDeleteOffer = () => {
     setErrorDel(null)
     setLoadingDel(true)
-    deleteProjectOffer(project.id, offer.id)
-      .then(() => history.push('../../'))
-      .catch(e => setErrorDel(true))
-      .finally(() => setLoadingDel(false))
+    if (project.projectData.name) {
+      deleteProjectOffer(project.id, offer.id)
+        .then(() => history.push('../../'))
+        .catch(e => setErrorDel(true))
+        .finally(() => setLoadingDel(false))
+    } else {
+      deleteProject(project.id)
+        .then(() => history.push('../../'))
+        .catch(e => setErrorDel(true))
+        .finally(() => setLoadingDel(false))
+    }
   }
 
   return (
@@ -212,7 +222,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  deleteProjectOffer
+  deleteProjectOffer,
+  deleteProject
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OneOffer);

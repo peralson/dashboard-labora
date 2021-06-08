@@ -69,7 +69,7 @@ const OneProject = ({
                 ? history.goBack()
                 : history.push(`../../`)
             }
-            onEdit={() => console.log("Editing")}
+            onEdit={() => history.push(`/ofertas/p/edit/${id}`)}
           >
             Proyecto
           </TopHeaderBar>

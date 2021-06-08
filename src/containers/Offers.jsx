@@ -8,13 +8,14 @@ import { SelectedItem } from '../context/SelectedItemContext';
 import {
   hasIndividualOffers,
   getCategoriesFromProjects,
-} from '../lib/filtersValidation';
+  getFilteredProjects,
+} from "../lib/filtersValidation";
 
 // Hooks & actions
 import { connect } from 'react-redux';
 import { fetchProjects } from '../store/actions/projects';
 
-// Svg
+// SVG
 import plus from '../assets/svg/plus-white.svg';
 
 // Components
@@ -68,75 +69,22 @@ const Offers = ({ projects, fetchProjects }) => {
     ? filterCategories.length + 1
     : filterCategories.length;
 
-  const handleCategories = (event) => {
-    if (!filterCategories.includes(event.target.name)) {
-      setFilterCategories([...filterCategories, event.target.name]);
+  const handleCategories = (e) => {
+    if (!filterCategories.includes(e.target.name)) {
+      setFilterCategories([...filterCategories, e.target.name]);
     } else {
       setFilterCategories(
-        filterCategories.filter((cat) => cat !== event.target.name)
+        filterCategories.filter((cat) => cat !== e.target.name),
       );
     }
   };
 
-  const filteredProjects = projects.filter((project) => {
-    if (onlyOffers && filterCategories.length !== 0) {
-      return (
-        project.projectData.name === null &&
-        filterCategories.every((cat) =>
-          project.projectOffers.some(({ offerData }) =>
-            offerData.category.includes(cat)
-          )
-        ) &&
-        (project.projectData.location.address
-          .toLowerCase()
-          .includes(search.toLowerCase()) ||
-          project.projectOffers.some(({ offerData }) =>
-            offerData.name.toLowerCase().includes(search.toLowerCase())
-          ))
-      );
-    }
-
-    if (!onlyOffers && filterCategories.length !== 0) {
-      return (
-        filterCategories.every((cat) =>
-          project.projectOffers.some(({ offerData }) =>
-            offerData.category.includes(cat)
-          )
-        ) &&
-        (project.projectData.name
-          .toLowerCase()
-          .includes(search.toLowerCase()) ||
-          project.projectData.location.address
-            .toLowerCase()
-            .includes(search.toLowerCase()) ||
-          project.projectOffers.some(({ offerData }) =>
-            offerData.name.toLowerCase().includes(search.toLowerCase())
-          ))
-      );
-    }
-
-    if (onlyOffers && filterCategories.length === 0) {
-      return (
-        project.projectData.name === null &&
-        (project.projectData.location.address
-          .toLowerCase()
-          .includes(search.toLowerCase()) ||
-          project.projectOffers.some(({ offerData }) =>
-            offerData.name.toLowerCase().includes(search.toLowerCase())
-          ))
-      );
-    }
-
-    return (
-      project.projectData.name.toLowerCase().includes(search.toLowerCase()) ||
-      project.projectData.location.address
-        .toLowerCase()
-        .includes(search.toLowerCase()) ||
-      project.projectOffers.some(({ offerData }) =>
-        offerData.name.toLowerCase().includes(search.toLowerCase())
-      )
-    );
-  });
+  const filteredProjects = getFilteredProjects(
+    projects,
+    search,
+    filterCategories,
+    onlyOffers,
+  );
 
   return (
     <SelectedItem.Provider value={{ selectedItem, setSelectedItem }}>

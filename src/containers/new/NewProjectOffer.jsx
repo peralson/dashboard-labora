@@ -1,5 +1,4 @@
 import React, { useState, useReducer } from "react";
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 // Redux
@@ -21,7 +20,6 @@ import {
 // SVG
 import next from "../../assets/svg/next.svg";
 import back from "../../assets/svg/back.svg";
-import cancel from "../../assets/svg/cancel.svg";
 
 // Containers
 import NameDescCat from "../innerContainers/new/projectOffer/NameDescCat";
@@ -43,6 +41,7 @@ import SideSticky from "../../components/main/SideSticky";
 import NewTopHeaderBar from "../../components/new/NewTopHeaderBar";
 import TopButton from "../../components/ui/TopButton";
 import SideBoxContainer from "../../components/ui/SideBoxContainer";
+import ErrorMessage from "../../components/ui/ErrorMessage";
 
 const NewProjectOffer = ({ match, history, createProjectOffer }) => {
   const projectId = match.params.id;
@@ -52,6 +51,7 @@ const NewProjectOffer = ({ match, history, createProjectOffer }) => {
   const [loading, setLoading] = useState(false);
 
   const [state, dispatch] = useReducer(reducer, initialState);
+
   const { isNameDescCatValid } = validateNameDescCat(state);
   const { isScheduleValid } = validateSchedule(state);
   const { isLegalPayrollValid } = validateLegalPayrolls(state);
@@ -66,7 +66,7 @@ const NewProjectOffer = ({ match, history, createProjectOffer }) => {
         await createProjectOffer(projectId, state);
         history.push(`../../../p/${projectId}`);
       } catch (err) {
-        setError(err.message);
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -137,21 +137,11 @@ const NewProjectOffer = ({ match, history, createProjectOffer }) => {
           </NewTopHeaderBar>
         </TopMain>
         {error && (
-          <Box py={2} px={4} mt={2} borderRadius={10} bg={"red.smooth"}>
-            <Flex
-              w={"100%"}
-              alignItems={"center"}
-              justifyContent={"space-between"}
-              cursor={"pointer"}
-              onClick={() => setError(null)}
-            >
-              <Text fontWeight={"bold"} color={"red.full"} mb={2}>
-                Oh! Vaya... algo salió mal
-              </Text>
-              <Image src={cancel} w={"12px"} />
-            </Flex>
-            <Text color={"red.full"}>{error}</Text>
-          </Box>
+          <ErrorMessage
+            onClose={() => setError(null)}
+            title="Oh! Vaya... algo salió mal"
+            secondary="Ha habido un problema creando la oferta. Inténtalo más tarde."
+          />
         )}
         {process === 1 && <NameDescCat />}
         {process === 2 && <SchedulePicker projectId={projectId} />}

@@ -17,6 +17,13 @@ export const shiftsHoursCalc = (shifts) => {
     minutes = minutes + duration.minutes;
   });
 
+  if (minutes > 59) {
+    const extraHours = parseInt(minutes / 60);
+    const extraMins = parseInt(minutes % 60);
+    hours = hours + extraHours;
+    minutes = extraMins;
+  }
+
   return {
     hours,
     minutes,

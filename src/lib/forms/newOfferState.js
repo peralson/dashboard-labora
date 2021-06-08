@@ -288,6 +288,15 @@ export const reducer = (state, action) => {
         },
       };
 
+    case "setTags":
+      return {
+        ...state,
+        offerData: {
+          ...state.offerData,
+          tags: action.payload,
+        },
+      };
+
     default:
       return state;
   }

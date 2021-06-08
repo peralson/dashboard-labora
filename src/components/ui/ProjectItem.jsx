@@ -55,24 +55,34 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
   )
 
   return (
-    <Box borderWidth={2} borderColor={"darkLight"} borderRadius={20} p={4}> 
+    <Box borderWidth={2} borderColor={"darkLight"} borderRadius={20} p={4}>
       <Flex alignItems={"center"} justifyContent={"space-between"} mb={2}>
         <DateTag dates={dates} />
-        <Link to={`/ofertas/p/${id}`}>
+        <Link to={name ? `/ofertas/p/${id}` : `/ofertas/o/${projectOffers[0].id}`}>
           <Options>Más información</Options>
         </Link>
       </Flex>
       <Flex alignItems={"center"} justifyContent={"space-between"}>
-        <Box flex={1}>
-          <Link to={`/ofertas/p/${id}`}>
-            <Text fontSize={21} fontWeight="bold" cursor={"pointer"}>
-              {name ? name : projectOffers[0].offerData.name}
-            </Text>
-          </Link>
+        <Flex flexDirection={"column"} alignItems={"flex-start"} flex={1}>
+          <Flex>
+            <Link to={name ? `/ofertas/p/${id}` : `/ofertas/o/${projectOffers[0].id}`}>
+              <Text fontSize={21} fontWeight="bold" cursor={"pointer"}>
+                {name
+                  ? name
+                  : projectOffers[0].offerData.name
+                }
+              </Text>
+            </Link>
+          </Flex>
           <Text fontSize={14} color="primary">
             {location.address}
           </Text>
-        </Box>
+          {!name && (
+            <Text mt={2} fontSize={14} px={2} py={2} lineHeight={1} borderRadius={10} borderWidth={1} borderColor={"accentLight"} color={"accent"}>
+              {projectOffers[0].offerData.category}
+            </Text>
+          )}
+        </Flex>
         {projectOffers.length !== 0 && (
           <Remaining
             alreadyassigned={alreadyAssigned}

@@ -34,6 +34,15 @@ export const daysAndHoursFromOffer = (offerSchedules) => {
     });
   });
 
+  if (totalHoursAndMins.mins > 59) {
+    const extraHours = parseInt(totalHoursAndMins.mins / 60);
+    const extraMins = parseInt(totalHoursAndMins.mins % 60);
+    totalHoursAndMins = {
+      hours: totalHoursAndMins.hours + extraHours,
+      mins: extraMins,
+    };
+  }
+
   return { totalDaysWorked, totalHoursAndMins };
 };
 

@@ -17,7 +17,7 @@ const OfferQtyTags = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [filteredWorkers, setFilteredWorkers] = useState([]);
+  const [workers, setWorkers] = useState([]);
   const [tags, setTags] = useState([]);
   const [filterTags, setFilterTags] = useState([]);
 
@@ -32,29 +32,23 @@ const OfferQtyTags = () => {
         },
       )
         .then((data) => data.json())
-        .then((workers) => setFilteredWorkers(workers.body))
-        .then(() => {
-          filteredWorkers.forEach((worker) => {
-            if (worker.tags) {
-              worker.tags.forEach((tag) => {
-                if (!tags.includes(tag)) {
-                  setTags([...tags, tag]);
-                }
-              });
-            }
-          });
+        .then((workers) => {
+          let tagArray = []
+          workers.body.forEach((worker) => {
+            worker.tags.forEach((tag) => {
+              if (!tagArray.includes(tag)) {
+                tagArray.push(tag); 
+              }
+            });
+          })
+          setTags(tagArray)
+          setWorkers(workers.body)
         })
-        .catch((e) => setError(true))
+        .catch(() => setError(true))
         .finally(() => setLoading(false));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(
-    () => dispatch({ type: "setTotalWorker", payload: filteredWorkers.length }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [filteredWorkers],
-  );
 
   const qtyNotOne = state.offerData.qty !== 1;
 
@@ -75,6 +69,24 @@ const OfferQtyTags = () => {
       setFilterTags(filterTags.filter((e) => e !== event.target.name));
     }
   };
+
+  const filteredWorkers = workers.filter((worker) => {
+    return (
+      filterTags.every((tag) => worker.tags.includes(tag))
+    );
+  });
+
+  useEffect(
+    () => dispatch({ type: "setTotalWorker", payload: filteredWorkers.length }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [filteredWorkers.length],
+  );
+
+  useEffect(
+    () => dispatch({ type: "setTags", payload: filterTags }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [filterTags],
+  );
 
   return (
     <Grid w={"100%"} maxW={"600px"} mx={"auto"} rowGap={4} my={4}>
@@ -134,13 +146,14 @@ const OfferQtyTags = () => {
         {state.offerData.totalWorkers > 0 && (
           <Flex
             w={"100%"}
-            mb={4}
+            mb={tags.length === 0 ? 4 : 2}
             alignItems={"center"}
+            flexDirection={"row-reverse"}
             justifyContent={"space-between"}
           >
-            {tags.length === 0 ? (
-              <Box></Box>
-            ) : (
+            {tags.length === 0
+              ? <Box></Box>
+              : (
               <MultipleSelectList
                 title={`Etiquetas${
                   filterTags.length > 0 ? ` (${filterTags.length})` : ""
@@ -152,7 +165,7 @@ const OfferQtyTags = () => {
               />
             )}
             <Text color={"primary"} fontSize={14}>
-              Total trabajadores: {state.offerData.totalWorkers}
+              Total trabajadores: {filteredWorkers.length}
             </Text>
           </Flex>
         )}

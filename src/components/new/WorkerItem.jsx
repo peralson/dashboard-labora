@@ -14,7 +14,7 @@ const WorkerItem = ({ worker }) => (
     borderWidth={2}
     borderColor={"darkLight"}
   >
-    <Flex flex={2} alignItems={"center"} justifyContent={"flex-start"} mr={2}>
+    <Flex alignItems={"center"} justifyContent={"flex-start"} mr={4}>
       <Box
         w={"30px"}
         h={"30px"}
@@ -30,12 +30,18 @@ const WorkerItem = ({ worker }) => (
         />
       </Box>
     </Flex>
-    <Text flex={12} fontSize={12}>
+    <Text minW={"140px"} fontSize={12} mr={4}>
       {worker.workerData.name}
     </Text>
-    <Text flex={4} fontSize={12} mr={2} textAlign={"right"}>
-      {worker.workerData.contact.phoneNumber}
-    </Text>
+    {worker.tags.length !== 0 && (
+      <Flex flex={1} alignItems={"center"}>
+        {worker.tags.map((tag, index) => ( 
+          <Text key={index} fontSize={12} ml={index !== 0 && 1} py={1} px={2} borderRadius={4} bg={"darkLight"} color={"primary"}>
+            #{tag}
+          </Text>
+        ))}
+      </Flex>
+    )}
   </Flex>
 );
 

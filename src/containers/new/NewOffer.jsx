@@ -41,15 +41,35 @@ import Side from "../../components/main/Side";
 import TopButton from "../../components/ui/TopButton";
 import SideSticky from "../../components/main/SideSticky";
 import SideBoxContainer from "../../components/ui/SideBoxContainer";
+import ErrorMessage from "../../components/ui/ErrorMessage";
 
-const NewOffer = ({ createOfferSingle }) => {
+const NewOffer = ({ createOfferSingle, history }) => {
   const [process, setProcess] = useState(1);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { isNameDescCatDatesValid } = validateNameDescCatDates(state)
-  const { isScheduleValid } = validateSchedule(state)
-  const { isLegalPayrollValid } = validateLegalPayrolls(state)
-  const { isQtyTagsValid } = validateQtyTags(state)
-  const isValid = validateForm(state)
+
+  const { isNameDescCatDatesValid } = validateNameDescCatDates(state);
+  const { isScheduleValid } = validateSchedule(state);
+  const { isLegalPayrollValid } = validateLegalPayrolls(state);
+  const { isQtyTagsValid } = validateQtyTags(state);
+  const isValid = validateForm(state);
+
+  const handleCreate = async () => {
+    if (isQtyTagsValid && isValid) {
+      setError(null);
+      setLoading(true);
+      try {
+        await createOfferSingle(state);
+        history.push(`../../../../`);
+      } catch (err) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   return (
     <NewOfferContext.Provider value={{ state, dispatch }}>
@@ -104,20 +124,23 @@ const NewOffer = ({ createOfferSingle }) => {
               ) : (
                 <TopButton
                   inactive={!isQtyTagsValid && isValid}
-                  onSelect={async () => {
-                    if (isQtyTagsValid && isValid) {
-                      await createOfferSingle(state);
-                    }
-                  }}
+                  onSelect={handleCreate}
                 >
                   Crear
                 </TopButton>
               )
             }
           >
-            Nueva Oferta
+            {loading ? "Creando oferta..." : "Nueva Oferta"}
           </NewTopHeaderBar>
         </TopMain>
+        {error && (
+          <ErrorMessage
+            onClose={() => setError(null)}
+            title="Oh! Vaya... algo salió mal"
+            secondary="Ha habido un problema creando la oferta. Inténtalo más tarde."
+          />
+        )}
         {process === 1 && <NameDescCatDates />}
         {process === 2 && <OfferSchedulePicker />}
         {process === 3 && <OfferLegalPayrolls />}
