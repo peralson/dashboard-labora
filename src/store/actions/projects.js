@@ -47,7 +47,7 @@ export const fetchPastProjects = () => {
     // const token = getState().auth.token
 
     const response = await fetch(
-      'https://us-central1-partime-60670.cloudfunctions.net/api/event/fullEvents',
+      'https://us-central1-partime-60670.cloudfunctions.net/api/event/fullEventsHistory',
       {
         headers: {
           'Content-Type': 'application/json',
