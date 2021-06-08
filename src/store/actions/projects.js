@@ -5,6 +5,7 @@ export const FETCH_PAST_PROJECTS = 'FETCH_PAST_PROJECTS';
 export const CREATE_NEW_PROJECT = 'CREATE_NEW_PROJECT';
 export const CREATE_PROJECT_OFFER = 'CREATE_PROJECT_OFFER';
 export const DELETE_PROJECT = 'DELETE_PROJECT';
+export const DELETE_PROJECT_OFFER = "DELETE_PROJECT_OFFER";
 export const EDIT_ONE_OFFER = 'EDIT_ONE_OFFER';
 
 export const fetchProjects = () => {
@@ -43,8 +44,6 @@ export const fetchProjects = () => {
 export const fetchPastProjects = () => {
   return async (dispatch, getState) => {
     // const token = getState().auth.token
-
-    console.log('antes del fetch');
 
     const response = await fetch(
       'https://us-central1-partime-60670.cloudfunctions.net/api/event/fullEvents',
@@ -150,8 +149,6 @@ export const deleteProject = (projectId) => {
 
 export const createProjectOffer = (projectId, offerData) => {
   return async (dispatch, getState) => {
-    console.log(projectId);
-    console.log(offerData);
     // const token = getState().auth.token
 
     const formattedSchedule = offerData.schedule.map((sche) => {
@@ -230,6 +227,37 @@ export const createProjectOffer = (projectId, offerData) => {
         jobs: 0,
         number_applies: 0,
       },
+    });
+  };
+};
+
+export const deleteProjectOffer = (projectId, offerId) => {
+  return async (dispatch, getState) => {
+    // const token = getState().auth.token;
+    // const companyId = getState().auth.id;
+
+    const response = await fetch(
+      `https://us-central1-partime-60670.cloudfunctions.net/api/offer/${offerId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      console.log("ERROR");
+      const resData = await response.json();
+      console.error(resData);
+      throw new Error("Ha habido un problema...");
+    }
+
+    dispatch({
+      type: DELETE_PROJECT_OFFER,
+      offerId: offerId,
+      projectId: projectId,
     });
   };
 };

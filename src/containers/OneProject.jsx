@@ -30,6 +30,7 @@ import OfferSide from "../components/ui/OfferSide";
 import ProjectOfferItem from "../components/ui/ProjectOfferItem";
 import AccentButton from "../components/ui/AccentButton";
 import DeleteButton from "../components/ui/DeleteButton";
+import ErrorMessage from "../components/ui/ErrorMessage";
 
 const OneProject = ({
   match,
@@ -42,7 +43,7 @@ const OneProject = ({
   const project = projects.find(p => p.id === id);
 
   const [loadingDel, setLoadingDel] = useState(false);
-  const [errorDel, setErrorDel] = useState(false);
+  const [errorDel, setErrorDel] = useState(null);
   const [selectedItemIndie, setSelectedItemIndie] = useState(null);
 
   if (!project) return <Box></Box>;
@@ -51,9 +52,9 @@ const OneProject = ({
     setErrorDel(null)
     setLoadingDel(true)
     deleteProject(id)
-      .then(() => history.push('../../'))
-      .catch(e => console.log(true))
-      .finally(() => setLoadingDel(false))
+      .then(() => history.push("../../"))
+      .catch((e) => setErrorDel(true))
+      .finally(() => setLoadingDel(false));
   }
 
   return (
@@ -75,13 +76,19 @@ const OneProject = ({
         </TopMain>
         <Box pb={10}>
           {errorDel && (
-            <Box py={3} px={4} borderRadius={10} bg={"red.smooth"} mt={4}>
-              <Text color={"red.full"}>
-                Ha habido un problema al borrar el proyecto. Inténtalo más tarde.
-              </Text>
-            </Box>
+            <ErrorMessage
+              title={"Ha habido un error al intentar borrar el proyecto."}
+              secondary={"Inténtalo más tarde."}
+              onClose={() => setErrorDel(null)}
+            />
           )}
-          <Grid columnGap={8} width={"100%"} templateColumns={"3fr 1fr"} my={6} mt={errorDel ? 4 : 6}>
+          <Grid
+            columnGap={8}
+            width={"100%"}
+            templateColumns={"3fr 1fr"}
+            my={6}
+            mt={errorDel ? 4 : 6}
+          >
             <Box>
               <TextInfo title="Nombre" info={project.projectData.name} mb={4} />
               <TextInfo
@@ -110,7 +117,7 @@ const OneProject = ({
             </Text>
             {project.projectOffers.length === 0 && (
               <Link to={`./${id}/nueva-oferta/`}>
-                <AccentButton iconLeft={plusWhite} py={3.5}> 
+                <AccentButton iconLeft={plusWhite} py={3.5}>
                   Añadir una oferta
                 </AccentButton>
               </Link>
@@ -143,13 +150,19 @@ const OneProject = ({
               </Link>
             </Grid>
           ) : (
-            <Flex w={"100%"} my={6} alignItems={"center"} justifyContent={"center"} flexDirection={"column"}>
+            <Flex
+              w={"100%"}
+              my={6}
+              alignItems={"center"}
+              justifyContent={"center"}
+              flexDirection={"column"}
+            >
               <Image src={task} mb={4} w={"140px"} />
             </Flex>
           )}
           <Flex w={"100%"} mt={10}>
             <DeleteButton onDelete={handleDeleteProject} type={"el proyecto"}>
-              {loadingDel ? 'Borrando...' : 'Eliminar proyecto'}
+              {loadingDel ? "Borrando..." : "Eliminar proyecto"}
             </DeleteButton>
           </Flex>
         </Box>

@@ -60,7 +60,7 @@ const OfferItem = ({ offer, index }) => {
           {offer.offerData.already_assigned !== offer.offerData.qty ? (
             <>
               {offer.offerApplications.length === 0 ? (
-                <>{"No tienes solicitudes"}</>
+                <Text opacity={0}>{"No tienes solicitudes"}</Text>
               ) : (
                 <>
                   {offer.offerApplications.length}

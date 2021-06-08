@@ -6,6 +6,7 @@ import {
   CREATE_NEW_PROJECT,
   DELETE_PROJECT,
   CREATE_PROJECT_OFFER,
+  DELETE_PROJECT_OFFER,
 } from "../actions/projects";
 
 const initialState = {
@@ -19,6 +20,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         allProjects: action.projects,
+      };
+
+    case FETCH_PAST_PROJECTS:
+      return {
+        ...state,
+        pastProjects: action.pastProjects,
       };
 
     case CREATE_NEW_PROJECT:
@@ -37,12 +44,6 @@ export default (state = initialState, action) => {
         allProjects: deletedAllProjects,
       };
 
-    case FETCH_PAST_PROJECTS:
-      return {
-        ...state,
-        pastProjects: action.pastProjects,
-      };
-
     case CREATE_PROJECT_OFFER:
       const project = state.allProjects.find((p) => p.id === action.projectId);
       project.projectOffers.push({
@@ -50,9 +51,17 @@ export default (state = initialState, action) => {
         offerData: action.data,
         offerApplications: [],
       });
-      return {
-        ...state,
-      };
+      return { ...state };
+
+    case DELETE_PROJECT_OFFER:
+      const updatedProject = state.allProjects.find(
+        (p) => p.id === action.projectId,
+      );
+      const updatedOffers = updatedProject.projectOffers.filter(
+        (offer) => offer.id !== action.offerId,
+      );
+      updatedProject.projectOffers = updatedOffers;
+      return { ...state };
 
     default:
       return state;

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Flex, Box, Text, Grid } from '@chakra-ui/layout';
+import { Flex, Box, Text, Grid } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 // Custom
 import { connect } from 'react-redux';
+import { deleteProjectOffer } from '../store/actions/projects'
 import { formattedSalary } from '../lib/formattedSalary';
 
 // Context
@@ -29,16 +30,31 @@ import LegalSide from '../components/ui/LegalSide';
 import TopHeaderBar from '../components/ui/TopHeaderBar';
 import ApplicationSide from '../components/ui/ApplicationSide';
 import BeCurious from '../components/ui/BeCurious';
+import DeleteButton from '../components/ui/DeleteButton';
+import ErrorMessage from '../components/ui/ErrorMessage';
 
-const OneOffer = ({ match, history, projects }) => {
+const OneOffer = ({ match, history, projects, deleteProjectOffer }) => {
   const { id } = match.params;
 
-  const project = projects.find((p) =>
-    p.projectOffers.some((offer) => offer.id === id)
+  const [loadingDel, setLoadingDel] = useState(false);
+  const [errorDel, setErrorDel] = useState(null);
+  const [selectedItemIndie, setSelectedItemIndie] = useState(null);
+
+  const project = projects.find(({ projectOffers }) =>
+    projectOffers.some((offer) => offer.id === id)
   );
   const offer = project.projectOffers.find((offer) => offer.id === id);
 
-  const [selectedItemIndie, setSelectedItemIndie] = useState(null);
+  if (!offer || !project) return <Box></Box>;
+
+  const handleDeleteOffer = () => {
+    setErrorDel(null)
+    setLoadingDel(true)
+    deleteProjectOffer(project.id, offer.id)
+      .then(() => history.push('../../'))
+      .catch(e => setErrorDel(true))
+      .finally(() => setLoadingDel(false))
+  }
 
   return (
     <SelectedItemIndie.Provider
@@ -56,6 +72,13 @@ const OneOffer = ({ match, history, projects }) => {
           </TopHeaderBar>
         </TopMain>
         <Box pb={10}>
+          {errorDel && (
+            <ErrorMessage
+              title={"Ha habido un error al intentar borrar la oferta."}
+              secondary={"Inténtalo más tarde."}
+              onClose={() => setErrorDel(null)}
+            />
+          )}
           {project.projectData.name && (
             <Flex mt={2} alignItems={'flex-end'} justifyContent={'flex-end'}>
               <Text fontSize={14} lineHeight={1.5}>
@@ -142,6 +165,11 @@ const OneOffer = ({ match, history, projects }) => {
             </>
           )}
         </Box>
+        <Flex w={"100%"} mt={10}>
+          <DeleteButton onDelete={handleDeleteOffer} type={"la oferta"}>
+            {loadingDel ? 'Borrando...' : 'Eliminar oferta'}
+          </DeleteButton>
+        </Flex>
       </Main>
       <Side>
         <SideSticky>
@@ -183,6 +211,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  deleteProjectOffer
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OneOffer);
