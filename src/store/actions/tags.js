@@ -9,6 +9,7 @@ export const fetchTags = () => {
       {
         headers: {
           'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*"
         },
       }
     );
@@ -57,7 +58,6 @@ export const editTags = async (action, userList, tagList) => {
     const errorResData = await response.json();
     console.log(errorResData);
   }
-
 
   console.log(resData);
 

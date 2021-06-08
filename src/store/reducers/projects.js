@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import sortByDate from "../../lib/sortByDate";
+import sortByDate from '../../lib/sortByDate';
 import {
   FETCH_PROJECTS,
   FETCH_PAST_PROJECTS,
@@ -7,7 +7,8 @@ import {
   DELETE_PROJECT,
   CREATE_PROJECT_OFFER,
   DELETE_PROJECT_OFFER,
-} from "../actions/projects";
+  EDIT_OFFER,
+} from '../actions/projects';
 
 const initialState = {
   allProjects: [],
@@ -37,7 +38,7 @@ export default (state = initialState, action) => {
 
     case DELETE_PROJECT:
       const deletedAllProjects = state.allProjects.filter(
-        (project) => project.id !== action.id,
+        (project) => project.id !== action.id
       );
       return {
         ...state,
@@ -55,12 +56,21 @@ export default (state = initialState, action) => {
 
     case DELETE_PROJECT_OFFER:
       const updatedProject = state.allProjects.find(
-        (p) => p.id === action.projectId,
+        (p) => p.id === action.projectId
       );
       const updatedOffers = updatedProject.projectOffers.filter(
-        (offer) => offer.id !== action.offerId,
+        (offer) => offer.id !== action.offerId
       );
       updatedProject.projectOffers = updatedOffers;
+      return { ...state };
+
+    case EDIT_OFFER:
+      state.allProjects
+        .find((p) => p.id === action.payload.projectId)
+        .projectOffers.find(
+          (offer) => offer.id === action.payload.updatedOffer.id
+        ).offerData = action.payload.updatedOffer;
+
       return { ...state };
 
     default:
