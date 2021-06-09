@@ -69,8 +69,8 @@ const NewProject = ({ history, createProject }) => {
               </Link>
             }
             rightButton={
-              !loading
-                ? <TopButton
+              !loading ? (
+                <TopButton
                   right
                   inactive={!isValid}
                   icon={plus}
@@ -78,7 +78,11 @@ const NewProject = ({ history, createProject }) => {
                 >
                   Crear
                 </TopButton>
-                : <Text py={1} px={2} color={"primary"}>Creando proyecto...</Text>
+              ) : (
+                <Text py={1} px={2} color={"primary"}>
+                  Creando proyecto...
+                </Text>
+              )
             }
           >
             Nuevo Proyecto
@@ -90,9 +94,7 @@ const NewProject = ({ history, createProject }) => {
               <Text fontWeight={"bold"} color={"red.full"} mb={2}>
                 Oh! Vaya... algo salió mal
               </Text>
-              <Text color={"red.full"}>
-                Error: {error}
-              </Text>
+              <Text color={"red.full"}>Error: {error}</Text>
             </Box>
           )}
           <CustomInput
@@ -103,14 +105,13 @@ const NewProject = ({ history, createProject }) => {
               dispatch({ type: "editName", payload: e.target.value })
             }
           />
-          {!isLoaded
-            ? <Text>Cargando...</Text>
-            : loadError
-              ? <Text>Ha ocurrido un error</Text>
-              : (<PlacesAutocompleteInput
-            title={"Dirección"}
-            placeholder={"Introduce la dirección"}
-          />)}
+          {!isLoaded ? (
+            <Text>Cargando...</Text>
+          ) : loadError ? (
+            <Text>Ha ocurrido un error</Text>
+          ) : (
+            <PlacesAutocompleteInput title={"Dirección"} />
+          )}
           <CustomInput
             title={"Descripción"}
             optional

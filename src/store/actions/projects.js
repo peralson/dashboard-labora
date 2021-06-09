@@ -8,6 +8,7 @@ export const CREATE_SOLO_OFFER = 'CREATE_SOLO_OFFER';
 export const DELETE_PROJECT = 'DELETE_PROJECT';
 export const DELETE_PROJECT_OFFER = 'DELETE_PROJECT_OFFER';
 export const EDIT_OFFER = 'EDIT_OFFER';
+export const EDIT_PROJECT = 'EDIT_PROJECT';
 
 export const fetchProjects = () => {
   return async (dispatch, getState) => {
@@ -309,10 +310,10 @@ export const editOffer = ({ offerData, projectData }) => {
     );
 
     currentOffer.offerData.name = offerData.name;
-    currentOffer.offerData.salary = offerData.salary;
+    currentOffer.offerData.salary = parseFloat(offerData.salary).toFixed(2);
     currentOffer.offerData.description = offerData.description;
-    currentOffer.offerData.extraSalary = offerData.extra;
-    currentOffer.offerData.qty = offerData.qty;
+    currentOffer.offerData.extraSalary = parseFloat(offerData.extra).toFixed(2);
+    currentOffer.offerData.qty = parseInt(offerData.qty);
 
     const response = await fetch(
       'https://us-central1-partime-60670.cloudfunctions.net/api/offer',
@@ -325,11 +326,10 @@ export const editOffer = ({ offerData, projectData }) => {
         body: JSON.stringify({
           id: offerData.id,
           name: offerData.name,
-          salary: offerData.salary,
+          salary: parseFloat(offerData.salary).toFixed(2),
           description: offerData.description,
-          extraSalary: offerData.extra,
-          qty: offerData.qty,
-          
+          extraSalary: parseFloat(offerData.extra).toFixed(2),
+          qty: parseInt(offerData.qty),
         }),
       }
     );
@@ -350,6 +350,48 @@ export const editOffer = ({ offerData, projectData }) => {
     });
   };
 };
+
+export const editProject = (id, state, dates) => {
+  return async (dispatch, getState) => {
+    // const token = getState().auth.token
+
+    const response = await fetch(
+      'https://us-central1-partime-60670.cloudfunctions.net/api/event',
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          // Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id: id,
+          name: state.name,
+          description: state.description,
+          location: state.location,
+          dates: dates,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      console.log('ERROR');
+      const resData = await response.json();
+      console.error(resData);
+      throw new Error('Ha habido un problema...');
+    }
+
+    dispatch({
+      type: EDIT_PROJECT,
+      id: id,
+      projectData: {
+        name: state.name,
+        description: state.description,
+        location: state.location,
+        dates: dates,
+      }
+    })
+  }
+}
 
 const formattedSchedule = (schedule) => {
   return schedule.map((sche) => {

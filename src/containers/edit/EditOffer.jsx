@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Flex, Box, Text, Grid } from '@chakra-ui/layout';
-import { Link } from 'react-router-dom';
+import { Flex, Text, Grid } from '@chakra-ui/layout';
 
 // Form
 import { useFormik } from 'formik';
@@ -25,22 +24,21 @@ import TopMain from '../../components/main/TopMain';
 import Side from '../../components/main/Side';
 import SideSticky from '../../components/main/SideSticky';
 import SideBoxContainer from '../../components/ui/SideBoxContainer';
-import Documentation from '../../components/main/Documentation';
-import BeCurious from '../../components/ui/BeCurious';
 import NewTopHeaderBar from '../../components/new/NewTopHeaderBar';
 import TopButton from '../../components/ui/TopButton';
+import ErrorMessage from '../../components/ui/ErrorMessage';
 import CustomInput from '../../components/new/CustomInput';
 
-const ErrorText = ({ error }) => {
-  return (
-    <Text color='red' fontSize={14}>
-      {error}
-    </Text>
-  );
-};
+const ErrorText = ({ error }) => (
+  <Text color='red.full' fontSize={14} px={1} mt={1}>
+    {error}
+  </Text>
+);
+
 const EditOffer = ({ editOffer, match, history, projects }) => {
   const { id } = match.params;
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [selectedItemIndie, setSelectedItemIndie] = useState(null);
 
   const project = projects.find((p) =>
@@ -59,24 +57,24 @@ const EditOffer = ({ editOffer, match, history, projects }) => {
     },
     validationSchema: Yup.object().shape({
       name: Yup.string()
-        .min(3, 'Demasiado corto')
-        .max(50, 'Demasiado largo!')
-        .required('Campo obligatorio'),
+        .min(3, "Demasiado corto")
+        .max(50, "Demasiado largo!")
+        .required("Campo obligatorio"),
       salary: Yup.number()
-        .min(offer.offerData.salary, 'No se puede reducir el salario!')
-        .required('Campo obligatorio'),
+        .min(offer.offerData.salary, "No se puede reducir el salario!")
+        .required("Campo obligatorio"),
       extra: Yup.number()
-        .min(offer.offerData.extraSalary, 'No se puede reducir el salario!')
-        .required('Campo obligatorio'),
+        .min(offer.offerData.extraSalary, "No se puede reducir el salario!")
+        .required("Campo obligatorio"),
       qty: Yup.number()
-        .min(offer.offerData.already_assigned, 'Ya hay trabajadores aceptados!')
-        .required('Campo obligatorio'),
+        .min(offer.offerData.already_assigned, "Ya hay trabajadores aceptados!")
+        .min(1, "Al menos un trabajador")
+        .required("Campo obligatorio"),
     }),
     onSubmit: async (values) => {
       setIsLoading(true);
-      console.log('enviando');
+      setError(null)
       try {
-        console.log('entrando');
         await editOffer({
           projectData: { id: project.id },
           offerData: {
@@ -88,11 +86,11 @@ const EditOffer = ({ editOffer, match, history, projects }) => {
             description: values.description,
           },
         });
+        history.push(`../../`);
       } catch (err) {
-        console.log(err);
+        setError(true);
       } finally {
         setIsLoading(false);
-        history.push(`../../`);
       }
     },
   });
@@ -114,7 +112,7 @@ const EditOffer = ({ editOffer, match, history, projects }) => {
               </TopButton>
             }
             rightButton={
-              <TopButton right icon={edit} onSelect={formik.submitForm}>
+              <TopButton right icon={edit} inactive={!formik.isValid} onSelect={formik.submitForm}>
                 {isLoading ? 'Guardando...' : 'Guardar'}
               </TopButton>
             }
@@ -122,89 +120,72 @@ const EditOffer = ({ editOffer, match, history, projects }) => {
             Editar oferta
           </NewTopHeaderBar>
         </TopMain>
-        <Box pb={10}>
-          {project.projectData.name && (
-            <Flex mt={2} alignItems={'flex-end'} justifyContent={'flex-end'}>
-              <Text fontSize={14} lineHeight={1.5}>
-                Esta oferta pertenece al proyecto:
-              </Text>
-              <Link to={`../../ofertas/p/${project.id}`}>
-                <Text
-                  color={'primary'}
-                  ml={2}
-                  fontSize={14}
-                  lineHeight={1.35}
-                  _hover={{ textDecoration: 'underline' }}
-                >
-                  {project.projectData.name}
-                </Text>
-              </Link>
-            </Flex>
+        <Grid w={"100%"} maxW={"600px"} mx={"auto"} rowGap={4} my={4}>
+          {error && (
+            <ErrorMessage
+              title="Oh! Vaya... algo salió mal"
+              secondary="Ha habido un problema editando la oferta. Inténtalo más tarde."
+              onClose={() => setError(null)}
+            />
           )}
-          <Grid columnGap={8} width={'100%'} templateColumns={'1r 1fr'} my={4}>
-            <Box>
-              <Grid gap={4} width={'100%'} templateColumns={'1fr 1fr'} mb={4}>
-                <Flex flexDirection='column'>
-                  <CustomInput
-                    title='Nombre'
-                    value={formik.values.name}
-                    optional
-                    onChange={formik.handleChange('name')}
-                  />
-                  {formik.errors.name && formik.touched.name ? (
-                    <ErrorText error={formik.errors.name} />
-                  ) : null}
-                </Flex>
-                <Flex flexDirection='column'>
-                  <CustomInput
-                    title='Salario'
-                    value={formik.values.salary}
-                    optional
-                    onChange={formik.handleChange('salary')}
-                  />
-                  {formik.errors.salary && formik.touched.salary ? (
-                    <ErrorText error={formik.errors.salary} />
-                  ) : null}
-                </Flex>
-                <Flex flexDirection='column'>
-                  <CustomInput
-                    title='Horas extra'
-                    optional
-                    value={formik.values.extra}
-                    onChange={formik.handleChange('extra')}
-                  />
-                  {formik.errors.extra && formik.touched.extra ? (
-                    <ErrorText error={formik.errors.extra} />
-                  ) : null}
-                </Flex>
-                <Flex flexDirection='column'>
-                  <CustomInput
-                    optional
-                    title='Cantidad'
-                    value={formik.values.qty}
-                    onChange={formik.handleChange('qty')}
-                  />
-                  {formik.errors.qty && formik.touched.qty ? (
-                    <ErrorText error={formik.errors.qty} />
-                  ) : null}
-                </Flex>
-              </Grid>
+          <Grid gap={4} width={'100%'} templateColumns={'1fr 1fr'}>
+            <Flex flexDirection='column'>
               <CustomInput
-                multiline
+                title='Nombre'
+                value={formik.values.name}
                 optional
-                title='Requisitos'
-                value={formik.values.description}
-                onChange={formik.handleChange('description')}
+                onChange={formik.handleChange('name')}
               />
-            </Box>
+              {formik.errors.name && formik.touched.name ? (
+                <ErrorText error={formik.errors.name} />
+              ) : null}
+            </Flex>
+            <Flex flexDirection='column'>
+              <CustomInput
+                title='Salario'
+                value={formik.values.salary}
+                optional
+                onChange={formik.handleChange('salary')}
+              />
+              {formik.errors.salary && formik.touched.salary ? (
+                <ErrorText error={formik.errors.salary} />
+              ) : null}
+            </Flex>
+            <Flex flexDirection='column'>
+              <CustomInput
+                title='Horas extra'
+                optional
+                value={formik.values.extra}
+                onChange={formik.handleChange('extra')}
+              />
+              {formik.errors.extra && formik.touched.extra ? (
+                <ErrorText error={formik.errors.extra} />
+              ) : null}
+            </Flex>
+            <Flex flexDirection='column'>
+              <CustomInput
+                optional
+                title='Cantidad'
+                value={formik.values.qty}
+                onChange={formik.handleChange('qty')}
+              />
+              {formik.errors.qty && formik.touched.qty ? (
+                <ErrorText error={formik.errors.qty} />
+              ) : null}
+            </Flex>
           </Grid>
-        </Box>
+          <CustomInput
+            multiline
+            optional
+            title='Requisitos'
+            value={formik.values.description}
+            onChange={formik.handleChange('description')}
+          />
+        </Grid>
       </Main>
       <Side>
         <SideSticky>
-          <Documentation />
           <SideBoxContainer>
-            <BeCurious text={'Edita las características de tu oferta'} />
           </SideBoxContainer>
         </SideSticky>
       </Side>

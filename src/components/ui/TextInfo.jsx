@@ -9,7 +9,7 @@ const TextInfo = (props) => (
     <Text
       py={2}
       px={3}
-      borderRadius={4}
+      borderRadius={10}
       borderWidth={2}
       borderColor={"darkLight"}
       {...props}

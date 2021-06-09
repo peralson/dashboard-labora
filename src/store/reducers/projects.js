@@ -8,6 +8,7 @@ import {
   CREATE_PROJECT_OFFER,
   DELETE_PROJECT_OFFER,
   EDIT_OFFER,
+  EDIT_PROJECT
 } from '../actions/projects';
 
 const initialState = {
@@ -70,9 +71,13 @@ export default (state = initialState, action) => {
         .projectOffers.find(
           (offer) => offer.id === action.payload.updatedOffer.id
         ).offerData = action.payload.updatedOffer;
-
       return { ...state };
 
+    case EDIT_PROJECT:
+      const editedProject = state.allProjects.find((p) => p.id === action.id)
+      editedProject.projectData = action.projectData
+      return { ...state };
+    
     default:
       return state;
   }

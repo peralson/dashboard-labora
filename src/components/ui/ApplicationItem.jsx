@@ -16,7 +16,6 @@ const ApplicationItem = ({ application, index }) => {
         p={3}
         pt={4}
         borderRadius={10}
-        ml={index !== 0 && 2}
         borderWidth={1}
         borderColor={isActive ? "white" : "translucid"}
         onClick={() => setSelectedItem(application)}

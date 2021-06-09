@@ -7,6 +7,8 @@ const OfferItem = ({ offer, index }) => {
     const isActive = selectedItem
         ? selectedItem.id === offer.id
         : false
+    const notComplete = offer.offerData.already_assigned !== parseInt(offer.offerData.qty)
+    const totalApplications = offer.offerApplications.length
 
     return (
       <Flex
@@ -24,7 +26,6 @@ const OfferItem = ({ offer, index }) => {
         borderRadius={10}
         borderWidth={1}
         borderColor={isActive ? "white" : "translucid"}
-        ml={index !== 0 && 2}
         onClick={() => {
           if (isActive) {
             setSelectedItem(null);
@@ -50,29 +51,20 @@ const OfferItem = ({ offer, index }) => {
           fontSize={14}
           mt={6}
           color={
-            offer.offerData.already_assigned !== offer.offerData.qty
+            notComplete
               ? "red.full"
               : "green"
           }
           borderRadius={4}
           lineHeight={1}
         >
-          {offer.offerData.already_assigned !== offer.offerData.qty ? (
-            <>
-              {offer.offerApplications.length === 0 ? (
-                <Text opacity={0}>{"No tienes solicitudes"}</Text>
-              ) : (
-                <>
-                  {offer.offerApplications.length}
-                  {offer.offerApplications.length === 1
-                    ? " solicitud pendiente"
-                    : " solicitudes pendientes"}
-                </>
-              )}
-            </>
-          ) : (
-            "Completo"
-          )}
+          {notComplete
+            ? totalApplications === 0
+              ? <Text opacity={0}>{"No tienes solicitudes"}</Text>
+              : `${totalApplications} ${totalApplications === 1
+                ? " solicitud pendiente"
+                : " solicitudes pendientes"}`
+            : "Completo"}
         </Text>
       </Flex>
     );

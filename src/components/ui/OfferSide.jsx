@@ -29,7 +29,7 @@ const OfferSide = ({ data }) => {
         <Remaining
           alreadyassigned={offerData.already_assigned}
           qty={offerData.qty}
-          success={"Oferta completa"}
+          success={"Completa"}
           px={3}
           py={2}
           fontSize={14}
@@ -82,6 +82,7 @@ const OfferSide = ({ data }) => {
       )}
       {offerData.description && (
         <>
+          <Separator top={1} bottom={1} />
           <Text mb={1} fontSize={14} lineHeight={2} fontWeight="medium">
             Requisitos
           </Text>

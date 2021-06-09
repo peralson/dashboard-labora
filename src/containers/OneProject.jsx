@@ -10,7 +10,6 @@ import { deleteProject } from "../store/actions/projects";
 
 // SVG
 import calendar from "../assets/svg/calendar.svg";
-import plus from "../assets/svg/plus.svg";
 import plusWhite from "../assets/svg/plus-white.svg";
 import task from "../assets/svg/task-to-do.svg";
 
@@ -112,16 +111,14 @@ const OneProject = ({
             </Box>
           </Grid>
           <Flex mb={4} alignItems={"center"}>
-            <Text flex={1} fontSize={19} fontWeight={"bold"}>
+            <Text flex={1} lineHeight={2} fontWeight={"bold"}>
               Ofertas de este proyecto
             </Text>
-            {project.projectOffers.length === 0 && (
-              <Link to={`./${id}/nueva-oferta/`}>
-                <AccentButton iconLeft={plusWhite} py={3.5}>
-                  Añadir una oferta
-                </AccentButton>
-              </Link>
-            )}
+            <Link to={`./${id}/nueva-oferta/`}>
+              <AccentButton iconLeft={plusWhite} py={3.5}>
+                Añadir una oferta
+              </AccentButton>
+            </Link>
           </Flex>
           {project.projectOffers.length !== 0 ? (
             <Grid
@@ -133,21 +130,6 @@ const OneProject = ({
               {project.projectOffers.map((offer) => (
                 <ProjectOfferItem key={offer.id} offer={offer} />
               ))}
-              <Link to={`./${id}/nueva-oferta/`}>
-                <Flex
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  py={4}
-                  borderRadius={10}
-                  borderWidth={1}
-                  borderColor={"primary"}
-                >
-                  <Image src={plus} mr={2} w={"19px"} />
-                  <Text fontSize={19} color={"primary"}>
-                    Añadir oferta
-                  </Text>
-                </Flex>
-              </Link>
             </Grid>
           ) : (
             <Flex
