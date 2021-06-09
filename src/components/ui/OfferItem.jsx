@@ -36,10 +36,10 @@ const OfferItem = ({ offer, index }) => {
       >
         <Flex alignItems="center" width="100%">
           <Box width="100%" flex="1">
-            <Text fontSize={12} color="primary" lineHeight={1}>
+            <Text fontSize={11} color="primary">
               {offer.offerData.category.toUpperCase()}
             </Text>
-            <Text fontSize={14} mt={1} lineHeight={1}>
+            <Text fontSize={14}>
               {offer.offerData.name}
             </Text>
           </Box>

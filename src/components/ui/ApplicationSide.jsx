@@ -16,28 +16,30 @@ import Separator from './Separator';
 const ApplicationSide = ({ data }) => {
 	const { totalDaysWorked, totalHoursInSeconds } = daysAndHoursFromHistory(data.worker.history)
 
+  console.log(data);
+
 	return (
     <Box>
       <Flex alignItems="center" mb={3}>
         <CustomImg
           image={data.worker.workerData.images.main}
-          w={"80px"}
-          h={"80px"}
+          w={"64px"}
+          h={"64px"}
           borderRadius={"50px"}
-          border={"2px solid"}
-          borderColor={"dark"}
+          borderWidth={2}
+          borderColor={"darkLight"}
           backgroundSize={"contain"}
         />
         <Box flex={1} ml={4}>
-          <Text fontSize={12} lineHeight={1} mb={2} color={"primary"}>
+          <Text fontSize={12} mb={1} color={"primary"}>
             {data.offerName.toUpperCase()}
           </Text>
-          <Text fontSize={19} fontWeight={"bold"} lineHeight={1}>
+          <Text fontSize={19} fontWeight={"bold"}>
             {data.worker.workerData.name}
           </Text>
         </Box>
       </Flex>
-      <Flex>
+      <Flex mb={6}>
         <Text
           flex={1}
           borderRadius={10}
@@ -68,7 +70,6 @@ const ApplicationSide = ({ data }) => {
           Rechazar
         </Text>
       </Flex>
-      <Separator top={3} bottom={1} />
       {data.worker.tags.length !== 0 && (
         <Box mb={4}>
           <SideTitle mb={2}>Etiquetas</SideTitle>
@@ -76,10 +77,11 @@ const ApplicationSide = ({ data }) => {
             {data.worker.tags.map((tag, index) => (
               <Text
                 key={tag}
-                fontSize={14}
-                padding={"4px 6px"}
+                fontSize={12}
+                px={2}
+                py={1}
                 bg={"darkLight"}
-                color="primary"
+                color={"primary"}
                 ml={index !== 0 && 1}
                 borderRadius={4}
               >

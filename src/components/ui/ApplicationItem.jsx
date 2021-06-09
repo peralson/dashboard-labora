@@ -22,8 +22,8 @@ const ApplicationItem = ({ application, index }) => {
       >
         <Flex alignItems="center">
           <CustomImg
-            w={7}
-            h={7}
+            w={"32px"}
+            h={"32px"}
             borderRadius={15}
             borderWidth={2}
             borderColor={"darkLight"}
@@ -35,10 +35,10 @@ const ApplicationItem = ({ application, index }) => {
             alt={application.worker.workerData.name}
           />
           <Box flex="1">
-            <Text fontSize={12} color="primary" lineHeight={1}>
+            <Text fontSize={11} color="primary">
               {application.offerName.toUpperCase()}
             </Text>
-            <Text fontSize={14} lineHeight={1} mt={1}>
+            <Text fontSize={14}>
               {application.worker.workerData.name}
             </Text>
           </Box>

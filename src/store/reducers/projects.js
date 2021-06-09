@@ -31,19 +31,17 @@ export default (state = initialState, action) => {
       };
 
     case CREATE_NEW_PROJECT:
-      const newAllProjects = sortByDate([...state.allProjects, action.payload]);
       return {
         ...state,
-        allProjects: newAllProjects,
+        allProjects: sortByDate([...state.allProjects, action.payload]),
       };
 
     case DELETE_PROJECT:
-      const deletedAllProjects = state.allProjects.filter(
-        (project) => project.id !== action.id
-      );
       return {
         ...state,
-        allProjects: deletedAllProjects,
+        allProjects: state.allProjects.filter(
+          (project) => project.id !== action.id 
+        )
       };
 
     case CREATE_PROJECT_OFFER:
@@ -66,11 +64,13 @@ export default (state = initialState, action) => {
       return { ...state };
 
     case EDIT_OFFER:
-      state.allProjects
-        .find((p) => p.id === action.payload.projectId)
-        .projectOffers.find(
-          (offer) => offer.id === action.payload.updatedOffer.id
-        ).offerData = action.payload.updatedOffer;
+      const updatedOfferProject = state.allProjects.find(
+        (p) => p.id === action.payload.projectId,
+      );
+      const updatedOffer = updatedOfferProject.projectOffers.find(
+        (offer) => offer.id === action.payload.updatedOffer.id,
+      );
+      updatedOffer.offerData = action.payload.updatedOffer;
       return { ...state };
 
     case EDIT_PROJECT:

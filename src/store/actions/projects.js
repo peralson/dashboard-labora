@@ -79,6 +79,10 @@ export const createProject = (newProject) => {
     // const token = getState().auth.token;
     // const companyId = getState().auth.id;
 
+    const sortedDates = newProject.dates.sort(
+      (a, b) => a > b ? 1 : -1
+    )
+
     const response = await fetch(
       'https://us-central1-partime-60670.cloudfunctions.net/api/event/',
       {
@@ -89,7 +93,7 @@ export const createProject = (newProject) => {
         },
         body: JSON.stringify({
           name: newProject.name,
-          dates: newProject.dates,
+          dates: sortedDates,
           location: {
             address: newProject.location.address,
             lat: newProject.location.lat,
@@ -111,7 +115,7 @@ export const createProject = (newProject) => {
         id: id,
         projectData: {
           ...newProject,
-          dates: newProject.dates.map((date) => ({ _seconds: date / 1000 })),
+          dates: sortedDates.map((date) => ({ _seconds: date / 1000 })),
           id_company: '2T3NK8AYAphTK3LWTleV9aH8C6G3',
           id: id,
           jobs: 0,
@@ -140,7 +144,12 @@ export const deleteProject = (projectId) => {
       }
     );
 
-    if (!response.ok) throw new Error();
+    if (!response.ok && response.status !== 404) {
+      console.log('ERROR');
+      const resData = await response.json();
+      console.error(resData);
+      throw new Error('Ha habido un problema...');
+    }
 
     dispatch({
       type: DELETE_PROJECT,
@@ -252,6 +261,14 @@ export const createOfferSingle = ({ offerData, projectData }) => {
   return async (dispatch, getState) => {
     // const token = getState().auth.token
 
+    const sortedDates = 
+      formattedDates(projectData.dates)
+      .sort((a, b) => a > b ? 1 : -1)
+
+    const sortedSchedule = 
+      formattedSchedule(offerData.schedule)
+      .sort((a, b) => a.day > b.day ? 1 : -1)
+
     const response = await fetch(
       'https://us-central1-partime-60670.cloudfunctions.net/api/offer/',
       {
@@ -266,9 +283,9 @@ export const createOfferSingle = ({ offerData, projectData }) => {
           description: offerData.description,
           requirements: {},
           location: offerData.location,
-          salary: offerData.salary,
-          extraSalary: offerData.extraSalary,
-          schedule: formattedSchedule(offerData.schedule),
+          salary: parseFloat(offerData.salary),
+          extraSalary: parseFloat(offerData.extraSalary),
+          schedule: sortedSchedule,
           qty: offerData.qty,
           contractId: offerData.contractId,
           tags: offerData.tags,
@@ -276,8 +293,8 @@ export const createOfferSingle = ({ offerData, projectData }) => {
           projectData: {
             name: null,
             location: projectData.location,
-            description: projectData.description,
-            dates: formattedDates(projectData.dates),
+            description: null,
+            dates: sortedDates,
           },
         }),
       }
@@ -310,9 +327,9 @@ export const editOffer = ({ offerData, projectData }) => {
     );
 
     currentOffer.offerData.name = offerData.name;
-    currentOffer.offerData.salary = parseFloat(offerData.salary).toFixed(2);
+    currentOffer.offerData.salary = parseFloat(offerData.salary);
     currentOffer.offerData.description = offerData.description;
-    currentOffer.offerData.extraSalary = parseFloat(offerData.extra).toFixed(2);
+    currentOffer.offerData.extraSalary = parseFloat(offerData.extra);
     currentOffer.offerData.qty = parseInt(offerData.qty);
 
     const response = await fetch(
@@ -326,9 +343,9 @@ export const editOffer = ({ offerData, projectData }) => {
         body: JSON.stringify({
           id: offerData.id,
           name: offerData.name,
-          salary: parseFloat(offerData.salary).toFixed(2),
+          salary: parseFloat(offerData.salary),
           description: offerData.description,
-          extraSalary: parseFloat(offerData.extra).toFixed(2),
+          extraSalary: parseFloat(offerData.extra),
           qty: parseInt(offerData.qty),
         }),
       }
@@ -341,6 +358,8 @@ export const editOffer = ({ offerData, projectData }) => {
       throw new Error('Ha habido un problema...');
     }
 
+    console.log("Estoy aquí!");
+    
     dispatch({
       type: EDIT_OFFER,
       payload: {

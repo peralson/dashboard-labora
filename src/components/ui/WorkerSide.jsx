@@ -18,18 +18,16 @@ const WorkerSide = ({ data }) => {
     data.history,
   );
 
-  console.log(data);
-
   return (
     <Box>
       <Flex alignItems={"center"} mb={4}>
         <CustomImg
           image={data.workerData.images.main}
-          w={"80px"}
-          h={"80px"}
+          w={"64px"}
+          h={"64px"}
           borderRadius={"50px"}
-          border={"2px solid"}
-          borderColor={"dark"}
+          borderWidth={2}
+          borderColor={"darkLight"}
           backgroundSize={"contain"}
         />
         <Box flex={1} ml={4}>
@@ -41,7 +39,6 @@ const WorkerSide = ({ data }) => {
                   <Text
                     key={category}
                     fontSize={12}
-                    lineHeight={1}
                     color={"primary"}
                     ml={index !== 0 && 1}
                   >
@@ -52,7 +49,7 @@ const WorkerSide = ({ data }) => {
               })}
             </Flex>
           )}
-          <Text fontSize={19} fontWeight={"bold"} lineHeight={1.7}>
+          <Text fontSize={19} fontWeight={"bold"}>
             {data.workerData.name}
           </Text>
         </Box>
@@ -64,11 +61,12 @@ const WorkerSide = ({ data }) => {
             {data.tags.map((tag, index) => (
               <Text
                 key={tag}
-                fontSize={14}
-                padding={"4px 6px"}
-                bg={"translucid"}
-                color="primary"
-                ml={index !== 0 && 2}
+                fontSize={12}
+                px={2}
+                py={1}
+                bg={"darkLight"}
+                color={"primary"}
+                ml={index !== 0 && 1}
                 borderRadius={4}
               >
                 #{tag}

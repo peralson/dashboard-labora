@@ -33,9 +33,9 @@ export const hasConsecutiveShifts = (schedules) => {
 export const getParsedSalary = (salary) => {
   let parsedSalary;
   if (salary.includes(",")) {
-    parsedSalary = parseFloat(salary.split(",").join(".")).toFixed(2);
+    parsedSalary = parseFloat(salary.split(",").join("."));
   } else {
-    parsedSalary = parseFloat(salary).toFixed(2);
+    parsedSalary = parseFloat(salary);
   }
   if (isNaN(parsedSalary)) {
     parsedSalary = 0;

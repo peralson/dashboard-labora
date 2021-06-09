@@ -248,7 +248,7 @@ export const reducer = (state, action) => {
       const extraItem = state.offerData.extras.find(
         (item) => item.id === action.id,
       );
-      extraItem.amount = getParsedSalary(action.payload);
+      extraItem.amount = parseFloat(getParsedSalary(action.payload));
       return { ...state };
 
     case "setContract":

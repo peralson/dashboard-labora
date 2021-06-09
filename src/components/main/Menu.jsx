@@ -18,12 +18,13 @@ const Menu = () => {
   const isHere = pathname => currentLocation.pathname.includes(pathname);
 
   return (
-    <Flex flexDirection="column" alignItems="flex-end">
+    <Flex flexDirection="column" alignItems={"flex-end"} w={"100%"}>
       <Box
         position={"fixed"}
         borderRightWidth={2}
-        borderRightColor={"translucid"}
+        borderRightColor={"darkLight"}
         height={"100vh"}
+        w={"160px"}
       >
         <Box mb={6} mt={5}>
           <Link to="/">
