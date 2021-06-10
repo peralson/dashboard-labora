@@ -28,7 +28,7 @@ const Menu = () => {
       >
         <Box mb={6} mt={5}>
           <Link to="/">
-            <Image src={Logo} alt="Logo de Labora" w="102px" />
+            <Image src={Logo} alt="Logo de Labora" w="120px" />
           </Link>
         </Box>
         <Link to="/ofertas">

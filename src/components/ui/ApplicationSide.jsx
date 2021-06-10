@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Flex, Box, Text } from '@chakra-ui/layout'
 
 // Lib
+import { connect } from 'react-redux'
+import { handleApplication } from '../../store/actions/applications'
 import { daysAndHoursFromHistory } from '../../lib/totalDaysAndHours'
 import moment from 'moment'
 import 'moment/locale/es'
@@ -12,20 +14,27 @@ import CustomImg from './CustomImg'
 import FlexText from './FlexText'
 import SideTitle from './SideTitle'
 import Separator from './Separator';
+import ErrorMessage from './ErrorMessage';
 
-const ApplicationSide = ({ data }) => {
+const ApplicationSide = ({ data, handleApplication }) => {
+  const [error, setError] = useState(null)
 	const { totalDaysWorked, totalHoursInSeconds } = daysAndHoursFromHistory(data.worker.history)
-
-  console.log(data);
 
 	return (
     <Box>
-      <Flex alignItems="center" mb={3}>
+      {error && (
+        <ErrorMessage
+          title={`Ha ocurrido un error al ${error} la aplicatión`}
+          onClose={() => setError(null)}
+          noMargin
+        />
+      )}
+      <Flex alignItems="center" mb={3} mt={error && 3}>
         <CustomImg
           image={data.worker.workerData.images.main}
           w={"64px"}
           h={"64px"}
-          borderRadius={"50px"}
+          borderRadius={"50%"}
           borderWidth={2}
           borderColor={"darkLight"}
           backgroundSize={"contain"}
@@ -51,7 +60,10 @@ const ApplicationSide = ({ data }) => {
           cursor={"pointer"}
           fontWeight={"bold"}
           color={"white"}
-          onClick={() => console.log("Aceptado")}
+          onClick={() => {
+            handleApplication(data.id_event, data.id_offer, data.id, "accept")
+              .catch(() => setError("aceptar"))
+          }}
         >
           Aceptar
         </Text>
@@ -65,7 +77,10 @@ const ApplicationSide = ({ data }) => {
           cursor={"pointer"}
           fontWeight={"bold"}
           color={"red.full"}
-          onClick={() => console.log("Rechazado")}
+          onClick={() => {
+            handleApplication(data.id_event, data.id_offer, data.id, "deny")
+              .catch(() => setError("rechazar"))
+          }}
         >
           Rechazar
         </Text>
@@ -124,4 +139,8 @@ const ApplicationSide = ({ data }) => {
   );
 }
 
-export default ApplicationSide
+const mapDispatchToProps = {
+  handleApplication
+}
+
+export default connect(null, mapDispatchToProps)(ApplicationSide)

@@ -373,6 +373,8 @@ export const editOffer = ({ offerData, projectData }) => {
 export const editProject = (id, state, dates) => {
   return async (dispatch, getState) => {
     // const token = getState().auth.token
+    
+    const formattedDates = dates.map(date => date._seconds * 1000)
 
     const response = await fetch(
       'https://us-central1-partime-60670.cloudfunctions.net/api/event',
@@ -387,7 +389,7 @@ export const editProject = (id, state, dates) => {
           name: state.name,
           description: state.description,
           location: state.location,
-          dates: dates,
+          dates: formattedDates,
         }),
       }
     );

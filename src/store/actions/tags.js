@@ -36,30 +36,30 @@ export const fetchTags = () => {
 };
 
 export const editTags = async (action, userList, tagList) => {
-  console.log('prefetch');
   // const token = getState().auth.token
-
   const response = await fetch(
     `https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/tags/edit/${action}`,
     {
-      method: 'PUT',
+      method: "PUT",
       headers: {
         'Content-Type': 'application/json',
+        "Access-Control-Request-Method": "PUT",
+        "Access-Control-Request-Headers": true,
       },
       body: JSON.stringify({
         tags: tagList,
         users: userList,
       }),
-    }
+    },
   );
-  console.log('postfetch');
-  const resData = await response.json();
-  if (response.error) {
-    const errorResData = await response.json();
-    console.log(errorResData);
+
+  if (!response.ok) {
+    console.log("ERROR");
+    const resData = await response.json();
+    console.error(resData);
   }
 
-  console.log(resData);
+  const resData = await response.json();
 
-  console.log(response.body.json());
+  console.log(resData);
 };

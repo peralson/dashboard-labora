@@ -5,7 +5,7 @@ export const brandTheme = extendTheme({
     primary: "#49A2D7",
     primaryLight: "rgba(73, 162, 215, 0.2)",
     accent: "#61BC9E",
-    accentLight: "rgba(97, 188, 158, 0.4)",
+    accentLight: "rgba(97, 188, 158, 0.2)",
     dark: "#191735",
     darkLight: "#282950",
     red: {

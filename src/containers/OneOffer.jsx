@@ -27,6 +27,7 @@ import OneOfferApplication from '../components/ui/OneOfferApplication';
 import TextInfo from '../components/ui/TextInfo';
 import ScheduleSide from '../components/ui/ScheduleSide';
 import LegalSide from '../components/ui/LegalSide';
+import TeamSide from "../components/ui/TeamSide";
 import TopHeaderBar from '../components/ui/TopHeaderBar';
 import ApplicationSide from '../components/ui/ApplicationSide';
 import BeCurious from '../components/ui/BeCurious';
@@ -128,7 +129,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
                     Etiquetas
                   </Text>
                   <Flex>
-                    {offer.offerData.tags.map((tag, index) => 
+                    {offer.offerData.tags.map((tag, index) => (
                       <Text
                         key={index}
                         ml={index !== 0 && 2}
@@ -141,7 +142,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
                       >
                         #{tag}
                       </Text>
-                    )}
+                    ))}
                   </Flex>
                 </Box>
               )}
@@ -184,11 +185,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
               <Text mb={2} fontWeight={"bold"} lineHeight={2}>
                 Solicitudes de esta oferta
               </Text>
-              <Grid
-                w={"100%"}
-                templateColumns={"1fr 1fr 1fr"}
-                gap={4}
-              >
+              <Grid w={"100%"} templateColumns={"1fr 1fr 1fr"} gap={4}>
                 {offer.offerApplications.map((application) => (
                   <OneOfferApplication
                     key={application.id}
@@ -226,6 +223,9 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
             )}
             {selectedItemIndie && selectedItemIndie === "Horario" && (
               <ScheduleSide schedules={offer.offerData.schedule} />
+            )}
+            {selectedItemIndie && selectedItemIndie === "Equipo" && (
+              <TeamSide id={offer.id} type={"offer"} totalMembers={offer.offerData.already_assigned} /> 
             )}
             {selectedItemIndie && selectedItemIndie.id && (
               <ApplicationSide
