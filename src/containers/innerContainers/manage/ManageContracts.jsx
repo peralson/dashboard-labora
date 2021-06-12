@@ -35,13 +35,13 @@ const ContractCard = ({ data }) => {
       }}
     >
       <Text flex={2} fontSize={12} mr={2}>
-        {data.date}
+        {data.eventData.date}
       </Text>
       <Text flex={2} fontSize={12} mr={2}>
-        {data.category}
+        {data.offerData.category}
       </Text>
       <Text flex={2} fontSize={12} mr={2}>
-        {data.worker.name}
+        {data.workerData.name}
       </Text>
       <Flex flex={1}>
         <Box
