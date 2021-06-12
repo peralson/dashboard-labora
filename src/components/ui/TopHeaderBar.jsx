@@ -1,27 +1,29 @@
-import React from "react";
-import { Flex, Box } from "@chakra-ui/layout";
+import React from 'react';
+import { Flex, Box } from '@chakra-ui/layout';
 
 // SVG
-import back from "../../assets/svg/back.svg";
-import edit from "../../assets/svg/edit.svg";
+import back from '../../assets/svg/back.svg';
+import edit from '../../assets/svg/edit.svg';
 
 // Components
-import TopHeaderTitle from "./TopHeaderTitle";
-import TopButton from "./TopButton";
+import TopHeaderTitle from './TopHeaderTitle';
+import TopButton from './TopButton';
 
 const TopHeaderBar = ({ onGoBack, children, onEdit }) => (
-  <Flex alignItems={"center"} justifyContent={"space-evenly"}>
-    <Box maxW={"100%"}>
+  <Flex alignItems={'center'} justifyContent={'space-evenly'}>
+    <Box maxW={'100%'}>
       <TopButton left icon={back} onSelect={onGoBack}>
         Volver
       </TopButton>
     </Box>
     <TopHeaderTitle>{children}</TopHeaderTitle>
-    <Box maxW={"100%"}>
-      <TopButton rigth icon={edit} onSelect={onEdit}>
-        Editar
-      </TopButton>
-    </Box>
+    {onEdit && (
+      <Box maxW={'100%'}>
+        <TopButton rigth icon={edit} onSelect={onEdit}>
+          Editar
+        </TopButton>
+      </Box>
+    )}
   </Flex>
 );
 

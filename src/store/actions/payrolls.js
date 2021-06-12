@@ -4,25 +4,27 @@ export const fetchPayrolls = () => {
   return async (dispatch, getState) => {
     // const token = getState().auth.token
 
-    // const response = await fetch(
-    //   "https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/myWorkers",
-    //   {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   },
-    // );
+    const response = await fetch(
+      'https://us-central1-partime-60670.cloudfunctions.net/api/payroll/company',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
     // if (!response.ok && response.status === 404)
-    //   return dispatch({ type: FETCH_CONTRACTS, contracts: [] });
+    //   return dispatch({ type: FETCH_PAYROLLS, contracts: [] });
     // if (!response.ok) throw new Error("Ha ocurrido un error.");
-    
-    // const resData = await response.json();
-    
+
+    const resData = await response.json();
+
+    console.log('redssss', resData);
+
     let payrolls = [];
 
-    // resData.body.forEach((worker) => {
-    //   workers.push({ ...worker, tags: ["Gordo", "Feo"], categories: ["Camarero", "Azafato"]});
+    // resData.body.forEach((payroll) => {
+    //   payrolls.push(payroll);
     // });
 
     payrolls = [
@@ -32,7 +34,7 @@ export const fetchPayrolls = () => {
         category: 'Limpiador',
         worker: {
           image: 'https://avatars.githubusercontent.com/u/43375266?v=4',
-          name: 'Eloy Gomez'
+          name: 'Eloy Gomez',
         },
         event: 'Evento de mercedes',
         date: '14 oct 2020',
@@ -41,16 +43,19 @@ export const fetchPayrolls = () => {
           total: 160,
           salary: 110,
           extraSalary: 20,
-          extras: [{
-            name: 'Desplazamiento',
-            amount: 20
-          },{
-            name: 'Nocturnidad',
-            amount: 10
-          }]
+          extras: [
+            {
+              name: 'Desplazamiento',
+              amount: 20,
+            },
+            {
+              name: 'Nocturnidad',
+              amount: 10,
+            },
+          ],
         },
         fee: 'Precio por convenio',
-        status: 'pending'
+        status: 'pending',
       },
       {
         id: 2,
@@ -58,7 +63,7 @@ export const fetchPayrolls = () => {
         category: 'Limpiador',
         worker: {
           image: 'https://avatars.githubusercontent.com/u/43375266?v=4',
-          name: 'Eloy Gomez'
+          name: 'Eloy Gomez',
         },
         event: 'Evento de mercedes',
         date: '25 may 2021',
@@ -67,16 +72,19 @@ export const fetchPayrolls = () => {
           total: 160,
           salary: 110,
           extraSalary: 20,
-          extras: [{
-            name: 'Desplazamiento',
-            amount: 20
-          },{
-            name: 'Nocturnidad',
-            amount: 10
-          }]
+          extras: [
+            {
+              name: 'Desplazamiento',
+              amount: 20,
+            },
+            {
+              name: 'Nocturnidad',
+              amount: 10,
+            },
+          ],
         },
         fee: 'Precio por convenio',
-        status: 'paid'
+        status: 'paid',
       },
       {
         id: 3,
@@ -84,7 +92,7 @@ export const fetchPayrolls = () => {
         category: 'Limpiador',
         worker: {
           image: 'https://avatars.githubusercontent.com/u/43375266?v=4',
-          name: 'Eloy Gomez'
+          name: 'Eloy Gomez',
         },
         event: 'Evento de mercedes',
         date: '25 may 2021',
@@ -93,20 +101,23 @@ export const fetchPayrolls = () => {
           total: 160,
           salary: 110,
           extraSalary: 20,
-          extras: [{
-            name: 'Desplazamiento',
-            amount: 20
-          },{
-            name: 'Nocturnidad',
-            amount: 10
-          }]
+          extras: [
+            {
+              name: 'Desplazamiento',
+              amount: 20,
+            },
+            {
+              name: 'Nocturnidad',
+              amount: 10,
+            },
+          ],
         },
         fee: 'Precio por convenio',
-        status: 'pending'
+        status: 'pending',
       },
-    ]
+    ];
 
-    dispatch({ 
+    dispatch({
       type: FETCH_PAYROLLS,
       payrolls: payrolls,
     });

@@ -3,10 +3,11 @@ import { Flex, Box, Text } from '@chakra-ui/layout';
 import {
   SelectedItemManage,
   SelectedManageSide,
-} from "../../../context/SelectedItemContext";
+} from '../../../context/SelectedItemContext';
 
 // Components
-import DateTag from '../../../components/ui/DateTag';
+import moment from 'moment';
+import 'moment/locale/es';
 import Separator from '../../../components/ui/Separator';
 
 const PastProjectCard = (props) => {
@@ -56,7 +57,15 @@ const PastProjectCard = (props) => {
         144 €
       </Text>
       <Text flex={2} fontSize={12} mr={2}>
-        <DateTag dates={data.projectData.dates} />
+        {data.projectData.dates[0]._seconds ===
+        data.projectData.dates[data.projectData.dates.length - 1]._seconds
+          ? moment(data.projectData.dates[0]._seconds * 1000).format('D MMMM')
+          : `${moment(data.projectData.dates[0]._seconds * 1000).format(
+              'D MMMM'
+            )} - ${moment(
+              data.projectData.dates[data.projectData.dates.length - 1]
+                ._seconds * 1000
+            ).format('D MMMM')}`}
       </Text>
       <Flex flex={1}>
         <Box

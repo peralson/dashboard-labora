@@ -55,9 +55,9 @@ const Manage = ({
       setError(null);
       try {
         await fetchPastProjects();
-        await fetchContracts();
-        await fetchPayrolls();
-        await fetchTemplates();
+        // await fetchContracts();
+        // await fetchPayrolls();
+        // await fetchTemplates();
       } catch (err) {
         setError(err.message);
       } finally {
@@ -67,7 +67,6 @@ const Manage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchPastProjects, fetchContracts, fetchPayrolls, fetchTemplates]);
 
-  console.log('asas', pastProjects);
   const handleSearch = (event) => {
     setSearch(event.target.value.toLowerCase());
   };

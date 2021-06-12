@@ -14,6 +14,7 @@ import Manage from '../containers/Manage';
 import EditOffer from '../containers/edit/EditOffer';
 import EditProject from "../containers/edit/EditProject";
 import Company from '../containers/Company';
+import ManageOffer from '../containers/ManageOffer';
 import NotFound from '../containers/NotFound';
 
 // Components
@@ -44,6 +45,7 @@ const App = () => {
           />
           <Route exact path="/trabajadores" component={Workers} />
           <Route exact path="/gestion" component={Manage} />
+          <Route exact path={"/gestion/o/:id"} component={ManageOffer} />
           <Route exact path="/empresa" component={Company} />
         </PageGrid>
         {/* Other routes */}

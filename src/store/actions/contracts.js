@@ -1,30 +1,31 @@
 export const FETCH_CONTRACTS = 'FETCH_CONTRACTS';
-export const FETCH_CONTRACT_TEMPLATES = 'FETCH_CONTRACT_TEMPLATES';
 
 export const fetchContracts = () => {
   return async (dispatch, getState) => {
     // const token = getState().auth.token
 
-    // const response = await fetch(
-    //   "https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/myWorkers",
-    //   {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   },
-    // );
+    const response = await fetch(
+      "https://us-central1-partime-60670.cloudfunctions.net/api/contract/company",
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
 
     // if (!response.ok && response.status === 404)
     //   return dispatch({ type: FETCH_CONTRACTS, contracts: [] });
     // if (!response.ok) throw new Error("Ha ocurrido un error.");
 
-    // const resData = await response.json();
+    const resData = await response.json();
+
+    console.log('red',resData)
 
     let contracts = [];
 
-    // resData.body.forEach((worker) => {
-    //   workers.push({ ...worker, tags: ["Gordo", "Feo"], categories: ["Camarero", "Azafato"]});
-    // });
+    resData.body.forEach((contract) => {
+      contracts.push(contract);
+    });
 
     contracts = [
       {
