@@ -5,13 +5,17 @@ import {
   SelectedManageSide,
 } from '../../../context/SelectedItemContext';
 
+// Libs
+import { getTotalCost } from '../../../lib/getTotalCost';
+import { formattedSalary } from '../../../lib/formattedSalary';
+
+
 // Components
 import moment from 'moment';
 import 'moment/locale/es';
 import Separator from '../../../components/ui/Separator';
 
-const PastProjectCard = (props) => {
-  const { data } = props;
+const PastProjectCard = ({ data }) => {
   const { selectedItemManage, setSelectedItemManage } =
     useContext(SelectedItemManage);
   const { setSelectedManageSide } = useContext(SelectedManageSide);
@@ -54,7 +58,7 @@ const PastProjectCard = (props) => {
         {data.projectOffers.length}
       </Text>
       <Text flex={1} fontSize={12} mr={2}>
-        144 €
+      {formattedSalary(getTotalCost(data.projectOffers)) + ' €'}
       </Text>
       <Text flex={2} fontSize={12} mr={2}>
         {data.projectData.dates[0]._seconds ===
@@ -81,8 +85,8 @@ const PastProjectCard = (props) => {
   );
 };
 
-const ManageProjects = (props) => {
-  const { data } = props;
+const ManageProjects = ({data}) => {
+  console.log('projects', data)
   return (
     <>
       <Flex alignItems={'center'} p={2} pl={2} mt={2}>
