@@ -8,14 +8,12 @@ import {
 } from '../../../context/SelectedItemContext';
 import { getTotalCost } from '../../../lib/getTotalCost'
 import { formattedSalary } from '../../../lib/formattedSalary'
+import moment from "moment";
+import "moment/locale/es";
 
 // Redux & Actions
 import { connect } from 'react-redux';
 import { fetchPastProjects } from '../../../store/actions/projects';
-
-// Components
-import moment from 'moment';
-import "moment/locale/es";
 
 const PastProjectCard = ({ data }) => {
   const { selectedItemManage, setSelectedItemManage } =

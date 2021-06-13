@@ -374,11 +374,11 @@ export const editProject = (id, state, dates) => {
     // const token = getState().auth.token
 
     const response = await fetch(
-      'https://us-central1-partime-60670.cloudfunctions.net/api/event',
+      "https://us-central1-partime-60670.cloudfunctions.net/api/event",
       {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           // Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
@@ -386,9 +386,9 @@ export const editProject = (id, state, dates) => {
           name: state.name,
           description: state.description,
           location: state.location,
-          dates: dates,
+          // dates: dates,
         }),
-      }
+      },
     );
 
     if (!response.ok) {
@@ -415,6 +415,9 @@ export const editSingleOffer = (project, state) => {
   return async (dispatch, getState) => {
     const offer = project.projectOffers[0];
 
+    console.log("project", project.id);
+    console.log("offer", offer.id);
+
     const response = await fetch(
       "https://us-central1-partime-60670.cloudfunctions.net/api/offer",
       {
@@ -431,10 +434,11 @@ export const editSingleOffer = (project, state) => {
           extraSalary: parseFloat(state.extraSalary),
           qty: parseInt(state.qty),
           projectData: {
+            id: project.id,
             name: null,
             description: null,
             location: state.location,
-            dates: project.projectData.dates,
+            // dates: project.projectData.dates,
           },
         }),
       },
