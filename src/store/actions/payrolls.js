@@ -30,7 +30,8 @@ export const fetchPayrolls = () => {
     console.log('payrolls', payrolls);
 
     payrolls = [
-      {id: 2,
+      {
+        id: 2,
         offerData: {
           id: 'zBY1vsum9qRBl7iNig3L',
           category: 'Limpiador',
@@ -70,7 +71,6 @@ export const fetchPayrolls = () => {
 };
 
 export const fetchPayroll = async (jobId) => {
-
   // const token = getState().auth.token
 
   const response = await fetch(
@@ -83,17 +83,16 @@ export const fetchPayroll = async (jobId) => {
     }
   );
 
-  if (!response.ok && response.status === 404)
-    return null;
-  if (!response.ok) throw new Error("Ha ocurrido un error.");
+  if (!response.ok && response.status === 404) return null;
+  if (!response.ok) throw new Error('Ha ocurrido un error.');
 
-  const link = await response.json()
-  
-  console.log('el payrol es:',link)
+  const link = await response.json();
+
+  console.log('el payrol es:', link);
   return link.body;
 };
 
-export const fetchWorkerPayroll = async ({offerId, userId}) => {
+export const fetchWorkerPayroll = async ({ offerId, userId }) => {
   // const token = getState().auth.token
 
   const response = await fetch(
@@ -106,12 +105,11 @@ export const fetchWorkerPayroll = async ({offerId, userId}) => {
     }
   );
 
-  if (!response.ok && response.status === 404)
-    return null;
-  if (!response.ok) throw new Error("Ha ocurrido un error.");
+  if (!response.ok && response.status === 404) return null;
+  if (!response.ok) throw new Error('Ha ocurrido un error.');
 
-  const link = await response.json()
-  
-  console.log('el enlace es:',link)
+  const link = await response.json();
+
+  console.log('el enlace es:', link);
   return link.body;
 };

@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { Flex, Text, Box } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 import MultipleSelectList from '../ui/MultipleSelectList';
+
+// Redux & Actions
+import { connect } from 'react-redux';
 import { editTags } from '../../store/actions/tags';
+import { editCategories } from '../../store/actions/categories';
 
 import {
   AlertDialog,
@@ -15,7 +19,14 @@ import {
 
 import { Checkbox } from '@chakra-ui/react';
 
-const EditWorkerLists = ({ data, workers, type, handleShow }) => {
+const EditWorkerLists = ({
+  data,
+  workers,
+  type,
+  handleShow,
+  editTags,
+  editCategories,
+}) => {
   const title = type === 'tag' ? 'Etiquetas' : 'Categorías';
   const [selectedItems, setSelectedItems] = useState([]);
   const [option, setOption] = useState('');
@@ -40,11 +51,15 @@ const EditWorkerLists = ({ data, workers, type, handleShow }) => {
     const userList = workers.map((e) => e.id);
     // setError(null);
     if (option && selectedItems.length > 0) {
-      const action = option === "Añadir" ? "update" : "remove";
+      const action = option === 'Añadir' ? 'update' : 'remove';
       setLoading(true);
-      await editTags(action, userList, selectedItems);
+      if (type === 'tag') {
+        await editTags(action, userList, selectedItems);
+      } else {
+        await editCategories(action, userList, selectedItems);
+      }
       setLoading(false);
-      handleShow(false)
+      handleShow(false);
     } else {
       setIsOpen(true);
     }
@@ -149,4 +164,10 @@ const EditWorkerLists = ({ data, workers, type, handleShow }) => {
   );
 };
 
-export default EditWorkerLists;
+const mapDispatchToProps = {
+  editTags,
+  editCategories,
+};
+const mapStateToProps = (state) => {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditWorkerLists);
