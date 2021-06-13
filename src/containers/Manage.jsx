@@ -4,7 +4,7 @@ import { Flex, Box, Text } from '@chakra-ui/layout';
 // Redux & Actions
 import { connect } from 'react-redux';
 import { fetchPastProjects } from '../store/actions/projects';
-import { fetchContracts } from '../store/actions/contracts';
+import { fetchAllContracts } from '../store/actions/contracts';
 import { fetchPayrolls } from '../store/actions/payrolls';
 import { fetchTemplates } from '../store/actions/templates';
 
@@ -36,7 +36,7 @@ import ManageTemplates from './innerContainers/manage/ManageTemplates';
 const Manage = ({
   fetchPastProjects,
   pastProjects,
-  fetchContracts,
+  fetchAllContracts,
   contracts,
   fetchPayrolls,
   payrolls,
@@ -55,9 +55,9 @@ const Manage = ({
       setError(null);
       try {
         await fetchPastProjects();
-        await fetchContracts();
-        await fetchPayrolls();
-        await fetchTemplates();
+        await fetchAllContracts();
+        // await fetchPayrolls();
+        // await fetchTemplates();
       } catch (err) {
         setError(err.message);
       } finally {
@@ -65,9 +65,8 @@ const Manage = ({
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchPastProjects, fetchContracts, fetchPayrolls, fetchTemplates]);
+  }, [fetchPastProjects, fetchAllContracts, fetchPayrolls, fetchTemplates]);
 
-  console.log('asas', pastProjects);
   const handleSearch = (event) => {
     setSearch(event.target.value.toLowerCase());
   };
@@ -86,8 +85,8 @@ const Manage = ({
 
   const filteredContracts = contracts.filter(
     (contract) =>
-      contract.category.toLowerCase().includes(search) ||
-      contract.worker.name.toLowerCase().includes(search)
+      contract.offerData.category.toLowerCase().includes(search) ||
+      contract.workerData.name.toLowerCase().includes(search)
   );
 
   const filteredPayrolls = payrolls.filter(
@@ -193,7 +192,7 @@ const Manage = ({
 
 const mapDispatchToProps = {
   fetchPastProjects,
-  fetchContracts,
+  fetchAllContracts,
   fetchPayrolls,
   fetchTemplates,
 };
