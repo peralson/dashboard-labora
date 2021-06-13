@@ -25,8 +25,6 @@ export const fetchCategories = () => {
       categories.push(category);
     });
 
-    console.log('categories: ',categories)
-
     dispatch({ 
       type: FETCH_CATEGORIES,
       categories: categories,

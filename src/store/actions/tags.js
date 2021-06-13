@@ -26,8 +26,6 @@ export const fetchTags = () => {
       tags.push(tag);
     });
 
-    console.log('tags: ', tags);
-
     dispatch({
       type: FETCH_TAGS,
       tags: tags,
@@ -42,7 +40,7 @@ export const editTags = async (action, userList, tagList) => {
     {
       method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         "Access-Control-Request-Method": "PUT",
         "Access-Control-Request-Headers": true,
       },

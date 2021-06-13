@@ -2,7 +2,7 @@ import React from "react";
 import { Flex, Text } from "@chakra-ui/layout";
 
 const FlexText = ({ left, right }) => (
-  <Flex>
+  <Flex alignItems={"center"}>
     <Text flex={1} fontSize={14} lineHeight={2} fontWeight="medium">
       {left}
     </Text>

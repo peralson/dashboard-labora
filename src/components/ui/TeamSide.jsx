@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Box, Text } from "@chakra-ui/layout";
 
 // Components
+import Separator from "./Separator";
 import ErrorMessage from "./ErrorMessage";
+import TeamItem from "./TeamItem";
 
 const TeamSide = ({ id, type, totalMembers }) => {
   const [team, setTeam] = useState([]);
@@ -28,27 +30,26 @@ const TeamSide = ({ id, type, totalMembers }) => {
 
   return (
     <Box>
+      {error && (
+        <ErrorMessage
+          noMargin
+          title={"Ha ocurrido un error al intentar encontrar al equipo"}
+          onClose={() => setError(null)}
+        />
+      )}
+      <Text mt={error && 3} fontSize={19} color={"primary"}>
+        Tu equipo
+      </Text>
+      <Text fontSize={24} fontWeight={"bold"}>
+        {totalMembers === 1 ? "Un miembro" : `${totalMembers} miembros`}
+      </Text>
+      <Separator top={2} bottom={4} />
       {loading ? (
         <Text>Cargando equipo...</Text>
       ) : (
-        <Box>
-          {error && (
-            <ErrorMessage
-              noMargin
-              title={"Ha ocurrido un error al intentar encontrar al equipo"}
-              onClose={() => setError(null)}
-            />
-          )}
-          <Text mt={error && 3} fontSize={19} color={"primary"}>
-            Tu equipo
-          </Text>
-          <Text fontSize={24} fontWeight={"bold"}>
-            {totalMembers === 1 ? "Un miembro" : `${totalMembers} miembros`}
-          </Text>
-          {team.map((member, index) => (
-            <Text key={index}>{member.workerData.name}</Text>
-          ))}
-        </Box>
+        team.map((member, index) => (
+          <TeamItem key={member.id} index={index} member={member} />
+        ))
       )}
     </Box>
   );

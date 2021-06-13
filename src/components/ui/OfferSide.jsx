@@ -67,7 +67,6 @@ const OfferSide = ({ data }) => {
         left={"Horas extra"}
         right={formattedSalary(offerData.extraSalary) + "€"}
       />
-      <Separator top={1} bottom={1} />
       {offerData.extras.map(
         (extra, index) =>
           extra.amount > 0 && (

@@ -40,7 +40,7 @@ const EditWorkerLists = ({ data, workers, type, handleShow }) => {
     const userList = workers.map((e) => e.id);
     // setError(null);
     if (option && selectedItems.length > 0) {
-      const action = option === 'Añadir' ? 'update' : 'remove';
+      const action = option === "Añadir" ? "update" : "remove";
       setLoading(true);
       await editTags(action, userList, selectedItems);
       setLoading(false);

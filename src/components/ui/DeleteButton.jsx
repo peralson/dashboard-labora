@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Flex, Text } from "@chakra-ui/layout";
 import Popup from "./Popup";
 
-const AreYourSure = ({ onDelete, type }) => (
+const AreYourSure = ({ onDelete, type, setOpen }) => (
   <Flex alignItems={"flex-start"} flexDirection={"column"}>
     <Text mb={6} flex={1}>
       Esta acción no es reversible. Si borras{type ? ` ${type}` : ""}, no podrás
@@ -16,19 +16,22 @@ const AreYourSure = ({ onDelete, type }) => (
       cursor={"pointer"}
       bg="red.smooth"
       color={"red"}
-      onClick={onDelete}
+      onClick={() => {
+        onDelete();
+        setOpen(false);
+      }}
     >
       Estoy seguro, borrar{type ? ` ${type}` : ""}
     </Text>
   </Flex>
 );
 
-const DeleteButton = ({ onDelete, children, type }) => {
-  const [open, setOpen] = useState(false);;;
+const DeleteButton = ({ onDelete, children, type, noHover }) => {
+  const [open, setOpen] = useState(false);
   return (
     <Popup
       title={"¿Estas seguro?"}
-      body={<AreYourSure onDelete={onDelete} type={type} />}
+      body={<AreYourSure onDelete={onDelete} type={type} setOpen={setOpen} />}
       show={open}
       handleShow={setOpen}
     >
@@ -38,8 +41,8 @@ const DeleteButton = ({ onDelete, children, type }) => {
         borderRadius={10}
         fontSize={14}
         cursor={"pointer"}
-        _hover={{ bg: "red.smooth" }}
-        color={"red"}
+        _hover={!noHover && { bg: "red.smooth" }}
+        color={"red.full"}
       >
         {children}
       </Text>
