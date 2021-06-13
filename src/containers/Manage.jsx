@@ -56,7 +56,7 @@ const Manage = ({
       try {
         await fetchPastProjects();
         await fetchAllContracts();
-        // await fetchPayrolls();
+        await fetchPayrolls();
         // await fetchTemplates();
       } catch (err) {
         setError(err.message);
@@ -91,9 +91,9 @@ const Manage = ({
 
   const filteredPayrolls = payrolls.filter(
     (payroll) =>
-      payroll.category.toLowerCase().includes(search) ||
-      payroll.worker.name.toLowerCase().includes(search) ||
-      payroll.event.toLowerCase().includes(search)
+      payroll.offerData.category.toLowerCase().includes(search) ||
+      payroll.workerData.name.toLowerCase().includes(search) ||
+      payroll.eventData.name.toLowerCase().includes(search)
   );
 
   const filteredTemplates = templates.filter(

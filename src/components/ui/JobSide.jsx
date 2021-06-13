@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Flex, Box, Text } from '@chakra-ui/layout'
 
 // Lib
-import { daysAndHoursFromHistory } from '../../lib/totalDaysAndHours'
-import moment from 'moment'
 import 'moment/locale/es'
 
+// Redux & Actions
+import { fetchWorkerContract } from '../../store/actions/contracts';
+import { fetchWorkerPayroll } from '../../store/actions/payrolls';
+
 // Components
-import JobHistoryItem from './JobHistoryItem';
 import CustomImg from './CustomImg'
 import FlexText from './FlexText'
 import SideTitle from './SideTitle'
@@ -16,7 +17,16 @@ import ErrorMessage from './ErrorMessage';
 
 const JobSide = ({ data }) => {
   const [error, setError] = useState(null)
-	const { totalDaysWorked, totalHoursInSeconds } = daysAndHoursFromHistory(data.worker.history)
+  const [contractLink, setContractLink] = useState();
+  const [payrollLink, setPayrollLink] = useState();
+
+  useEffect(() => {
+    const getLinks = async () => {
+      setContractLink(await fetchWorkerContract({offerId: data.id, userId: data.worker.id}));
+      setPayrollLink(await fetchWorkerPayroll({offerId: data.id, userId: data.worker.id}));
+    };
+    getLinks();
+  }, [data.id, data.worker.id]);
 
 	return (
     <Box>
@@ -76,25 +86,47 @@ const JobSide = ({ data }) => {
         <Separator top={1} bottom={1} />
         <FlexText left={"Email"} right={data.worker.workerData.contact.email} />
       </Box>
-      {data.worker.history.length !== 0 && (
-        <>
-          <SideTitle mb={2}>Experiencia laboral</SideTitle>
-          <FlexText
-            left={"Horas trabajadas"}
-            right={moment(totalHoursInSeconds * 1000).format("H")}
-          />
-          <Separator top={1} bottom={1} />
-          <FlexText left={"Días trabajados"} right={totalDaysWorked} />
-          <Separator top={1} bottom={1} />
-          <Text mb={1} fontSize={14} lineHeight={2} fontWeight="medium">
-            Historial
-          </Text>
-          <Flex alignItems={"center"} flexDirection={"column"}>
-            {data.worker.history.map((job, index) => (
-              <JobHistoryItem key={job.id} job={job.data} index={index} />
-            ))}
-          </Flex>
-        </>
+      {contractLink && (
+        <Flex flexDirection='row'>
+          <a href={contractLink} target='_blank' rel='noopener noreferrer'>
+            <Flex
+              w='100%'
+              borderRadius={8}
+              _hover={{ cursor: 'pointer' }}
+              border={'1px solid'}
+              borderColor={'translucid'}
+              bg={'darkLight'}
+              mr={4}
+              justifyContent={'center'}
+              alignItems={'center'}
+              px={4}
+              py={2}
+            >
+              Ver Contrato
+            </Flex>
+          </a>
+        </Flex>
+      )}
+      {payrollLink && (
+        <Flex flexDirection='row'>
+          <a href={payrollLink} target='_blank' rel='noopener noreferrer'>
+            <Flex
+              w='100%'
+              borderRadius={8}
+              _hover={{ cursor: 'pointer' }}
+              border={'1px solid'}
+              borderColor={'translucid'}
+              bg={'darkLight'}
+              mr={4}
+              justifyContent={'center'}
+              alignItems={'center'}
+              px={4}
+              py={2}
+            >
+              Ver Nómina
+            </Flex>
+          </a>
+        </Flex>
       )}
     </Box>
   );

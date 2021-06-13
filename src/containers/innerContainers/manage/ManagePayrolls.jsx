@@ -35,14 +35,14 @@ const PayrollCard = ({ data }) => {
         }
       }}
     >
-      <Text flex={2} fontSize={12} mr={2}>
-        {data.date}
+       <Text flex={2} fontSize={12} mr={2}>
+        {data.eventData.date}
       </Text>
       <Text flex={2} fontSize={12} mr={2}>
-        {data.category}
+        {data.offerData.category}
       </Text>
       <Text flex={2} fontSize={12} mr={2}>
-        {data.worker.name}
+        {data.workerData.name}
       </Text>
       <Flex flex={1}>
         <Box
@@ -51,7 +51,7 @@ const PayrollCard = ({ data }) => {
           borderRadius={1000}
           border={'2px solid'}
           borderColor='darkLight'
-          bg={data.status === 'paid' ? 'green' : 'yellow'}
+          bg={data.status === 'finished' ? 'green' : 'yellow'}
         />
       </Flex>
     </Flex>
