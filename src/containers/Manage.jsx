@@ -1,12 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Flex, Box, Text } from '@chakra-ui/layout';
-
-// Redux & Actions
-import { connect } from 'react-redux';
-import { fetchPastProjects } from '../store/actions/projects';
-import { fetchAllContracts } from '../store/actions/contracts';
-import { fetchPayrolls } from '../store/actions/payrolls';
-import { fetchTemplates } from '../store/actions/templates';
+import React, { useState } from 'react';
+import { Flex } from '@chakra-ui/layout';
 
 // Context
 import {
@@ -19,6 +12,7 @@ import Main from '../components/main/Main';
 import Side from '../components/main/Side';
 import SideSticky from '../components/main/SideSticky';
 import SideBoxContainer from '../components/ui/SideBoxContainer';
+import TopMain from "../components/main/TopMain";
 import Documentation from '../components/main/Documentation';
 import BeCurious from '../components/ui/BeCurious';
 import SearchBar from '../components/ui/SearchBar';
@@ -27,87 +21,26 @@ import PayrollSide from '../components/ui/PayrollSide';
 import PastProjectSide from '../components/ui/PastProjectSide';
 import ContractSide from '../components/ui/ContractSide';
 
+// Guides
+import ProjectsGuide from './innerContainers/manage/guides/ProjectsGuide'
+import ContractsGuide from './innerContainers/manage/guides/ContractsGuide'
+import PayrollsGuide from './innerContainers/manage/guides/PayrollsGuide'
+
 // Inner Containers
 import ManageProjects from './innerContainers/manage/ManageProjects';
 import ManageContracts from './innerContainers/manage/ManageContracts';
 import ManagePayrolls from './innerContainers/manage/ManagePayrolls';
 import ManageTemplates from './innerContainers/manage/ManageTemplates';
 
-const Manage = ({
-  fetchPastProjects,
-  pastProjects,
-  fetchAllContracts,
-  contracts,
-  fetchPayrolls,
-  payrolls,
-  fetchTemplates,
-  templates,
-}) => {
+const Manage = () => {
   const [search, setSearch] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [selectedItemManage, setSelectedItemManage] = useState(null);
   const [selectedManageSide, setSelectedManageSide] = useState(null);
-  const [selectedTab, setSelectedTab] = useState(0);
-
-  useEffect(() => {
-    (async () => {
-      setError(null);
-      try {
-        await fetchPastProjects();
-        await fetchAllContracts();
-        await fetchPayrolls();
-        // await fetchTemplates();
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchPastProjects, fetchAllContracts, fetchPayrolls, fetchTemplates]);
+  const [selectedTab, setSelectedTab] = useState("Proyectos pasados");
 
   const handleSearch = (event) => {
     setSearch(event.target.value.toLowerCase());
   };
-
-  const filteredPastProjects = pastProjects.filter(
-    (project) =>
-      project.projectData.name.toLowerCase().includes(search) ||
-      project.projectData.location.address.toLowerCase().includes(search) ||
-      project.projectOffers.some((offer) =>
-        offer.offerData.name.toLowerCase().includes(search)
-      ) ||
-      project.projectOffers.some((offer) =>
-        offer.offerData.category.toLowerCase().includes(search)
-      )
-  );
-
-  const filteredContracts = contracts.filter(
-    (contract) =>
-      contract.offerData.category.toLowerCase().includes(search) ||
-      contract.workerData.name.toLowerCase().includes(search)
-  );
-
-  const filteredPayrolls = payrolls.filter(
-    (payroll) =>
-      payroll.offerData.category.toLowerCase().includes(search) ||
-      payroll.workerData.name.toLowerCase().includes(search) ||
-      payroll.eventData.name.toLowerCase().includes(search)
-  );
-
-  const filteredTemplates = templates.filter(
-    (template) =>
-      template.category.toLowerCase().includes(search) ||
-      template.type.toLowerCase().includes(search)
-  );
-
-  const tabs = [
-    <ManageProjects data={filteredPastProjects} />,
-    <ManageContracts data={filteredContracts} />,
-    <ManagePayrolls data={filteredPayrolls} />,
-    <ManageTemplates data={filteredTemplates} />,
-  ];
 
   return (
     <SelectedItemManage.Provider
@@ -117,68 +50,51 @@ const Manage = ({
         value={{ selectedManageSide, setSelectedManageSide }}
       >
         <Main>
-          <Box
-            zIndex={100}
-            position={'sticky'}
-            top={0}
-            pt={4}
-            width={'100%'}
-            bg={'dark'}
-            pb={2.5}
-          >
+          <TopMain borderBottomWidth={0} pb={0}>
             <SearchBar
-              placeholder={'Busca por nombre, dirección, localización...'}
+              placeholder={"Busca por nombre, dirección, localización..."}
               onChange={handleSearch}
             />
-          </Box>
-          {loading ? (
-            <Text textAlign={'center'} py={10}>
-              Cargando...
-            </Text>
-          ) : (
-            <Flex flexDirection={'row'} w={'100%'} my={4}>
-              <CustomTab
-                title='Proyectos'
-                active={selectedTab === 0}
-                onClick={() => setSelectedTab(0)}
-              />
-              <CustomTab
-                title='Contratos'
-                active={selectedTab === 1}
-                onClick={() => setSelectedTab(1)}
-              />
-              <CustomTab
-                title='Nóminas'
-                active={selectedTab === 2}
-                onClick={() => setSelectedTab(2)}
-              />
-              <CustomTab
-                title='Plantillas'
-                active={selectedTab === 3}
-                onClick={() => setSelectedTab(3)}
-              />
+            <Flex w={"100%"} mt={4}>
+              <CustomTab selectedTab={selectedTab} onClick={() => setSelectedTab("Proyectos pasados")}>
+                Proyectos pasados
+              </CustomTab>
+              <CustomTab selectedTab={selectedTab} onClick={() => setSelectedTab("Contratos")}>
+                Contratos
+              </CustomTab>
+              <CustomTab selectedTab={selectedTab} onClick={() => setSelectedTab("Nóminas")}>
+                Nóminas
+              </CustomTab>
+              <CustomTab selectedTab={selectedTab} onClick={() => setSelectedTab("Plantillas")} mr={0}>
+                Plantillas
+              </CustomTab> 
             </Flex>
-          )}
-          {!loading && !error && tabs[selectedTab]}
-          {!loading && error && <Text>Ha ocurrido un error</Text>}
+            {selectedTab === "Proyectos pasados" && <ProjectsGuide />}
+            {selectedTab === "Contratos" && <ContractsGuide />}
+            {selectedTab === "Nóminas" && <PayrollsGuide />}
+          </TopMain>
+          {selectedTab === "Proyectos pasados" && <ManageProjects search={search} />}
+          {selectedTab === "Contratos" && <ManageContracts search={search} />}
+          {selectedTab === "Nóminas" && <ManagePayrolls search={search} />}
+          {selectedTab === "Plantillas" && <ManageTemplates search={search} />}
         </Main>
         <Side>
           <SideSticky>
             <Documentation />
             <SideBoxContainer>
-              {selectedManageSide === 'contracts' && (
+              {selectedManageSide === "contracts" && (
                 <ContractSide data={selectedItemManage} />
               )}
-              {selectedManageSide === 'payrolls' && (
+              {selectedManageSide === "payrolls" && (
                 <PayrollSide data={selectedItemManage} />
               )}
-              {selectedManageSide === 'projects' && (
+              {selectedManageSide === "projects" && (
                 <PastProjectSide data={selectedItemManage} />
               )}
               {!selectedManageSide && (
                 <BeCurious
                   text={
-                    'Prueba a seleccionar alguna solicitud o una oferta de algún proyecto'
+                    "Selecciona cualquier elemento para ver más información del mismo."
                   }
                 />
               )}
@@ -190,20 +106,4 @@ const Manage = ({
   );
 };
 
-const mapDispatchToProps = {
-  fetchPastProjects,
-  fetchAllContracts,
-  fetchPayrolls,
-  fetchTemplates,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    pastProjects: state.projects.pastProjects,
-    contracts: state.contracts.contracts,
-    payrolls: state.payrolls.payrolls,
-    templates: state.templates.templates,
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Manage);
+export default Manage;

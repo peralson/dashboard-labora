@@ -1,11 +1,19 @@
 /* eslint-disable no-dupe-keys */
-import React, { useState, useReducer } from 'react';
-import { Grid, Box, Flex, Image, Text } from "@chakra-ui/react";
+import React, { useState, useReducer } from "react";
+import { Grid, Box, Flex, Image, Text, Input } from "@chakra-ui/react";
 
 // Custom
 import { getParsedSalary } from "../../lib/forms/utils";
-import { connect } from 'react-redux';
-import { editOffer } from '../../store/actions/projects';
+import { connect } from "react-redux";
+import { editSingleOffer } from "../../store/actions/projects";
+
+// ENV & GMaps
+import { firebaseConfig, LIBRARIES } from "../../env";
+import { useLoadScript } from "@react-google-maps/api";
+import usePlacesAutocomplete, {
+  getLatLng,
+  getGeocode,
+} from "use-places-autocomplete";
 
 // SVG
 import back from "../../assets/svg/back.svg";
@@ -27,6 +35,88 @@ import CustomInput from "../../components/new/CustomInput";
 import Separator from "../../components/ui/Separator";
 import ErrorMessage from "../../components/ui/ErrorMessage";
 
+const PlacesAutoComplete = ({ state, dispatch }) => {
+  const {
+    ready,
+    value,
+    setValue,
+    suggestions: { data, status },
+    clearSuggestions,
+  } = usePlacesAutocomplete();
+
+  const handleSelectPlace = async (address) => {
+    setValue(address, false);
+
+    try {
+      const results = await getGeocode({ address });
+      const { lat, lng } = await getLatLng(results[0]);
+      dispatch({
+        type: "setAddress",
+        payload: { address: address, lat: lat, lng: lng },
+      });
+    } catch (error) {
+      console.error("handleSelectPlace", error);
+    } finally {
+      clearSuggestions();
+    }
+  };
+
+  return (
+    <Box>
+      <Text mb={2} fontWeight={"bold"}>
+        Dirección *
+      </Text>
+      <Input
+        py={2}
+        px={3}
+        borderRadius={8}
+        borderWidth={2}
+        borderColor={"darkLight"}
+        placeholder={"Introduce la dirección del proyecto"}
+        _active={{ borderColor: "white" }}
+        _focus={{ borderColor: "white" }}
+        value={value || state.location.address}
+        onChange={(e) => {
+          setValue(e.target.value);
+          if (e.target.value === "") {
+            dispatch({
+              type: "setAddress",
+              payload: { address: "", lat: null, lng: null },
+            });
+          }
+        }}
+        disabled={!ready}
+      />
+      {data.length > 0 && (
+        <Box
+          borderWidth={2}
+          borderColor={"darkLight"}
+          borderTopWidth={0}
+          borderBottomRadius={10}
+        >
+          {status === "OK" &&
+            data.map(({ description }, index) => (
+              <Text
+                key={index}
+                p={2}
+                borderBottomWidth={1}
+                borderBottomColor={"translucid"}
+                lineHeight={2}
+                fontSize={14}
+                color={"grey.dark"}
+                _hover={{ bg: "translucid" }}
+                cursor={"pointer"}
+                onClick={() => handleSelectPlace(description)}
+              >
+                {description}
+              </Text>
+            ))}
+        </Box>
+      )}
+    </Box>
+  );
+};
+
 const formIsValid = (
   state,
   currentSalary,
@@ -35,6 +125,10 @@ const formIsValid = (
 ) => {
   const hasName = state.name.length > 0;
   const isNameLong = state.name.length > 3;
+  const hasAddress =
+    state.location.address !== "" &&
+    state.location.lat !== null &&
+    state.location.lng !== null;
   const hasSalary = state.salary && state.salary > 0;
   const hasSalaryOverMin = state.salary && state.salary >= currentSalary;
   const hasExtraSalary = state.extraSalary && state.extraSalary > 0;
@@ -48,6 +142,7 @@ const formIsValid = (
   return {
     isValid:
       hasName &&
+      hasAddress &&
       isNameLong &&
       hasSalary &&
       hasSalaryOverMin &&
@@ -57,6 +152,7 @@ const formIsValid = (
     hasExtraSalaryOverMin,
     hasName,
     isNameLong,
+    hasAddress,
     hasSalary,
     hasSalaryOverMin,
     hasExtraSalary,
@@ -73,6 +169,9 @@ const reducer = (state, action) => {
 
     case "setDesc":
       return { ...state, description: action.payload };
+
+    case "setAddress":
+      return { ...state, location: action.payload };
 
     case "editSalary":
       return {
@@ -97,15 +196,20 @@ const reducer = (state, action) => {
   }
 };
 
-const EditOffer = ({ editOffer, match, history, projects }) => {
+const EditSingleOffer = ({ match, history, projects, editSingleOffer }) => {
   const { id } = match.params;
+  const project = projects.find((p) => p.projectOffers[0].id === id);
+  const offer = project.projectOffers[0];
 
-  const project = projects.find(({ projectOffers }) => projectOffers.some((o) => o.id === id));
-  const offer = project.projectOffers.find((offer) => offer.id === id);
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: firebaseConfig.apiKey,
+    libraries: LIBRARIES,
+  });
 
   const initialState = {
     name: offer.offerData.name,
     description: offer.offerData.description,
+    location: project.projectData.location,
     salary: offer.offerData.salary,
     extraSalary: offer.offerData.extraSalary,
     qty: offer.offerData.qty,
@@ -119,6 +223,7 @@ const EditOffer = ({ editOffer, match, history, projects }) => {
   const {
     isValid,
     hasName,
+    hasAddress,
     isNameLong,
     hasSalary,
     hasExtraSalary,
@@ -150,17 +255,7 @@ const EditOffer = ({ editOffer, match, history, projects }) => {
       setIsLoading(true);
       setError(null);
       try {
-        await editOffer({
-          projectData: { id: project.id },
-          offerData: {
-            id: offer.id,
-            name: state.name,
-            salary: state.salary,
-            extra: state.extraSalary,
-            qty: state.qty,
-            description: state.description,
-          },
-        });
+        await editSingleOffer(project, state);
         history.push(`../../`);
       } catch (err) {
         setError(true);
@@ -176,11 +271,7 @@ const EditOffer = ({ editOffer, match, history, projects }) => {
         <TopMain>
           <NewTopHeaderBar
             leftButton={
-              <TopButton
-                left
-                icon={back}
-                onSelect={() => history.goBack()}
-              >
+              <TopButton left icon={back} onSelect={() => history.goBack()}>
                 Volver
               </TopButton>
             }
@@ -202,7 +293,7 @@ const EditOffer = ({ editOffer, match, history, projects }) => {
           {error && (
             <ErrorMessage
               title="Oh! Vaya... algo salió mal"
-              secondary="Ha habido un problema editando la oferta. Inténtalo más tarde."
+              secondary="Ha habido un problema editando el proyecto. Inténtalo más tarde."
               onClose={() => setError(null)}
             />
           )}
@@ -234,6 +325,13 @@ const EditOffer = ({ editOffer, match, history, projects }) => {
               }
             />
           </Grid>
+          {!isLoaded ? (
+            <Text>Cargando...</Text>
+          ) : loadError ? (
+            <Text>Ha ocurrido un error</Text>
+          ) : (
+            <PlacesAutoComplete state={state} dispatch={dispatch} />
+          )}
           <Box>
             <Text mb={1} fontWeight={"bold"} lineHeight={2}>
               Cantidad de trabajadores *
@@ -394,6 +492,22 @@ const EditOffer = ({ editOffer, match, history, projects }) => {
             <Separator top={4} bottom={4} />
             <Box>
               <Text fontWeight={"bold"} mb={2}>
+                Dirección
+              </Text>
+              <Flex
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                w={"100%"}
+              >
+                <Text fontSize={14} lineHeight={1.6}>
+                  Introduce una dirección válida
+                </Text>
+                <Image src={hasAddress ? correct : cancel} w={"12px"} />
+              </Flex>
+            </Box>
+            <Separator top={4} bottom={4} />
+            <Box>
+              <Text fontWeight={"bold"} mb={2}>
                 Cantidad
               </Text>
               <Flex
@@ -402,7 +516,7 @@ const EditOffer = ({ editOffer, match, history, projects }) => {
                 w={"100%"}
               >
                 <Text fontSize={14} lineHeight={1.6} mr={4}>
-                  Hay al menos {offer.offerData.already_assigned || 1} trabajador{offer.offerData.already_assigned > 1 ? 'es' : ''}
+                  Hay al menos {offer.offerData.already_assigned} trabajador
                 </Text>
                 <Image src={hasQty ? correct : cancel} w={"12px"} />
               </Flex>
@@ -421,7 +535,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  editOffer,
+  editSingleOffer,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditOffer);
+export default connect(mapStateToProps, mapDispatchToProps)(EditSingleOffer);

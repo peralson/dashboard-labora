@@ -1,74 +1,88 @@
-import React from "react";
-import { Flex, Text } from "@chakra-ui/layout";
-import { Image } from "@chakra-ui/image";
+import React, { useState, useEffect } from "react";
+import { Flex, Text, Grid, Image } from "@chakra-ui/react";
+
+// Redux & Actions
+import { connect } from 'react-redux';
+import { fetchTemplates } from '../../../store/actions/templates';
+
+// SVG
 import legal from "../../../assets/svg/legal.svg";
+import plus from "../../../assets/svg/plus.svg";
 
-import { MdAdd } from "react-icons/md";
+const ContractTemplateCard = ({ data, nuevo }) => (
+  <Flex
+    flexDirection={"column"}
+    cursor={"pointer"}
+    alignItems={"center"}
+    minH={"180px"}
+    justifyContent={"center"}
+    borderRadius={10}
+    borderWidth={2}
+    _hover={{ borderColor: "white" }}
+    borderColor={false ? "white" : "darkLight"}
+  >
+    <Image src={nuevo ? plus : legal} w={"32px"} mb={4} />
+    <Text textAlign={"center"}>
+      {nuevo ? "Nueva plantilla" : data.category}
+    </Text>
+  </Flex>
+);
 
-const ContractTemplateCard = (props) => {
-  const { data, nuevo } = props;
-  const isSelected = false;
+const ManageTemplates = ({ search, templates, fetchTemplates }) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  return (
-    <Flex
-      flexDirection={"column"}
-      py={4}
-      px={2}
-      mr={4}
-      mb={4}
-      cursor={"pointer"}
-      w={120}
-      h={120}
-      alignItems={"center"}
-      justifyContent={"center"}
-      borderRadius={8}
-      border={"1px solid"}
-      _hover={{ borderColor: "white" }}
-      borderColor={isSelected ? "white" : "darkLight"}
-    >
-      {nuevo === true ? (
-        <>
-          <MdAdd fontSize={"48px"} color="#49A2D7" mb={4} />
-          <Text textAlign={"center"} color="white">
-            Nueva plantilla
-          </Text>
-        </>
-      ) : (
-        <>
-          <Image src={legal} w={"48px"} mb={4} />
-          <Text textAlign={"center"} color="white">
-            {data.category}
-          </Text>
-        </>
-      )}
-    </Flex>
+  useEffect(() => {
+      (async () => {
+        if (templates.length === 0) {
+          setLoading(true)
+        }
+        setError(null);
+        try {
+          await fetchTemplates();
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const filteredTemplates = templates.filter(
+    (template) =>
+      template.category.toLowerCase().includes(search) ||
+      template.type.toLowerCase().includes(search)
   );
-};
-
-const ManageTemplates = ({ data }) => {
+  
   return (
-    <Flex w="100%" flexDirection="column">
-      <Text
-        my={4}
-        color="white"
-        fontSize={18}
-        lineHeight={1}
-        fontWeight={"bold"}
-      >
-        Contratos
+    loading ? (
+      <Text textAlign={"center"} py={10}>
+        Cargando...
       </Text>
-      {data.length > 0 ? (
-        <Flex w="100%" flexDirection="row" wrap="wrap">
-          {data.map((e) => {
-            return <ContractTemplateCard key={e.id} data={e} nuevo={false} />;
-          })}
-          <ContractTemplateCard nuevo={true} />
-        </Flex>
-      ) : (
-        <ContractTemplateCard nuevo={true} />
-      )}
-    </Flex>
-  );
+    ) : error ? (
+      <Text textAlign={"center"} py={10}>
+        Ha ocurrido un error
+      </Text>
+    ) : (
+      <Grid w={"100%"} templateColumns={"1fr 1fr 1fr 1fr"} gap={4} mt={4}>
+        {filteredTemplates.map((template, index) => (
+          <ContractTemplateCard key={index} data={template} />
+        ))}
+        <ContractTemplateCard nuevo />
+      </Grid>
+    )
+  )
 };
 
-export default ManageTemplates;
+const mapDispatchToProps = {
+  fetchTemplates,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    templates: state.templates.templates,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ManageTemplates);

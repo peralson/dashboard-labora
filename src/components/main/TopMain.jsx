@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@chakra-ui/layout";
 
-const TopMain = props => (
+const TopMain = ({ children, ...rest }) => (
   <Box
     zIndex={100} 
     position={"sticky"}
@@ -10,11 +10,11 @@ const TopMain = props => (
     width={"100%"}
     bg={"dark"}
     pb={2.5}
-    borderBottom={"2px solid"}
+    borderBottomWidth={2}
     borderColor={"darkLight"}
-    {...props}
+    {...rest}
   >
-    {props.children}
+    {children}
   </Box>
 );
 

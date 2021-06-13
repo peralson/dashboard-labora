@@ -8,8 +8,9 @@ import {
   CREATE_PROJECT_OFFER,
   DELETE_PROJECT_OFFER,
   EDIT_OFFER,
-  EDIT_PROJECT
-} from '../actions/projects';
+  EDIT_SINGLE_OFFER,
+  EDIT_PROJECT,
+} from "../actions/projects";
 
 import { HANDLE_APPLICATION } from "../actions/applications";
 
@@ -75,6 +76,24 @@ export default (state = initialState, action) => {
       updatedOffer.offerData = action.payload.updatedOffer;
       return { ...state };
 
+    case EDIT_SINGLE_OFFER:
+      const singleOfferProject = state.allProjects.find(
+        (p) => p.id === action.payload.projectId,
+      );
+      singleOfferProject.projectData = {
+        ...singleOfferProject.projectData,
+        location: state.location,
+      };
+      singleOfferProject.projectOffers[0].offerData = {
+        ...singleOfferProject.projectOffers[0].offerData,
+        name: state.name,
+        salary: parseFloat(state.salary),
+        description: state.description,
+        extraSalary: parseFloat(state.extraSalary),
+        qty: parseInt(state.qty),
+      };
+      return { ...state };
+
     case EDIT_PROJECT:
       const editedProject = state.allProjects.find((p) => p.id === action.id);
       editedProject.projectData = action.projectData;
@@ -91,10 +110,10 @@ export default (state = initialState, action) => {
         (app) => app.id !== action.applicationId,
       );
       if (action.action === "accept") {
-        appProject.projectData.jobs += 1
-        appOffer.offerData.already_assigned += 1
+        appProject.projectData.jobs += 1;
+        appOffer.offerData.already_assigned += 1;
       }
-      appOffer.offerData.number_applies -= 1
+      appOffer.offerData.number_applies -= 1;
       newOfferApplications.offerApplications = newOfferApplications;
       return { ...state };
 

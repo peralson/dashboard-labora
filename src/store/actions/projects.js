@@ -8,6 +8,7 @@ export const CREATE_SOLO_OFFER = 'CREATE_SOLO_OFFER';
 export const DELETE_PROJECT = 'DELETE_PROJECT';
 export const DELETE_PROJECT_OFFER = 'DELETE_PROJECT_OFFER';
 export const EDIT_OFFER = 'EDIT_OFFER';
+export const EDIT_SINGLE_OFFER = "EDIT_SINGLE_OFFER";
 export const EDIT_PROJECT = 'EDIT_PROJECT';
 
 export const fetchProjects = () => {
@@ -320,10 +321,10 @@ export const createOfferSingle = ({ offerData, projectData }) => {
 export const editOffer = ({ offerData, projectData }) => {
   return async (dispatch, getState) => {
     const currentProject = getState().projects.allProjects.find(
-      (p) => p.id === projectData.id
+      (p) => p.id === projectData.id,
     );
     const currentOffer = currentProject.projectOffers.find(
-      (offer) => offer.id === offerData.id
+      (offer) => offer.id === offerData.id,
     );
 
     currentOffer.offerData.name = offerData.name;
@@ -333,11 +334,11 @@ export const editOffer = ({ offerData, projectData }) => {
     currentOffer.offerData.qty = parseInt(offerData.qty);
 
     const response = await fetch(
-      'https://us-central1-partime-60670.cloudfunctions.net/api/offer',
+      "https://us-central1-partime-60670.cloudfunctions.net/api/offer",
       {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           // Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
@@ -348,18 +349,16 @@ export const editOffer = ({ offerData, projectData }) => {
           extraSalary: parseFloat(offerData.extra),
           qty: parseInt(offerData.qty),
         }),
-      }
+      },
     );
 
     if (!response.ok) {
-      console.log('ERROR');
+      console.log("ERROR");
       const resData = await response.json();
       console.error(resData);
-      throw new Error('Ha habido un problema...');
+      throw new Error("Ha habido un problema...");
     }
 
-    console.log("Estoy aquí!");
-    
     dispatch({
       type: EDIT_OFFER,
       payload: {
@@ -411,6 +410,52 @@ export const editProject = (id, state, dates) => {
     })
   }
 }
+
+export const editSingleOffer = (project, state) => {
+  return async (dispatch, getState) => {
+    const offer = project.projectOffers[0];
+
+    const response = await fetch(
+      "https://us-central1-partime-60670.cloudfunctions.net/api/offer",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id: offer.id,
+          name: state.name,
+          salary: parseFloat(state.salary),
+          description: state.description,
+          extraSalary: parseFloat(state.extraSalary),
+          qty: parseInt(state.qty),
+          projectData: {
+            name: null,
+            description: null,
+            location: state.location,
+            dates: project.projectData.dates,
+          },
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      console.log("ERROR");
+      const resData = await response.json();
+      console.error(resData);
+      throw new Error("Ha habido un problema...");
+    }
+
+    dispatch({
+      type: EDIT_SINGLE_OFFER,
+      payload: {
+        projectId: project.id,
+        state: state,
+      },
+    });
+  };
+};
 
 const formattedSchedule = (schedule) => {
   return schedule.map((sche) => {

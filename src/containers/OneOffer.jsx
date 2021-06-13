@@ -42,7 +42,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
   const [selectedItemIndie, setSelectedItemIndie] = useState(null);
 
   const project = projects.find(({ projectOffers }) =>
-    projectOffers.some((offer) => offer.id === id)
+    projectOffers.some((offer) => offer.id === id),
   );
 
   if (!project) return <Box></Box>;
@@ -52,24 +52,24 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
   if (!offer) return <Box></Box>;
 
   const isComplete = offer.offerData.qty === offer.offerData.already_assigned;
+  const isSingle = project.projectData.name === null;
 
   const handleDeleteOffer = () => {
-    setErrorDel(null)
-    setLoadingDel(true)
-    if (project.projectData.name) {
+    setErrorDel(null);
+    setLoadingDel(true);
+    if (isSingle) {
       deleteProjectOffer(project.id, offer.id)
-        .then(() => history.push('../../'))
-        .catch(e => setErrorDel(true))
-        .finally(() => setLoadingDel(false))
+        .then(() => history.push("../../"))
+        .catch((e) => setErrorDel(true))
+        .finally(() => setLoadingDel(false));
     } else {
       deleteProject(project.id)
-        .then(() => history.push('../../'))
-        .catch(e => setErrorDel(true))
-        .finally(() => setLoadingDel(false))
+        .then(() => history.push("../../"))
+        .catch((e) => setErrorDel(true))
+        .finally(() => setLoadingDel(false));
     }
-  }
+  };
 
-  console.log('offerId', offer.id)
   return (
     <SelectedItemIndie.Provider
       value={{ selectedItemIndie, setSelectedItemIndie }}
@@ -78,7 +78,9 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
         <TopMain>
           <TopHeaderBar
             onGoBack={() => history.push(`../../`)}
-            onEdit={() => history.push(`/ofertas/o/edit/${id}`)}
+            onEdit={() =>
+              history.push(`/ofertas/o/edit${isSingle ? "-single" : ""}/${id}`)
+            }
           >
             Oferta
           </TopHeaderBar>
@@ -124,6 +126,13 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
                 />
                 <TextInfo title="Cantidad" info={offer.offerData.qty} />
               </Grid>
+              {!project.projectData.name && (
+                <TextInfo
+                  title="Dirección"
+                  info={project.projectData.location.address}
+                  mb={4}
+                />
+              )}
               {offer.offerData.tags && offer.offerData.tags.length > 0 && (
                 <Box mb={4}>
                   <Text mb={2} fontSize={14} fontWeight={"bold"} lineHeight={2}>
@@ -226,7 +235,11 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
               <ScheduleSide schedules={offer.offerData.schedule} />
             )}
             {selectedItemIndie && selectedItemIndie === "Equipo" && (
-              <TeamSide id={offer.id} type={"offer"} totalMembers={offer.offerData.already_assigned} /> 
+              <TeamSide
+                id={offer.id}
+                type={"offer"}
+                totalMembers={offer.offerData.already_assigned}
+              />
             )}
             {selectedItemIndie && selectedItemIndie.id && (
               <ApplicationSide

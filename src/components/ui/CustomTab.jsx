@@ -1,24 +1,21 @@
 import React from 'react';
-import { Box } from '@chakra-ui/layout'
+import { Text } from '@chakra-ui/layout'
 
-const CustomTab = (props) => {
-  return (
-    <Box
-      w='auto'
-      h='auto'
+const CustomTab = ({ selectedTab, onClick, children, ...rest }) => (
+    <Text
       py={2}
-      px={3}
-      mr={4}
-      cursor='pointer'
-      bg={props.active ? 'translucid' : 'darkLight'}
-      {...props}
-      color='white'
-      borderRadius={8}
-      onClick={props.onClick}
+      px={4}
+      mr={2}
+      cursor={'pointer'}
+      onClick={onClick}
+      borderWidth={2}
+      borderColor={selectedTab === children ? "white" : "darkLight"}
+      borderRadius={10}
+      _hover={{ borderColor: "white" }}
+      {...rest}
     >
-      {props.title}
-    </Box>
+      {children}
+    </Text>
   );
-};
 
 export default CustomTab

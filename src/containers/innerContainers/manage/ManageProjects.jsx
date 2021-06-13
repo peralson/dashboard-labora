@@ -1,17 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Flex, Box, Text } from '@chakra-ui/layout';
+
+// Custom
 import {
   SelectedItemManage,
   SelectedManageSide,
 } from '../../../context/SelectedItemContext';
 
+// Redux & Actions
+import { connect } from 'react-redux';
+import { fetchPastProjects } from '../../../store/actions/projects';
+
 // Components
 import moment from 'moment';
-import 'moment/locale/es';
-import Separator from '../../../components/ui/Separator';
+import "moment/locale/es";
 
-const PastProjectCard = (props) => {
-  const { data } = props;
+const PastProjectCard = ({ data }) => {
   const { selectedItemManage, setSelectedItemManage } =
     useContext(SelectedItemManage);
   const { setSelectedManageSide } = useContext(SelectedManageSide);
@@ -21,22 +25,22 @@ const PastProjectCard = (props) => {
 
   return (
     <Flex
-      cursor={'pointer'}
+      cursor={"pointer"}
       borderRadius={8}
-      p={2}
-      pl={2}
+      py={2}
+      px={3}
       mt={2}
-      alignItems={'center'}
-      border={'1px solid'}
-      borderColor={isActive ? 'white' : 'darkLight'}
-      _hover={{ borderColor: 'white' }}
+      alignItems={"center"}
+      border={"1px solid"}
+      borderColor={isActive ? "white" : "darkLight"}
+      _hover={{ borderColor: "white" }}
       onClick={() => {
         if (isActive) {
           setSelectedItemManage(null);
           setSelectedManageSide(null);
         } else {
           setSelectedItemManage(data);
-          setSelectedManageSide('projects');
+          setSelectedManageSide("projects");
         }
       }}
     >
@@ -45,7 +49,7 @@ const PastProjectCard = (props) => {
           ? data.projectData.name
           : data.projectOffers[0].offerData.name
           ? data.projectOffers[0].offerData.name
-          : 'Sin nombre'}
+          : "Sin nombre"}
       </Text>
       <Text flex={3} fontSize={12} mr={2}>
         {data.projectData.location.address}
@@ -59,60 +63,88 @@ const PastProjectCard = (props) => {
       <Text flex={2} fontSize={12} mr={2}>
         {data.projectData.dates[0]._seconds ===
         data.projectData.dates[data.projectData.dates.length - 1]._seconds
-          ? moment(data.projectData.dates[0]._seconds * 1000).format('D MMMM')
+          ? moment(data.projectData.dates[0]._seconds * 1000).format("D MMMM")
           : `${moment(data.projectData.dates[0]._seconds * 1000).format(
-              'D MMMM'
+              "D MMMM",
             )} - ${moment(
               data.projectData.dates[data.projectData.dates.length - 1]
-                ._seconds * 1000
-            ).format('D MMMM')}`}
+                ._seconds * 1000,
+            ).format("D MMMM")}`}
       </Text>
       <Flex flex={1}>
         <Box
-          w={'30px'}
-          h={'30px'}
+          w={"30px"}
+          h={"30px"}
           borderRadius={1000}
-          border={'2px solid'}
-          borderColor='darkLight'
-          bg={data.status === 'finished' ? 'green' : 'yellow'}
+          border={"2px solid"}
+          borderColor="darkLight"
+          bg={data.status === "finished" ? "green" : "yellow"}
         ></Box>
       </Flex>
     </Flex>
   );
 };
 
-const ManageProjects = (props) => {
-  const { data } = props;
+const ManageProjects = ({ search, pastProjects, fetchPastProjects }) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (pastProjects.length === 0) {
+        setLoading(true)
+      }
+      setError(null);
+      try {
+        await fetchPastProjects();
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const filteredPastProjects = pastProjects && pastProjects.filter(
+    (project) =>
+      project.projectData.name.toLowerCase().includes(search) ||
+      project.projectData.location.address.toLowerCase().includes(search) ||
+      project.projectOffers.some((offer) =>
+        offer.offerData.name.toLowerCase().includes(search)
+      ) ||
+      project.projectOffers.some((offer) =>
+        offer.offerData.category.toLowerCase().includes(search)
+      )
+  );
+
   return (
-    <>
-      <Flex alignItems={'center'} p={2} pl={2} mt={2}>
-        <Text flex={2} mr={2} fontWeight={'medium'} fontSize={14}>
-          Nombre
-        </Text>
-        <Text flex={3} mr={2} fontWeight={'medium'} fontSize={14}>
-          Lugar
-        </Text>
-        <Text flex={1} mr={2} fontWeight={'medium'} fontSize={14}>
-          Ofertas
-        </Text>
-        <Text flex={1} mr={2} fontWeight={'medium'} fontSize={14}>
-          Coste
-        </Text>
-        <Text flex={2} mr={2} fontWeight={'medium'} fontSize={14}>
-          Fecha
-        </Text>
-        <Text flex={1} fontWeight={'medium'} fontSize={14}>
-          Estado
-        </Text>
+    loading ? (
+      <Text textAlign={"center"} py={10}>
+        Cargando...
+      </Text>
+    ) : error ? (
+      <Text textAlign={"center"} py={10}>
+        Ha ocurrido un error
+      </Text>
+    ) : (
+      <Flex w="100%" flexDirection="column">
+        {pastProjects && filteredPastProjects.map((item, index) => (
+          <PastProjectCard key={index} data={item} />
+        ))}
       </Flex>
-      <Separator />
-      <Flex w='100%' flexDirection='column'>
-        {data.map((e) => {
-          return <PastProjectCard key={e.id} data={e} />;
-        })}
-      </Flex>
-    </>
+    )
   );
 };
 
-export default ManageProjects;
+const mapDispatchToProps = {
+  fetchPastProjects,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    pastProjects: state.projects.pastProjects,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ManageProjects);

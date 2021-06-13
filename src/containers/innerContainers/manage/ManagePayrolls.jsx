@@ -1,10 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Flex, Box, Text } from '@chakra-ui/layout';
+
+// Redux & Actions
+import { connect } from 'react-redux';
+import { fetchPayrolls } from '../../../store/actions/payrolls';
+
 import {
   SelectedItemManage,
   SelectedManageSide,
-} from '../../../context/SelectedItemContext';
-import Separator from '../../../components/ui/Separator';
+} from "../../../context/SelectedItemContext";
 
 const PayrollCard = ({ data }) => {
   const { selectedItemManage, setSelectedItemManage } =
@@ -18,11 +22,11 @@ const PayrollCard = ({ data }) => {
     <Flex
       cursor={'pointer'}
       borderRadius={8}
-      p={2}
-      pl={2}
+      py={2}
+      px={3}
       mt={2}
       alignItems={'center'}
-      border={'1px solid'}
+      borderWidth={1}
       borderColor={isActive ? 'white' : 'darkLight'}
       _hover={{ borderColor: 'white' }}
       onClick={() => {
@@ -58,31 +62,59 @@ const PayrollCard = ({ data }) => {
   );
 };
 
-const ManagePayrolls = ({ data }) => {
+const ManagePayrolls = ({ search, payrolls, fetchPayrolls }) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (payrolls.length === 0) {
+        setLoading(true)
+      }
+      setError(null);
+      try {
+        await fetchPayrolls();
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const filteredPayrolls = payrolls && payrolls.filter(
+    (payroll) =>
+      payroll.offerData.category.toLowerCase().includes(search) ||
+      payroll.workerData.name.toLowerCase().includes(search) ||
+      payroll.eventData.name.toLowerCase().includes(search)
+  );
+
   return (
-    <>
-      <Flex alignItems={'center'} p={2} pl={2} mt={2}>
-        <Text flex={2} mr={2} fontWeight={'medium'} fontSize={14}>
-          Fecha
-        </Text>
-        <Text flex={2} mr={2} fontWeight={'medium'} fontSize={14}>
-          Categoría
-        </Text>
-        <Text flex={2} mr={2} fontWeight={'medium'} fontSize={14}>
-          Trabajador
-        </Text>
-        <Text flex={1} mr={2} fontWeight={'medium'} fontSize={14}>
-          Estado
-        </Text>
+    loading ? (
+      <Text textAlign={"center"} py={10}>
+        Cargando...
+      </Text>
+    ) : error ? (
+      <Text textAlign={"center"} py={10}>
+        Ha ocurrido un error
+      </Text>
+    ) : (
+      <Flex w="100%" flexDirection="column">
+        {filteredPayrolls.map((payroll, index) => <PayrollCard key={index} data={payroll} />)}
       </Flex>
-      <Separator />
-      <Flex w='100%' flexDirection='column'>
-        {data.map((e) => {
-          return <PayrollCard key={e.id} data={e} />;
-        })}
-      </Flex>
-    </>
+    )
   );
 };
 
-export default ManagePayrolls;
+const mapDispatchToProps = {
+  fetchPayrolls,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    payrolls: state.payrolls.payrolls,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ManagePayrolls);

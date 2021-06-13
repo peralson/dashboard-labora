@@ -31,6 +31,88 @@ import CustomInput from "../../components/new/CustomInput";
 import Separator from "../../components/ui/Separator";
 import ErrorMessage from "../../components/ui/ErrorMessage";
 
+const PlacesAutoComplete = ({ state, dispatch }) => {
+  const {
+    ready,
+    value,
+    setValue,
+    suggestions: { data, status },
+    clearSuggestions,
+  } = usePlacesAutocomplete();
+
+  const handleSelectPlace = async (address) => {
+    setValue(address, false);
+
+    try {
+      const results = await getGeocode({ address });
+      const { lat, lng } = await getLatLng(results[0]);
+      dispatch({
+        type: "setAddress",
+        payload: { address: address, lat: lat, lng: lng },
+      });
+    } catch (error) {
+      console.error("handleSelectPlace", error);
+    } finally {
+      clearSuggestions();
+    }
+  };
+
+  return (
+    <Box>
+      <Text mb={2} fontWeight={"bold"}>
+        Dirección *
+      </Text>
+      <Input
+        py={2}
+        px={3}
+        borderRadius={8}
+        borderWidth={2}
+        borderColor={"darkLight"}
+        placeholder={"Introduce la dirección del proyecto"}
+        _active={{ borderColor: "white" }}
+        _focus={{ borderColor: "white" }}
+        value={value || state.location.address}
+        onChange={(e) => {
+          setValue(e.target.value);
+          if (e.target.value === "") {
+            dispatch({
+              type: "setAddress",
+              payload: { address: "", lat: null, lng: null },
+            });
+          }
+        }}
+        disabled={!ready}
+      />
+      {data.length > 0 && (
+        <Box
+          borderWidth={2}
+          borderColor={"darkLight"}
+          borderTopWidth={0}
+          borderBottomRadius={10}
+        >
+          {status === "OK" &&
+            data.map(({ description }, index) => (
+              <Text
+                key={index}
+                p={2}
+                borderBottomWidth={1}
+                borderBottomColor={"translucid"}
+                lineHeight={2}
+                fontSize={14}
+                color={"grey.dark"}
+                _hover={{ bg: "translucid" }}
+                cursor={"pointer"}
+                onClick={() => handleSelectPlace(description)}
+              >
+                {description}
+              </Text>
+            ))}
+        </Box>
+      )}
+    </Box>
+  );
+};
+
 const formIsValid = (state) => {
   const hasName = state.name.length > 0;
   const isNameLong = state.name.length > 3;
@@ -79,31 +161,6 @@ const EditProject = ({ match, history, projects, editProject }) => {
   }
 
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  const {
-    ready,
-    value,
-    setValue,
-    suggestions: { data, status },
-    clearSuggestions,
-  } = usePlacesAutocomplete();
-
-  const handleSelectPlace = async (address) => {
-    setValue(address, false);
-
-    try {
-      const results = await getGeocode({ address });
-      const { lat, lng } = await getLatLng(results[0]);
-      dispatch({
-        type: "setAddress",
-        payload: { address: address, lat: lat, lng: lng },
-      });
-    } catch (error) {
-      console.error("handleSelectPlace", error);
-    } finally {
-      clearSuggestions();
-    }
-  };
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -170,63 +227,12 @@ const EditProject = ({ match, history, projects, editProject }) => {
               dispatch({ type: "setName", payload: e.target.value })
             }
           />
-          {!isLoaded
-            ? <Text>Cargando...</Text>
-            : loadError
-              ? <Text>Ha ocurrido un error</Text>
-              : (
-                <Box>
-                <Text mb={2} fontWeight={"bold"}>
-                  Dirección *
-                </Text>
-                <Input
-                  py={2}
-                  px={3}
-                  borderRadius={8}
-                  borderWidth={2}
-                  borderColor={"darkLight"}
-                  placeholder={"Introduce la dirección del proyecto"}
-                  _active={{ borderColor: "white" }}
-                  _focus={{ borderColor: "white" }}
-                  value={value || state.location.address}
-                  onChange={(e) => {
-                    setValue(e.target.value);
-                    if (e.target.value === "") {
-                      dispatch({
-                        type: "setAddress",
-                        payload: { address: "", lat: null, lng: null },
-                      });
-                    }
-                  }}
-                  disabled={!ready}
-                />
-                {data.length > 0 && (
-                  <Box
-                    borderWidth={2}
-                    borderColor={"darkLight"}
-                    borderTopWidth={0}
-                    borderBottomRadius={10}
-                  >
-                    {status === "OK" &&
-                      data.map(({ description }, index) => (
-                        <Text
-                          key={index}
-                          p={2}
-                          borderBottomWidth={1}
-                          borderBottomColor={"translucid"}
-                          lineHeight={2}
-                          fontSize={14}
-                          color={"grey.dark"}
-                          _hover={{ bg: "translucid" }}
-                          cursor={"pointer"}
-                          onClick={() => handleSelectPlace(description)}
-                        >
-                          {description}
-                        </Text>
-                      ))}
-                  </Box>
-                )}
-              </Box>
+          {!isLoaded ? (
+            <Text>Cargando...</Text>
+          ) : loadError ? (
+            <Text>Ha ocurrido un error</Text>
+          ) : (
+            <PlacesAutoComplete state={state} dispatch={dispatch} />
           )}
           <CustomInput
             multiline

@@ -37,8 +37,6 @@ export const getParsedSalary = (salary) => {
   } else {
     parsedSalary = parseFloat(salary);
   }
-  if (isNaN(parsedSalary)) {
-    parsedSalary = 0;
-  }
+
   return parsedSalary;
 };
