@@ -178,7 +178,9 @@ const Workers = ({
               show={shareModalOpen}
               handleShow={setShareModalOpen}
             >
-              <AccentButton onClick={() => setShareModalOpen(true)}>Invitar trabajadores</AccentButton>
+              <AccentButton onClick={() => setShareModalOpen(true)}>
+                Invitar trabajadores
+              </AccentButton>
             </Popup>
           </Flex>
           {displayFilters && (

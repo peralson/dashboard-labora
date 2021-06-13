@@ -105,7 +105,6 @@ const EditWorkerLists = ({
         </Flex>
       </Flex>
       <Flex mt={4} justifyContent={'flex-end'}>
-        {loading && <Text>loading</Text>}
         <Flex
           _hover={{ cursor: 'pointer' }}
           bg={'accent'}

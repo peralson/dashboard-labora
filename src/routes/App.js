@@ -17,6 +17,7 @@ import EditProject from "../containers/edit/EditProject";
 import Company from '../containers/Company';
 import ManageOffer from '../containers/ManageOffer';
 import NotFound from '../containers/NotFound';
+import NewWorker from '../containers/NewWorker';
 
 // Components
 import PageGrid from '../components/main/PageGrid';
@@ -26,6 +27,7 @@ const App = () => {
     <BrowserRouter>
       <Switch>
         {/* Logs into App */}
+        <Route exact path={"/registro/:id"} component={NewWorker} />
         <PageGrid>
           {/* Main Containers */}
           <Route exact path={["/", "/ofertas"]} component={Offers} />

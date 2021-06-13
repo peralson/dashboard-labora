@@ -1,11 +1,18 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Flex, Text, Box } from '@chakra-ui/layout';
-import {Button} from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import MultipleSelectList from '../ui/MultipleSelectList';
-import { MdLink, MdContentCopy } from "react-icons/md";
+import { MdContentCopy } from 'react-icons/md';
 
-const ShareLink = ({data}) => {
+const ShareLink = ({ data }) => {
   const [selectedItems, setSelectedItems] = useState([]);
+  const [link, setLink] = useState();
+  const [copy, setCopy] = useState(false);
+
+  useEffect(() => {
+    createLink(selectedItems);
+    setCopy(false);
+  }, [selectedItems]);
 
   const handleSelelect = (e) => {
     if (!selectedItems.includes(e.target.name)) {
@@ -13,7 +20,24 @@ const ShareLink = ({data}) => {
     } else {
       setSelectedItems(selectedItems.filter((item) => item !== e.target.name));
     }
-  }
+  };
+
+  const createLink = (categories) => {
+    if (categories.length > 0) {
+      let catgs = '';
+      categories.forEach((cat) => {
+        catgs = catgs + cat.toLowerCase();
+      });
+      setLink(`http://localhost:3000/registro/${catgs}`);
+    } else {
+      setLink();
+    }
+  };
+
+  const handleClick = () => {
+    navigator.clipboard.writeText(link);
+    setCopy(true);
+  };
 
   return (
     <Box>
@@ -27,18 +51,25 @@ const ShareLink = ({data}) => {
         values={data}
         onChange={handleSelelect}
       />
-      <Button
-        size='md'
-        height='48px'
-        width='100%'
-        bg='translucid'
-        color='grey'
-        _focus={{ borderColor: 'none' }}
-      >
-        <Flex w='100%' justifyContent='space-between' alignContent='center'>
-          <MdLink /> https://wa.me/1XXXXXXXXXX? <MdContentCopy />
-        </Flex>
-      </Button>
+      {link && (
+        <Button
+          size='md'
+          height='48px'
+          width='100%'
+          bg='translucid'
+          color='grey'
+          _focus={{ borderColor: 'none' }}
+          onClick={handleClick}
+        >
+          <Flex w='100%' justifyContent='center' alignContent='center'>
+            <Text w='100%' fontSize={12}>
+              {link}
+            </Text>
+            <MdContentCopy />
+          </Flex>
+        </Button>
+      )}
+      {copy && <Text mt={2}>Enlace copiado!</Text>}
     </Box>
   );
 };
