@@ -48,7 +48,7 @@ const ManageOffer = ({
 
   const offer = project.projectOffers.find((offer) => offer.id === id);
 
-  console.log('offer', offer)
+  console.log('offer', offer);
 
   if (!offer) return <Box></Box>;
 
@@ -58,9 +58,7 @@ const ManageOffer = ({
     >
       <Main>
         <TopMain>
-          <TopHeaderBar
-            onGoBack={() => history.push(`../../gestion`)}
-          >
+          <TopHeaderBar onGoBack={() => history.push(`../../gestion`)}>
             Oferta
           </TopHeaderBar>
         </TopMain>
@@ -129,10 +127,7 @@ const ManageOffer = ({
                 rowGap={4}
               >
                 {offer.offerJobs.map((job) => (
-                  <OneOfferJob
-                    key={job.id}
-                    job={job}
-                  />
+                  <OneOfferJob key={job.id} job={job} />
                 ))}
               </Grid>
             </>

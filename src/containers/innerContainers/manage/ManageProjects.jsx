@@ -6,6 +6,8 @@ import {
   SelectedItemManage,
   SelectedManageSide,
 } from '../../../context/SelectedItemContext';
+import { getTotalCost } from '../../../lib/getTotalCost'
+import { formattedSalary } from '../../../lib/formattedSalary'
 
 // Redux & Actions
 import { connect } from 'react-redux';
@@ -58,7 +60,7 @@ const PastProjectCard = ({ data }) => {
         {data.projectOffers.length}
       </Text>
       <Text flex={1} fontSize={12} mr={2}>
-        144 €
+        {formattedSalary(getTotalCost(data.projectOffers)) + ' €'}
       </Text>
       <Text flex={2} fontSize={12} mr={2}>
         {data.projectData.dates[0]._seconds ===

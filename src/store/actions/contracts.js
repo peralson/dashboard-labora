@@ -108,29 +108,28 @@ export const fetchAllContracts = () => {
 };
 
 export const fetchContract = async (offerId) => {
-    // const token = getState().auth.token
+  // const token = getState().auth.token
 
-    const response = await fetch(
-      `https://us-central1-partime-60670.cloudfunctions.net/api/contract/${offerId}?type=offer`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+  const response = await fetch(
+    `https://us-central1-partime-60670.cloudfunctions.net/api/contract/${offerId}?type=offer`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
 
-    if (!response.ok && response.status === 404)
-      return null;
-    if (!response.ok) throw new Error("Ha ocurrido un error.");
+  if (!response.ok && response.status === 404) return null;
+  if (!response.ok) throw new Error('Ha ocurrido un error.');
 
-    const link = await response.json()
-    
-    console.log('el enlace es:',link)
-    return link.body;
+  const link = await response.json();
+
+  console.log('el enlace es:', link);
+  return link.body;
 };
 
-export const fetchWorkerContract = async ({offerId, userId}) => {
+export const fetchWorkerContract = async ({ offerId, userId }) => {
   // const token = getState().auth.token
 
   const response = await fetch(
@@ -143,13 +142,11 @@ export const fetchWorkerContract = async ({offerId, userId}) => {
     }
   );
 
-  if (!response.ok && response.status === 404)
-    return null;
-  if (!response.ok) throw new Error("Ha ocurrido un error.");
+  if (!response.ok && response.status === 404) return null;
+  if (!response.ok) throw new Error('Ha ocurrido un error.');
 
-  const link = await response.json()
-  
-  console.log('el enlace es:',link)
+  const link = await response.json();
+
+  console.log('el enlace es:', link);
   return link.body;
 };
-

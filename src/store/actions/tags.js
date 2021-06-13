@@ -34,9 +34,10 @@ export const fetchTags = () => {
   };
 };
 
-export const editTags = async (action, userList, tagList) => {
+export const editTags = (action, userList, tagList) => {
   return async (dispatch, getState) => {
     // const token = getState().auth.token
+
     const response = await fetch(
       `https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/tags/edit/${action}`,
       {
@@ -52,7 +53,7 @@ export const editTags = async (action, userList, tagList) => {
         }),
       },
     );
-    
+
     if (!response.ok) {
       console.log("ERROR");
       const resData = await response.json();
@@ -64,8 +65,8 @@ export const editTags = async (action, userList, tagList) => {
       type: EDIT_TAGS,
       payload: {
         action: action,
-        users: userList,
-        tags: tagList
+        userList: userList,
+        tagList: tagList
       }
     });
   };

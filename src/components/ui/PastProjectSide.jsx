@@ -4,6 +4,7 @@ import { Flex, Box, Text } from '@chakra-ui/layout';
 // Lib
 import { Link } from 'react-router-dom';
 import { formattedSalary } from '../../lib/formattedSalary';
+import { getTotalCost } from '../../lib/getTotalCost';
 
 // Components
 import Separator from './Separator';
@@ -41,16 +42,8 @@ const OfferItem = ({ data }) => {
       pt={4}
       borderRadius={10}
       borderWidth={1}
-      // borderColor={isActive ? "white" : "translucid"}
       borderColor='translucid'
       mb={2}
-      // onClick={() => {
-      //   if (isActive) {
-      //     setSelectedItem(null);
-      //   } else {
-      //     setSelectedItem(offer);
-      //   }
-      // }}
     >
       <Box width='100%' flex='1'>
         <Text fontSize={12} color='primary' lineHeight={1}>
@@ -80,10 +73,28 @@ const OfferItem = ({ data }) => {
   );
 };
 
-const PastProjectSide = ({ data }) => {
-  // const [show, setShow] = React.useState(false);
-  // const handleToggle = () => setShow(!show);
+const getCosts = (projectOffers) => {
+  return (
+    <Box>
+      {projectOffers.map((offer) => {
+        return (
+          <Box>
+            <FlexText
+              left={`Salario ${offer.offerData.category}`}
+              right={formattedSalary(offer.offerData.salary) + ' €'}
+            />
+            <FlexText
+              left={`Extra ${offer.offerData.category}`}
+              right={formattedSalary(offer.offerData.extraSalary) + ' €'}
+            />
+          </Box>
+        );
+      })}
+    </Box>
+  );
+};
 
+const PastProjectSide = ({ data }) => {
   return (
     <Box>
       <Flex alignItems={'center'} justifyContent={'space-between'} mb={2}>
@@ -116,16 +127,15 @@ const PastProjectSide = ({ data }) => {
       )}
       <SideTitle>Costes</SideTitle>
       {data.projectOffers.length > 0 && (
-        <Box>
-          <FlexText left={'Salario camareros'} right={'150,00 €'} />
-          <FlexText left={'Extras camareros'} right={'15,00 €'} />
-          <FlexText left={'Total horas camareros'} right={'35 h'} />
-          <FlexText left={'Salario azafatas'} right={'15.00 €'} />
-          <FlexText left={'Extras azafatas'} right={'15.00 €'} />
-          <FlexText left={'Total horas azafatas'} right={'21 h'} />
+        <Box flexDirection='column'>
+          {getCosts(data.projectOffers)}
           <FlexText
             left={<SideTitle>Coste total</SideTitle>}
-            right={<SideTitle>1453,00 €</SideTitle>}
+            right={
+              <SideTitle>
+                {formattedSalary(getTotalCost(data.projectOffers)) + ' €'}
+              </SideTitle>
+            }
           />
         </Box>
       )}
