@@ -415,9 +415,6 @@ export const editSingleOffer = (project, state) => {
   return async (dispatch, getState) => {
     const offer = project.projectOffers[0];
 
-    console.log("project", project.id);
-    console.log("offer", offer.id);
-
     const response = await fetch(
       "https://us-central1-partime-60670.cloudfunctions.net/api/offer",
       {
@@ -438,7 +435,6 @@ export const editSingleOffer = (project, state) => {
             name: null,
             description: null,
             location: state.location,
-            // dates: project.projectData.dates,
           },
         }),
       },

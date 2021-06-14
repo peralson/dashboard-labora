@@ -17,6 +17,8 @@ import ErrorMessage from '../components/ui/ErrorMessage';
 const NewWorker = () => {
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(isLoading);
+
   const formik = useFormik({
     initialValues: {
       name: '',

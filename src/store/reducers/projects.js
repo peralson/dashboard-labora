@@ -82,15 +82,15 @@ export default (state = initialState, action) => {
       );
       singleOfferProject.projectData = {
         ...singleOfferProject.projectData,
-        location: state.location,
+        location: action.payload.state.location,
       };
       singleOfferProject.projectOffers[0].offerData = {
         ...singleOfferProject.projectOffers[0].offerData,
-        name: state.name,
-        salary: parseFloat(state.salary),
-        description: state.description,
-        extraSalary: parseFloat(state.extraSalary),
-        qty: parseInt(state.qty),
+        name: action.payload.state.name,
+        salary: parseFloat(action.payload.state.salary),
+        description: action.payload.state.description,
+        extraSalary: parseFloat(action.payload.state.extraSalary),
+        qty: parseInt(action.payload.state.qty),
       };
       return { ...state };
 

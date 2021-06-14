@@ -35,6 +35,8 @@ const EditWorkerLists = ({
   const [isOpen, setIsOpen] = useState(false);
   // const onClose = () => setIsOpen(false);
 
+  console.log(loading);
+
   const handleItems = (event) => {
     if (!selectedItems.includes(event.target.name)) {
       setSelectedItems([...selectedItems, event.target.name]);

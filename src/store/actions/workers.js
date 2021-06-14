@@ -36,19 +36,19 @@ export const newWorker = async ({ email, password, name }) => {
   // const token = getState().auth.token
 
   const response = await fetch(
-    'https://us-central1-partime-60670.cloudfunctions.net/api/auth/',
+    "https://us-central1-partime-60670.cloudfunctions.net/api/auth/",
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        "Content-Type": "application/json",
+        "Access-Control-Request-Headers": true,
       },
       body: {
         email: email,
         password: password,
         name: name,
       },
-    }
+    },
   );
   
   const resData = await response.json();

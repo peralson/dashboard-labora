@@ -56,8 +56,7 @@ const App = () => {
           <Route exact path={"/gestion/o/:id"} component={ManageOffer} />
           <Route exact path="/empresa" component={Company} />
         </PageGrid>
-        {/* Other routes */}
-        <Route exact path={'*'} component={NotFound} />
+        <Route component={NotFound} />
       </Switch>
     </BrowserRouter>
   );
