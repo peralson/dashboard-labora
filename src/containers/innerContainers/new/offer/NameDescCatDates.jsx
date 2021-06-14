@@ -5,7 +5,7 @@ import { Grid, Text } from "@chakra-ui/react";
 import { NewOfferContext } from "../../../../context/newCreations";
 
 // ENV & GMaps
-import { firebaseConfig, LIBRARIES } from "../../../../env";
+import { GMAPS_LIBRARIES } from "../../../../lib/Constants";
 import { useLoadScript } from "@react-google-maps/api";
 
 // Components
@@ -18,8 +18,8 @@ const NameDescCatDates = () => {
   const { state, dispatch } = useContext(NewOfferContext);
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: firebaseConfig.apiKey,
-    libraries: LIBRARIES,
+    googleMapsApiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    libraries: GMAPS_LIBRARIES,
   });
 
   return (

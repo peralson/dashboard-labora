@@ -2,6 +2,9 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
+// Context
+import { AuthProvider } from "../context/AuthContext"
+
 // Containers
 import Offers from '../containers/Offers';
 import Offer from "../containers/OneOffer";
@@ -18,46 +21,51 @@ import Company from '../containers/Company';
 import ManageOffer from '../containers/ManageOffer';
 import NotFound from '../containers/NotFound';
 import NewWorker from '../containers/NewWorker';
+import Login from "../containers/Login";
 
 // Components
-import PageGrid from '../components/main/PageGrid';
+import PrivateRoute from './PrivateRoute';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Switch>
-        {/* Logs into App */}
-        <Route exact path={"/registro/:id"} component={NewWorker} />
-        <PageGrid>
+      <AuthProvider>
+        <Switch>
+          {/* Logs into App */}
+          <Route exact path={"/login"} component={Login} />
+          <Route exact path={"/registro/:id"} component={NewWorker} /> 
+
           {/* Main Containers */}
-          <Route exact path={["/", "/ofertas"]} component={Offers} />
-          <Route exact path={"/ofertas/nueva-oferta"} component={NewOffer} />
-          <Route
+          <PrivateRoute exact path={["/", "/ofertas"]} component={Offers} />
+          <PrivateRoute exact path={"/ofertas/nueva-oferta"} component={NewOffer} />
+          <PrivateRoute
             exact
             path={"/ofertas/nuevo-proyecto"}
             component={NewProject}
           />
-          <Route exact path={"/ofertas/o/:id"} component={Offer} />
-          <Route exact path={"/ofertas/o/edit/:id"} component={EditOffer} />
-          <Route
+          <PrivateRoute exact path={"/ofertas/o/:id"} component={Offer} />
+          <PrivateRoute exact path={"/ofertas/o/edit/:id"} component={EditOffer} />
+          <PrivateRoute
             exact
             path={"/ofertas/o/edit-single/:id"}
             component={EditSingleOffer}
           />
-          <Route exact path={"/ofertas/p/:id"} component={Project} />
-          <Route exact path={"/ofertas/p/edit/:id"} component={EditProject} />
-          <Route
+          <PrivateRoute exact path={"/ofertas/p/:id"} component={Project} />
+          <PrivateRoute exact path={"/ofertas/p/edit/:id"} component={EditProject} />
+          <PrivateRoute
             exact
             path={"/ofertas/p/:id/nueva-oferta"}
             component={NewProjectOffer}
           />
-          <Route exact path={"/trabajadores"} component={Workers} />
-          <Route exact path={"/gestion"} component={Manage} />
-          <Route exact path={"/gestion/o/:id"} component={ManageOffer} />
-          <Route exact path="/empresa" component={Company} />
-        </PageGrid>
-        <Route component={NotFound} />
-      </Switch>
+          <PrivateRoute exact path={"/trabajadores"} component={Workers} />
+          <PrivateRoute exact path={"/gestion"} component={Manage} />
+          <PrivateRoute exact path={"/gestion/o/:id"} component={ManageOffer} />
+          <PrivateRoute exact path="/empresa" component={Company} />
+
+          {/* Other Routes */}
+          <Route component={NotFound} />
+        </Switch>
+      </AuthProvider>
     </BrowserRouter>
   );
 };

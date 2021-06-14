@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { editProject } from '../../store/actions/projects'
 
 // ENV & GMaps
-import { firebaseConfig, LIBRARIES } from "../../env";
+import { GMAPS_LIBRARIES } from "../../lib/Constants";
 import { useLoadScript } from "@react-google-maps/api";
 import usePlacesAutocomplete, {
   getLatLng,
@@ -150,8 +150,8 @@ const EditProject = ({ match, history, projects, editProject }) => {
   const project = projects.find((p) => p.id === id);
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: firebaseConfig.apiKey,
-    libraries: LIBRARIES,
+    googleMapsApiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    libraries: GMAPS_LIBRARIES,
   });
 
   const initialState = {

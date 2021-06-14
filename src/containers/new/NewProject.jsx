@@ -18,7 +18,7 @@ import {
 import plus from "../../assets/svg/plus.svg";
 
 // ENV & GMaps
-import { firebaseConfig, LIBRARIES } from "../../env";
+import { GMAPS_LIBRARIES } from "../../lib/Constants";
 import { useLoadScript } from "@react-google-maps/api";
 
 // Components
@@ -41,8 +41,8 @@ const NewProject = ({ history, createProject }) => {
   const { isValid } = validateForm(state);
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: firebaseConfig.apiKey,
-    libraries: LIBRARIES,
+    googleMapsApiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    libraries: GMAPS_LIBRARIES,
   });
 
   const handleCreateProject = async () => {
