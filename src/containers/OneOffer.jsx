@@ -57,7 +57,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
   const handleDeleteOffer = () => {
     setErrorDel(null);
     setLoadingDel(true);
-    if (isSingle) {
+    if (!isSingle) {
       deleteProjectOffer(project.id, offer.id)
         .then(() => history.push("../../"))
         .catch((e) => setErrorDel(true))

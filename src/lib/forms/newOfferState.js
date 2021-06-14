@@ -159,42 +159,22 @@ export const reducer = (state, action) => {
           ...state.projectData,
           dates: formattedDates,
         },
-      };
-
-    case "addDate":
-      return {
-        ...state,
         offerData: {
           ...state.offerData,
-          schedule: [
-            ...state.offerData.schedule,
-            {
-              day: action.payload,
-              shifts: [
-                {
-                  start: {
-                    _seconds: action.payload._seconds + HOUR_IN_SECONDS * 9,
-                  }, // 9 hours
-                  end: {
-                    _seconds: action.payload._seconds + HOUR_IN_SECONDS * 14.5,
-                  }, // 14:30 hours
-                },
-              ],
-            },
-          ],
-        },
-      };
-
-    case "removeDate":
-      const updatesDates = state.offerData.schedule.filter(
-        (sche) => sche.day !== action.payload,
-      );
-      return {
-        ...state,
-        offerData: {
-          ...state.offerData,
-          schedule: updatesDates,
-        },
+          schedule: formattedDates.map(date => ({
+            day: date,
+            shifts: [
+              {
+                start: {
+                  _seconds: date._seconds + HOUR_IN_SECONDS * 9,
+                }, // 9 hours
+                end: {
+                  _seconds: date._seconds + HOUR_IN_SECONDS * 14.5,
+                }, // 14:30 hours
+              },
+            ],
+          }))
+        } 
       };
 
     case "addShift":
