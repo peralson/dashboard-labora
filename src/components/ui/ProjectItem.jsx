@@ -28,8 +28,6 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
   const allApplications = getAllApplications(projectOffers)
   const { qty, alreadyAssigned } = countProjectQtyAndAssigned(projectOffers);
 
-  console.log(id, projectData, projectOffers);
-
   useEffect(() => {
     if (!!selectedItem) {
       projectOffers.forEach(offer => {

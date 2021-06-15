@@ -7,6 +7,9 @@ import { Image } from "@chakra-ui/image";
 import { SelectedProject } from '../context/SelectedItemContext'
 import { connect } from "react-redux";
 import { deleteProject } from "../store/actions/projects";
+import {
+  countProjectQtyAndAssigned
+} from '../lib/applications'
 
 // SVG
 import calendar from "../assets/svg/calendar.svg";
@@ -22,7 +25,6 @@ import SideBoxContainer from "../components/ui/SideBoxContainer";
 import BeCurious from "../components/ui/BeCurious";
 import TopHeaderBar from "../components/ui/TopHeaderBar";
 import SideSelectorProject from "../components/ui/SideSelectorProject";
-import TextInfo from "../components/ui/TextInfo";
 import Documentation from "../components/main/Documentation";
 import ProjectDatesSide from "../components/ui/ProjectDatesSide";
 import OfferSide from "../components/ui/OfferSide";
@@ -30,6 +32,7 @@ import ProjectOfferItem from "../components/ui/ProjectOfferItem";
 import AccentButton from "../components/ui/AccentButton";
 import DeleteButton from "../components/ui/DeleteButton";
 import ErrorMessage from "../components/ui/ErrorMessage";
+import Remaining from "../components/ui/Remaining";
 
 const OneProject = ({
   match,
@@ -46,6 +49,8 @@ const OneProject = ({
   const [selectedItemIndie, setSelectedItemIndie] = useState(null);
 
   if (!project) return <Box></Box>;
+
+  const { qty, alreadyAssigned } = countProjectQtyAndAssigned(project.projectOffers);
 
   const handleDeleteProject = () => {
     setErrorDel(null)
@@ -81,41 +86,48 @@ const OneProject = ({
               onClose={() => setErrorDel(null)}
             />
           )}
-          <Grid
-            columnGap={8}
-            width={"100%"}
-            templateColumns={"3fr 1fr"}
-            my={6}
-            mt={errorDel ? 4 : 6}
-          >
-            <Box>
-              <TextInfo title="Nombre" info={project.projectData.name} mb={4} />
-              <TextInfo
-                title="Dirección"
-                info={project.projectData.location.address}
-                mb={4}
-              />
-              <TextInfo
-                title="Descripción"
-                info={project.projectData.description}
-                minH={"120px"}
-              />
-            </Box>
-            <Box>
-              <SideSelectorProject
-                mb={4}
-                title={"Fechas"}
-                desc={"Días laborales del proyecto"}
-                image={calendar}
-              />
-            </Box>
+          <Flex mt={6} alignItems={"center"} justifyContent={"space-between"}> 
+            <Flex flexDirection={"column"} alignItems={"flex-start"} flex={1}>
+              <Flex>
+                <Text fontSize={21} fontWeight="bold" cursor={"pointer"}>
+                  {project.projectData.name}
+                </Text>
+              </Flex>
+              <Text fontSize={14} color="primary">
+                {project.projectData.location.address}
+              </Text>
+            </Flex>
+            <Remaining
+              alreadyassigned={alreadyAssigned}
+              qty={qty}
+              success={"Equipo completo"}
+              px={4}
+              py={2.5}
+              fontSize={16}
+              borderRadius={20}
+            />
+          </Flex>
+          <Text mt={8} fontWeight={"bold"}>
+            Sobre este proyecto
+          </Text>
+          {project.projectData.description && (
+            <Text mt={2} mb={4} color={"grey.dark"} fontStyle={"italic"}>
+              {project.projectData.description}
+            </Text>
+          )}
+          <Grid mt={2} templateColumns={"1fr 1fr 1fr"} w={"100%"} columnGap={4}>
+            <SideSelectorProject
+              title={"Fechas"}
+              desc={"Días laborales del proyecto"}
+              image={calendar}
+            />
           </Grid>
-          <Flex mb={4} alignItems={"center"}>
-            <Text flex={1} lineHeight={2} fontWeight={"bold"}>
+          <Flex mt={12} mb={4} alignItems={"center"}>
+            <Text flex={1} fontWeight={"bold"}>
               Ofertas de este proyecto
             </Text>
             <Link to={`./${id}/nueva-oferta/`}>
-              <AccentButton iconLeft={plusWhite} py={3.5}>
+              <AccentButton iconLeft={plusWhite} py={3}>
                 Añadir una oferta
               </AccentButton>
             </Link>

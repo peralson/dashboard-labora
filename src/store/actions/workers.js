@@ -43,11 +43,11 @@ export const newWorker = async ({ email, password, name }) => {
         "Content-Type": "application/json",
         "Access-Control-Request-Headers": true,
       },
-      body: {
+      body: JSON.stringify({
         email: email,
         password: password,
         name: name,
-      },
+      }),
     },
   );
   

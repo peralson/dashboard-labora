@@ -1,46 +1,40 @@
 import React, { useContext } from "react";
-import { Flex, Text } from "@chakra-ui/layout";
+import { Flex, Text, Box } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
 import { SelectedProject } from "../../context/SelectedItemContext";
 
-const SideSelectorProject = (props) => {
+const SideSelectorProject = ({ title, image, desc, ...rest }) => {
   const { selectedItemIndie, setSelectedItemIndie } =
     useContext(SelectedProject);
-  const isActive = selectedItemIndie === props.title;
+  const isActive = selectedItemIndie === title;
 
   return (
     <Flex
       _hover={{ borderColor: "white" }}
-      flexDirection={"column"}
-      py={4}
-      px={2}
+      py={3}
+      px={4}
       cursor={"pointer"}
       bg={"darkLight"}
       w={"100%"}
-      alignItems={"center"}
-      justifyContent={"center"}
       borderRadius={10}
       borderWidth={1}
       borderColor={isActive ? "white" : "translucid"}
       onClick={() => {
         isActive
           ? setSelectedItemIndie(null)
-          : setSelectedItemIndie(props.title);
+          : setSelectedItemIndie(title);
       }}
-      {...props}
+      {...rest}
     >
-      <Image src={props.image} w={"32px"} mb={4} />
-      <Text
-        textAlign={"center"}
-        fontSize={18}
-        lineHeight={1}
-        fontWeight={"bold"}
-      >
-        {props.title}
-      </Text>
-      <Text textAlign={"center"} fontSize={14} lineHeight={1.5} mt={1.5}>
-        {props.desc}
-      </Text>
+      <Image src={image} w={"21px"} mr={3} />
+      <Box>
+        <Text fontSize={14} fontWeight={"bold"}>
+          {title}
+        </Text>
+        {desc && <Text fontSize={12} mt={1}>
+          {desc}
+        </Text>}
+        </Box>
     </Flex>
   );
 };
