@@ -1,10 +1,10 @@
 import React from "react";
 import { Box, Text } from "@chakra-ui/layout";
 
-const TextInfo = (props) => (
+const TextInfo = ({ title, info, ...rest }) => (
   <Box>
     <Text mb={2} fontSize={14} fontWeight={"bold"}>
-      {props.title}
+      {title}
     </Text>
     <Text
       py={2}
@@ -12,9 +12,11 @@ const TextInfo = (props) => (
       borderRadius={10}
       borderWidth={2}
       borderColor={"darkLight"}
-      {...props}
+      textOverflow={"ellipsis"}
+      overflowWrap={"revert"}
+      {...rest}
     >
-      {props.info}
+      {info}
     </Text>
   </Box>
 );

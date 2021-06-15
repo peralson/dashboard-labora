@@ -32,10 +32,10 @@ const ProjectOfferItem = ({ offer }) => {
     >
       <Flex alignItems="center" width="100%">
         <Box width="100%" flex="1">
-          <Text fontSize={14} color="primary" lineHeight={1}>
+          <Text fontSize={14} color="primary">
             {offer.offerData.category.toUpperCase()}
           </Text>
-          <Text fontSize={16} mt={1} lineHeight={1}>
+          <Text fontSize={16} mt={1}>
             {offer.offerData.name}
           </Text>
         </Box>

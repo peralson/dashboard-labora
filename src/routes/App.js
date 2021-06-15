@@ -22,6 +22,7 @@ import ManageOffer from '../containers/ManageOffer';
 import NotFound from '../containers/NotFound';
 import NewWorker from '../containers/NewWorker';
 import Login from "../containers/Login";
+import ResetPassword from "../containers/ResetPassword";
 
 // Components
 import PrivateRoute from './PrivateRoute';
@@ -33,25 +34,38 @@ const App = () => {
         <Switch>
           {/* Logs into App */}
           <Route exact path={"/login"} component={Login} />
-          <Route exact path={"/registro/:id"} component={NewWorker} /> 
+          <Route exact path={"/reset-password"} component={ResetPassword} />
+          <Route exact path={"/registro/:id"} component={NewWorker} />
 
           {/* Main Containers */}
           <PrivateRoute exact path={["/", "/ofertas"]} component={Offers} />
-          <PrivateRoute exact path={"/ofertas/nueva-oferta"} component={NewOffer} />
+          <PrivateRoute
+            exact
+            path={"/ofertas/nueva-oferta"}
+            component={NewOffer}
+          />
           <PrivateRoute
             exact
             path={"/ofertas/nuevo-proyecto"}
             component={NewProject}
           />
           <PrivateRoute exact path={"/ofertas/o/:id"} component={Offer} />
-          <PrivateRoute exact path={"/ofertas/o/edit/:id"} component={EditOffer} />
+          <PrivateRoute
+            exact
+            path={"/ofertas/o/edit/:id"}
+            component={EditOffer}
+          />
           <PrivateRoute
             exact
             path={"/ofertas/o/edit-single/:id"}
             component={EditSingleOffer}
           />
           <PrivateRoute exact path={"/ofertas/p/:id"} component={Project} />
-          <PrivateRoute exact path={"/ofertas/p/edit/:id"} component={EditProject} />
+          <PrivateRoute
+            exact
+            path={"/ofertas/p/edit/:id"}
+            component={EditProject}
+          />
           <PrivateRoute
             exact
             path={"/ofertas/p/:id/nueva-oferta"}

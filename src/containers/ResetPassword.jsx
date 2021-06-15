@@ -16,21 +16,17 @@ import * as Yup from "yup";
 import CustomInput from "../components/new/CustomInput";
 import ErrorMessage from "../components/ui/ErrorMessage";
 
-const Login = ({ history }) => {
+const ResetPassword = ({ history }) => {
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
-  const { login } = useAuth();
+  const { resetPassword } = useAuth();
 
   const { values, submitForm, handleChange, errors, touched } = useFormik({
     initialValues: {
       email: "",
-      password: "",
     },
     validationSchema: Yup.object().shape({
-      password: Yup.string()
-        .min(6, "Demasiado corta, al menos 6 caracteres")
-        .max(50, "Demasiado largo!")
-        .required("Campo obligatorio"),
       email: Yup.string()
         .email("Correo invalido")
         .required("Campo obligatorio"),
@@ -38,10 +34,9 @@ const Login = ({ history }) => {
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        await login(values.email, values.password);
-        history.push("/");
+        await resetPassword(values.email);
+        setSuccess(true);
       } catch (error) {
-        console.log(error);
         setError(error.message);
       } finally {
         setLoading(false);
@@ -78,11 +73,24 @@ const Login = ({ history }) => {
             title={"Oh! Vaya... Ha ocurrido un error"}
             secondary={error}
             noMargin
-            onClose={() => setError(null)}
             mb={4}
+            onClose={() => setError(null)}
           />
         )}
-        <Box mb={3}>
+        {success && (
+          <Text
+            bg={"accentLight"}
+            color={"accent"}
+            py={2}
+            px={3}
+            borderRadius={10}
+            mb={4}
+          >
+            ¡Ya lo tienes! Te hemos enviado un correo con el que podrás cambiar
+            tu contraseña.
+          </Text>
+        )}
+        <Box mb={2}>
           <CustomInput
             mt={1}
             title={"Email"}
@@ -91,21 +99,6 @@ const Login = ({ history }) => {
             value={values.email}
           />
           {errors.email && touched.email && (
-            <Text pl={3} mt={1} color={"red.full"}>
-              {errors.email}
-            </Text>
-          )}
-        </Box>
-        <Box mb={4}>
-          <CustomInput
-            mt={1}
-            title={"Contraseña"}
-            type={"password"}
-            placeholder={"Contraseña"}
-            onChange={handleChange("password")}
-            value={values.password}
-          />
-          {errors.password && touched.password && (
             <Text pl={3} mt={1} color={"red.full"}>
               {errors.email}
             </Text>
@@ -122,7 +115,7 @@ const Login = ({ history }) => {
           py={2}
           onClick={submitForm}
         >
-          {loading ? "Accediendo..." : "Acceder"}
+          {loading ? "Cargando..." : "Enviar link"}
         </Flex>
         <Link
           mt={4}
@@ -130,21 +123,13 @@ const Login = ({ history }) => {
           w={"100%"}
           textAlign={"center"}
           color={"primary"}
-          onClick={() => history.push("/reset-password")}
+          onClick={() => history.push("/login")}
         >
-          Recuperar contraseña
+          Ir al login
         </Link>
       </Flex>
-      <Text
-        mt={3}
-        fontSize={14}
-        w={"100%"}
-        textAlign={"center"}
-      >
-        ¿Tienes alguna duda? <Link color={"primary"} ml={1} href="https://www.labora.app/">Ir a la web</Link>
-      </Text>
     </Flex>
   );
 };
 
-export default Login;
+export default ResetPassword;

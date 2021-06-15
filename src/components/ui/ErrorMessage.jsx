@@ -3,8 +3,15 @@ import { Flex, Box, Text, Image } from "@chakra-ui/react";
 
 import cancel from "../../assets/svg/cancel.svg";
 
-const ErrorMessage = ({ title, secondary, onClose, noMargin }) => (
-  <Box py={3} px={4} borderRadius={10} bg={"red.smooth"} mt={!noMargin && 4}>
+const ErrorMessage = ({ title, secondary, onClose, noMargin, ...rest }) => (
+  <Box
+    py={3}
+    px={4}
+    borderRadius={10}
+    bg={"red.smooth"}
+    mt={!noMargin && 4}
+    {...rest}
+  >
     <Flex w={"100%"} alignItems={"center"} justifyContent={"space-between"}>
       <Text fontWeight={"bold"} color={"red.full"} mr={4}>
         {title}
