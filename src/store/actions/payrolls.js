@@ -13,55 +13,17 @@ export const fetchPayrolls = () => {
       }
     );
 
-    // if (!response.ok && response.status === 404)
-    //   return dispatch({ type: FETCH_PAYROLLS, contracts: [] });
-    // if (!response.ok) throw new Error("Ha ocurrido un error.");
+    if (!response.ok && response.status === 404)
+      return dispatch({ type: FETCH_PAYROLLS, payrolls: [] });
+    if (!response.ok) throw new Error("Ha ocurrido un error.");
 
     const resData = await response.json();
 
-    console.log('redssss', resData);
-
     let payrolls = [];
 
-    // resData.body.forEach((payroll) => {
-    //   payrolls.push(payroll);
-    // });
-
-    console.log('payrolls', payrolls);
-
-    payrolls = [
-      {
-        id: 2,
-        offerData: {
-          id: 'zBY1vsum9qRBl7iNig3L',
-          category: 'Limpiador',
-          salary: 20,
-          extraSalary: 11,
-          extras: [
-            { name: 'Desplazamiento', amount: 10 },
-            { name: 'Cervezas', amount: 30 },
-          ],
-        },
-        eventData: {
-          name: 'Evento de Mercedes',
-          location: 'Madrid',
-          date: '12 jun',
-        },
-        companyData: {},
-        workerData: {
-          name: 'Pablo Peralta',
-          images: 'https://avatars.githubusercontent.com/u/43375266?v=4',
-          contact: {
-            email: 'peral@gmail.com',
-            phoneNumber: 485748545,
-          },
-        },
-        contractData: {
-          status: 'pending',
-          type: 'Temporal',
-        },
-      },
-    ];
+    resData.body.forEach((payroll) => {
+      payrolls.push(payroll);
+    });
 
     dispatch({
       type: FETCH_PAYROLLS,

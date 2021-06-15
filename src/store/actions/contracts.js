@@ -14,90 +14,17 @@ export const fetchAllContracts = () => {
       }
     );
 
-    // if (!response.ok && response.status === 404)
-    //   return dispatch({ type: FETCH_CONTRACTS, contracts: [] });
-    // if (!response.ok) throw new Error("Ha ocurrido un error.");
+    if (!response.ok && response.status === 404)
+      return dispatch({ type: FETCH_CONTRACTS, contracts: [] });
+    if (!response.ok) throw new Error("Ha ocurrido un error.");
 
     const resData = await response.json();
 
-    console.log('red', resData);
-
     let contracts = [];
 
-    // resData.body.forEach((contract) => {
-    //   contracts.push(contract);
-    // });
-
-    contracts = [
-      {
-        id: 1,
-        offerData: {
-          id: 'assdf',
-          category: 'Recolector',
-          salary: 20,
-          extraSalary: 11,
-          extras: [
-            { name: 'Desplazamiento', amount: 10 },
-            { name: 'Cervezas', amount: 30 },
-          ],
-        },
-        eventData: {
-          name: 'Recogida de peras',
-          location: 'Albacete',
-          date: '12 jun',
-        },
-        companyData: {},
-        workerData: {
-          name: 'Pablo Peralta',
-          images: 'https://avatars.githubusercontent.com/u/43375266?v=4',
-          contact: {
-            email: 'peral@gmail.com',
-            phoneNumber: 485748545,
-          },
-        },
-        contractData: {
-          status: 'pending',
-          type: 'Temporal',
-          salary: 20,
-          extraSalary: 11,
-          extras: [
-            { name: 'Desplazamiento', amount: 10 },
-            { name: 'Cervezas', amount: 30 },
-          ],
-        },
-      },
-      {
-        id: 2,
-        offerData: {
-          id: 'zBY1vsum9qRBl7iNig3L',
-          category: 'Limpiador',
-          salary: 20,
-          extraSalary: 11,
-          extras: [
-            { name: 'Desplazamiento', amount: 10 },
-            { name: 'Cervezas', amount: 30 },
-          ],
-        },
-        eventData: {
-          name: 'Evento de Mercedes',
-          location: 'Madrid',
-          date: '12 jun',
-        },
-        companyData: {},
-        workerData: {
-          name: 'Pablo Peralta',
-          images: 'https://avatars.githubusercontent.com/u/43375266?v=4',
-          contact: {
-            email: 'peral@gmail.com',
-            phoneNumber: 485748545,
-          },
-        },
-        contractData: {
-          status: 'pending',
-          type: 'Temporal',
-        },
-      },
-    ];
+    resData.body.forEach((contract) => {
+      contracts.push(contract);
+    });
 
     console.log('contracts', contracts);
     dispatch({

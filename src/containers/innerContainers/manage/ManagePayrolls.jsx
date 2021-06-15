@@ -8,7 +8,7 @@ import { fetchPayrolls } from '../../../store/actions/payrolls';
 import {
   SelectedItemManage,
   SelectedManageSide,
-} from "../../../context/SelectedItemContext";
+} from '../../../context/SelectedItemContext';
 
 const PayrollCard = ({ data }) => {
   const { selectedItemManage, setSelectedItemManage } =
@@ -39,7 +39,7 @@ const PayrollCard = ({ data }) => {
         }
       }}
     >
-       <Text flex={2} fontSize={12} mr={2}>
+      <Text flex={2} fontSize={12} mr={2}>
         {data.eventData.date}
       </Text>
       <Text flex={2} fontSize={12} mr={2}>
@@ -69,7 +69,7 @@ const ManagePayrolls = ({ search, payrolls, fetchPayrolls }) => {
   useEffect(() => {
     (async () => {
       if (payrolls.length === 0) {
-        setLoading(true)
+        setLoading(true);
       }
       setError(null);
       try {
@@ -83,27 +83,33 @@ const ManagePayrolls = ({ search, payrolls, fetchPayrolls }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const filteredPayrolls = payrolls && payrolls.filter(
-    (payroll) =>
-      payroll.offerData.category.toLowerCase().includes(search) ||
-      payroll.workerData.name.toLowerCase().includes(search) ||
-      payroll.eventData.name.toLowerCase().includes(search)
-  );
+  const filteredPayrolls =
+    payrolls &&
+    payrolls.filter(
+      (payroll) =>
+        payroll.offerData.category.toLowerCase().includes(search) ||
+        payroll.workerData.name.toLowerCase().includes(search) ||
+        payroll.eventData.name.toLowerCase().includes(search)
+    );
 
-  return (
-    loading ? (
-      <Text textAlign={"center"} py={10}>
-        Cargando...
-      </Text>
-    ) : error ? (
-      <Text textAlign={"center"} py={10}>
-        Ha ocurrido un error
-      </Text>
-    ) : (
-      <Flex w="100%" flexDirection="column">
-        {filteredPayrolls.map((payroll, index) => <PayrollCard key={index} data={payroll} />)}
-      </Flex>
-    )
+  return loading ? (
+    <Text textAlign={'center'} py={10}>
+      Cargando...
+    </Text>
+  ) : error ? (
+    <Text textAlign={'center'} py={10}>
+      Ha ocurrido un error
+    </Text>
+  ) : filteredPayrolls.length === 0 ? (
+    <Text textAlign={'center'} py={10}>
+      No hay ninguna nómina
+    </Text>
+  ) : (
+    <Flex w='100%' flexDirection='column'>
+      {filteredPayrolls.map((payroll, index) => (
+        <PayrollCard key={index} data={payroll} />
+      ))}
+    </Flex>
   );
 };
 
