@@ -42,6 +42,7 @@ export const inviteWorker = async ({ categories, tags, expiration }) => {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Request-Headers": true,
+        "Access-Control-Request-Method": "POST",
       },
       body: JSON.stringify({
         categories: categories,

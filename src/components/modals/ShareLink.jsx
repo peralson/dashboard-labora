@@ -21,6 +21,9 @@ import MultipleSelectList from '../ui/MultipleSelectList';
 import { Calendar } from 'react-multi-date-picker';
 import '../../assets/css/calendar.css';
 
+// Animation
+import gsap from 'gsap';
+
 // Icons
 import { MdContentCopy } from 'react-icons/md';
 
@@ -29,9 +32,9 @@ const ShareLink = ({ categories, tags }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [calendarValue, setCalendarValue] = useState();
   const [link, setLink] = useState();
-  const [copy, setCopy] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const tl = gsap.timeline();
 
   const handleCategories = (e) => {
     if (!selectedCategories.includes(e.target.name)) {
@@ -59,13 +62,14 @@ const ShareLink = ({ categories, tags }) => {
     if (calendarValue && selectedCategories.length > 0) {
       try {
         setLoading(true);
-        const id = await inviteWorker({
-          categories: selectedCategories,
-          tags: selectedTags,
-          expiration: new Date(
-            `${calendarValue.year} ${calendarValue.month.number} ${calendarValue.day}`
-          ).getTime(),
-        });
+        // const id = await inviteWorker({
+        //   categories: selectedCategories,
+        //   tags: selectedTags,
+        //   expiration: new Date(
+        //     `${calendarValue.year} ${calendarValue.month.number} ${calendarValue.day}`
+        //   ).getTime(),
+        // });
+        const id = 'a';
         setLink(`http://localhost:3000/registro/${id}`);
         setLoading(false);
       } catch (err) {
@@ -78,8 +82,29 @@ const ShareLink = ({ categories, tags }) => {
   };
 
   const handleClick = () => {
+    const element = document.getElementById('msg');
+    tl.to(element, {
+      opacity: 1,
+      duration: 1,
+    });
+    tl.to(
+      element,
+      {
+        top: '-50px',
+        duration: 2,
+      },
+      '-=1'
+    );
+    tl.to(element, {
+      opacity: 0,
+      duration: 1,
+    }, '-=1');
+    tl.to(element, {
+      top: '0',
+      duration: 0,
+    });
+    
     navigator.clipboard.writeText(link);
-    setCopy(true);
   };
 
   return (
@@ -157,14 +182,21 @@ const ShareLink = ({ categories, tags }) => {
               _focus={{ borderColor: 'none' }}
               onClick={handleClick}
             >
-              <Flex w='100%' justifyContent='center' alignContent='center'>
+              <Flex
+                w='100%'
+                justifyContent='center'
+                alignContent='center'
+                position='relative'
+              >
                 <Text w='100%' fontSize={12}>
                   {link}
                 </Text>
                 <MdContentCopy />
+                <Text position='absolute' id='msg' opacity={0} mt={2}>
+                  Enlace copiado!
+                </Text>
               </Flex>
             </Button>
-            {copy && <Text mt={2}>Enlace copiado!</Text>}
           </Box>
         )}
         <AlertDialog isOpen={isOpen}>
