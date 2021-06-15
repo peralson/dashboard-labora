@@ -174,7 +174,12 @@ const Workers = ({
             </Flex>
             <Popup
               title={'Invitar trabajadores'}
-              body={<ShareLink data={categories.map((e) => e.id)} />}
+              body={
+                <ShareLink
+                  categories={categories.map((e) => e.id)}
+                  tags={tags.map((e) => e.id)}
+                />
+              }
               show={shareModalOpen}
               handleShow={setShareModalOpen}
             >

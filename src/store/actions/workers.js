@@ -32,6 +32,30 @@ export const fetchWorkers = () => {
   };
 };
 
+export const inviteWorker = async ({ categories, tags, expiration }) => {
+  // const token = getState().auth.token
+  console.log('info enviada;', { categories, tags, expiration })
+  const response = await fetch(
+    "https://us-central1-partime-60670.cloudfunctions.net/listOfWorkers/invite/",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Request-Headers": true,
+      },
+      body: JSON.stringify({
+        categories: categories,
+        tags: tags,
+        expiration: expiration,
+      }),
+    },
+  );
+  
+  const resData = await response.json();
+
+  console.log('enalce obtenido:', resData)
+};
+
 export const newWorker = async ({ email, password, name }) => {
   // const token = getState().auth.token
 
