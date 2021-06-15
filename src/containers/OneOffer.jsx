@@ -24,7 +24,6 @@ import SideBoxContainer from '../components/ui/SideBoxContainer';
 import Documentation from '../components/main/Documentation';
 import SideSelectorOffer from '../components/ui/SideSelectorOffer';
 import OneOfferApplication from '../components/ui/OneOfferApplication';
-import TextInfo from '../components/ui/TextInfo';
 import ScheduleSide from '../components/ui/ScheduleSide';
 import LegalSide from '../components/ui/LegalSide';
 import TeamSide from "../components/ui/TeamSide";
@@ -33,6 +32,7 @@ import ApplicationSide from '../components/ui/ApplicationSide';
 import BeCurious from '../components/ui/BeCurious';
 import DeleteButton from '../components/ui/DeleteButton';
 import ErrorMessage from '../components/ui/ErrorMessage';
+import Remaining from '../components/ui/Remaining';
 
 const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject }) => {
   const { id } = match.params;
@@ -82,7 +82,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
               history.push(`/ofertas/o/edit${isSingle ? "-single" : ""}/${id}`)
             }
           >
-            Oferta
+            Oferta de {offer.offerData.category}
           </TopHeaderBar>
         </TopMain>
         <Box pb={10}>
@@ -94,7 +94,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
             />
           )}
           {project.projectData.name && (
-            <Flex mt={2} alignItems={"flex-end"} justifyContent={"flex-end"}>
+            <Flex mt={3} alignItems={"flex-end"} justifyContent={"flex-end"}>
               <Text fontSize={14} lineHeight={1.5}>
                 Esta oferta pertenece al proyecto:
               </Text>
@@ -111,85 +111,80 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
               </Link>
             </Flex>
           )}
-          <Grid columnGap={8} width={"100%"} templateColumns={"3fr 1fr"} my={4}>
-            <Box>
-              <Grid gap={4} width={"100%"} templateColumns={"1fr 1fr"} mb={4}>
-                <TextInfo title="Nombre" info={offer.offerData.name} />
-                <TextInfo title="Categoría" info={offer.offerData.category} />
-                <TextInfo
-                  title="Salario"
-                  info={formattedSalary(offer.offerData.salary) + "€"}
-                />
-                <TextInfo
-                  title="Horas extra"
-                  info={formattedSalary(offer.offerData.extraSalary) + "€"}
-                />
-                <TextInfo title="Cantidad" info={offer.offerData.qty} />
-              </Grid>
-              {!project.projectData.name && (
-                <TextInfo
-                  title="Dirección"
-                  info={project.projectData.location.address}
-                  mb={4}
-                />
-              )}
-              {offer.offerData.tags && offer.offerData.tags.length > 0 && (
-                <Box mb={4}>
-                  <Text mb={2} fontSize={14} fontWeight={"bold"} lineHeight={2}>
-                    Etiquetas
-                  </Text>
-                  <Flex>
-                    {offer.offerData.tags.map((tag, index) => (
-                      <Text
-                        key={index}
-                        ml={index !== 0 && 2}
-                        py={1}
-                        px={2}
-                        borderWidth={2}
-                        borderRadius={8}
-                        borderColor={"darkLight"}
-                        color={"primary"}
-                      >
-                        #{tag}
-                      </Text>
-                    ))}
-                  </Flex>
-                </Box>
-              )}
-              {offer.offerData.description && (
-                <TextInfo
-                  title="Requerimientos"
-                  info={offer.offerData.description}
-                  minH={"110px"}
-                />
-              )}
-            </Box>
-            <Box>
+          <Flex mt={4} alignItems={"center"} justifyContent={"space-between"}> 
+            <Flex flexDirection={"column"} alignItems={"flex-start"} flex={1}>
+              <Text fontSize={21} fontWeight="bold" cursor={"pointer"}>
+                {offer.offerData.name}
+              </Text>
+              <Text fontSize={14} color={"primary"}>
+                {project.projectData.location.address}
+              </Text>
+            </Flex>
+            <Remaining
+              alreadyassigned={offer.offerData.already_assigned}
+              qty={offer.offerData.qty}
+              success={"Equipo completo"}
+              px={4}
+              py={2.5}
+              fontSize={16}
+              borderRadius={20}
+            />
+          </Flex>
+          <Text mt={8} fontWeight={"bold"}>
+            Sobre esta oferta
+          </Text>
+          {offer.offerData.description && (
+            <Text mt={2} mb={3} color={"grey.dark"} fontStyle={"italic"}>
+              {offer.offerData.description}
+            </Text>
+          )}
+          <Grid mt={3} templateColumns={"1fr 1fr 1fr"} w={"100%"} columnGap={4}>
+            <SideSelectorOffer
+              title={"Legal"}
+              desc={"Contrato, nóminas..."}
+              image={legal}
+            />
+            <SideSelectorOffer
+              title={"Horario"}
+              desc={"Horas totales, turnos..."}
+              image={schedule}
+            />
+            {offer.offerData.already_assigned > 0 && (
               <SideSelectorOffer
-                mb={4}
-                title={"Legal"}
-                desc={"Contrato, nóminas..."}
-                image={legal}
+                title={"Equipo"}
+                desc={
+                  offer.offerData.already_assigned === 1
+                    ? `${offer.offerData.already_assigned} persona`
+                    : `${offer.offerData.already_assigned} personas`
+                }
+                image={team}
               />
-              <SideSelectorOffer
-                mb={3}
-                title={"Horario"}
-                desc={"Horas totales, turnos..."}
-                image={schedule}
-              />
-              {offer.offerData.already_assigned > 0 && (
-                <SideSelectorOffer
-                  title={"Equipo"}
-                  desc={
-                    offer.offerData.already_assigned === 1
-                      ? `${offer.offerData.already_assigned} persona`
-                      : `${offer.offerData.already_assigned} personas`
-                  }
-                  image={team}
-                />
-              )}
-            </Box>
+            )}
           </Grid>
+          {offer.offerData.tags && offer.offerData.tags.length > 0 && (
+            <Flex mt={6} alignItems={"center"}>
+              <Text fontWeight={"bold"}>
+                Etiquetas:
+              </Text>
+              <Flex alignItems={"center"}>
+                {offer.offerData.tags.map((tag, index) => (
+                  <Text
+                    key={index}
+                    ml={2}
+                    py={.5}
+                    px={2}
+                    fontSize={14}
+                    borderWidth={1}
+                    borderRadius={8}
+                    borderColor={"primaryLight"}
+                    color={"primary"}
+                  >
+                    {tag}
+                  </Text>
+                ))}
+              </Flex>
+            </Flex>
+          )}
           {offer.offerApplications.length > 0 && !isComplete && (
             <>
               <Text mb={2} fontWeight={"bold"} lineHeight={2}>

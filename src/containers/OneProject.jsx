@@ -111,11 +111,11 @@ const OneProject = ({
             Sobre este proyecto
           </Text>
           {project.projectData.description && (
-            <Text mt={2} mb={4} color={"grey.dark"} fontStyle={"italic"}>
+            <Text mt={2} mb={3} color={"grey.dark"} fontStyle={"italic"}>
               {project.projectData.description}
             </Text>
           )}
-          <Grid mt={2} templateColumns={"1fr 1fr 1fr"} w={"100%"} columnGap={4}>
+          <Grid mt={3} templateColumns={"1fr 1fr 1fr"} w={"100%"} columnGap={4}>
             <SideSelectorProject
               title={"Fechas"}
               desc={"Días laborales del proyecto"}
