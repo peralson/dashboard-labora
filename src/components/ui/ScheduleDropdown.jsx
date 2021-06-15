@@ -12,9 +12,9 @@ const ScheduleDropdown = ({ sche, index }) => {
 
   return (
     <Box
-      border={"2px solid"}
+      borderWidth={2}
       borderColor={"darkLight"}
-      mb={index !== 0 && 2}
+      mt={index !== 0 && 2}
       p={3}
       borderRadius={10}
     >

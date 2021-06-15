@@ -82,7 +82,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
               history.push(`/ofertas/o/edit${isSingle ? "-single" : ""}/${id}`)
             }
           >
-            Oferta de {offer.offerData.category}
+            Oferta
           </TopHeaderBar>
         </TopMain>
         <Box pb={10}>
@@ -111,7 +111,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
               </Link>
             </Flex>
           )}
-          <Flex mt={4} alignItems={"center"} justifyContent={"space-between"}> 
+          <Flex mt={4} alignItems={"center"} justifyContent={"space-between"}>
             <Flex flexDirection={"column"} alignItems={"flex-start"} flex={1}>
               <Text fontSize={21} fontWeight="bold" cursor={"pointer"}>
                 {offer.offerData.name}
@@ -131,7 +131,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
             />
           </Flex>
           <Text mt={8} fontWeight={"bold"}>
-            Sobre esta oferta
+            Sobre esta oferta de {offer.offerData.category}
           </Text>
           {offer.offerData.description && (
             <Text mt={2} mb={3} color={"grey.dark"} fontStyle={"italic"}>
@@ -163,15 +163,13 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
           </Grid>
           {offer.offerData.tags && offer.offerData.tags.length > 0 && (
             <Flex mt={6} alignItems={"center"}>
-              <Text fontWeight={"bold"}>
-                Etiquetas:
-              </Text>
+              <Text fontWeight={"bold"}>Etiquetas:</Text>
               <Flex alignItems={"center"}>
                 {offer.offerData.tags.map((tag, index) => (
                   <Text
                     key={index}
                     ml={2}
-                    py={.5}
+                    py={0.5}
                     px={2}
                     fontSize={14}
                     borderWidth={1}
