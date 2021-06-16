@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import { Box, Text, Grid, Flex } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
 
@@ -9,13 +8,9 @@ import {
 	SelectedManageSide,
 } from "../context/SelectedItemContext";
 import { connect } from "react-redux";
-import { countProjectQtyAndAssigned } from "../lib/applications";
 
 // SVG
-import calendar from "../assets/svg/calendar.svg";
-import plusWhite from "../assets/svg/plus-white.svg";
 import task from "../assets/svg/task-to-do.svg";
-// SVG
 import legal from "../assets/svg/legal.svg";
 import schedule from "../assets/svg/schedule.svg";
 import team from "../assets/svg/team.svg";
@@ -29,12 +24,8 @@ import SideBoxContainer from "../components/ui/SideBoxContainer";
 import BeCurious from "../components/ui/BeCurious";
 import TopHeaderBar from "../components/ui/TopHeaderBar";
 import Documentation from "../components/main/Documentation";
-import ProjectDatesSide from "../components/ui/ProjectDatesSide";
-import OfferSide from "../components/ui/OfferSide";
 import SideSelectorPastProject from "../components/ui/SideSelectorPastProject";
 import PastProjectOfferItem from "../components/ui/PastProjectOfferItem";
-import AccentButton from "../components/ui/AccentButton";
-import Remaining from "../components/ui/Remaining";
 
 const OnePastProject = ({ match, history, pastProjects }) => {
 	const { id } = match.params;

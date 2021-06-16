@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Box, Text, Flex } from "@chakra-ui/layout";
 
 import {
