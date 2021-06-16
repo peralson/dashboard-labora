@@ -17,7 +17,7 @@ const Popup = ({ body, title, children, show, handleShow }) => {
         closeOnOverlayClick={false}
         isOpen={show}
         onClose={() => handleShow(false)}
-        scrollBehavior={"inside"}
+        scrollBehavior={"outside"}
       >
         <ModalOverlay />
         <ModalContent bg="darkLight" p={4}>

@@ -68,7 +68,7 @@ const ManageContracts = ({ search, contracts, fetchAllContracts }) => {
   useEffect(() => {
     (async () => {
       if (contracts.length === 0) {
-        setLoading(true)
+        setLoading(true);
       }
       setError(null);
       try {
@@ -82,26 +82,32 @@ const ManageContracts = ({ search, contracts, fetchAllContracts }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const filteredContracts = contracts && contracts.filter(
-    (contract) =>
-      contract.offerData.category.toLowerCase().includes(search) ||
-      contract.workerData.name.toLowerCase().includes(search)
-  );
+  const filteredContracts =
+    contracts &&
+    contracts.filter(
+      (contract) =>
+        contract.offerData.category.toLowerCase().includes(search) ||
+        contract.workerData.name.toLowerCase().includes(search)
+    );
 
-  return (
-    loading ? (
-      <Text textAlign={"center"} py={10}>
-        Cargando...
-      </Text>
-    ) : error ? (
-      <Text textAlign={"center"} py={10}>
-        Ha ocurrido un error
-      </Text>
-    ) : (
-      <Flex w='100%' flexDirection='column'>
-        {filteredContracts.map((contract, index) => <ContractCard key={index} data={contract} />)}
-      </Flex>
-    )
+  return loading ? (
+    <Text textAlign={'center'} py={10}>
+      Cargando...
+    </Text>
+  ) : error ? (
+    <Text textAlign={'center'} py={10}>
+      Ha ocurrido un error
+    </Text>
+  ) : filteredContracts.length === 0 ? (
+    <Text textAlign={'center'} py={10}>
+      No hay ningún contrato
+    </Text>
+  ) : (
+    <Flex w='100%' flexDirection='column'>
+      {filteredContracts.map((contract, index) => (
+        <ContractCard key={index} data={contract} />
+      ))}
+    </Flex>
   );
 };
 
