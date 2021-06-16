@@ -69,7 +69,6 @@ const ShareLink = ({ categories, tags }) => {
             `${calendarValue.year} ${calendarValue.month.number} ${calendarValue.day}`
           ).getTime(),
         });
-        // const id = 'a';
         setLink(`http://localhost:3000/registro/${id}`);
         setLoading(false);
       } catch (err) {

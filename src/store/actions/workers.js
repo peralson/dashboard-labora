@@ -34,9 +34,8 @@ export const fetchWorkers = () => {
 
 export const inviteWorker = async ({ categories, tags, expiration }) => {
   // const token = getState().auth.token
-  console.log('info enviada;', { categories, tags, expiration })
   const response = await fetch(
-    "https://us-central1-partime-60670.cloudfunctions.net/listOfWorkers/invite/",
+    "https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/invite/",
     {
       method: "POST",
       headers: {
@@ -54,7 +53,7 @@ export const inviteWorker = async ({ categories, tags, expiration }) => {
   
   const resData = await response.json();
 
-  console.log('enalce obtenido:', resData)
+  return resData.body;
 };
 
 export const newWorker = async ({ email, password, name }) => {
