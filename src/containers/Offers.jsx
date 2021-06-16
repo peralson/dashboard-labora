@@ -92,47 +92,47 @@ const Offers = ({ projects, fetchProjects }) => {
         <TopMain>
           <Flex>
             <SearchBar
-              placeholder={'Busca por proyectos, ofertas o localización'}
+              placeholder={"Busca por proyectos, ofertas o localización"}
               onChange={(event) => setSearch(event.target.value)}
             />
             <Flex
               borderRadius={8}
-              _hover={{ cursor: 'pointer' }}
-              border={'1px solid'}
-              borderColor={'translucid'}
-              bg={(displayFilters || totalFilters > 0) && 'darkLight'}
+              _hover={{ cursor: "pointer" }}
+              border={"1px solid"}
+              borderColor={"translucid"}
+              bg={(displayFilters || totalFilters > 0) && "darkLight"}
               ml={2}
-              alignItems={'center'}
+              alignItems={"center"}
               px={4}
               onClick={() => setDisplayFilters(!displayFilters)}
             >
               <Text lineHeight={0} fontSize={14}>
                 {!displayFilters
-                  ? `Filtros${totalFilters > 0 ? ` (${totalFilters})` : ''}`
-                  : 'Cerrar filtros'}
+                  ? `Filtros${totalFilters > 0 ? ` (${totalFilters})` : ""}`
+                  : "Cerrar filtros"}
               </Text>
             </Flex>
             <Popup
               show={modalOpen}
-              title={'¿Qué quieres crear?'}
+              title={"¿Qué quieres crear?"}
               body={<ProjectOrOffer />}
               handleShow={setModalOpen}
             >
-              <AccentButton onClick={() => setModalOpen(true)} iconLeft={plus}>
+              <AccentButton onClick={() => setModalOpen(true)} iconleft={plus}>
                 Crear oferta
               </AccentButton>
             </Popup>
           </Flex>
           {displayFilters && (
-            <Flex mt={2} alignItems={'center'}>
+            <Flex mt={2} alignItems={"center"}>
               {categories.length !== 0 && (
                 <MultipleSelectList
                   title={`Categorías${
                     filterCategories.length > 0
                       ? ` (${filterCategories.length})`
-                      : ''
+                      : ""
                   }`}
-                  bg={filterCategories.length !== 0 && 'darkLight'}
+                  bg={filterCategories.length !== 0 && "darkLight"}
                   current={filterCategories}
                   values={categories}
                   onChange={handleCategories}
@@ -144,10 +144,10 @@ const Offers = ({ projects, fetchProjects }) => {
                     fontSize={14}
                     ml={2}
                     borderRadius={8}
-                    cursor={'pointer'}
-                    border={'1px solid'}
-                    borderColor={onlyOffers ? 'translucid' : 'darkLight'}
-                    bg={onlyOffers && 'darkLight'}
+                    cursor={"pointer"}
+                    border={"1px solid"}
+                    borderColor={onlyOffers ? "translucid" : "darkLight"}
+                    bg={onlyOffers && "darkLight"}
                     px={4}
                     py={2}
                     onClick={() => setOnlyOffers(!onlyOffers)}
@@ -157,16 +157,16 @@ const Offers = ({ projects, fetchProjects }) => {
                 </Flex>
               )}
               {totalFilters > 0 && (
-                <Flex flex={1} justifyContent={'flex-end'}>
+                <Flex flex={1} justifyContent={"flex-end"}>
                   <Text
-                    color={'red.full'}
+                    color={"red.full"}
                     fontSize={14}
                     ml={2}
                     borderRadius={8}
-                    _hover={{ bg: 'red.smooth' }}
-                    cursor={'pointer'}
-                    border={'1px solid'}
-                    borderColor={'translucid'}
+                    _hover={{ bg: "red.smooth" }}
+                    cursor={"pointer"}
+                    border={"1px solid"}
+                    borderColor={"translucid"}
                     px={4}
                     py={2}
                     onClick={() => {
@@ -183,11 +183,11 @@ const Offers = ({ projects, fetchProjects }) => {
           )}
         </TopMain>
         {loadingProjects ? (
-          <Text textAlign={'center'} py={10}>
+          <Text textAlign={"center"} py={10}>
             Cargando...
           </Text>
         ) : projectsError ? (
-          <Text textAlign={'center'}>Vaya! Ha ocurrido un error</Text>
+          <Text textAlign={"center"}>Vaya! Ha ocurrido un error</Text>
         ) : (
           <ProjectsContainer filteredProjects={filteredProjects} />
         )}
@@ -205,7 +205,7 @@ const Offers = ({ projects, fetchProjects }) => {
             {!selectedItem && (
               <BeCurious
                 text={
-                  'Prueba a seleccionar alguna solicitud o una oferta de algún proyecto'
+                  "Prueba a seleccionar alguna solicitud o una oferta de algún proyecto"
                 }
               />
             )}

@@ -1,10 +1,10 @@
 import React from "react";
-import { Box } from "@chakra-ui/layout";
+import { Grid } from "@chakra-ui/react";
 
 import WorkerListItem from "./WorkerListItem";
 
 const WorkersTable = ({ filteredWorkers, checkedItems, handleCheck }) => (
-  <Box pb={4}>
+  <Grid templateColumns={"1fr 1fr 1fr"} gap={4} w={"100%"} my={4}>
     {filteredWorkers.map((worker) => (
       <WorkerListItem
         key={worker.id}
@@ -13,7 +13,7 @@ const WorkersTable = ({ filteredWorkers, checkedItems, handleCheck }) => (
         handleCheck={() => handleCheck(worker)}
       />
     ))}
-  </Box>
+  </Grid>
 );
 
 export default WorkersTable;

@@ -86,13 +86,11 @@ const OneProject = ({
               onClose={() => setErrorDel(null)}
             />
           )}
-          <Flex mt={6} alignItems={"center"} justifyContent={"space-between"}> 
+          <Flex mt={6} alignItems={"center"} justifyContent={"space-between"}>
             <Flex flexDirection={"column"} alignItems={"flex-start"} flex={1}>
-              <Flex>
-                <Text fontSize={21} fontWeight="bold" cursor={"pointer"}>
-                  {project.projectData.name}
-                </Text>
-              </Flex>
+              <Text fontSize={21} fontWeight="bold">
+                {project.projectData.name}
+              </Text>
               <Text fontSize={14} color="primary">
                 {project.projectData.location.address}
               </Text>
@@ -111,7 +109,7 @@ const OneProject = ({
             Sobre este proyecto
           </Text>
           {project.projectData.description && (
-            <Text mt={2} mb={3} color={"grey.dark"} fontStyle={"italic"}>
+            <Text mt={2} mb={6} color={"grey.dark"} fontStyle={"italic"}>
               {project.projectData.description}
             </Text>
           )}

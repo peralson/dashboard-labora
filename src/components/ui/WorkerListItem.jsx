@@ -13,13 +13,13 @@ const WorkerListItem = ({ worker, handleCheck, checkedItems }) => {
   return (
     <Flex
       cursor={"pointer"}
-      borderRadius={8}
-      p={2}
-      pl={0}
-      mt={2}
+      borderRadius={20}
+      py={4}
+      px={2}
       bg={"darkLight"}
       alignItems={"center"}
-      border={"1px solid"}
+      flexDir={"column"}
+      borderWidth={2}
       borderColor={isSelected ? "white" : "translucid"}
       _hover={{ borderColor: "white" }}
       onClick={() => {
@@ -31,10 +31,10 @@ const WorkerListItem = ({ worker, handleCheck, checkedItems }) => {
     >
       <Flex flex={2} alignItems={"center"} justifyContent={"center"} mr={2}>
         <Box
-          w={"30px"}
-          h={"30px"}
+          w={"50px"}
+          h={"50px"}
           borderRadius={1000}
-          border={"2px solid"}
+          borderWidth={2}
           onClick={() => handleCheck(worker)}
           borderColor={checkedItems.includes(worker.id) ? "white" : "darkLight"}
           overflow={"hidden"}
@@ -54,53 +54,72 @@ const WorkerListItem = ({ worker, handleCheck, checkedItems }) => {
               h={"100%"}
               w={"100%"}
               image={worker.workerData.images.main}
+              bg={"red"}
             />
           )}
         </Box>
       </Flex>
-      <Text flex={7} fontSize={12} mr={2}>
+      <Text fontSize={14} fontWeight={"bold"} mt={2} mb={1}>
         {worker.workerData.name}
       </Text>
-      <Box flex={7} mr={2}>
-        {worker.categories.length > 0 && (
-          <Flex>
-            {worker.categories.map((category, index) => (
-              <Text
-                key={index}
-                ml={index !== 0 && 1}
-                color={"accent"}
-                bg={"dark"}
-                py={1}
-                px={2}
-                borderRadius={4}
-                fontSize={12}
-              >
-                {category}
-              </Text>
-            ))}
-          </Flex>
-        )}
-      </Box>
-      <Box flex={12}>
-        {worker.tags.length > 0 && (
-          <Flex>
-            {worker.tags.map((tag, index) => (
-              <Text
-                key={index}
-                ml={index !== 0 && 1}
-                color={"primary"}
-                bg={"dark"}
-                py={1}
-                px={2}
-                borderRadius={4}
-                fontSize={12}
-              >
-                {tag}
-              </Text>
-            ))}
-          </Flex>
-        )}
-      </Box>
+      {worker.categories.length > 0 && (
+        <Flex mt={1} flexWrap={"wrap"}>
+          {worker.categories.slice(0, 2).map((category, index) => (
+            <Text
+              key={index}
+              mt={1}
+              ml={index !== 0 && 1}
+              color={"accent"}
+              bg={"dark"}
+              py={1}
+              px={2}
+              borderRadius={4}
+              fontSize={11}
+            >
+              {category}
+            </Text>
+          ))}
+          {worker.categories.length > 2 && (
+            <Text
+              mt={1}
+              ml={1}
+              color={"accent"}
+              bg={"dark"}
+              py={1}
+              px={2}
+              borderRadius={4}
+              fontSize={11}
+            >
+              ...
+            </Text>
+          )}
+        </Flex>
+      )}
+      {worker.tags.length > 0 && (
+        <Flex mt={2} flexWrap={"wrap"}>
+          {worker.tags.slice(0, 3).map((tag, index) => (
+            <Text
+            mt={1}
+              key={index}
+              ml={index !== 0 && 2}
+              color={"primary"}
+              fontSize={12}
+            >
+              #{tag}
+            </Text>
+          ))}
+          {worker.tags.length > 2 && (
+            <Text
+              mt={1}
+              ml={2}
+              color={"primary"}
+              fontSize={12}
+            >
+              ...
+            </Text>
+          )}
+        </Flex>
+      )}
     </Flex>
   );
 };
