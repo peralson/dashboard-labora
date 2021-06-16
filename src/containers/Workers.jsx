@@ -29,7 +29,6 @@ import AccentButton from '../components/ui/AccentButton';
 import Documentation from '../components/main/Documentation';
 import Popup from '../components/ui/Popup';
 import ShareLink from '../components/modals/ShareLink';
-import EditWorkerLists from '../components/modals/EditWorkerLists';
 
 const Workers = ({
   fetchWorkers,
@@ -45,8 +44,6 @@ const Workers = ({
 
   const [workersError, setWorkersError] = useState(null);
   const [workersLoading, setWorkersLoading] = useState(false);
-  const [tagModalOpen, setTagModalOpen] = useState(false);
-  const [catModalOpen, setCatModalOpen] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
 
   useEffect(() => {
@@ -235,70 +232,13 @@ const Workers = ({
               )}
             </Flex>
           )}
-          {checkedItems.length > 0 && (
-            <Flex mt={2} alignItems={'center'}>
-              <Popup
-                title={'Editar Etiquetas'}
-                body={
-                  <EditWorkerLists
-                    data={tags.map((e) => e.id)}
-                    workers={checkedItems}
-                    type='tag'
-                    handleShow={setTagModalOpen}
-                  />
-                }
-                show={tagModalOpen}
-                handleShow={setTagModalOpen}
-              >
-                <Flex
-                  _hover={{ cursor: 'pointer' }}
-                  bg={'accent'}
-                  borderRadius={8}
-                  fontWeight='bold'
-                  fontSize={14}
-                  mr={2}
-                  alignItems={'center'}
-                  px={4}
-                  py={2}
-                  onClick={() => setTagModalOpen(true)}
-                >
-                  Editar Etiquetas
-                </Flex>
-              </Popup>
-              <Popup
-                title={'Editar categorias'}
-                body={
-                  <EditWorkerLists
-                    data={categories.map((e) => e.id)}
-                    workers={checkedItems}
-                    type='categories'
-                    handleShow={setCatModalOpen}
-                  />
-                }
-                show={catModalOpen}
-                handleShow={setCatModalOpen}
-              >
-                <Flex
-                  _hover={{ cursor: 'pointer' }}
-                  bg={'accent'}
-                  borderRadius={8}
-                  fontWeight='bold'
-                  fontSize={14}
-                  mr={2}
-                  alignItems={'center'}
-                  px={4}
-                  py={2}
-                  onClick={() => setCatModalOpen(true)}
-                >
-                  Editar Categorías
-                </Flex>
-              </Popup>
-            </Flex>
-          )}
           <WorkersTableGuide
             isChecked={allChecked}
             isIndeterminate={isIndeterminate}
             handleGlobalCheck={handleGlobalCheck}
+            checkedItems={checkedItems}
+            tags={tags}
+            categories={categories}
           />
         </TopMain>
         {workersLoading ? (

@@ -1,23 +1,13 @@
 import React, { useState } from 'react';
-import { Flex, Text, Box } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/react';
-import MultipleSelectList from '../ui/MultipleSelectList';
+import { Flex, Text, Box, Grid, Checkbox } from "@chakra-ui/react";
 
 // Redux & Actions
 import { connect } from 'react-redux';
 import { editTags } from '../../store/actions/tags';
 import { editCategories } from '../../store/actions/categories';
 
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-} from '@chakra-ui/react';
-
-import { Checkbox } from '@chakra-ui/react';
+// Components
+import ErrorMessage from '../ui/ErrorMessage'
 
 const EditWorkerLists = ({
   data,
@@ -27,15 +17,12 @@ const EditWorkerLists = ({
   editTags,
   editCategories,
 }) => {
-  const title = type === 'tag' ? 'Etiquetas' : 'Categorías';
+  const title = type === "tag" ? "Etiquetas" : "Categorías";
   const [selectedItems, setSelectedItems] = useState([]);
-  const [option, setOption] = useState('');
-  // const [error, setError] = useState(null);
+  const [option, setOption] = useState("Añadir");
   const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  // const onClose = () => setIsOpen(false);
-
-  console.log(loading);
+  const [error, setError] = useState(null);
+  const isValid = option && selectedItems.length > 0
 
   const handleItems = (event) => {
     if (!selectedItems.includes(event.target.name)) {
@@ -45,122 +32,117 @@ const EditWorkerLists = ({
     }
   };
 
-  const handleOption = (e) => {
-    setOption(e.target.name);
-  };
-
   const handleSubmit = async () => {
-    const userList = workers.map((e) => e.id);
-    // setError(null);
-    if (option && selectedItems.length > 0) {
-      const action = option === 'Añadir' ? 'update' : 'remove';
+    if (isValid) {
+      setError(null)
       setLoading(true);
-      if (type === 'tag') {
-        await editTags(action, userList, selectedItems);
-      } else {
-        await editCategories(action, userList, selectedItems);
+      const userList = workers.map((e) => e.id);
+      const action = option === 'Añadir' ? 'update' : 'remove';
+      const dispatch = type === 'tag' ? editTags : editCategories;
+
+      try {
+        await dispatch(action, userList, selectedItems);
+        handleShow(false);
+      } catch (error) {
+        setError(true)
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-      handleShow(false);
-    } else {
-      setIsOpen(true);
     }
   };
 
   return (
     <Box>
-      <Text mb='10px'>
-        Editar {title.toLowerCase()} de los trabajadores seleccionados
+      {error && (
+        <ErrorMessage
+          title={"Ha ocurrido un error"}
+          onClose={() => setError(null)}
+          noMargin
+          mb={4}
+        />
+      )}
+      <Text fontSize={12} color={"primary"}>
+        TRABAJADORES A EDITAR
       </Text>
-      <Flex w='100%' direction='row'>
-        <Flex
-          flex={1}
-          direction='column'
-          bg='translucid'
-          mr={2}
-          p={2}
-          borderRadius={10}
+      {workers.length === 1 && (
+        <Text fontSize={14}>
+          {workers[0].workerData.name}
+        </Text>
+      )}
+      {workers.length === 2 && (
+        <Text fontSize={14}>
+          {workers[0].workerData.name} y {workers[1].workerData.name}
+        </Text>
+      )}
+      {workers.length > 2 && (
+        <Text fontSize={14}>
+          {workers[0].workerData.name}, {workers[1].workerData.name} y {workers.length - 2} más
+        </Text>
+      )}
+      <Grid my={4} templateColumns={"1fr 1fr"} gap={2}>
+        <Text
+          textAlign={"center"}
+          _hover={{ borderColor: 'white' }}
+          cursor={'pointer'}
+          borderRadius={8}
+          fontWeight={"bold"}
+          borderWidth={2}
+          fontSize={14}
+          borderColor={option === "Añadir" ? "white" : "translucid"}
+          px={3}
+          py={2}
+          onClick={() => setOption("Añadir")}
         >
-          {workers.map((worker) => (
-            <Text key={worker.id}>{worker.workerData.name}</Text>
-          ))}
-        </Flex>
-        <Flex flex={1} w='100%' direction='column'>
-          <MultipleSelectList
-            title={option ? option : 'Acción'}
-            bg={'darkLight'}
-            borderColor={'translucid'}
-            current={option}
-            values={['Añadir', 'Eliminar']}
-            onChange={handleOption}
-          />
-          <Flex direction='column' m={2}>
-            {data.map((e) => (
-              <Flex key={e}>
-                <Checkbox name={e} onChange={handleItems} />
-                <Text ml={2} flex={1} fontSize={14}>
-                  {e}
-                </Text>
-              </Flex>
-            ))}
+          Añadir
+        </Text>
+        <Text
+          textAlign={"center"}
+          _hover={{ borderColor: 'white' }}
+          cursor={'pointer'}
+          borderRadius={8}
+          fontWeight={"bold"}
+          borderWidth={2}
+          fontSize={14}
+          borderColor={option === "Eliminar" ? "white" : "translucid"}
+          px={3}
+          py={2}
+          onClick={() => setOption("Eliminar")}
+        >
+          Eliminar
+        </Text>
+      </Grid>
+      <Text fontWeight={"bold"} mb={3}>
+        Selecciona {title}
+      </Text>
+      <Grid templateColumns={"1fr 1fr"} gap={2}>
+        {data.map((item, index) => (
+          <Flex key={index}>
+            <Checkbox name={item} onChange={handleItems} />
+            <Text ml={2} flex={1}>
+              {item}
+            </Text>
           </Flex>
-        </Flex>
-      </Flex>
-      <Flex mt={4} justifyContent={'flex-end'}>
+        ))}
+      </Grid>
+      <Flex mt={4} justifyContent={"flex-end"}>
         <Flex
-          _hover={{ cursor: 'pointer' }}
-          bg={'accent'}
+          _hover={{ cursor: isValid && "pointer" }}
+          bg={"accent"}
           borderRadius={8}
-          fontWeight='bold'
+          fontWeight={"bold"}
           fontSize={14}
-          mr={2}
-          alignItems={'center'}
+          alignItems={"center"}
           px={4}
           py={2}
-          onClick={handleSubmit}
+          opacity={!isValid && 0.6}
+          onClick={isValid && handleSubmit}
         >
-          Aceptar
-        </Flex>
-        <Flex
-          _hover={{ cursor: 'pointer' }}
-          bg={'red'}
-          borderRadius={8}
-          fontWeight='bold'
-          fontSize={14}
-          mr={2}
-          alignItems={'center'}
-          px={4}
-          py={2}
-          onClick={() => handleShow(false)}
-        >
-          Cancelar
+          {loading
+            ? `Editando ${title.toLowerCase()}...`
+            : `Editar ${title.toLowerCase()}`
+          }
         </Flex>
       </Flex>
-      <AlertDialog isOpen={isOpen}>
-        <AlertDialogOverlay>
-          <AlertDialogContent bg='darkLight'>
-            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-              Error
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              <Flex flexDirection='column'>
-                <Text>{!option && 'Debes seleccionar una acción'}</Text>
-                <Text>
-                  {selectedItems.length <= 0 &&
-                    'Debes seleccionar uno o varios elementos'}
-                </Text>
-              </Flex>
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button bg='translucid' onClick={() => setIsOpen(false)}>
-                Aceptar
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
     </Box>
   );
 };
@@ -169,6 +151,5 @@ const mapDispatchToProps = {
   editTags,
   editCategories,
 };
-const mapStateToProps = (state) => {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditWorkerLists);
+export default connect(null, mapDispatchToProps)(EditWorkerLists);

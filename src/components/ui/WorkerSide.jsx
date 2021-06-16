@@ -39,7 +39,7 @@ const WorkerSide = ({ data }) => {
                   <Text
                     key={category}
                     fontSize={12}
-                    color={"primary"}
+                    color={"accent"}
                     ml={index !== 0 && 1}
                   >
                     {category.toUpperCase()}

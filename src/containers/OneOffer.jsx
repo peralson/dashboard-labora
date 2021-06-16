@@ -113,7 +113,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
           )}
           <Flex mt={4} alignItems={"center"} justifyContent={"space-between"}>
             <Flex flexDirection={"column"} alignItems={"flex-start"} flex={1}>
-              <Text fontSize={21} fontWeight="bold" cursor={"pointer"}>
+              <Text fontSize={21} fontWeight="bold">
                 {offer.offerData.name}
               </Text>
               <Text fontSize={14} color={"primary"}>
@@ -134,11 +134,11 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
             Sobre esta oferta de {offer.offerData.category}
           </Text>
           {offer.offerData.description && (
-            <Text mt={2} mb={3} color={"grey.dark"} fontStyle={"italic"}>
+            <Text mt={2} mb={6} color={"grey.dark"} fontStyle={"italic"}>
               {offer.offerData.description}
             </Text>
           )}
-          <Grid mt={3} templateColumns={"1fr 1fr 1fr"} w={"100%"} columnGap={4}>
+          <Grid mt={3} templateColumns={"1fr 1fr 1fr"} w={"100%"} gap={4}>
             <SideSelectorOffer
               title={"Legal"}
               desc={"Contrato, nóminas..."}
@@ -184,8 +184,8 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
             </Flex>
           )}
           {offer.offerApplications.length > 0 && !isComplete && (
-            <>
-              <Text mb={2} fontWeight={"bold"} lineHeight={2}>
+            <Box mt={8}>
+              <Text mb={3} fontWeight={"bold"}>
                 Solicitudes de esta oferta
               </Text>
               <Grid w={"100%"} templateColumns={"1fr 1fr 1fr"} gap={4}>
@@ -196,7 +196,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
                   />
                 ))}
               </Grid>
-            </>
+            </Box>
           )}
         </Box>
         <Flex w={"100%"} my={10}>

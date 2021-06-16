@@ -110,11 +110,13 @@ export default (state = initialState, action) => {
         (app) => app.id !== action.applicationId,
       );
       if (action.action === "accept") {
-        appProject.projectData.jobs += 1;
-        appOffer.offerData.already_assigned += 1;
+        appProject.projectData.jobs = appProject.projectData.jobs + 1;
+        appOffer.offerData.already_assigned =
+          appOffer.offerData.already_assigned + 1;
       }
-      appOffer.offerData.number_applies -= 1;
+      appOffer.offerData.number_applies = appOffer.offerData.number_applies - 1;
       newOfferApplications.offerApplications = newOfferApplications;
+      appOffer.offerApplications = newOfferApplications;
       return { ...state };
 
     default:
