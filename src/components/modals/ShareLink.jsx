@@ -62,14 +62,14 @@ const ShareLink = ({ categories, tags }) => {
     if (calendarValue && selectedCategories.length > 0) {
       try {
         setLoading(true);
-        // const id = await inviteWorker({
-        //   categories: selectedCategories,
-        //   tags: selectedTags,
-        //   expiration: new Date(
-        //     `${calendarValue.year} ${calendarValue.month.number} ${calendarValue.day}`
-        //   ).getTime(),
-        // });
-        const id = 'a';
+        const id = await inviteWorker({
+          categories: selectedCategories,
+          tags: selectedTags,
+          expiration: new Date(
+            `${calendarValue.year} ${calendarValue.month.number} ${calendarValue.day}`
+          ).getTime(),
+        });
+        // const id = 'a';
         setLink(`http://localhost:3000/registro/${id}`);
         setLoading(false);
       } catch (err) {
