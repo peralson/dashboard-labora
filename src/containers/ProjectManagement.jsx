@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Flex, Text, Image } from "@chakra-ui/react";
 
 // Assets
@@ -6,39 +6,24 @@ import Logo from "../assets/img/Logo.png";
 
 // Components
 import TopMain from "../components/main/TopMain";
+import useManagement from "../hooks/useManagement";
 
-const ProjectManagement = ({ match, history }) => {
+const ProjectManagement = ({ match }) => {
   const { id } = match.params;
-
-  const [projectData, setProjectData] = useState({});
+  
+  const [projectData, setProjectData] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(
-      `https://us-central1-partime-60670.cloudfunctions.net/api/job/checkStatus/${id}`,
-      { headers: { "Content-Type": "application/json" } },
-    )
-      .then((blob) => blob.json())
-      .then((data) => {
-        if (data.error) {
-          setError(data);
-        } else {
-          setProjectData(data.body);
-        }
-      })
-      .catch((e) => setError(e))
-      .finally(() => setLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  console.log(projectData);
+  useManagement(id)
+    .then(data => setProjectData(data))
+    .catch(e => setError(e.message))
+    .finally(() => setLoading(false))
 
   return (
     <>
       <TopMain pb={4}>
-        <Flex justifyContent={"space-between"} alignItems={"center"} px={4}>
+        <Flex maxW={"800px"} justifyContent={"space-between"} alignItems={"center"} mx={"auto"} px={4}>
           <Image src={Logo} alt="Logo de Labora" w="120px" />
           <Text
             bg={"accent"}
@@ -48,7 +33,7 @@ const ProjectManagement = ({ match, history }) => {
             fontSize={14}
             borderRadius={8}
             cursor={"pointer"}
-            onClick={() => history.push(0)}
+            onClick={() => window.location.reload()}
           >
             Recargar
           </Text>
@@ -58,13 +43,9 @@ const ProjectManagement = ({ match, history }) => {
         <Text fontWeight={"bold"} fontSize={24}>
           Gestión laboral
         </Text>
-        {loading ? (
-          <Text>Cargando proyecto...</Text>
-        ) : error ? (
-          <Text>Ha ocurrido un error</Text>
-        ) : (
-          <Flex>Todo correcto</Flex>
-        )}
+        {loading && <Text>Cargando proyecto...</Text>}
+        {error && <Text>Ha ocurrido un error: {error}</Text>}
+        {!loading && !error && <Flex>{projectData.id}</Flex>}
       </Box>
     </>
   );
