@@ -13,20 +13,21 @@ export const EDIT_PROJECT = 'EDIT_PROJECT';
 
 export const fetchProjects = () => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token
+    const token = getState().auth.idToken;
 
     const response = await fetch(
-      'https://us-central1-partime-60670.cloudfunctions.net/api/event/fullEvents',
+      "https://us-central1-partime-60670.cloudfunctions.net/api/event/fullEvents",
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
-      }
+      },
     );
 
     if (!response.ok && response.status === 404)
       return dispatch({ type: FETCH_PROJECTS, projects: [] });
-    if (!response.ok) throw new Error('Ha ocurrido un error.');
+    if (!response.ok) throw new Error("Ha ocurrido un error.");
 
     let projects = [];
     const resData = await response.json();
@@ -46,20 +47,21 @@ export const fetchProjects = () => {
 
 export const fetchPastProjects = () => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token
+    const token = getState().auth.idToken;
 
     const response = await fetch(
-      'https://us-central1-partime-60670.cloudfunctions.net/api/event/fullEventsHistory',
+      "https://us-central1-partime-60670.cloudfunctions.net/api/event/fullEventsHistory",
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
-      }
+      },
     );
 
     if (!response.ok && response.status === 404)
       return dispatch({ type: FETCH_PAST_PROJECTS, pastProjects: [] });
-    if (!response.ok) throw new Error('Ha ocurrido un error.');
+    if (!response.ok) throw new Error("Ha ocurrido un error.");
 
     let pastProjects = [];
     const resData = await response.json();
@@ -77,20 +79,17 @@ export const fetchPastProjects = () => {
 
 export const createProject = (newProject) => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token;
-    // const companyId = getState().auth.id;
+    const token = getState().auth.idToken;
 
-    const sortedDates = newProject.dates.sort(
-      (a, b) => a > b ? 1 : -1
-    )
+    const sortedDates = newProject.dates.sort((a, b) => (a > b ? 1 : -1));
 
     const response = await fetch(
-      'https://us-central1-partime-60670.cloudfunctions.net/api/event/',
+      "https://us-central1-partime-60670.cloudfunctions.net/api/event/",
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          // Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           name: newProject.name,
@@ -102,10 +101,10 @@ export const createProject = (newProject) => {
           },
           description: newProject.description,
         }),
-      }
+      },
     );
 
-    if (!response.ok) throw new Error('Ha habido un error en la conexión');
+    if (!response.ok) throw new Error("Ha habido un error en la conexión");
 
     const resData = await response.json();
     const id = resData.body;
@@ -117,7 +116,7 @@ export const createProject = (newProject) => {
         projectData: {
           ...newProject,
           dates: sortedDates.map((date) => ({ _seconds: date / 1000 })),
-          id_company: '2T3NK8AYAphTK3LWTleV9aH8C6G3',
+          id_company: "2T3NK8AYAphTK3LWTleV9aH8C6G3",
           id: id,
           jobs: 0,
         },
@@ -131,25 +130,24 @@ export const createProject = (newProject) => {
 
 export const deleteProject = (projectId) => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token;
-    // const companyId = getState().auth.id;
+    const token = getState().auth.idToken;
 
     const response = await fetch(
       `https://us-central1-partime-60670.cloudfunctions.net/api/event/${projectId}`,
       {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
-          // Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
-      }
+      },
     );
 
     if (!response.ok && response.status !== 404) {
-      console.log('ERROR');
+      console.log("ERROR");
       const resData = await response.json();
       console.error(resData);
-      throw new Error('Ha habido un problema...');
+      throw new Error("Ha habido un problema...");
     }
 
     dispatch({
@@ -161,15 +159,15 @@ export const deleteProject = (projectId) => {
 
 export const createProjectOffer = (projectId, offerData) => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token
+    const token = getState().auth.idToken;
 
     const response = await fetch(
-      'https://us-central1-partime-60670.cloudfunctions.net/api/offer/',
+      "https://us-central1-partime-60670.cloudfunctions.net/api/offer/",
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          // Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           id_event: projectId,
@@ -186,20 +184,18 @@ export const createProjectOffer = (projectId, offerData) => {
           tags: offerData.tags,
           extras: offerData.extras,
         }),
-      }
+      },
     );
 
     if (!response.ok) {
-      console.log('ERROR');
+      console.log("ERROR");
       const resData = await response.json();
       console.error(resData);
-      throw new Error('Ha habido un problema...');
+      throw new Error("Ha habido un problema...");
     }
 
     const resData = await response.json();
     const offerId = resData.body;
-
-    console.log(resData);
 
     dispatch({
       type: CREATE_PROJECT_OFFER,
@@ -230,17 +226,17 @@ export const createProjectOffer = (projectId, offerData) => {
 
 export const deleteProjectOffer = (projectId, offerId) => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token;
+    const token = getState().auth.idToken;
 
     const response = await fetch(
       `https://us-central1-partime-60670.cloudfunctions.net/api/offer/${offerId}`,
       {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
-          // Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
-      }
+      },
     );
 
     if (!response.ok) {
@@ -260,23 +256,23 @@ export const deleteProjectOffer = (projectId, offerId) => {
 
 export const createOfferSingle = ({ offerData, projectData }) => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token
+    const token = getState().auth.idToken;
 
-    const sortedDates = 
-      formattedDates(projectData.dates)
-      .sort((a, b) => a > b ? 1 : -1)
+    const sortedDates = formattedDates(projectData.dates).sort((a, b) =>
+      a > b ? 1 : -1,
+    );
 
-    const sortedSchedule = 
-      formattedSchedule(offerData.schedule)
-      .sort((a, b) => a.day > b.day ? 1 : -1)
+    const sortedSchedule = formattedSchedule(offerData.schedule).sort((a, b) =>
+      a.day > b.day ? 1 : -1,
+    );
 
     const response = await fetch(
-      'https://us-central1-partime-60670.cloudfunctions.net/api/offer/',
+      "https://us-central1-partime-60670.cloudfunctions.net/api/offer/",
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          // Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           name: offerData.name,
@@ -298,14 +294,14 @@ export const createOfferSingle = ({ offerData, projectData }) => {
             dates: sortedDates,
           },
         }),
-      }
+      },
     );
 
     if (!response.ok) {
-      console.log('ERROR');
+      console.log("ERROR");
       const resData = await response.json();
       console.error(resData);
-      throw new Error('Ha habido un problema...');
+      throw new Error("Ha habido un problema...");
     }
 
     const resData = await response.json();
@@ -320,6 +316,8 @@ export const createOfferSingle = ({ offerData, projectData }) => {
 
 export const editOffer = ({ offerData, projectData }) => {
   return async (dispatch, getState) => {
+    const token = getState().auth.idToken;
+
     const currentProject = getState().projects.allProjects.find(
       (p) => p.id === projectData.id,
     );
@@ -339,7 +337,7 @@ export const editOffer = ({ offerData, projectData }) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           id: offerData.id,
@@ -371,7 +369,7 @@ export const editOffer = ({ offerData, projectData }) => {
 
 export const editProject = (id, state, dates) => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token
+    const token = getState().auth.idToken;
 
     const response = await fetch(
       "https://us-central1-partime-60670.cloudfunctions.net/api/event",
@@ -379,23 +377,22 @@ export const editProject = (id, state, dates) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           id: id,
           name: state.name,
           description: state.description,
           location: state.location,
-          // dates: dates,
         }),
       },
     );
 
     if (!response.ok) {
-      console.log('ERROR');
+      console.log("ERROR");
       const resData = await response.json();
       console.error(resData);
-      throw new Error('Ha habido un problema...');
+      throw new Error("Ha habido un problema...");
     }
 
     dispatch({
@@ -406,13 +403,14 @@ export const editProject = (id, state, dates) => {
         description: state.description,
         location: state.location,
         dates: dates,
-      }
-    })
+      },
+    });
   }
 }
 
 export const editSingleOffer = (project, state) => {
   return async (dispatch, getState) => {
+    const token = getState().auth.idToken;
     const offer = project.projectOffers[0];
 
     const response = await fetch(
@@ -421,7 +419,7 @@ export const editSingleOffer = (project, state) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           id: offer.id,

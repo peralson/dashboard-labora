@@ -23,6 +23,7 @@ import NotFound from '../containers/NotFound';
 import NewWorker from '../containers/NewWorker';
 import Login from "../containers/Login";
 import ResetPassword from "../containers/ResetPassword";
+import ProjectManagement from "../containers/ProjectManagement";
 
 // Components
 import PrivateRoute from './PrivateRoute';
@@ -36,6 +37,11 @@ const App = () => {
           <Route exact path={"/login"} component={Login} />
           <Route exact path={"/reset-password"} component={ResetPassword} />
           <Route exact path={"/registro/:id"} component={NewWorker} />
+          <Route
+            exact
+            path={"/gestion-de-proyecto/:id"}
+            component={ProjectManagement}
+          />
 
           {/* Main Containers */}
           <PrivateRoute exact path={["/", "/ofertas"]} component={Offers} />

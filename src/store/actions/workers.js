@@ -2,13 +2,14 @@ export const FETCH_WORKERS = 'FETCH_WORKERS';
 
 export const fetchWorkers = () => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token
+    const token = getState().auth.idToken;
 
     const response = await fetch(
       'https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/myWorkers',
       {
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
         },
       }
     );
@@ -33,50 +34,63 @@ export const fetchWorkers = () => {
 };
 
 export const inviteWorker = async ({ categories, tags, expiration }) => {
-  // const token = getState().auth.token
-  console.log('info enviada;', { categories, tags, expiration })
-  const response = await fetch(
-    "https://us-central1-partime-60670.cloudfunctions.net/listOfWorkers/invite/",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Request-Headers": true,
-        "Access-Control-Request-Method": "POST",
+  return async (dispatch, getState) => {
+    const token = getState().auth.idToken;
+    
+    const response = await fetch(
+      "https://us-central1-partime-60670.cloudfunctions.net/listOfWorkers/invite/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Request-Headers": true,
+          "Access-Control-Request-Method": "POST",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          categories: categories,
+          tags: tags,
+          expiration: expiration,
+        }),
       },
-      body: JSON.stringify({
-        categories: categories,
-        tags: tags,
-        expiration: expiration,
-      }),
-    },
-  );
-  
-  const resData = await response.json();
+    );
 
-  console.log('enalce obtenido:', resData)
+    const resData = await response.json()
+
+    if (!response.ok) {
+      console.error(resData);
+      throw new Error()
+    }
+
+    return resData.body
+  }
 };
 
 export const newWorker = async ({ email, password, name }) => {
-  // const token = getState().auth.token
+  return async (dispatch, getState) => {
+    const token = getState().auth.idToken;
 
-  const response = await fetch(
-    "https://us-central1-partime-60670.cloudfunctions.net/api/auth/",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Request-Headers": true,
+    const response = await fetch(
+      "https://us-central1-partime-60670.cloudfunctions.net/api/auth/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Request-Headers": true,
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          name: name,
+        }),
       },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        name: name,
-      }),
-    },
-  );
-  
-  const resData = await response.json();
+    );
 
-  console.log('newworker:', resData)
+    if (!response.ok) {
+      const resData = await response.json()
+      console.error(resData);
+      throw new Error()
+    }
+  }
 };

@@ -8,6 +8,7 @@ import { brandTheme } from './styles/theme';
 // Redux
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
+import { firebaseReducer } from "react-redux-firebase";
 import ReduxThunk from "redux-thunk";
 
 // Reducers
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   templates: templatesReducer,
   tags: tagsReducer,
   categories: categoriesReducer,
+  firebase: firebaseReducer,
 });
 
 // y agregamos nuestro reducer global al store de Redux

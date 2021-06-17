@@ -9,7 +9,7 @@ export const handleApplication = (
   action,
 ) => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token
+    const token = getState().auth.idToken;
 
     const response = await fetch(
       `https://us-central1-partime-60670.cloudfunctions.net/api/application/${applicationId}?action=${action}`,
@@ -17,22 +17,20 @@ export const handleApplication = (
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       },
     );
 
+    const resData = await response.json();
+
     if (!response.ok) {
       console.log("Error", response.status);
-      const resData = await response.json();
       console.error(resData);
       throw new Error("Ha ocurrido un error al aceptar la aplicación.");
     } else {
       fetchProjects();
     }
-
-    const resData = await response.json();
-
-    console.log(resData);
 
     dispatch({
       type: HANDLE_APPLICATION,

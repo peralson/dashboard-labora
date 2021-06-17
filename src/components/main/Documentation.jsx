@@ -21,8 +21,7 @@ const Documentation = ({ content }) => {
       </Text>
       <Flex
         onClick={() => setOpen(!open)}
-        _hover={{ background: "translucid" }}
-        bg={open && "translucid"}
+        _hover={{ bg: "primaryLight" }}
         borderRadius={10}
         py={1}
         px={2}

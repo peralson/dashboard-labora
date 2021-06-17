@@ -1,7 +1,7 @@
 import React from "react";
 import { Text } from "@chakra-ui/layout";
 
-const TopHeaderTitle = ({ children }) => {
+const TopHeaderTitle = ({ children, ...rest }) => {
   return (
     <Text
       flex={1}
@@ -9,6 +9,7 @@ const TopHeaderTitle = ({ children }) => {
       lineHeight={2}
       fontWeight={"bold"}
       textAlign={"center"}
+      {...rest}
     >
       {children}
     </Text>

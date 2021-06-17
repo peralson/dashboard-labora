@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
-import { Flex, Text, Box } from "@chakra-ui/layout";
-import { Image } from "@chakra-ui/image";
+import { Flex, Text, Image } from "@chakra-ui/react";
 import { SelectedItemIndie } from '../../context/SelectedItemContext'
 
 const SideSelectorOffer = ({ title, desc, image, ...rest }) => {
@@ -26,14 +25,14 @@ const SideSelectorOffer = ({ title, desc, image, ...rest }) => {
       {...rest}
     >
       <Image src={image} w={"21px"} mr={3} />
-      <Box>
+      <Flex flexDir={"column"} justifyContent={"center"}>
         <Text fontSize={14} fontWeight={"bold"}>
           {title}
         </Text>
         {desc && <Text fontSize={12} mt={1}>
           {desc}
         </Text>}
-      </Box>
+      </Flex>
     </Flex>
   );
 };

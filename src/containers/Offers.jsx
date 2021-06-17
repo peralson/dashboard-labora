@@ -56,7 +56,7 @@ const Offers = ({ projects, fetchProjects }) => {
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchProjects]);
+  }, []);
 
   // SEARCH LOGIC
   const [displayFilters, setDisplayFilters] = useState(false);

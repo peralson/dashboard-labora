@@ -1,5 +1,7 @@
 import React, { useContext, createContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
+import { useDispatch } from "react-redux";
+import { setAuthData } from "../store/actions/auth";
 
 const AuthContext = createContext();
 
@@ -10,6 +12,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   function login(email, password) {
     return auth.signInWithEmailAndPassword(email, password);
@@ -33,11 +36,15 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-      setLoading(false);
+      user
+        .getIdToken()
+        .then((idToken) => dispatch(setAuthData(idToken)))
+        .then(() => setCurrentUser(user))
+        .finally(() => setLoading(false));
     });
 
     return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const value = {

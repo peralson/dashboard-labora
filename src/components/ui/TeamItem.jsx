@@ -21,7 +21,7 @@ const TeamItem = ({ index, member }) => {
       mb={index !== 0 && 2}
       py={3}
       px={4}
-      borderWidth={2}
+      borderWidth={1}
       borderRadius={20}
       borderColor={"darkLight"}
     >

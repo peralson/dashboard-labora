@@ -13,7 +13,7 @@ const TopButton = ({
 }) => (
   <Flex
     justifyContent={left ? "flex-start" : "flex-end"}
-    _hover={{ background: danger ? "red.smooth" : "translucid" }}
+    _hover={{ background: danger ? "red.smooth" : "primaryLight" }}
     opacity={inactive && 0.4}
     px={2.5}
     py={2}

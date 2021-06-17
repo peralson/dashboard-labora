@@ -3,13 +3,14 @@ export const EDIT_CATEGORIES = 'EDIT_CATEGORIES';
 
 export const fetchCategories = () => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token
+    const token = getState().auth.idToken;
 
     const response = await fetch(
       "https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/categories",
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -26,7 +27,7 @@ export const fetchCategories = () => {
       categories.push(category);
     });
 
-    dispatch({ 
+    dispatch({
       type: FETCH_CATEGORIES,
       categories: categories,
     });
@@ -35,7 +36,7 @@ export const fetchCategories = () => {
 
 export const editCategories = (action, userList, categoryList) => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token
+    const token = getState().auth.idToken;
 
     const response = await fetch(
       `https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/categories/edit/${action}`,
@@ -45,6 +46,7 @@ export const editCategories = (action, userList, categoryList) => {
           "Content-Type": "application/json",
           "Access-Control-Request-Method": "PUT",
           "Access-Control-Request-Headers": true,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           categories: categoryList,
@@ -57,16 +59,16 @@ export const editCategories = (action, userList, categoryList) => {
       console.log("ERROR");
       const resData = await response.json();
       console.error(resData);
-      throw new Error('Ha ocurrido un error.')
-    };
+      throw new Error("Ha ocurrido un error.");
+    }
 
     dispatch({
       type: EDIT_CATEGORIES,
       payload: {
         action: action,
         userList: userList,
-        categoryList: categoryList
-      }
+        categoryList: categoryList,
+      },
     });
   };
 };

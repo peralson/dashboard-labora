@@ -23,7 +23,7 @@ const ProjectDatesSide = ({ dates }) => (
           mt={index !== 0 && 2}
           p={2}
           borderRadius={10}
-          border={"2px solid"}
+          borderWidth={1}
           borderColor={"darkLight"}
         >
           {moment(date._seconds * 1000).format("D MMMM YYYY")}

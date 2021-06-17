@@ -2,13 +2,14 @@ export const FETCH_PAYROLLS = 'FETCH_PAYROLLS';
 
 export const fetchPayrolls = () => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token
+    const token = getState().auth.idToken;
 
     const response = await fetch(
       'https://us-central1-partime-60670.cloudfunctions.net/api/payroll/company',
       {
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
         },
       }
     );
@@ -33,45 +34,49 @@ export const fetchPayrolls = () => {
 };
 
 export const fetchPayroll = async (jobId) => {
-  // const token = getState().auth.token
+  return async (dispatch, getState) => {
+    const token = getState().auth.idToken;
 
-  const response = await fetch(
-    `https://us-central1-partime-60670.cloudfunctions.net/api/payroll/${jobId}?type=job`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+    const response = await fetch(
+      `https://us-central1-partime-60670.cloudfunctions.net/api/payroll/${jobId}?type=job`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
+        },
+      }
+    );
 
-  if (!response.ok && response.status === 404) return null;
-  if (!response.ok) throw new Error('Ha ocurrido un error.');
+    if (!response.ok && response.status === 404) return null;
+    if (!response.ok) throw new Error('Ha ocurrido un error.');
 
-  const link = await response.json();
-
-  console.log('el payrol es:', link);
-  return link.body;
+    const link = await response.json();
+    
+    return link.body;
+  }
 };
 
 export const fetchWorkerPayroll = async ({ offerId, userId }) => {
-  // const token = getState().auth.token
+  return async (dispatch, getState) => {
+    const token = getState().auth.idToken;
 
-  const response = await fetch(
-    `https://us-central1-partime-60670.cloudfunctions.net/api/payroll/company/${offerId}/${userId}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+    const response = await fetch(
+      `https://us-central1-partime-60670.cloudfunctions.net/api/payroll/company/${offerId}/${userId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
+        },
+      }
+    );
 
-  if (!response.ok && response.status === 404) return null;
-  if (!response.ok) throw new Error('Ha ocurrido un error.');
+    if (!response.ok && response.status === 404) return null;
+    if (!response.ok) throw new Error('Ha ocurrido un error.');
 
-  const link = await response.json();
-
-  console.log('el enlace es:', link);
-  return link.body;
+    const link = await response.json();
+    
+    return link.body;
+  }
 };

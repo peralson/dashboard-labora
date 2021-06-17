@@ -10,16 +10,18 @@ import TopHeaderTitle from './TopHeaderTitle';
 import TopButton from './TopButton';
 
 const TopHeaderBar = ({ onGoBack, children, onEdit }) => (
-  <Flex alignItems={'center'} justifyContent={'space-evenly'}>
-    <Box maxW={'100%'}>
+  <Flex alignItems={"center"} justifyContent={"space-between"}>
+    <Flex>
       <TopButton left icon={back} onSelect={onGoBack}>
         Volver
       </TopButton>
-    </Box>
-    <TopHeaderTitle>{children}</TopHeaderTitle>
+    </Flex>
+    <TopHeaderTitle ml={4} fontSize={17}>
+      {children}
+    </TopHeaderTitle>
     {onEdit && (
-      <Box maxW={'100%'}>
-        <TopButton rigth icon={edit} onSelect={onEdit}>
+      <Box>
+        <TopButton right icon={edit} onSelect={onEdit}>
           Editar
         </TopButton>
       </Box>

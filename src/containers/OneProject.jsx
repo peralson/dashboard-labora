@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { Box, Text, Grid, Flex } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
 
@@ -33,6 +32,7 @@ import AccentButton from "../components/ui/AccentButton";
 import DeleteButton from "../components/ui/DeleteButton";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import Remaining from "../components/ui/Remaining";
+import CopyLinkBar from "../components/ui/CopyLinkBar";
 
 const OneProject = ({
   match,
@@ -57,7 +57,7 @@ const OneProject = ({
     setLoadingDel(true)
     deleteProject(id)
       .then(() => history.push("../../"))
-      .catch((e) => setErrorDel(true))
+      .catch(() => setErrorDel(true))
       .finally(() => setLoadingDel(false));
   }
 
@@ -105,30 +105,29 @@ const OneProject = ({
               borderRadius={20}
             />
           </Flex>
-          <Text mt={8} fontWeight={"bold"}>
+          <Text mt={10} mb={2} fontWeight={"bold"}>
             Sobre este proyecto
           </Text>
           {project.projectData.description && (
-            <Text mt={2} mb={6} color={"grey.dark"} fontStyle={"italic"}>
+            <Text mb={6} color={"grey.dark"} fontStyle={"italic"}>
               {project.projectData.description}
             </Text>
           )}
-          <Grid mt={3} templateColumns={"1fr 1fr 1fr"} w={"100%"} columnGap={4}>
+          <Grid mt={4} templateColumns={"1fr 1fr 1fr"} w={"100%"} columnGap={4}>
             <SideSelectorProject
               title={"Fechas"}
               desc={"Días laborales del proyecto"}
               image={calendar}
             />
           </Grid>
-          <Flex mt={12} mb={4} alignItems={"center"}>
-            <Text flex={1} fontWeight={"bold"}>
+          <CopyLinkBar id={id} /> 
+          <Flex mt={12} mb={4} alignItems={"center"} justifyContent={"space-between"}>
+            <Text fontWeight={"bold"} mr={4}>
               Ofertas de este proyecto
             </Text>
-            <Link to={`./${id}/nueva-oferta/`}>
-              <AccentButton iconLeft={plusWhite} py={3}>
-                Añadir una oferta
-              </AccentButton>
-            </Link>
+            <AccentButton iconleft={plusWhite} py={3.5} onClick={() => history.push(`./${id}/nueva-oferta/`)}>
+              Añadir una oferta
+            </AccentButton>
           </Flex>
           {project.projectOffers.length !== 0 ? (
             <Grid

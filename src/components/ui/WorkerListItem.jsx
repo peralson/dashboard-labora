@@ -59,11 +59,17 @@ const WorkerListItem = ({ worker, handleCheck, checkedItems }) => {
           )}
         </Box>
       </Flex>
-      <Text fontSize={14} fontWeight={"bold"} mt={2} mb={1}>
+      <Text
+        fontSize={14}
+        fontWeight={"bold"}
+        mt={2}
+        mb={1}
+        textAlign={"center"}
+      >
         {worker.workerData.name}
       </Text>
       {worker.categories.length > 0 && (
-        <Flex mt={1} flexWrap={"wrap"}>
+        <Flex mt={1} flexWrap={"wrap"} justifyContent={"center"}>
           {worker.categories.slice(0, 2).map((category, index) => (
             <Text
               key={index}
@@ -96,10 +102,10 @@ const WorkerListItem = ({ worker, handleCheck, checkedItems }) => {
         </Flex>
       )}
       {worker.tags.length > 0 && (
-        <Flex mt={2} flexWrap={"wrap"}>
+        <Flex mt={2} flexWrap={"wrap"} justifyContent={"center"}>
           {worker.tags.slice(0, 3).map((tag, index) => (
             <Text
-            mt={1}
+              mt={1}
               key={index}
               ml={index !== 0 && 2}
               color={"primary"}
@@ -109,12 +115,7 @@ const WorkerListItem = ({ worker, handleCheck, checkedItems }) => {
             </Text>
           ))}
           {worker.tags.length > 2 && (
-            <Text
-              mt={1}
-              ml={2}
-              color={"primary"}
-              fontSize={12}
-            >
+            <Text mt={1} ml={2} color={"primary"} fontSize={12}>
               ...
             </Text>
           )}

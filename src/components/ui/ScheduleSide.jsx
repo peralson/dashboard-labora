@@ -23,7 +23,7 @@ const ScheduleSide = ({ schedules }) => {
         {totalHoursAndMins.mins > 0 && ` y ${totalHoursAndMins.mins} minutos`}
       </Text>
       <Separator top={2} bottom={2} />
-      <SideTitle>Horarios por día</SideTitle>
+      <SideTitle fontWeight={"normal"}>Horarios por día</SideTitle>
       <Flex flexDirection={"column"}>
         {schedules.map((sche, index) => (
           <ScheduleDropdown key={index} sche={sche} />

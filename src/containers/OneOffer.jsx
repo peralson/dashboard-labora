@@ -33,6 +33,8 @@ import BeCurious from '../components/ui/BeCurious';
 import DeleteButton from '../components/ui/DeleteButton';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import Remaining from '../components/ui/Remaining';
+import CostItem from '../components/ui/CostItem';
+import CopyLinkBar from '../components/ui/CopyLinkBar';
 
 const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject }) => {
   const { id } = match.params;
@@ -53,6 +55,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
 
   const isComplete = offer.offerData.qty === offer.offerData.already_assigned;
   const isSingle = project.projectData.name === null;
+  const extrasLength = offer.offerData.extras.filter(extra => extra.amount > 0).length
 
   const handleDeleteOffer = () => {
     setErrorDel(null);
@@ -111,7 +114,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
               </Link>
             </Flex>
           )}
-          <Flex mt={4} alignItems={"center"} justifyContent={"space-between"}>
+          <Flex mt={6} alignItems={"center"} justifyContent={"space-between"}>
             <Flex flexDirection={"column"} alignItems={"flex-start"} flex={1}>
               <Text fontSize={21} fontWeight="bold">
                 {offer.offerData.name}
@@ -130,18 +133,26 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
               borderRadius={20}
             />
           </Flex>
-          <Text mt={8} fontWeight={"bold"}>
+          <Grid mt={6} templateColumns={`repeat(${2 + extrasLength}, 1fr)`} justifyContent={"center"} alignContent={"center"} gap={4}>
+            <CostItem name={"Salario hora"} amount={offer.offerData.salary} />
+            <CostItem name={"Salario extra"} amount={offer.offerData.extraSalary} />
+            {offer.offerData.extras.map(
+              (extra, index) => 
+                extra.amount > 0 && <CostItem key={index} name={extra.name} amount={extra.amount} />
+            )}
+          </Grid>
+          <Text mt={10} mb={2} fontWeight={"bold"}>
             Sobre esta oferta de {offer.offerData.category}
           </Text>
           {offer.offerData.description && (
-            <Text mt={2} mb={6} color={"grey.dark"} fontStyle={"italic"}>
+            <Text mb={6} color={"grey.dark"} fontStyle={"italic"}>
               {offer.offerData.description}
             </Text>
           )}
-          <Grid mt={3} templateColumns={"1fr 1fr 1fr"} w={"100%"} gap={4}>
+          <Grid mt={4} templateColumns={"1fr 1fr 1fr"} w={"100%"} columnGap={4}>
             <SideSelectorOffer
               title={"Legal"}
-              desc={"Contrato, nóminas..."}
+              desc={"Sobre el contrato..."}
               image={legal}
             />
             <SideSelectorOffer
@@ -161,8 +172,9 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
               />
             )}
           </Grid>
+          <CopyLinkBar id={project.id} />
           {offer.offerData.tags && offer.offerData.tags.length > 0 && (
-            <Flex mt={6} alignItems={"center"}>
+            <Flex mt={6} alignItems={"center"} justifyContent={"space-between"}>
               <Text fontWeight={"bold"}>Etiquetas:</Text>
               <Flex alignItems={"center"}>
                 {offer.offerData.tags.map((tag, index) => (
@@ -218,7 +230,8 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
             )}
             {selectedItemIndie && selectedItemIndie === "Legal" && (
               <LegalSide
-                id={id}
+                id={offer.offerData.contractId}
+                model={offer.offerData.contractModel}
                 salary={formattedSalary(offer.offerData.salary) + "€"}
                 extraSalary={formattedSalary(offer.offerData.extraSalary) + "€"}
                 extras={offer.offerData.extras}

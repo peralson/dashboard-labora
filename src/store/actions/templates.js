@@ -2,16 +2,17 @@ export const FETCH_TEMPLATES = 'FETCH_CONTRACT_TEMPLATES';
 
 export const fetchTemplates = () => {
   return async (dispatch, getState) => {
-    // const token = getState().auth.token
+    const token = getState().auth.idToken;
 
     const response = await fetch(
-      'https://us-central1-partime-60670.cloudfunctions.net/api/company/templates',
+      "https://us-central1-partime-60670.cloudfunctions.net/api/company/templates",
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
-      }
+      },
     );
 
     if (!response.ok && response.status === 404)
@@ -19,44 +20,12 @@ export const fetchTemplates = () => {
     if (!response.ok) throw new Error("Ha ocurrido un error.");
 
     const resData = await response.json();
-    console.log('templates', resData);
 
     let templates = [];
 
     resData.body.forEach((template) => {
       templates.push(template);
     });
-
-    // templates = [
-    //   {
-    //     id: 1,
-    //     category: 'Camarero',
-    //     template:
-    //       'https://www.seas.es/blog/wp-content/uploads/2014/04/imagen1.jpg',
-    //     type: 'contract',
-    //   },
-    //   {
-    //     id: 2,
-    //     category: 'Limpiador',
-    //     template:
-    //       'https://www.seas.es/blog/wp-content/uploads/2014/04/imagen1.jpg',
-    //     type: 'contract',
-    //   },
-    //   {
-    //     id: 3,
-    //     category: 'Azafata',
-    //     template:
-    //       'https://www.seas.es/blog/wp-content/uploads/2014/04/imagen1.jpg',
-    //     type: 'contract',
-    //   },
-    //   {
-    //     id: 5,
-    //     category: 'Repartidor',
-    //     template:
-    //       'https://www.seas.es/blog/wp-content/uploads/2014/04/imagen1.jpg',
-    //     type: 'contract',
-    //   },
-    // ];
 
     dispatch({
       type: FETCH_TEMPLATES,
