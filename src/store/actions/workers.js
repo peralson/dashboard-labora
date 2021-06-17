@@ -33,7 +33,7 @@ export const fetchWorkers = () => {
   };
 };
 
-export const inviteWorker = async (categories, tags, expiration) => {
+export const inviteWorker = (categories, tags, expiration) => {
   return async (dispatch, getState) => {
     const token = getState().auth.idToken;
 
@@ -66,7 +66,7 @@ export const inviteWorker = async (categories, tags, expiration) => {
   };
 };
 
-export const newWorker = async ({ email, password, name }) => {
+export const newWorker = ({ email, password, name }) => {
   return async (dispatch, getState) => {
     const token = getState().auth.idToken;
 

@@ -27,12 +27,12 @@ const JobSide = ({ data }) => {
 	useEffect(() => {
 		const getInfo = async () => {
 			setLoading(true);
-			setContractLink(
-				await fetchWorkerContract({ offerId: data.id, userId: data.worker.id })
-			);
-			setPayrollLink(
-				await fetchWorkerPayroll({ offerId: data.id, userId: data.worker.id })
-			);
+			// setContractLink(
+			// 	await fetchWorkerContract({ offerId: data.id, userId: data.worker.id })
+			// );
+			// setPayrollLink(
+			// 	await fetchWorkerPayroll({ offerId: data.id, userId: data.worker.id })
+			// );
 			setChecks(await fetchChecks({ jobId: data.id }));
 			setLoading(false);
 		};
@@ -105,13 +105,13 @@ const JobSide = ({ data }) => {
 						<Flex flexDirection="row">
 							{checks.info.checkins.length > 0 && (
 								<Flex flexDirection="column" flex={1} mr={1}>
-									<SideTitle>Checkin</SideTitle>
+									<SideTitle textAlign='center'>Checkin</SideTitle>
 									<DateTag dates={checks.info.checkins} />
 								</Flex>
 							)}
 							{checks.info.checkouts.length > 0 && (
 								<Flex flexDirection="column" flex={1} ml={1}>
-									<SideTitle>Checkout</SideTitle>
+									<SideTitle textAlign='center'>Checkout</SideTitle>
 									<DateTag dates={checks.info.checkouts} />
 								</Flex>
 							)}
