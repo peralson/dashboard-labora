@@ -1,11 +1,9 @@
 import React, { useContext } from "react";
 import { Box, Text, Flex } from "@chakra-ui/layout";
 
-import { SelectedProject } from "../../context/SelectedItemContext";
-
-const ProjectOfferItem = ({ offer }) => {
+const ProjectOfferItem = ({ offer, context }) => {
   const { selectedItemIndie, setSelectedItemIndie } =
-    useContext(SelectedProject);
+    useContext(context);
   const isActive = selectedItemIndie ? selectedItemIndie === offer : false;
 
   return (

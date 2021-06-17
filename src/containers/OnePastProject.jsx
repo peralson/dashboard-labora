@@ -13,7 +13,6 @@ import { connect } from "react-redux";
 import task from "../assets/svg/task-to-do.svg";
 import legal from "../assets/svg/legal.svg";
 import schedule from "../assets/svg/schedule.svg";
-import team from "../assets/svg/team.svg";
 
 // Components
 import Main from "../components/main/Main";
@@ -26,6 +25,7 @@ import TopHeaderBar from "../components/ui/TopHeaderBar";
 import Documentation from "../components/main/Documentation";
 import SideSelectorPastProject from "../components/ui/SideSelectorPastProject";
 import PastProjectOfferItem from "../components/ui/PastProjectOfferItem";
+import OfferSide from "../components/ui/OfferSide";
 
 // Side
 import ProjectDatesSide from "../components/ui/ProjectDatesSide";
@@ -106,13 +106,6 @@ const OnePastProject = ({ match, history, pastProjects }) => {
 								image={schedule}
 								data={project}
 							/>
-							{project.projectOffers.length > 0 && (
-								<SideSelectorPastProject
-									title={"Equipo"}
-									image={team}
-									data={project}
-								/>
-							)}
               {project.projectOffers.length > 0 && (
 								<SideSelectorPastProject
 									title={"Costes"}
@@ -135,7 +128,7 @@ const OnePastProject = ({ match, history, pastProjects }) => {
 								rowGap={4}
 							>
 								{project.projectOffers.map((offer) => (
-									<PastProjectOfferItem key={offer.id} offer={offer} />
+									<PastProjectOfferItem key={offer.id} offer={offer} context={selectedItemManage}/>
 								))}
 							</Grid>
 						) : (
@@ -161,14 +154,11 @@ const OnePastProject = ({ match, history, pastProjects }) => {
 							{selectedManageSide === "Horario" && (
 								<ProjectDatesSide dates={project.projectData.dates}/>
 							)}
-							{selectedManageSide === "Equipo" && (
-								<Text>Equipo</Text>
-							)}
               {selectedManageSide === "Costes" && (
 								<PastProjectCostsSide data={project}/>
 							)}
               {selectedManageSide === "OfertaPasada" && (
-								<Text>Oferta Pasada</Text>
+								<OfferSide data={selectedItemManage} isPast={true}/>
 							)}
 							{!selectedManageSide && (
 								<BeCurious

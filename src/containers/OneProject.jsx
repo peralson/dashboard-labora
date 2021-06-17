@@ -137,7 +137,7 @@ const OneProject = ({
               rowGap={4}
             >
               {project.projectOffers.map((offer) => (
-                <ProjectOfferItem key={offer.id} offer={offer} />
+                <ProjectOfferItem key={offer.id} offer={offer} context={SelectedProject} />
               ))}
             </Grid>
           ) : (
@@ -172,7 +172,7 @@ const OneProject = ({
               />
             )}
             {selectedItemIndie && selectedItemIndie.offerData && (
-              <OfferSide data={selectedItemIndie} />
+              <OfferSide data={selectedItemIndie} isPast={false}/>
             )}
           </SideBoxContainer>
         </SideSticky>

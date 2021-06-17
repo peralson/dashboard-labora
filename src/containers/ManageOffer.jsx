@@ -45,8 +45,6 @@ const ManageOffer = ({
 
   const offer = project.projectOffers.find((offer) => offer.id === id);
 
-  console.log('offer', offer);
-
   if (!offer) return <Box></Box>;
 
   return (

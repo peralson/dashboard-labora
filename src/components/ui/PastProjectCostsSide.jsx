@@ -19,7 +19,6 @@ const getProjectCosts = (projectOffers) => {
 	return (
 		<Box>
 			{projectOffers.map((offer) => {
-				console.log("offer", offer);
 				return (
 					<Box>
 						<SideTitle>{`${offer.offerData.name}`}</SideTitle>

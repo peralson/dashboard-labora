@@ -197,7 +197,7 @@ const Offers = ({ projects, fetchProjects }) => {
           <Documentation />
           <SideBoxContainer>
             {selectedItem && selectedItem.offerData && (
-              <OfferSide data={selectedItem} />
+              <OfferSide data={selectedItem} isPast={false}/>
             )}
             {selectedItem && selectedItem.offerCategory && (
               <ApplicationSide data={selectedItem} />
