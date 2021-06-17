@@ -59,7 +59,7 @@ export const fetchContract = async (offerId) => {
 };
 
 export const fetchWorkerContract = async ({ offerId, userId }) => {
-  return async (dispatch, getState) => {
+
     // const token = getState().auth.idToken;
 
     const response = await fetch(
@@ -79,5 +79,5 @@ export const fetchWorkerContract = async ({ offerId, userId }) => {
     const link = await response.json();
     
     return link.body;
-  }
+  
 };

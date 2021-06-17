@@ -456,7 +456,7 @@ export const editSingleOffer = (project, state) => {
 };
 
 export const fetchChecks = async ({ jobId }) => {
-	return async (dispatch, getState) => {
+
 		// const token = getState().auth.idToken;
 
 		const response = await fetch(
@@ -478,7 +478,7 @@ export const fetchChecks = async ({ jobId }) => {
 		return {
 			info: { checkins: info.body.check_in, checkouts: info.body.check_out },
 		};
-	};
+
 };
 
 const formattedSchedule = (schedule) => {

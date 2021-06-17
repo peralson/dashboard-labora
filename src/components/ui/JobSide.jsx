@@ -3,7 +3,6 @@ import { Flex, Box, Text } from "@chakra-ui/layout";
 
 // Lib
 import "moment/locale/es";
-import moment from "moment";
 
 // Redux & Actions
 import { fetchWorkerContract } from "../../store/actions/contracts";
@@ -16,6 +15,7 @@ import FlexText from "./FlexText";
 import SideTitle from "./SideTitle";
 import Separator from "./Separator";
 import ErrorMessage from "./ErrorMessage";
+import DateTag from "./DateTag";
 
 const JobSide = ({ data }) => {
 	const [error, setError] = useState(null);
@@ -39,9 +39,6 @@ const JobSide = ({ data }) => {
 		getInfo();
 	}, [data.id, data.worker.id]);
 
-  if(checks){
-    console.log('checñdkfd', checks)
-  }
 	return (
 		<Box>
 			{error && (
@@ -105,51 +102,17 @@ const JobSide = ({ data }) => {
 						/>
 					</Box>
 					{checks.info && (
-						<Flex flexDirection="column">
+						<Flex flexDirection="row">
 							{checks.info.checkins.length > 0 && (
-								<Flex flexDirection="column">
-									<SideTitle>Checkins</SideTitle>
-									{checks.info.checkins.map((check) => {
-                    console.log('checking', check)
-										return (
-											<Text flex={2} fontSize={12} mr={2}>
-												{check._seconds ===
-												checks.info.checkins[checks.info.checkins.length - 1]
-													._seconds
-													? moment(check._seconds * 1000).format("D MMMM")
-													: `${moment(check._seconds * 1000).format(
-															"D MMMM"
-													  )} - ${moment(
-															checks.info.checkins[
-																checks.info.checkins.length - 1
-															]._seconds * 1000
-													  ).format("D MMMM")}`}
-											</Text>
-										);
-									})}
+								<Flex flexDirection="column" flex={1} mr={1}>
+									<SideTitle>Checkin</SideTitle>
+									<DateTag dates={checks.info.checkins} />
 								</Flex>
 							)}
 							{checks.info.checkouts.length > 0 && (
-								<Flex flexDirection="column">
-									<SideTitle>Checkouts</SideTitle>
-									{checks.info.checkouts.map((check) => {
-                    console.log('checkout', check)
-										return (
-											<Text flex={2} fontSize={12} mr={2}>
-												{check._seconds ===
-												checks.info.checkouts[checks.info.checkouts.length - 1]
-													._seconds
-													? moment(check._seconds * 1000).format("D MMMM")
-													: `${moment(check._seconds * 1000).format(
-															"D MMMM"
-													  )} - ${moment(
-															checks.info.checkouts[
-																checks.info.checkouts.length - 1
-															]._seconds * 1000
-													  ).format("D MMMM")}`}
-											</Text>
-										);
-									})}
+								<Flex flexDirection="column" flex={1} ml={1}>
+									<SideTitle>Checkout</SideTitle>
+									<DateTag dates={checks.info.checkouts} />
 								</Flex>
 							)}
 						</Flex>

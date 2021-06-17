@@ -11,6 +11,7 @@ const DateTag = ({ dates }) => (
     borderRadius={10}
     bg={"darkLight"}
     fontSize={12}
+    textAlign='center'
   >
     {dates[0]._seconds === dates[dates.length - 1]._seconds
       ? moment(dates[0]._seconds * 1000).format("D MMMM")
