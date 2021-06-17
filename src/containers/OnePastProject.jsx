@@ -27,6 +27,11 @@ import Documentation from "../components/main/Documentation";
 import SideSelectorPastProject from "../components/ui/SideSelectorPastProject";
 import PastProjectOfferItem from "../components/ui/PastProjectOfferItem";
 
+// Side
+import ProjectDatesSide from "../components/ui/ProjectDatesSide";
+import PastProjectLegalSide from "../components/ui/PastProjectLegalSide"
+import PastProjectCostsSide  from "../components/ui/PastProjectCostsSide"
+
 const OnePastProject = ({ match, history, pastProjects }) => {
 	const { id } = match.params;
 
@@ -83,10 +88,11 @@ const OnePastProject = ({ match, history, pastProjects }) => {
 							</Box>
 						)}
 						<Grid
-							mt={3}
+							mt={8}
 							templateColumns={"1fr 1fr 1fr"}
 							w={"100%"}
 							columnGap={4}
+              rowGap={4}
 						>
 							<SideSelectorPastProject
 								title={"Legal"}
@@ -104,6 +110,14 @@ const OnePastProject = ({ match, history, pastProjects }) => {
 								<SideSelectorPastProject
 									title={"Equipo"}
 									image={team}
+									data={project}
+								/>
+							)}
+              {project.projectOffers.length > 0 && (
+								<SideSelectorPastProject
+									title={"Costes"}
+									image={legal}
+                  desc={"Coste del proyecto"}
 									data={project}
 								/>
 							)}
@@ -142,13 +156,16 @@ const OnePastProject = ({ match, history, pastProjects }) => {
 						<Documentation />
 						<SideBoxContainer>
 							{selectedManageSide === "Legal" && (
-								<Text>Legal</Text>
+								<PastProjectLegalSide />
 							)}
 							{selectedManageSide === "Horario" && (
-								<Text>Horarios</Text>
+								<ProjectDatesSide dates={project.projectData.dates}/>
 							)}
 							{selectedManageSide === "Equipo" && (
 								<Text>Equipo</Text>
+							)}
+              {selectedManageSide === "Costes" && (
+								<PastProjectCostsSide data={project}/>
 							)}
               {selectedManageSide === "OfertaPasada" && (
 								<Text>Oferta Pasada</Text>

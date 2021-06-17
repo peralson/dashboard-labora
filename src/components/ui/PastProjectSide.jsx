@@ -1,16 +1,11 @@
-import React from 'react';
-import { Flex, Box, Text } from '@chakra-ui/layout';
+import React from "react";
+import { Flex, Box, Text } from "@chakra-ui/layout";
 
 // Lib
-import { Link } from 'react-router-dom';
-import { formattedSalary } from '../../lib/formattedSalary';
-import { getTotalCost } from '../../lib/getTotalCost';
+import { Link } from "react-router-dom";
 
 // Components
-import Separator from './Separator';
-import SideTitle from './SideTitle';
-import DateTag from './DateTag';
-import FlexText from './FlexText';
+import DateTag from "./DateTag";
 
 // const OfferItem = ({ data }) => {
 //   const PropertyItem = ({ info, title }) => {
@@ -73,122 +68,45 @@ import FlexText from './FlexText';
 //   );
 // };
 
-const getProjectCosts = (projectOffers) => {
-  return (
-    <Box>
-      {projectOffers.map((offer) => {
-        console.log('offer',offer)
-        return (
-          <Box>
-            <FlexText
-              left={`Salario ${offer.offerData.name}`}
-              right={formattedSalary(offer.offerData.salary) + ' €'}
-            />
-            <FlexText
-              left={`Extra ${offer.offerData.name}`}
-              right={formattedSalary(offer.offerData.extraSalary) + ' €'}
-            />
-          </Box>
-        );
-      })}
-    </Box>
-  );
-};
-
 const PastProjectSide = ({ data }) => {
-  return (
-    <Box>
-      <Flex alignItems={'center'} justifyContent={'space-between'} mb={2}>
-        <DateTag dates={data.projectData.dates} />
-      </Flex>
-      <Flex flexDirection={'column'} mb={4}>
-        <Text fontWeight='bold'>
-          {data.projectData.name
-            ? data.projectData.name
-            : data.projectOffers[0].offerData.name}
-        </Text>
-        <Text fontSize={14} color='primary'>
-          {data.projectData.location.address}
-        </Text>
-      </Flex>
-      <Link to={`/gestion/p/${data.id}`}>
-        <Text
-          mt={4}
-          lineHeight={2}
-          textAlign={"center"}
-          borderRadius={10}
-          py={1}
-          fontSize={14}
-          fontWeight={"bold"}
-          bg={"darkLight"}
-        >
-          Ver todo sobre este proyecto
-        </Text>
-      </Link>
-      <Separator top={4} bottom={2} />
-      <SideTitle>Costes</SideTitle>
-      {data.projectOffers.length > 0 && (
-        <Box flexDirection='column'>
-          {getProjectCosts(data.projectOffers)}
-          <FlexText
-            left={<SideTitle>Coste total</SideTitle>}
-            right={
-              <SideTitle>
-                {formattedSalary(getTotalCost(data.projectOffers)) + ' €'}
-              </SideTitle>
-            }
-          />
-        </Box>
-      )}
-      <Flex flexDirection='row' mt={4}>
-        <a
-          href={
-            'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
-          }
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <Flex
-            borderRadius={8}
-            _hover={{ cursor: 'pointer' }}
-            border={'1px solid'}
-            borderColor={'translucid'}
-            bg={'darkLight'}
-            alignItems={'center'}
-            px={4}
-            mr={4}
-            py={2}
-            justifyContent='center'
-            textAlign='center'
-          >
-            Descargar contratos
-          </Flex>
-        </a>
-        <a
-          href={
-            'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
-          }
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <Flex
-            textAlign='center'
-            justifyContent='center'
-            borderRadius={8}
-            _hover={{ cursor: 'pointer' }}
-            border={'1px solid'}
-            borderColor={'translucid'}
-            bg={'darkLight'}
-            alignItems={'center'}
-            px={4}
-            py={2}
-          >
-            Descargar nóminas
-          </Flex>
-        </a>
-      </Flex>
-    </Box>
-  );
+	return (
+		<Box>
+			<Flex alignItems={"center"} justifyContent={"space-between"} mb={2}>
+				<DateTag dates={data.projectData.dates} />
+			</Flex>
+			<Flex flexDirection={"column"} mb={4}>
+				<Text fontWeight="bold">
+					{data.projectData.name
+						? data.projectData.name
+						: data.projectOffers[0].offerData.name}
+				</Text>
+				<Text fontSize={14} color="primary">
+					{data.projectData.location.address}
+				</Text>
+			</Flex>
+			<Flex>
+				{data.projectData.description && (
+					<Text mt={2} mb={3} color={"grey.dark"} fontStyle={"italic"}>
+						{data.projectData.description}
+					</Text>
+				)}
+			</Flex>
+			<Link to={`/gestion/p/${data.id}`}>
+				<Text
+					mt={4}
+					lineHeight={2}
+					textAlign={"center"}
+					borderRadius={10}
+					py={1}
+					fontSize={14}
+					fontWeight={"bold"}
+					bg={"darkLight"}
+				>
+					Ver todo sobre este proyecto
+				</Text>
+			</Link>
+		</Box>
+	);
 };
 
 export default PastProjectSide;

@@ -6,7 +6,7 @@ import {
   SelectedItemManage,
   SelectedManageSide,
 } from '../../../context/SelectedItemContext';
-import { getTotalCost } from '../../../lib/getTotalCost';
+import { getTotalProject } from '../../../lib/getTotalCost';
 import { formattedSalary } from '../../../lib/formattedSalary';
 import moment from 'moment';
 import 'moment/locale/es';
@@ -58,7 +58,7 @@ const PastProjectCard = ({ data }) => {
         {data.projectOffers.length}
       </Text>
       <Text flex={1} fontSize={12} mr={2}>
-        {formattedSalary(getTotalCost(data.projectOffers)) + ' €'}
+        {formattedSalary(getTotalProject(data.projectOffers)) + ' €'}
       </Text>
       <Text flex={2} fontSize={12} mr={2}>
         {data.projectData.dates[0]._seconds ===

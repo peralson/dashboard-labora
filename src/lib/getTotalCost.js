@@ -1,12 +1,26 @@
-import { daysAndHoursFromOffer } from './totalDaysAndHours';
+import { daysAndHoursFromOffer } from "./totalDaysAndHours";
 
-export const getTotalCost = (projectOffers) => {
-  let total = 0;
-  projectOffers.forEach((offer) => {
-    const hours = daysAndHoursFromOffer(offer.offerData.schedule)
-      .totalHoursAndMins.hours;
-    total += (offer.offerData.salary * offer.offerData.qty * hours);
-  });
+export const getTotalExtras = (offerData) => {
+  let extras = offerData.extraSalary;
+  offerData.extras.forEach((extra) => {
+		extras += extra.amount;
+	});
+  return extras;
+}
 
-  return total;
+export const getTotalOffer = (offerData) => {
+	let total =
+		offerData.salary *
+		daysAndHoursFromOffer(offerData.schedule).totalHoursAndMins.hours;
+
+	return (total + getTotalExtras(offerData)) * offerData.qty;
+};
+
+export const getTotalProject = (projectOffers) => {
+	let total = 0;
+	projectOffers.forEach((offer) => {
+		total += getTotalOffer(offer.offerData);
+	});
+
+	return total;
 };
