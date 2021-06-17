@@ -42,8 +42,6 @@ const OnePastProject = ({ match, history, pastProjects }) => {
 
 	if (!project) return <Box></Box>;
 
-	console.log("project", project);
-
 	return (
 		<SelectedItemManage.Provider
 			value={{ selectedItemManage, setSelectedItemManage }}
@@ -155,7 +153,7 @@ const OnePastProject = ({ match, history, pastProjects }) => {
 								<ProjectDatesSide dates={project.projectData.dates}/>
 							)}
               {selectedManageSide === "Costes" && (
-								<PastProjectCostsSide data={project}/>
+								<PastProjectCostsSide data={project.projectOffers}/>
 							)}
               {selectedManageSide === "OfertaPasada" && (
 								<OfferSide data={selectedItemManage} isPast={true}/>

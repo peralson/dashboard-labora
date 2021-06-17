@@ -20,11 +20,11 @@ const getProjectCosts = (projectOffers) => {
 		<Box>
 			{projectOffers.map((offer) => {
 				return (
-					<Box>
+					<Box key={offer.id}>
 						<SideTitle>{`${offer.offerData.name}`}</SideTitle>
 						<FlexText
 							left={`Salario`}
-							right={formattedSalary(offer.offerData.salary) + " €"}
+							right={formattedSalary(offer.offerData.salary) + " €/h"}
 						/>
 						<FlexText
 							left={`Extras`}
@@ -39,6 +39,7 @@ const getProjectCosts = (projectOffers) => {
 							}
 						/>
 						<FlexText
+            bold={true}
 							left={`Total`}
 							right={formattedSalary(getTotalOffer(offer.offerData)) + " €"}
 						/>
@@ -53,14 +54,14 @@ const getProjectCosts = (projectOffers) => {
 const PastProjectCostsSide = ({ data }) => {
 	return (
 		<Flex flexDirection="column">
-			{data.projectOffers.length > 0 && (
+			{data.length > 0 && (
 				<Box flexDirection="column">
-					{getProjectCosts(data.projectOffers)}
+					{getProjectCosts(data)}
 					<FlexText
 						left={<SideTitle>Coste total</SideTitle>}
 						right={
 							<SideTitle>
-								{formattedSalary(getTotalProject(data.projectOffers)) + " €"}
+								{formattedSalary(getTotalProject(data)) + " €"}
 							</SideTitle>
 						}
 					/>
