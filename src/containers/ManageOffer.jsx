@@ -3,7 +3,6 @@ import { Flex, Box, Text, Grid } from '@chakra-ui/react';
 
 // Custom
 import { connect } from 'react-redux';
-import { deleteProjectOffer, deleteProject } from '../store/actions/projects';
 import { formattedSalary } from '../lib/formattedSalary';
 
 // Context
@@ -33,8 +32,6 @@ const ManageOffer = ({
   match,
   history,
   pastProjects,
-  deleteProjectOffer,
-  deleteProject,
 }) => {
   const { id } = match.params;
 
@@ -174,9 +171,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = {
-  deleteProjectOffer,
-  deleteProject,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageOffer);

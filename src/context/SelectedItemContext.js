@@ -6,3 +6,4 @@ export const SelectedProject = createContext(null);
 export const SelectedItemIndie = createContext(null);
 export const SelectedItemManage = createContext(null);
 export const SelectedManageSide = createContext(null);
+export const SelectedPastProject = createContext(null);

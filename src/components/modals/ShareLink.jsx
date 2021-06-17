@@ -70,8 +70,12 @@ const ShareLink = ({ categories, tags, inviteWorker }) => {
             `${calendarValue.year} ${calendarValue.month.number} ${calendarValue.day}`,
           ).getTime(),
         });
+<<<<<<< HEAD
         console.log(id);
         setLink(`${window.location.origin}/registro/${id}`);
+=======
+        setLink(`http://localhost:3000/registro/${id}`);
+>>>>>>> d7543f67662212994430768df3ef1683705d712b
         setLoading(false);
       } catch (err) {
         console.log("error:", err);
