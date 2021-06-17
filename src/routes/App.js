@@ -23,31 +23,13 @@ import NotFound from "../containers/NotFound";
 import NewWorker from "../containers/NewWorker";
 import Login from "../containers/Login";
 import ResetPassword from "../containers/ResetPassword";
-<<<<<<< HEAD
 import ProjectManagement from "../containers/ProjectManagement";
-=======
 import PastProject from "../containers/OnePastProject";
->>>>>>> d7543f67662212994430768df3ef1683705d712b
 
 // Components
 import PrivateRoute from "./PrivateRoute";
 
 const App = () => {
-<<<<<<< HEAD
-  return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Switch>
-          {/* Logs into App */}
-          <Route exact path={"/login"} component={Login} />
-          <Route exact path={"/reset-password"} component={ResetPassword} />
-          <Route exact path={"/registro/:id"} component={NewWorker} />
-          <Route
-            exact
-            path={"/gestion-de-proyecto/:id"}
-            component={ProjectManagement}
-          />
-=======
 	return (
 		<BrowserRouter>
 			<AuthProvider>
@@ -56,7 +38,11 @@ const App = () => {
 					<Route exact path={"/login"} component={Login} />
 					<Route exact path={"/reset-password"} component={ResetPassword} />
 					<Route exact path={"/registro/:id"} component={NewWorker} />
->>>>>>> d7543f67662212994430768df3ef1683705d712b
+					<Route
+            exact
+            path={"/gestion-de-proyecto/:id"}
+            component={ProjectManagement}
+          />
 
 					{/* Main Containers */}
 					<PrivateRoute exact path={["/", "/ofertas"]} component={Offers} />
