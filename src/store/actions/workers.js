@@ -33,7 +33,7 @@ export const fetchWorkers = () => {
   };
 };
 
-export const inviteWorker = async ({ categories, tags, expiration }) => {
+export const inviteWorker = async (categories, tags, expiration) => {
   return async (dispatch, getState) => {
     const token = getState().auth.idToken;
 
@@ -47,6 +47,11 @@ export const inviteWorker = async ({ categories, tags, expiration }) => {
           "Access-Control-Request-Method": "POST",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({
+          categories,
+          tags,
+          expiration,
+        }),
       },
     );
 

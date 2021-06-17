@@ -1,8 +1,10 @@
 // React
 import React, { useState } from 'react';
-import { Flex, Text, Box } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/react';
 import {
+  Flex,
+  Text,
+  Box,
+  Button,
   AlertDialog,
   AlertDialogBody,
   AlertDialogFooter,
@@ -11,29 +13,27 @@ import {
   AlertDialogOverlay,
 } from '@chakra-ui/react';
 
-// Actions
+// Icons
+import { MdContentCopy } from 'react-icons/md';
+
+// Custom
+import gsap from 'gsap';
 import { connect } from "react-redux";
 import { inviteWorker } from '../../store/actions/workers';
 
 // Components
 import MultipleSelectList from '../ui/MultipleSelectList';
-
-// Calendar
+import ErrorMessage from '../ui/ErrorMessage';
 import { Calendar } from 'react-multi-date-picker';
 import '../../assets/css/calendar.css';
-
-// Animation
-import gsap from 'gsap';
-
-// Icons
-import { MdContentCopy } from 'react-icons/md';
 
 const ShareLink = ({ categories, tags, inviteWorker }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [calendarValue, setCalendarValue] = useState();
-  const [link, setLink] = useState();
+  const [link, setLink] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const tl = gsap.timeline();
 
@@ -55,30 +55,22 @@ const ShareLink = ({ categories, tags, inviteWorker }) => {
     }
   };
 
-  const handleCalendar = (d) => {
-    setCalendarValue(d);
-  };
-
   const handleLink = async () => {
     if (calendarValue && selectedCategories.length > 0) {
       try {
         setLoading(true);
-        const id = await inviteWorker({
-          categories: selectedCategories,
-          tags: selectedTags,
-          expiration: new Date(
-            `${calendarValue.year} ${calendarValue.month.number} ${calendarValue.day}`,
-          ).getTime(),
-        });
-<<<<<<< HEAD
-        console.log(id);
+        setError(null)
+        const { year, month, day } = calendarValue
+        const id = await inviteWorker(
+          selectedCategories,
+          selectedTags,
+          new Date(`${year} ${month.number} ${day}`).getTime(),
+        );
         setLink(`${window.location.origin}/registro/${id}`);
-=======
-        setLink(`http://localhost:3000/registro/${id}`);
->>>>>>> d7543f67662212994430768df3ef1683705d712b
-        setLoading(false);
       } catch (err) {
-        console.log("error:", err);
+        console.log(err);
+        setError(true)
+      } finally {
         setLoading(false);
       }
     } else {
@@ -118,125 +110,131 @@ const ShareLink = ({ categories, tags, inviteWorker }) => {
 
   return (
     <Box>
-      <Box>
-        <Text mt={4} mb="10px">
-          Características de los trabajadores:
-        </Text>
-        <Flex flexDirection="row" mb={8}>
-          <MultipleSelectList
-            title="Categorias"
-            flex="1"
-            bg="dark"
-            mr={4}
-            current={selectedCategories}
-            values={categories}
-            onChange={handleCategories}
-          />
-          <MultipleSelectList
-            title="Etiquetas"
-            flex="1"
-            bg="dark"
-            current={selectedTags}
-            values={tags}
-            onChange={handleTags}
-          />
-        </Flex>
-        <Text mb="10px">Fecha de caducidad del enlace:</Text>
-        <Calendar
-          value={calendarValue}
-          minDate={new Date()}
-          weekDays={["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"]}
-          months={[
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Septiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre",
-          ]}
-          weekStartDayIndex={0}
-          className={"red bg-dark"}
-          locale={"es"}
-          onChange={handleCalendar}
+      {error && (
+        <ErrorMessage
+          title={"Ha ocurrido un error al crear el enlance"}
+          noMargin
+          mb={2}
+          onClose={() => setError(null)}
         />
-        <Flex
-          _hover={{ cursor: "pointer" }}
-          bg={"accent"}
-          borderRadius={8}
-          fontWeight="bold"
-          fontSize={16}
-          mt={8}
-          alignItems={"center"}
-          justifyContent="center"
-          px={4}
-          py={2}
-          onClick={handleLink}
-        >
-          {loading ? "Creando enlace..." : "Crear enlace"}
-        </Flex>
-        {link && (
-          <Box mt={4}>
-            <Button
-              size="md"
-              height="48px"
-              width="100%"
-              bg="translucid"
-              color="grey"
-              _focus={{ borderColor: "none" }}
-              onClick={handleClick}
+      )}
+      <Text mb={2}>
+        Propiedades de los trabajadores:
+      </Text>
+      <Flex flexDirection={"row"} mb={6}>
+        <MultipleSelectList
+          title={"Categorias"}
+          flex={1}
+          bg={"dark"}
+          mr={2}
+          current={selectedCategories}
+          values={categories}
+          onChange={handleCategories}
+        />
+        <MultipleSelectList
+          title={"Etiquetas"}
+          flex={1}
+          bg={"dark"}
+          current={selectedTags}
+          values={tags}
+          onChange={handleTags}
+        />
+      </Flex>
+      <Text mb={2}>Fecha de caducidad del enlace:</Text>
+      <Calendar
+        value={calendarValue}
+        minDate={new Date()}
+        weekDays={["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"]}
+        months={[
+          "Enero",
+          "Febrero",
+          "Marzo",
+          "Abril",
+          "Mayo",
+          "Junio",
+          "Julio",
+          "Agosto",
+          "Septiembre",
+          "Octubre",
+          "Noviembre",
+          "Diciembre",
+        ]}
+        weekStartDayIndex={0}
+        className={"red bg-dark"}
+        locale={"es"}
+        onChange={(d) => setCalendarValue(d)}
+      />
+      <Flex
+        _hover={{ cursor: "pointer" }}
+        bg={"accent"}
+        borderRadius={8}
+        fontWeight="bold"
+        fontSize={16}
+        mt={8}
+        alignItems={"center"}
+        justifyContent={"center"}
+        px={4}
+        py={2}
+        onClick={handleLink}
+      >
+        {loading ? "Creando enlace..." : "Crear enlace"}
+      </Flex>
+      {link && (
+        <Box mt={4}>
+          <Button
+            size="md"
+            height="48px"
+            width="100%"
+            bg="translucid"
+            color="grey"
+            _focus={{ borderColor: "none" }}
+            onClick={handleClick}
+          >
+            <Flex
+              w="100%"
+              justifyContent="center"
+              alignContent="center"
+              position="relative"
             >
-              <Flex
-                w="100%"
-                justifyContent="center"
-                alignContent="center"
-                position="relative"
-              >
-                <Text w="100%" fontSize={12}>
-                  {link}
+              <Text w="100%" fontSize={12}>
+                {link}
+              </Text>
+              <MdContentCopy />
+              <Text position="absolute" id="msg" opacity={0} mt={2}>
+                Enlace copiado!
+              </Text>
+            </Flex>
+          </Button>
+        </Box>
+      )}
+      <AlertDialog isOpen={isOpen}>
+        <AlertDialogOverlay>
+          <AlertDialogContent bg="darkLight">
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Error
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              <Flex flexDirection="column">
+                <Text>
+                  {selectedCategories.length <= 0 &&
+                    "Debes seleccionar al menos una categoría."}
                 </Text>
-                <MdContentCopy />
-                <Text position="absolute" id="msg" opacity={0} mt={2}>
-                  Enlace copiado!
+                <Text>
+                  {!calendarValue &&
+                    "Debes seleccionar una fecha de caducidad para el enlace."}
                 </Text>
               </Flex>
-            </Button>
-          </Box>
-        )}
-        <AlertDialog isOpen={isOpen}>
-          <AlertDialogOverlay>
-            <AlertDialogContent bg="darkLight">
-              <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                Error
-              </AlertDialogHeader>
+            </AlertDialogBody>
 
-              <AlertDialogBody>
-                <Flex flexDirection="column">
-                  <Text>
-                    {selectedCategories.length <= 0 &&
-                      "Debes seleccionar al menos una categoría."}
-                  </Text>
-                  <Text>
-                    {!calendarValue &&
-                      "Debes seleccionar una fecha de caducidad para el enlace."}
-                  </Text>
-                </Flex>
-              </AlertDialogBody>
-
-              <AlertDialogFooter>
-                <Button bg="translucid" onClick={() => setIsOpen(false)}>
-                  Aceptar
-                </Button>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialogOverlay>
-        </AlertDialog>
-      </Box>
+            <AlertDialogFooter>
+              <Button bg="translucid" onClick={() => setIsOpen(false)}>
+                Aceptar
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Box>
   );
 };
