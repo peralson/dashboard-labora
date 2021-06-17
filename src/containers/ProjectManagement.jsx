@@ -11,7 +11,7 @@ import useManagement from "../hooks/useManagement";
 const ProjectManagement = ({ match }) => {
   const { id } = match.params;
   
-  const [projectData, setProjectData] = useState(true);
+  const [projectData, setProjectData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -23,7 +23,13 @@ const ProjectManagement = ({ match }) => {
   return (
     <>
       <TopMain pb={4}>
-        <Flex maxW={"800px"} justifyContent={"space-between"} alignItems={"center"} mx={"auto"} px={4}>
+        <Flex
+          maxW={"800px"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          mx={"auto"}
+          px={4}
+        >
           <Image src={Logo} alt="Logo de Labora" w="120px" />
           <Text
             bg={"accent"}
@@ -45,7 +51,16 @@ const ProjectManagement = ({ match }) => {
         </Text>
         {loading && <Text>Cargando proyecto...</Text>}
         {error && <Text>Ha ocurrido un error: {error}</Text>}
-        {!loading && !error && <Flex>{projectData.id}</Flex>}
+        {!loading && !error && (
+          <Box>
+            <Text fontSize={19} color={"primary"}>
+              Gestión laboral
+            </Text>
+            <Text fontWeight={"bold"} fontSize={24}>
+              {projectData.projectData.name}
+            </Text>
+          </Box>
+        )}
       </Box>
     </>
   );

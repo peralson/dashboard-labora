@@ -4,13 +4,13 @@ import { useAuth } from "../context/AuthContext";
 import PageGrid from "../components/main/PageGrid";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const { currentUser } = useAuth();
+  const { currentUser, idToken } = useAuth();
 
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (currentUser) {
+        if (currentUser && idToken) {
           return (
             <PageGrid>
               <Component {...props} />
@@ -20,7 +20,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
           return <Redirect to="/login" />;
         }
       }}
-    ></Route>
+    />
   );
 };
 

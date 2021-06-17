@@ -1,6 +1,5 @@
 import React, { useContext, createContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
-import { useDispatch } from "react-redux";
 import { setAuthData } from "../store/actions/auth";
 
 const AuthContext = createContext();
@@ -11,8 +10,8 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
+  const [idToken, setIdToken] = useState();
   const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
 
   function login(email, password) {
     return auth.signInWithEmailAndPassword(email, password);
@@ -34,13 +33,19 @@ export function AuthProvider({ children }) {
     return currentUser.updatePassword(password);
   }
 
+  async function getIdTokenFromUser(user) {
+    return await user.getIdToken();
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      user
-        .getIdToken()
-        .then((idToken) => dispatch(setAuthData(idToken)))
-        .then(() => setCurrentUser(user))
-        .finally(() => setLoading(false));
+      setCurrentUser(user);
+      if (user) {
+        const token = getIdTokenFromUser(user);
+        setIdToken(token);
+        setAuthData(token);
+      }
+      setLoading(false);
     });
 
     return unsubscribe;
@@ -49,6 +54,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    idToken,
     login,
     logout,
     resetPassword,
