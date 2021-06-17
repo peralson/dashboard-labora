@@ -2,19 +2,21 @@ import React, { useContext } from "react";
 import { Flex, Text } from "@chakra-ui/layout";
 
 // Context
-import { SelectedItemIndie } from "../../context/SelectedItemContext";
+import {
+  SelectedItemManage,
+  SelectedManageSide,
+} from '../../context/SelectedItemContext';
 
 // Components
 import CustomImg from './CustomImg'
 
 const OneOfferJob = ({ job }) => {
-  const {
-    selectedItemIndie,
-    setSelectedItemIndie
-  } = useContext(SelectedItemIndie);
+  const { selectedItemManage, setSelectedItemManage } =
+    useContext(SelectedItemManage);
+  const { setSelectedManageSide } = useContext(SelectedManageSide);
 
-  const isActive = selectedItemIndie && selectedItemIndie.id === job.id;
-
+  const isActive = selectedItemManage && selectedItemManage.id === job.id;
+  console.log('job: ', job)
   return (
     <Flex
       _hover={{ borderColor: "white" }}
@@ -27,11 +29,15 @@ const OneOfferJob = ({ job }) => {
       p={4}
       flexDirection={"column"}
       alignItems={"center"}
-      onClick={() =>
-        isActive
-          ? setSelectedItemIndie(null)
-          : setSelectedItemIndie(job)
-      }
+      onClick={() => {
+        if (isActive) {
+          setSelectedItemManage(null);
+          setSelectedManageSide(null);
+        } else {
+          setSelectedItemManage(job);
+          setSelectedManageSide("Job");
+        }
+      }}
     >
       <CustomImg
         image={job.worker.workerData.images.main}

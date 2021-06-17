@@ -36,7 +36,7 @@ export const fetchAllContracts = () => {
 
 export const fetchContract = async (offerId) => {
   return async (dispatch, getState) => {
-    const token = getState().auth.idToken;
+    // const token = getState().auth.idToken;
 
     const response = await fetch(
       `https://us-central1-partime-60670.cloudfunctions.net/api/contract/${offerId}?type=offer`,
@@ -44,7 +44,7 @@ export const fetchContract = async (offerId) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${token}`,
+          // "Authorization": `Bearer ${token}`,
         },
       }
     );
@@ -60,7 +60,7 @@ export const fetchContract = async (offerId) => {
 
 export const fetchWorkerContract = async ({ offerId, userId }) => {
   return async (dispatch, getState) => {
-    const token = getState().auth.idToken;
+    // const token = getState().auth.idToken;
 
     const response = await fetch(
       `https://us-central1-partime-60670.cloudfunctions.net/api/contract/company/${offerId}/${userId}`,
@@ -68,7 +68,7 @@ export const fetchWorkerContract = async ({ offerId, userId }) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${token}`,
+          // "Authorization": `Bearer ${token}`,
         },
       }
     );

@@ -30,6 +30,7 @@ import LegalSide from "../components/ui/LegalSide";
 import TopHeaderBar from "../components/ui/TopHeaderBar";
 import BeCurious from "../components/ui/BeCurious";
 import OfferCostsSide from "../components/ui/OfferCostsSide";
+import JobSide from "../components/ui/JobSide";
 
 const ManageOffer = ({ match, history, pastProjects }) => {
 	const { id } = match.params;
@@ -138,10 +139,9 @@ const ManageOffer = ({ match, history, pastProjects }) => {
 									columnGap={4}
 									rowGap={4}
 								>
-									{/* {offer.offerJobs.map((job) => (
-                  <OneOfferJob key={job.id} job={job} />
-                ))} */}
-									<Text>offerjob</Text>
+									{offer.offerJobs.map((job) => (
+										<OneOfferJob key={job.id} job={job} />
+									))}
 								</Grid>
 							</>
 						)}
@@ -165,12 +165,10 @@ const ManageOffer = ({ match, history, pastProjects }) => {
 								<ScheduleSide schedules={offer.offerData.schedule} />
 							)}
 							{selectedManageSide === "Costes" && (
-								<OfferCostsSide offer={offer}/>
-
+								<OfferCostsSide offer={offer} />
 							)}
 							{selectedManageSide === "Job" && (
-								// <PastProjectCostsSide data={project}/>
-								<Text>Job</Text>
+								<JobSide data={selectedItemManage} />
 							)}
 							{!selectedManageSide && (
 								<BeCurious
@@ -179,30 +177,6 @@ const ManageOffer = ({ match, history, pastProjects }) => {
 									}
 								/>
 							)}
-
-							{/* {!selectedItemIndie && (
-              <BeCurious
-                text={
-                  'Selecciona alguna solicitud o característica de esta oferta'
-                }
-              />
-            )}
-            {selectedItemIndie && selectedItemIndie === 'Legal' && (
-              <LegalSide
-                id={id}
-                salary={formattedSalary(offer.offerData.salary) + '€'}
-                extraSalary={formattedSalary(offer.offerData.extraSalary) + '€'}
-                extras={offer.offerData.extras}
-              />
-            )}
-            {selectedItemIndie && selectedItemIndie === 'Horario' && (
-              <ScheduleSide schedules={offer.offerData.schedule} />
-            )}
-            {selectedItemIndie && selectedItemIndie.id && (
-              <JobSide
-                data={{ ...selectedItemIndie, offerName: offer.offerData.name }}
-              />
-            )} */}
 						</SideBoxContainer>
 					</SideSticky>
 				</Side>
