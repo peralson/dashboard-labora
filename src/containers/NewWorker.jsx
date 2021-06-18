@@ -1,122 +1,170 @@
 // React
-import React, { useState } from 'react';
-import { Grid, Box, Flex, Image, Text } from '@chakra-ui/react';
+import React, { useState, useEffect } from "react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 
 // Assets
-import Logo from '../assets/img/Logo.png';
+import Logo from "../assets/img/Logo.png";
 
 // Libs
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { newWorker } from '../store/actions/workers';
+import { useFormik } from "formik";
+
+// Redux
+import { connect } from "react-redux";
+import { checkLink } from "../store/actions/workers";
+import { registerWorker } from "../store/actions/workers";
 
 // Components
-import CustomInput from '../components/new/CustomInput';
+import RegisterForm from "../components/new/worker/RegisterForm";
+import WorkerContactForm from "../components/new/worker/WorkerContactForm";
+import WorkerPersonalForm from "../components/new/worker/WorkerPersonalForm";
+import WorkerImagesForm from "../components/new/worker/WorkerImagesForm";
 
-const NewWorker = () => {
-  const [isLoading, setIsLoading] = useState(false);
+const NewWorker = ({ match, checkLink, registerWorker }) => {
+	const { id } = match.params;
+	const [loadingPage, setLoadingPage] = useState(true);
+	const [check, setCheck] = useState();
+	const [process, setProcess] = useState(1);
+	const [uid, setUid] = useState();
+	const [name, setName] = useState();
+	const [email, setEmail] = useState();
+	const [loading, setLoading] = useState(false);
 
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      email: '',
-      password: '',
-    },
-    validationSchema: Yup.object().shape({
-      name: Yup.string()
-        .min(3, 'Demasiado corto, debe tener al menos 3 caracteres')
-        .max(50, 'Demasiado largo!')
-        .required('Campo obligatorio'),
-      password: Yup.string()
-        .min(6, 'Demasiado corta, debe tener al menos 6 caracteres')
-        .max(50, 'Demasiado largo!')
-        .required('Campo obligatorio'),
-      email: Yup.string()
-        .email('Correo invalido')
-        .required('Campo obligatorio'),
-    }),
-    onSubmit: async (values) => {
-      setIsLoading(true);
-      try {
-        await newWorker({
-          name: values.name,
-          password: values.password,
-          email: values.email,
-        });
-      } catch (err) {
-        console.log('error:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-  });
+	useEffect(() => {
+		const loadCheck = async () => {
+			setLoadingPage(true);
+			setCheck(await checkLink(id));
+			setLoadingPage(false);
+		};
+		loadCheck();
+	}, [id, checkLink]);
 
-  return (
-    <Flex
-      display='flex'
-      justifyContent='center'
-      width={'100vw'}
-      px={6}
-      mx={'auto'}
-    >
-      <Flex
-        maxW='400px'
-        w='100%'
-        mt={8}
-        flexDirection='column'
-        alignItems='center'
-      >
-        <Box mb='8'>
-          <Image src={Logo} alt='Logo de Labora' w='120px' />
-        </Box>
-        <Text>Has sido invitado por la empresa Clapfy como camarero</Text>
-        <Grid w={'100%'} mx={'auto'} rowGap={4} my={4}>
-          <CustomInput
-            title={'Nombre'}
-            placeholder={'Nombre completo'}
-            onChange={formik.handleChange('name')}
-            value={formik.values.name}
-          />
-          {formik.errors.name && formik.touched.name ? (
-            <Text color='red' fontSize={14}>{formik.errors.name}</Text>
-          ) : null}
-          <CustomInput
-            title={'Email'}
-            placeholder={'Correo electrónico'}
-            onChange={formik.handleChange('email')}
-            value={formik.values.email}
-          />
-          {formik.errors.email && formik.touched.email ? (
-            <Text color='red' fontSize={14}>{formik.errors.email}</Text>
-          ) : null}
-          <CustomInput
-            title={'Contraseña'}
-            placeholder={'Contraseña'}
-            onChange={formik.handleChange('password')}
-            value={formik.values.password}
-          />
-          {formik.errors.password && formik.touched.password ? (
-            <Text color='red' fontSize={14}>{formik.errors.password}</Text>
-          ) : null}
-          <Flex
-            _hover={{ cursor: 'pointer' }}
-            bg={'accent'}
-            borderRadius={8}
-            fontWeight='bold'
-            fontSize={16}
-            mt={4}
-            alignItems={'center'}
-            justifyContent='center'
-            px={4}
-            py={2}
-            onClick={formik.submitForm}
-          >
-            {isLoading ? 'Cargando...' : 'Registrarse'}
-          </Flex>
-        </Grid>
-      </Flex>
-    </Flex>
-  );
+	const formik = useFormik({
+		initialValues: {
+			birthday: null,
+			contact: {
+				phoneNumber: null,
+				location: {
+					address: null,
+					lat: null,
+					lng: null,
+				},
+			},
+			gender: "",
+			bio: "",
+			images: {
+				main: null,
+				profesional: null,
+			},
+		},
+		onSubmit: async (values) => {
+			setLoading(true);
+			try {
+				const reg = await registerWorker({
+					workerData: values,
+					name: name,
+					email: email,
+					uid: uid,
+					listed: check.id_company,
+					categories: check.categories,
+					tags: check.tags,
+				});
+				console.log("respuesta:", reg);
+				// handleProcess(3);
+			} catch (err) {
+				console.log("error:", err);
+			} finally {
+				setLoading(false);
+			}
+		},
+	});
+
+	const title = () => {
+		//name = getCompany(check.id_company)
+		let msg = `Has sido invitado por la empresa [name] a `;
+		if (check.categories.length > 1) {
+			msg += "sus listas de ";
+		} else {
+			msg += "su lista de ";
+		}
+		check.categories.forEach((cat) => {
+			if (check.categories.indexOf(cat) === 0) {
+				msg += `${cat}`;
+			} else {
+				if (check.categories.indexOf(cat) === check.categories.length - 1) {
+					msg += ` y ${cat}`;
+				} else {
+					msg += `, ${cat}`;
+				}
+			}
+		});
+		return msg;
+	};
+
+	return (
+		<Flex
+			display="flex"
+			justifyContent="center"
+			width={"100vw"}
+			px={6}
+			mx={"auto"}
+		>
+			<Flex
+				maxW={process ? "800px" : "400px"}
+				w="100%"
+				mt={8}
+				flexDirection="column"
+				alignItems="center"
+			>
+				<Box mb="8">
+					<Image src={Logo} alt="Logo de Labora" w="120px" />
+				</Box>
+				{loadingPage ? (
+					<Text>Cargando...</Text>
+				) : check === 404 ? (
+					<Text>Enlace incorrecto</Text>
+				) : check === 401 ? (
+					<Text>Este enlace ha caducado</Text>
+				) : (
+					<Flex flexDirection="column">
+						{process === 1 ? (
+							<Flex flexDirection="column">
+								<Text>{title()}</Text>
+								<RegisterForm
+									handleProcess={setProcess}
+									handleUid={setUid}
+									handleName={setName}
+									handleEmail={setEmail}
+									formik={formik}
+								/>
+							</Flex>
+						) : process === 2 ? (
+							<WorkerContactForm
+								name={name}
+								email={email}
+								handleProcess={setProcess}
+								formik={formik}
+							/>
+						) : process === 3 ? (
+							<WorkerPersonalForm handleProcess={setProcess} formik={formik} />
+						) : process === 4 ? (
+							<WorkerImagesForm
+								handleProcess={setProcess}
+								formik={formik}
+								loading={loading}
+							/>
+						) : (
+							<Text>Algo salió mal :(</Text>
+						)}
+					</Flex>
+				)}
+			</Flex>
+		</Flex>
+	);
 };
 
-export default NewWorker;
+const mapDispatchToProps = {
+	checkLink,
+	registerWorker,
+};
+
+export default connect(null, mapDispatchToProps)(NewWorker);
