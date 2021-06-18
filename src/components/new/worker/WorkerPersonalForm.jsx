@@ -1,14 +1,25 @@
 import React from "react";
-import { Flex, Grid } from "@chakra-ui/react";
+import { Flex, Text, Grid } from "@chakra-ui/react";
 
 // Components
 import CustomInput from "../CustomInput";
-import SideTitle from "../../ui/SideTitle"
+import SideTitle from "../../ui/SideTitle";
+import SelectList from "../../ui/SelectList";
+import { Calendar } from "react-multi-date-picker";
+import "../../../assets/css/calendar.css";
 
 const WorkerPersonalForm = ({ handleProcess, formik }) => {
+	const handleCalendarValue = (d) => {
+		const { year, month, day } = d;
+		formik.setFieldValue(
+			"birthday",
+			new Date(`${year} ${month.number} ${day}`).getTime()
+		);
+	};
+
 	return (
-		<Flex flexDirection="column">
-      <SideTitle>Información personal</SideTitle>
+		<Flex flexDirection="column" w="800px">
+			<SideTitle>Información personal</SideTitle>
 			<Grid
 				w={"100%"}
 				mx={"auto"}
@@ -17,25 +28,50 @@ const WorkerPersonalForm = ({ handleProcess, formik }) => {
 				templateColumns={"1fr 1fr"}
 				columnGap={4}
 			>
-				<CustomInput
-					title={"Fecha de Nacimiento"}
-					placeholder={"Fecha de nacimiento"}
-					onChange={formik.handleChange("birthday")}
-					value={formik.values.birthday}
-				/>
-
-				<CustomInput
-					title={"Género"}
-					placeholder={"Género"}
-					onChange={formik.handleChange("gender")}
-					value={formik.values.gender}
-				/>
-				<CustomInput
-					title={"Descripción"}
-					placeholder={"Descripción"}
-					onChange={formik.handleChange("bio")}
-					value={formik.values.bio}
-				/>
+				<Flex flexDirection="column">
+					<Text fontWeight={"bold"} lineHeight={2} mb={2}>Fecha de nacimiento</Text>
+					<Calendar
+						value={formik.values.birthday}
+						minDate={new Date(1900, 1, 1)}
+						weekDays={["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"]}
+						months={[
+							"Enero",
+							"Febrero",
+							"Marzo",
+							"Abril",
+							"Mayo",
+							"Junio",
+							"Julio",
+							"Agosto",
+							"Septiembre",
+							"Octubre",
+							"Noviembre",
+							"Diciembre",
+						]}
+						weekStartDayIndex={0}
+						className={"red bg-dark"}
+						locale={"es"}
+						onChange={(d) => handleCalendarValue(d)}
+					/>
+				</Flex>
+				<Flex flexDirection="column">
+					<Text fontWeight={"bold"} lineHeight={2} mb={2}>Género</Text>
+					<SelectList
+          borderWidth={2}
+          borderColor={"darkLight"}
+						placeholder={formik.values.gender}
+						onChange={formik.handleChange("gender")}
+						values={["Hombre", "Mujer"]}
+						mb={4}
+					/>
+					<CustomInput
+						multiline
+						title={"Descripción"}
+						placeholder={"Descripción"}
+						onChange={formik.handleChange("bio")}
+						value={formik.values.bio}
+					/>
+				</Flex>
 			</Grid>
 			<Flex flexDirection="row" justifyContent="space-between">
 				<Flex

@@ -7,7 +7,7 @@ import SideTitle from "../../ui/SideTitle"
 
 const WorkerImagesForm = ({ handleProcess, formik, loading }) => {
 	return (
-		<Flex flexDirection="column">
+		<Flex flexDirection="column" w='800px'>
       <SideTitle>Imágenes de perfil</SideTitle>
 			<Grid
 				w={"100%"}

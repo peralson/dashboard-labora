@@ -1,20 +1,25 @@
 import React from "react";
-import { Flex, Grid } from "@chakra-ui/react";
+import { Flex, Grid, Text } from "@chakra-ui/react";
 
 // Components
 import TextInfo from "../../ui/TextInfo";
 import CustomInput from "../CustomInput";
-import SideTitle from "../../ui/SideTitle"
+import SideTitle from "../../ui/SideTitle";
+import DirectionPicker from "./DirectionPicker";
 
-const WorkerContactForm = ({
-	name,
-	email,
-	handleProcess,
-	formik,
-}) => {
+// ENV & GMaps
+import { GMAPS_LIBRARIES } from "../../../lib/Constants";
+import { useLoadScript } from "@react-google-maps/api";
+
+const WorkerContactForm = ({ name, email, handleProcess, formik }) => {
+	const { isLoaded, loadError } = useLoadScript({
+		googleMapsApiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+		libraries: GMAPS_LIBRARIES,
+	});
+
 	return (
-		<Flex flexDirection="column">
-      <SideTitle>Información de contacto</SideTitle>
+		<Flex flexDirection="column" w='800px'>
+			<SideTitle>Información de contacto</SideTitle>
 			<Grid
 				w={"100%"}
 				mx={"auto"}
@@ -25,20 +30,27 @@ const WorkerContactForm = ({
 			>
 				<TextInfo title="Nombre" info={name} />
 				<TextInfo title="Email" info={email} />
-        <CustomInput
+				<CustomInput
 					title={"Teléfono"}
 					placeholder={"Teléfono"}
 					onChange={formik.handleChange("contact.phoneNumber")}
 					value={formik.values.contact.phoneNumber}
 				/>
-				<CustomInput
-					title={"Dirección"}
-					placeholder={"Dirección"}
-					onChange={formik.handleChange("contact.location.address")}
-					value={formik.values.contact.location.address}
-				/>
+				{!isLoaded ? (
+					<Text>Cargando...</Text>
+				) : loadError ? (
+					<Text>Ha ocurrido un error</Text>
+				) : (
+					<DirectionPicker
+						title={"Dirección"}
+						onChangeAddress={formik.handleChange("contact.location.address")}
+						onChangeLat={formik.handleChange("contact.location.lat")}
+						onChangeLng={formik.handleChange("contact.location.lng")}
+						placeholder={formik.values.contact.location.address}
+					/>
+				)}
 			</Grid>
-			<Flex flexDirection="row" justifyContent='flex-end'>
+			<Flex flexDirection="row" justifyContent="flex-end">
 				<Flex
 					_hover={{ cursor: "pointer" }}
 					bg={"accent"}
