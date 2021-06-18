@@ -455,8 +455,8 @@ export const editSingleOffer = (project, state) => {
 	};
 };
 
-export const fetchChecks = async({ jobId }) => {
-
+export const fetchChecks = ({ jobId }) => {
+  return async (dispatch, getState) => {
 		const response = await fetch(
 			`https://us-central1-partime-60670.cloudfunctions.net/api/job/checkData/${jobId}`,
 			{
@@ -476,7 +476,7 @@ export const fetchChecks = async({ jobId }) => {
 		return {
 			info: { checkins: info.body.check_in, checkouts: info.body.check_out },
 		};
-	
+  };
 };
 
 const formattedSchedule = (schedule) => {

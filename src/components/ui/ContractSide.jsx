@@ -5,6 +5,7 @@ import { Flex, Box, Text } from '@chakra-ui/layout';
 import { formattedSalary } from '../../lib/formattedSalary';
 
 // Redux & Actions
+import { connect } from "react-redux";
 import { fetchContract } from '../../store/actions/contracts';
 
 // Components
@@ -12,7 +13,7 @@ import Separator from './Separator';
 import SideTitle from './SideTitle';
 import FlexText from './FlexText';
 
-const ContractSide = ({ data }) => {
+const ContractSide = ({ data, fetchContract }) => {
   const [link, setLink] = useState();
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const ContractSide = ({ data }) => {
       setLink(await fetchContract(data.offerData.id));
     };
     getLink();
-  }, [data.offerData.id]);
+  }, [data.offerData.id, fetchContract]);
 
   return (
     <Box>
@@ -102,4 +103,11 @@ const ContractSide = ({ data }) => {
   );
 };
 
-export default ContractSide;
+const mapDispatchToProps = {
+	fetchContract
+};
+
+const mapStateToProps = () => {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContractSide);
+

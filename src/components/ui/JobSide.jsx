@@ -5,6 +5,7 @@ import { Flex, Box, Text } from "@chakra-ui/layout";
 import "moment/locale/es";
 
 // Redux & Actions
+import { connect } from "react-redux";
 import { fetchWorkerContract } from "../../store/actions/contracts";
 import { fetchWorkerPayroll } from "../../store/actions/payrolls";
 import { fetchChecks } from "../../store/actions/projects";
@@ -17,7 +18,12 @@ import Separator from "./Separator";
 import ErrorMessage from "./ErrorMessage";
 import DateTag from "./DateTag";
 
-const JobSide = ({ data }) => {
+const JobSide = ({
+	data,
+	fetchChecks,
+	fetchWorkerPayroll,
+	fetchWorkerContract,
+}) => {
 	const [error, setError] = useState(null);
 	const [contractLink, setContractLink] = useState();
 	const [payrollLink, setPayrollLink] = useState();
@@ -27,17 +33,23 @@ const JobSide = ({ data }) => {
 	useEffect(() => {
 		const getInfo = async () => {
 			setLoading(true);
-			// setContractLink(
-			// 	await fetchWorkerContract({ offerId: data.id, userId: data.worker.id })
-			// );
-			// setPayrollLink(
-			// 	await fetchWorkerPayroll({ offerId: data.id, userId: data.worker.id })
-			// );
+			setContractLink(
+				await fetchWorkerContract({ offerId: data.id, userId: data.worker.id })
+			);
+			setPayrollLink(
+				await fetchWorkerPayroll({ offerId: data.id, userId: data.worker.id })
+			);
 			setChecks(await fetchChecks({ jobId: data.id }));
 			setLoading(false);
 		};
 		getInfo();
-	}, [data.id, data.worker.id]);
+	}, [
+		data.id,
+		data.worker.id,
+		fetchChecks,
+		fetchWorkerPayroll,
+		fetchWorkerContract,
+	]);
 
 	return (
 		<Box>
@@ -105,13 +117,13 @@ const JobSide = ({ data }) => {
 						<Flex flexDirection="row">
 							{checks.info.checkins.length > 0 && (
 								<Flex flexDirection="column" flex={1} mr={1}>
-									<SideTitle textAlign='center'>Checkin</SideTitle>
+									<SideTitle textAlign="center">Checkin</SideTitle>
 									<DateTag dates={checks.info.checkins} />
 								</Flex>
 							)}
 							{checks.info.checkouts.length > 0 && (
 								<Flex flexDirection="column" flex={1} ml={1}>
-									<SideTitle textAlign='center'>Checkout</SideTitle>
+									<SideTitle textAlign="center">Checkout</SideTitle>
 									<DateTag dates={checks.info.checkouts} />
 								</Flex>
 							)}
@@ -177,4 +189,12 @@ const JobSide = ({ data }) => {
 	);
 };
 
-export default JobSide;
+const mapDispatchToProps = {
+	fetchChecks,
+	fetchWorkerPayroll,
+	fetchWorkerContract,
+};
+
+const mapStateToProps = () => {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(JobSide);

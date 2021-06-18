@@ -57,8 +57,8 @@ export const fetchPayroll = async (jobId) => {
 	};
 };
 
-export const fetchWorkerPayroll = async ({ offerId, userId }) => {
-
+export const fetchWorkerPayroll = ({ offerId, userId }) => {
+	return async (dispatch, getState) => {
 		// const token = getState().auth.idToken;
 
 		const response = await fetch(
@@ -78,5 +78,5 @@ export const fetchWorkerPayroll = async ({ offerId, userId }) => {
 		const link = await response.json();
 
 		return link.body;
-
+	};
 };
