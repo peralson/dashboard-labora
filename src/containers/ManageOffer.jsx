@@ -26,7 +26,7 @@ import SideSelectorPastProject from "../components/ui/SideSelectorPastProject";
 import OneOfferJob from "../components/ui/OneOfferJob";
 import TextInfo from "../components/ui/TextInfo";
 import ScheduleSide from "../components/ui/ScheduleSide";
-import LegalSide from "../components/ui/LegalSide";
+import PastOfferLegalSide from "../components/ui/PastOfferLegalSide";
 import TopHeaderBar from "../components/ui/TopHeaderBar";
 import BeCurious from "../components/ui/BeCurious";
 import OfferCostsSide from "../components/ui/OfferCostsSide";
@@ -152,14 +152,7 @@ const ManageOffer = ({ match, history, pastProjects }) => {
 						<Documentation />
 						<SideBoxContainer>
 							{selectedManageSide === "Legal" && (
-								<LegalSide
-									id={id}
-									salary={formattedSalary(offer.offerData.salary) + "€"}
-									extraSalary={
-										formattedSalary(offer.offerData.extraSalary) + "€"
-									}
-									extras={offer.offerData.extras}
-								/>
+								<PastOfferLegalSide offerId={offer.id} />
 							)}
 							{selectedManageSide === "Horario" && (
 								<ScheduleSide schedules={offer.offerData.schedule} />

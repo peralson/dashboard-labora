@@ -33,7 +33,7 @@ export const fetchPayrolls = () => {
 	};
 };
 
-export const fetchPayroll = async (jobId) => {
+export const fetchPayroll = (jobId) => {
 	return async (dispatch, getState) => {
 		// const token = getState().auth.idToken;
 

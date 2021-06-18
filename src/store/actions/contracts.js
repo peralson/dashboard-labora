@@ -81,3 +81,27 @@ export const fetchWorkerContract = ({ offerId, userId }) => {
 		return link.body;
 	};
 };
+
+export const fetchContractsZip = (offerId) => {
+	return async (dispatch, getState) => {
+		// const token = getState().auth.idToken;
+
+		const response = await fetch(
+			`https://us-central1-partime-60670.cloudfunctions.net/api/contract/batchDocs/${offerId}`,
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+					// "Authorization": `Bearer ${token}`,
+				},
+			}
+		);
+
+		if (!response.ok && response.status === 404) return null;
+		if (!response.ok) throw new Error("Ha ocurrido un error.");
+
+		const link = await response.json();
+
+		return link.body;
+	};
+};
