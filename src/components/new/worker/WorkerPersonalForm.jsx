@@ -29,7 +29,9 @@ const WorkerPersonalForm = ({ handleProcess, formik }) => {
 				columnGap={4}
 			>
 				<Flex flexDirection="column">
-					<Text fontWeight={"bold"} lineHeight={2} mb={2}>Fecha de nacimiento</Text>
+					<Text fontWeight={"bold"} lineHeight={2} mb={2}>
+						Fecha de nacimiento
+					</Text>
 					<Calendar
 						value={formik.values.birthday}
 						minDate={new Date(1900, 1, 1)}
@@ -55,10 +57,12 @@ const WorkerPersonalForm = ({ handleProcess, formik }) => {
 					/>
 				</Flex>
 				<Flex flexDirection="column">
-					<Text fontWeight={"bold"} lineHeight={2} mb={2}>Género</Text>
+					<Text fontWeight={"bold"} lineHeight={2} mb={2}>
+						Género
+					</Text>
 					<SelectList
-          borderWidth={2}
-          borderColor={"darkLight"}
+						borderWidth={2}
+						borderColor={"darkLight"}
 						placeholder={formik.values.gender}
 						onChange={formik.handleChange("gender")}
 						values={["Hombre", "Mujer"]}

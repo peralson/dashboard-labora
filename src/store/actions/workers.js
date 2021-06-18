@@ -130,15 +130,15 @@ export const registerWorker = ({
 	email,
 }) => {
 	return async (dispatch, getState) => {
-		// const token = getState().auth.idToken;
+		const token = getState().auth.idToken;
 		const response = await fetch(
-			"https://us-central1-partime-60670.cloudfunctions.net/api/auth/worker/newfer",
+			"https://us-central1-partime-60670.cloudfunctions.net/api/auth/worker/newUser",
 			{
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 					"Access-Control-Request-Headers": true,
-					// Authorization: `Bearer ${token}`,
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify({
 					name: name,
