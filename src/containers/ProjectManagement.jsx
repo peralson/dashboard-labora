@@ -1,24 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Flex, Text, Image } from "@chakra-ui/react";
+
+// Redux
+import { connect } from 'react-redux'
+import { fetchManagedProject } from '../store/actions/managedProject'
 
 // Assets
 import Logo from "../assets/img/Logo.png";
 
 // Components
 import TopMain from "../components/main/TopMain";
-import useManagement from "../hooks/useManagement";
 
-const ProjectManagement = ({ match }) => {
+const ProjectManagement = ({ match, managedProject, fetchManagedProject }) => {
   const { id } = match.params;
   
-  const [projectData, setProjectData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useManagement(id)
-    .then(data => setProjectData(data))
-    .catch(e => setError(e.message))
-    .finally(() => setLoading(false))
+  useEffect(() => {
+    (async () => {
+      setError(null);
+      try {
+        await fetchManagedProject(id);
+      } catch (error) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -32,10 +43,10 @@ const ProjectManagement = ({ match }) => {
         >
           <Image src={Logo} alt="Logo de Labora" w="120px" />
           <Text
-            bg={"accent"}
-            fontWeight={"bold"}
-            py={2}
+            bg={"accentLight"}
+            color={"accent"}
             px={3}
+            py={2}
             fontSize={14}
             borderRadius={8}
             cursor={"pointer"}
@@ -46,19 +57,27 @@ const ProjectManagement = ({ match }) => {
         </Flex>
       </TopMain>
       <Box maxW={"480px"} w={"100%"} mx={"auto"} mt={6} px={4}>
-        <Text fontWeight={"bold"} fontSize={24}>
-          Gestión laboral
-        </Text>
         {loading && <Text>Cargando proyecto...</Text>}
-        {error && <Text>Ha ocurrido un error: {error}</Text>}
+        {error && <Text>Ha ocurrido un error</Text>}
         {!loading && !error && (
           <Box>
-            <Text fontSize={19} color={"primary"}>
-              Gestión laboral
-            </Text>
-            <Text fontWeight={"bold"} fontSize={24}>
-              {projectData.projectData.name}
-            </Text>
+            {!!managedProject ? (
+              <>
+                <Text color={"primary"}>
+                  Gestión laboral
+                </Text>
+                <Text fontWeight={"bold"} fontSize={21}>
+                  {managedProject.projectData.name
+                    ? managedProject.projectData.name
+                    : managedProject.proyectOffers[0].offerData.name
+                  }
+                </Text>
+              </>
+            ) : (
+              <>
+                <Text>Este proyecto no tiene trabajos aún.</Text>
+              </>
+            )}
           </Box>
         )}
       </Box>
@@ -66,4 +85,14 @@ const ProjectManagement = ({ match }) => {
   );
 };
 
-export default ProjectManagement;
+const mapStateToProps = (state) => {
+  return {
+    managedProject: state.managedProject.managedProject,
+  };
+};
+
+const mapDispatchToProps = {
+  fetchManagedProject,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectManagement);

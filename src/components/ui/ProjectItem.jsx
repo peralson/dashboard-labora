@@ -13,7 +13,7 @@ import { SelectedItem } from '../../context/SelectedItemContext'
 
 // Components
 import DateTag from './DateTag';
-import Options from './Options';
+import OpenManagementMini from "./OpenManagementMini";
 import Remaining from './Remaining';
 import OfferItem from './OfferItem';
 import SelectList from './SelectList';
@@ -56,13 +56,9 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
 
   return (
     <Box borderWidth={2} borderColor={"darkLight"} borderRadius={20} p={4}>
-      <Flex alignItems={"center"} justifyContent={"space-between"} mb={2}>
+      <Flex justifyContent={"space-between"} mb={2}>
         <DateTag dates={dates} />
-        <Link
-          to={name ? `/ofertas/p/${id}` : `/ofertas/o/${projectOffers[0].id}`}
-        >
-          <Options>Más información</Options>
-        </Link>
+        <OpenManagementMini id={id} />
       </Flex>
       <Flex alignItems={"center"} justifyContent={"space-between"}>
         <Flex flexDirection={"column"} alignItems={"flex-start"} flex={1}>

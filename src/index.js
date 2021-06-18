@@ -20,6 +20,8 @@ import payrollsReducer from "./store/reducers/payrolls";
 import templatesReducer from "./store/reducers/templates";
 import tagsReducer from "./store/reducers/tags";
 import categoriesReducer from "./store/reducers/categories";
+import companyReducer from "./store/reducers/company";
+import managedProjectsReducer from "./store/reducers/managedProject";
 
 // App
 import App from './routes/App';
@@ -34,6 +36,8 @@ const rootReducer = combineReducers({
   templates: templatesReducer,
   tags: tagsReducer,
   categories: categoriesReducer,
+  company: companyReducer,
+  managedProject: managedProjectsReducer,
   firebase: firebaseReducer,
 });
 
