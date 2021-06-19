@@ -1,8 +1,8 @@
 import React from "react";
 import { Text, Flex, Box, Grid } from "@chakra-ui/react";
 
-const BlockContainer = ({ title, desc, children, cta, onClick }) => (
-  <Box mt={4} p={4}>
+const BlockContainer = ({ title, desc, children, cta, onClick, ...rest }) => (
+  <Box px={5} {...rest}>
     <Flex mb={2} alignItems={"center"} justifyContent={"space-between"}>
       <Text fontWeight={"bold"}>{title}</Text>
       {cta && onClick && (

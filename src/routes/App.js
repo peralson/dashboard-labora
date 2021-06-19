@@ -18,6 +18,7 @@ import EditOffer from "../containers/edit/EditOffer";
 import EditSingleOffer from "../containers/edit/EditSingleOffer";
 import EditProject from "../containers/edit/EditProject";
 import Company from "../containers/Company";
+import EditCompany from "../containers/edit/EditCompany";
 import ManageOffer from "../containers/ManageOffer";
 import NotFound from "../containers/NotFound";
 import NewWorker from "../containers/NewWorker";
@@ -30,64 +31,65 @@ import PastProject from "../containers/OnePastProject";
 import PrivateRoute from "./PrivateRoute";
 
 const App = () => (
-	<BrowserRouter>
-		<AuthProvider>
-			<Switch>
-				{/* Logs into App */}
-				<Route exact path={"/login"} component={Login} />
-				<Route exact path={"/reset-password"} component={ResetPassword} />
-				<Route exact path={"/registro/:id"} component={NewWorker} />
-				<Route
-					exact
-					path={"/gestion-de-proyecto/:id"}
-					component={ProjectManagement}
-				/>
+  <BrowserRouter>
+    <AuthProvider>
+      <Switch>
+        {/* Logs into App */}
+        <Route exact path={"/login"} component={Login} />
+        <Route exact path={"/reset-password"} component={ResetPassword} />
+        <Route exact path={"/registro/:id"} component={NewWorker} />
+        <Route
+          exact
+          path={"/gestion-de-proyecto/:id"}
+          component={ProjectManagement}
+        />
 
-				{/* Main Containers */}
-				<PrivateRoute exact path={["/", "/ofertas"]} component={Offers} />
-				<PrivateRoute
-					exact
-					path={"/ofertas/nueva-oferta"}
-					component={NewOffer}
-				/>
-				<PrivateRoute
-					exact
-					path={"/ofertas/nuevo-proyecto"}
-					component={NewProject}
-				/>
-				<PrivateRoute exact path={"/ofertas/o/:id"} component={Offer} />
-				<PrivateRoute
-					exact
-					path={"/ofertas/o/edit/:id"}
-					component={EditOffer}
-				/>
-				<PrivateRoute
-					exact
-					path={"/ofertas/o/edit-single/:id"}
-					component={EditSingleOffer}
-				/>
-				<PrivateRoute exact path={"/ofertas/p/:id"} component={Project} />
-				<PrivateRoute
-					exact
-					path={"/ofertas/p/edit/:id"}
-					component={EditProject}
-				/>
-				<PrivateRoute
-					exact
-					path={"/ofertas/p/:id/nueva-oferta"}
-					component={NewProjectOffer}
-				/>
-				<PrivateRoute exact path={"/trabajadores"} component={Workers} />
-				<PrivateRoute exact path={"/gestion"} component={Manage} />
-				<PrivateRoute exact path={"/gestion/o/:id"} component={ManageOffer} />
-				<PrivateRoute exact path={"/gestion/p/:id"} component={PastProject} />
-				<PrivateRoute exact path="/empresa" component={Company} />
+        {/* Main Containers */}
+        <PrivateRoute exact path={["/", "/ofertas"]} component={Offers} />
+        <PrivateRoute
+          exact
+          path={"/ofertas/nueva-oferta"}
+          component={NewOffer}
+        />
+        <PrivateRoute
+          exact
+          path={"/ofertas/nuevo-proyecto"}
+          component={NewProject}
+        />
+        <PrivateRoute exact path={"/ofertas/o/:id"} component={Offer} />
+        <PrivateRoute
+          exact
+          path={"/ofertas/o/edit/:id"}
+          component={EditOffer}
+        />
+        <PrivateRoute
+          exact
+          path={"/ofertas/o/edit-single/:id"}
+          component={EditSingleOffer}
+        />
+        <PrivateRoute exact path={"/ofertas/p/:id"} component={Project} />
+        <PrivateRoute
+          exact
+          path={"/ofertas/p/edit/:id"}
+          component={EditProject}
+        />
+        <PrivateRoute
+          exact
+          path={"/ofertas/p/:id/nueva-oferta"}
+          component={NewProjectOffer}
+        />
+        <PrivateRoute exact path={"/trabajadores"} component={Workers} />
+        <PrivateRoute exact path={"/gestion"} component={Manage} />
+        <PrivateRoute exact path={"/gestion/o/:id"} component={ManageOffer} />
+        <PrivateRoute exact path={"/gestion/p/:id"} component={PastProject} />
+        <PrivateRoute exact path={"/empresa"} component={Company} />
+        <PrivateRoute exact path={"/empresa/editar"} component={EditCompany} />
 
-				{/* Other Routes */}
-				<Route component={NotFound} />
-			</Switch>
-		</AuthProvider>
-	</BrowserRouter>
+        {/* Other Routes */}
+        <Route component={NotFound} />
+      </Switch>
+    </AuthProvider>
+  </BrowserRouter>
 );
 
 export default App;

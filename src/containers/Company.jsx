@@ -38,21 +38,15 @@ const Company = ({ company, fetchCompany }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  console.log(company);
-
   return (
     <SelectedCompany.Provider value={{ value, setValue }}>
       <Main>
         <TopMain>
           <TopHeaderBar>
-            Empresa
+            {loading ? "Cargando empresa..." : error ? "Ha ocurrido un error" : "Empresa"}
           </TopHeaderBar>
         </TopMain>
-        {loading
-          ? <Text>Cargando...</Text>
-          : error
-            ? <Text>Ha ocurrido un error</Text>
-            : (
+        {!loading && !error && (
           <Box mt={4}>
             <CompanyMain general={company.data.general} contact={company.data.contact} />
             <BlockContainer title={"General"} desc={"Información general utilizada para dar tramite a los procesos legales como la generación de contratos."}>
@@ -60,7 +54,7 @@ const Company = ({ company, fetchCompany }) => {
               <LegalPicker name={"Datos de empresa"} desc={"Domicilio, CIF, ..."} />
               <LegalPicker name={"Representante legal"} desc={"Nombre, DNI, ..."} />
             </BlockContainer>
-            <Separator top={6} />
+            <Separator top={8} bottom={6} />
             <BlockContainer
               title={"Administradores"}
               cta={"Crear nuevo"}
@@ -69,7 +63,7 @@ const Company = ({ company, fetchCompany }) => {
             >
               
             </BlockContainer>
-            <Separator top={6} />
+            <Separator top={8} bottom={6} />
             <BlockContainer
               title={"Trabajadores"}
               cta={"Editar"}
@@ -83,10 +77,9 @@ const Company = ({ company, fetchCompany }) => {
                     alignItems={"center"}
                     justifyContent={"center"}
                     borderRadius={10}
-                    borderWidth={2}
+                    borderWidth={1}
                     borderColor={"darkLight"}
                     py={6}
-                    // bg={"darkLight"}
                   >
                     <Text fontSize={14} textAlign={"center"}>
                       {category.name}
@@ -95,8 +88,10 @@ const Company = ({ company, fetchCompany }) => {
                 ))}
               </Grid>
             </BlockContainer>
-            <Separator top={6} />
+            <Separator top={8} bottom={6} />
+            <Box px={4}>
             <Logout />
+            </Box>
           </Box>
         )}
       </Main>
