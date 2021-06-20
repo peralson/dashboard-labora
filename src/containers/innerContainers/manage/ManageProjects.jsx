@@ -110,13 +110,19 @@ const ManageProjects = ({ search, pastProjects, fetchPastProjects }) => {
     pastProjects &&
     pastProjects.filter(
       (project) =>
-        project.projectData.name.toLowerCase().includes(search) ||
-        project.projectData.location.address.toLowerCase().includes(search) ||
-        project.projectOffers.some((offer) =>
-          offer.offerData.name.toLowerCase().includes(search)
-        ) ||
-        project.projectOffers.some((offer) =>
-          offer.offerData.category.toLowerCase().includes(search)
+        project.projectData.name !== null ? (
+          project.projectData.name.toLowerCase().includes(search) ||
+          project.projectData.location.address.toLowerCase().includes(search) ||
+          project.projectOffers.some((offer) =>
+            offer.offerData.name.toLowerCase().includes(search)
+          ) ||
+          project.projectOffers.some((offer) =>
+            offer.offerData.category.toLowerCase().includes(search)
+          )
+        ) : (
+          project.projectOffers[0].offerData.name.toLowerCase().includes(search) ||
+          project.projectData.location.address.toLowerCase().includes(search) ||
+          project.projectOffers[0].offerData.category.toLowerCase().includes(search)
         )
     );
 

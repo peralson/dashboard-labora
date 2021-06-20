@@ -10,24 +10,26 @@ import Logo from "../assets/img/Logo.png";
 
 // Components
 import TopMain from "../components/main/TopMain";
+import ManagedProject from "./innerContainers/managedProject/ManagedProject";
 
-const ProjectManagement = ({ match, managedProject, fetchManagedProject }) => {
+const ProjectManagement = ({ match, fetchManagedProject }) => {
   const { id } = match.params;
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const reloadSite = () => {
+    setError(null);
+    setLoading(true);;
+    fetchManagedProject(id)
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));;
+  };;
+
   useEffect(() => {
-    (async () => {
-      setError(null);
-      try {
-        await fetchManagedProject(id);
-      } catch (error) {
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    })();
+    fetchManagedProject(id)
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -50,7 +52,7 @@ const ProjectManagement = ({ match, managedProject, fetchManagedProject }) => {
             fontSize={14}
             borderRadius={8}
             cursor={"pointer"}
-            onClick={() => window.location.reload()}
+            onClick={reloadSite}
           >
             Recargar
           </Text>
@@ -59,40 +61,14 @@ const ProjectManagement = ({ match, managedProject, fetchManagedProject }) => {
       <Box maxW={"480px"} w={"100%"} mx={"auto"} mt={6} px={4}>
         {loading && <Text>Cargando proyecto...</Text>}
         {error && <Text>Ha ocurrido un error</Text>}
-        {!loading && !error && (
-          <Box>
-            {!!managedProject ? (
-              <>
-                <Text color={"primary"}>
-                  Gestión laboral
-                </Text>
-                <Text fontWeight={"bold"} fontSize={21}>
-                  {managedProject.projectData.name
-                    ? managedProject.projectData.name
-                    : managedProject.proyectOffers[0].offerData.name
-                  }
-                </Text>
-              </>
-            ) : (
-              <>
-                <Text>Este proyecto no tiene trabajos aún.</Text>
-              </>
-            )}
-          </Box>
-        )}
+        {!loading && !error && <ManagedProject />}
       </Box>
     </>
   );
-};
-
-const mapStateToProps = (state) => {
-  return {
-    managedProject: state.managedProject.managedProject,
-  };
 };
 
 const mapDispatchToProps = {
   fetchManagedProject,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectManagement);
+export default connect(null, mapDispatchToProps)(ProjectManagement);

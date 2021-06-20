@@ -1,19 +1,19 @@
 import React from "react";
 import { Select } from "@chakra-ui/react";
 
-const SelectList = (props) => (
+const SelectList = ({ placeholder, onChange, color, values, ...rest }) => (
 	<Select
-		placeholder={props.placeholder}
-		onChange={props.onChange}
+		placeholder={placeholder}
+		onChange={onChange}
 		borderRadius={8}
 		borderWidth={1}
 		borderColor="translucid"
 		_hover={{ borderColor: "translucid" }}
 		_focus={{ borderColor: "translucid" }}
-		{...props}
-		color={props.color ? props.color : "black"}
+		color={color ? color : "black"}
+		{...rest}
 	>
-		{props.values.map((e) => (
+		{values.map((e) => (
 			<option key={e} value={e}>
 				{e}
 			</option>
