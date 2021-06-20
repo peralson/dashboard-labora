@@ -54,7 +54,6 @@ const WorkerListItem = ({ worker, handleCheck, checkedItems }) => {
               h={"100%"}
               w={"100%"}
               image={worker.workerData.images.main}
-              bg={"red"}
             />
           )}
         </Box>
