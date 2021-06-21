@@ -132,7 +132,7 @@ export const registerWorker = ({
 	return async (dispatch, getState) => {
 		const token = getState().auth.idToken;
 		const response = await fetch(
-			"https://us-central1-partime-60670.cloudfunctions.net/api/auth/worker/newUser",
+			"https://us-central1-partime-60670.cloudfunctions.net/api/user/worker/newUser",
 			{
 				method: "POST",
 				headers: {
@@ -159,7 +159,7 @@ export const registerWorker = ({
 						profesional: workerData.images.profesional,
 					},
 					uid: uid,
-					listed: listed,
+					listed: [listed],
 					categories: categories,
 					tags: tags,
 				}),
