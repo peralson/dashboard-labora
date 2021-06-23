@@ -16,6 +16,7 @@ import DeleteButton from "./DeleteButton";
 
 const TeamItem = ({ index, member }) => {
   const [isOpen, setIsOpen] = useState(false);
+
   return (
     <Box
       mb={index !== 0 && 2}
@@ -67,33 +68,38 @@ const TeamItem = ({ index, member }) => {
       {isOpen && (
         <Box mt={4}>
           <SideTitle mt={2}>Legal</SideTitle>
-          <FlexText
-            left={"Alta en SS"}
-            right={<Image src={correct} w={"12px"} />}
-          />
-          <Separator top={1} bottom={1} />
-          <FlexText
-            left={"Contrato firmado"}
-            right={<Image src={correct} w={"12px"} />}
-          />
-          <a
-            href={
-              "https://www.seas.es/blog/wp-content/uploads/2014/04/imagen1.jpg"
-            }
-            target="_blank"
-            rel="noopener noreferrer"
+          <Box mb={4}>
+            <FlexText
+              left={"Alta en SS"}
+              right={<Image src={correct} w={"12px"} />}
+            />
+            <Separator top={1} bottom={1} />
+            <FlexText
+              left={"Contrato firmado"}
+              right={<Image src={correct} w={"12px"} />}
+            />
+          </Box>
+          <Box
+            as={"a"}
+            target={"_blank"}
+            href={`https://us-central1-partime-60670.cloudfunctions.net/api/contract/${member.id}?type=job`}
           >
-            <Box mt={3} py={2} bg={"darkLight"} borderRadius={10}>
-              <Flex alignItems={"center"} w={"100%"} justifyContent={"center"}>
-                <Text color={"primary"} mr={2}>
-                  Ver contrato
-                </Text>
-                <Image src={eye} w={"16px"} />
-              </Flex>
-            </Box>
-          </a>
+            <Flex
+              py={2}
+              borderRadius={10}
+              bg={"darkLight"}
+              alignItems={"center"}
+              w={"100%"}
+              justifyContent={"center"}
+            >
+              <Text color={"primary"} mr={2} fontSize={14}>
+                Ver contrato
+              </Text>
+              <Image src={eye} w={"14px"} />
+            </Flex>
+          </Box>
           <Flex mt={2} justifyContent={"center"}>
-            <DeleteButton noHover onDelete={() => {}} type={"al miembro"}>
+            <DeleteButton noHover onDelete={() => {}} type={"al miembro"} fontSize={12}> 
               Expulsar del equipo
             </DeleteButton>
           </Flex>

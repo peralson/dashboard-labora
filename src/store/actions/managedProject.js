@@ -75,7 +75,7 @@ const getAllJobs = (offers) => {
   offers.forEach((offer) => {
     const offerName = offer.offerData.name;
     offer.offerData.schedule.forEach((sche) => {
-      const day = moment(sche.day._seconds * 1000).format("dddd, D MMMM");;
+      const day = moment(sche.day._seconds * 1000).format("dddd, D MMMM");
       offer.offerJobs.forEach((job) => {
         array.push({
           id: job.id,
@@ -86,7 +86,7 @@ const getAllJobs = (offers) => {
           status: job.status,
           check_in: job.check_in,
           check_out: job.check_out,
-          phoneNumber: 607570778
+          phoneNumber: 607570778,
         });
       });
     }); 

@@ -36,18 +36,18 @@ export const fetchAllContracts = () => {
 
 export const fetchContract = (offerId) => {
 	return async (dispatch, getState) => {
-		// const token = getState().auth.idToken;
+		const token = getState().auth.idToken;
 
 		const response = await fetch(
-			`https://us-central1-partime-60670.cloudfunctions.net/api/contract/${offerId}?type=offer`,
-			{
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					// "Authorization": `Bearer ${token}`,
-				},
-			}
-		);
+      `https://us-central1-partime-60670.cloudfunctions.net/api/contract/${offerId}?type=offer`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
 
 		if (!response.ok && response.status === 404) return null;
 		if (!response.ok) throw new Error("Ha ocurrido un error.");
@@ -60,18 +60,18 @@ export const fetchContract = (offerId) => {
 
 export const fetchWorkerContract = ({ offerId, userId }) => {
 	return async (dispatch, getState) => {
-		// const token = getState().auth.idToken;
+		const token = getState().auth.idToken;
 
 		const response = await fetch(
-			`https://us-central1-partime-60670.cloudfunctions.net/api/contract/company/${offerId}/${userId}`,
-			{
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					// "Authorization": `Bearer ${token}`,
-				},
-			}
-		);
+      `https://us-central1-partime-60670.cloudfunctions.net/api/contract/company/${offerId}/${userId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
 
 		if (!response.ok && response.status === 404) return null;
 		if (!response.ok) throw new Error("Ha ocurrido un error.");

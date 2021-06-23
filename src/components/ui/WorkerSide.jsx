@@ -57,7 +57,7 @@ const WorkerSide = ({ data }) => {
       {data.tags.length !== 0 && (
         <Box mb={4}>
           <SideTitle mb={2}>Etiquetas</SideTitle>
-          <Flex>
+          <Flex flexWrap={"wrap"}>
             {data.tags.map((tag, index) => (
               <Text
                 key={tag}

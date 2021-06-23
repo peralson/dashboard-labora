@@ -20,6 +20,9 @@ import edit from "../../assets/svg/edit.svg";
 import cancel from "../../assets/svg/cancel.svg";
 import correct from "../../assets/svg/correct.svg";
 
+// CSS
+import "../../assets/css/input-file.css"
+
 // Components
 import Main from "../../components/main/Main";
 import TopMain from "../../components/main/TopMain";
@@ -30,6 +33,7 @@ import NewTopHeaderBar from "../../components/new/NewTopHeaderBar";
 import TopButton from "../../components/ui/TopButton";
 import CustomInput from "../../components/new/CustomInput";
 import Separator from "../../components/ui/Separator";
+import CustomImg from "../../components/ui/CustomImg";
 import ErrorMessage from "../../components/ui/ErrorMessage";
 
 const PlacesAutoComplete = ({ state, dispatch }) => {
@@ -61,7 +65,7 @@ const PlacesAutoComplete = ({ state, dispatch }) => {
   return (
     <Box>
       <Text mb={2} fontWeight={"bold"}>
-        Dirección *
+        Dirección
       </Text>
       <Input
         py={2}
@@ -114,28 +118,91 @@ const PlacesAutoComplete = ({ state, dispatch }) => {
   );
 };
 
+const FileUpload = ({ name, current, acceptedFileTypes, dispatch }) => {
+  const [image, setImage] = useState(current);
+
+  const handleImageChange = (file) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setImage(reader.result)
+        dispatch({ type: "setLogo", payload: reader.result })
+      }
+    } else {
+      setImage(current);
+      dispatch({ type: "setLogo", payload: null });
+    }
+  }
+
+  return (
+    <Box>
+      <Text fontWeight={"bold"} lineHeight={2}>
+        Logo
+      </Text>
+      <Flex alignItems={"center"} mt={2}>
+        <CustomImg
+          borderRadius={"50%"}
+          mr={4}
+          image={image}
+          alt={name}
+          w={"40px"}
+          h={"40px"}
+        />
+        <input
+          type="file"
+          accept={acceptedFileTypes}
+          className={"custom-file-input"}
+          onChange={(e) => handleImageChange(e.target.files[0])}
+        />
+      </Flex>
+    </Box>
+  );
+};
+
 const formIsValid = (state) => {
+  const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
   const hasName = state.name !== "";
   const isNameLong = state.name.length > 3;
-  // const hasPhoto = state.photo !== "";
+  const hasPhoto = state.photo !== "";
+  const hasEmail =  emailRegex.test(String(state.mail).toLowerCase());
+  const hasPhoneNumber =
+    state.phoneNumber !== "" &&
+    state.phoneNumber.length >= 9 &&
+    state.phoneNumber.length <= 15;
   const hasAddress =
     state.location.address !== "" &&
     state.location.lat !== null &&
     state.location.lng !== null;
 
   return {
-    isValid: hasName && isNameLong && hasAddress,
+    isValid: hasName && isNameLong && hasAddress && hasPhoto && hasPhoneNumber && hasEmail,
     hasName: hasName,
     isNameLong: isNameLong,
     hasAddress: hasAddress,
-    // hasPhoto: hasPhoto,
+    hasPhoto: hasPhoto,
+    hasPhoneNumber: hasPhoneNumber,
+    hasEmail: hasEmail 
   };
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "setLogo":
+      return { ...state, newPhoto: action.payload };
+
     case "setName":
       return { ...state, name: action.payload };
+
+    case "setPhone":
+      return { ...state, phoneNumber: action.payload };
+
+    case "setEmail":
+      return { ...state, mail: action.payload };
+
+    case "setAddress":
+      return { ...state, address: action.payload };
 
     default:
       return state;
@@ -149,9 +216,13 @@ const EditCompany = ({ history, company, editCompany }) => {
   });
 
   const initialState = {
+    id: company.id,
     name: company.data.general.name,
-    // photo: company.data.general.photo,
+    photo: company.data.general.photo,
+    newPhoto: null,
     location: company.data.contact.location,
+    phoneNumber: company.data.contact.phoneNumber,
+    mail: company.data.contact.mail,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -159,7 +230,8 @@ const EditCompany = ({ history, company, editCompany }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const { isValid, hasName, isNameLong, hasAddress } = formIsValid(state);
+  const { isValid, hasName, isNameLong, hasAddress, hasPhoto, hasPhoneNumber, hasEmail } =
+    formIsValid(state);
 
   const onSubmit = async () => {
     if (isValid) {
@@ -167,7 +239,7 @@ const EditCompany = ({ history, company, editCompany }) => {
       setError(null);
       try {
         await editCompany(state);
-        history.push(`/empresa`);
+        // history.push(`/empresa`);
       } catch (err) {
         setError(true);
       } finally {
@@ -208,14 +280,43 @@ const EditCompany = ({ history, company, editCompany }) => {
               onClose={() => setError(null)}
             />
           )}
+          <FileUpload
+            name={"Logo"}
+            current={state.photo}
+            placeholder={"el logo de tu empresa"}
+            acceptedFileTypes={[".png", ".jpg", ".jpeg"]}
+            dispatch={dispatch}
+          />
           <CustomInput
             title={"Nombre"}
+            optional
             value={state.name}
-            placeholder={"Nombre de la oferta"}
+            placeholder={"Nombre de la empresa"}
             onChange={(e) =>
               dispatch({ type: "setName", payload: e.target.value })
             }
           />
+          <Grid w={"100%"} templateColumns={"1fr 1fr"} gap={4}>
+            <CustomInput
+              title={"Teléfono"}
+              optional
+              type={"tel"}
+              value={state.phoneNumber}
+              placeholder={"Teléfono de contacto"}
+              onChange={(e) =>
+                dispatch({ type: "setPhone", payload: e.target.value })
+              }
+            />
+            <CustomInput
+              title={"Correo electrónico"}
+              optional
+              value={state.mail}
+              placeholder={"Correo de la empresa"}
+              onChange={(e) =>
+                dispatch({ type: "setEmail", payload: e.target.value.toLowerCase() })
+              }
+            />
+          </Grid>
           {!isLoaded ? (
             <Text>Cargando...</Text>
           ) : loadError ? (
@@ -230,12 +331,23 @@ const EditCompany = ({ history, company, editCompany }) => {
           <SideBoxContainer>
             <Box>
               <Text fontWeight={"bold"} mb={2}>
-                Nombre
+                General
               </Text>
               <Flex
                 alignItems={"center"}
                 justifyContent={"space-between"}
                 w={"100%"}
+              >
+                <Text fontSize={14} lineHeight={1.6}>
+                  Hay un logo
+                </Text>
+                <Image src={hasPhoto ? correct : cancel} w={"12px"} />
+              </Flex>
+              <Flex
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                w={"100%"}
+                mt={2}
               >
                 <Text fontSize={14} lineHeight={1.6}>
                   Introduce un nombre
@@ -254,10 +366,10 @@ const EditCompany = ({ history, company, editCompany }) => {
                 <Image src={isNameLong ? correct : cancel} w={"12px"} />
               </Flex>
             </Box>
-            {/* <Separator top={4} bottom={4} />
+            <Separator top={4} bottom={4} />
             <Box>
               <Text fontWeight={"bold"} mb={2}>
-                Logo
+                Contacto
               </Text>
               <Flex
                 alignItems={"center"}
@@ -265,17 +377,23 @@ const EditCompany = ({ history, company, editCompany }) => {
                 w={"100%"}
               >
                 <Text fontSize={14} lineHeight={1.6}>
-                  Hay un logo
+                  Introduce una número de teléfono válido
                 </Text>
-                <Image src={hasPhoto ? correct : cancel} w={"12px"} />
+                <Image src={hasPhoneNumber ? correct : cancel} w={"12px"} />
               </Flex>
-            </Box> */}
-            <Separator top={4} bottom={4} />
-            <Box>
-              <Text fontWeight={"bold"} mb={2}>
-                Dirección
-              </Text>
               <Flex
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                w={"100%"}
+                mt={2}
+              >
+                <Text fontSize={14} lineHeight={1.6}>
+                  Introduce una correo electrónico válido
+                </Text>
+                <Image src={hasEmail ? correct : cancel} w={"12px"} />
+              </Flex>
+              <Flex
+                mt={2}
                 alignItems={"center"}
                 justifyContent={"space-between"}
                 w={"100%"}

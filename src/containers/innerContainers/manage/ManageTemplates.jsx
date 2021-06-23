@@ -9,32 +9,45 @@ import { fetchTemplates } from '../../../store/actions/templates';
 import legal from '../../../assets/svg/legal.svg';
 import plus from '../../../assets/svg/plus.svg';
 
-const ContractTemplateCard = ({ data, nuevo }) => (
-  <a
-    href={
-      !nuevo &&
-      data.url
-    }
-    target='_blank'
-    rel='noopener noreferrer'
+const ContractTemplateCard = ({ data }) => (
+  <Flex
+    as={"a"}
+    href={data.url}
+    target={'_blank'}
+    flexDirection={'column'}
+    cursor={'pointer'}
+    alignItems={'center'}
+    minH={'180px'}
+    justifyContent={'center'}
+    borderRadius={10}
+    borderWidth={2}
+    _hover={{ borderColor: 'white' }}
+    borderColor={false ? 'white' : 'darkLight'}
   >
-    <Flex
-      flexDirection={'column'}
-      cursor={'pointer'}
-      alignItems={'center'}
-      minH={'180px'}
-      justifyContent={'center'}
-      borderRadius={10}
-      borderWidth={2}
-      _hover={{ borderColor: 'white' }}
-      borderColor={false ? 'white' : 'darkLight'}
-    >
-      <Image src={nuevo ? plus : legal} w={'32px'} mb={4} />
-      <Text textAlign={'center'}>
-        {nuevo ? 'Nueva plantilla' : data.name}
-      </Text>
-    </Flex>
-  </a>
+    <Image src={legal} w={'32px'} mb={4} />
+    <Text textAlign={'center'}>
+      {data.name}
+    </Text>
+  </Flex>
+);
+
+const ContractTemplateNew = () => (
+  <Flex
+    flexDirection={'column'}
+    cursor={'pointer'}
+    alignItems={'center'}
+    minH={'180px'}
+    justifyContent={'center'}
+    borderRadius={10}
+    borderWidth={2}
+    _hover={{ borderColor: 'white' }}
+    borderColor={false ? 'white' : 'darkLight'}
+  >
+    <Image src={plus} w={'32px'} mb={4} />
+    <Text textAlign={'center'}>
+      Nueva plantilla
+    </Text>
+  </Flex>
 );
 
 const ManageTemplates = ({ search, templates, fetchTemplates }) => {
@@ -58,10 +71,8 @@ const ManageTemplates = ({ search, templates, fetchTemplates }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const filteredTemplates = templates.filter(
-    (template) =>
-      template.category.toLowerCase().includes(search) ||
-      template.type.toLowerCase().includes(search)
+  const filteredTemplates = templates.filter((template) =>
+    template.name.toLowerCase().includes(search),
   );
 
   return loading ? (
@@ -75,9 +86,9 @@ const ManageTemplates = ({ search, templates, fetchTemplates }) => {
   ) : (
     <Grid w={'100%'} templateColumns={'1fr 1fr 1fr 1fr'} gap={4} mt={4}>
       {filteredTemplates.map((template, index) => (
-        <ContractTemplateCard key={template.id} data={template} />
+        <ContractTemplateCard key={index} data={template} />
       ))}
-      <ContractTemplateCard nuevo />
+      <ContractTemplateNew />
     </Grid>
   );
 };

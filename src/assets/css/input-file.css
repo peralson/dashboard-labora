@@ -1,0 +1,23 @@
+.custom-file-input {
+    width: 100%;
+}
+
+.custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.custom-file-input::before {
+    content: 'Subir nuevo logo';
+    font-weight: bold;
+    display: inline-block;
+    background-color: #61BC9E;
+    border-radius: 8px;
+    padding: 8px 16px;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.custom-file-input:hover::before {
+    border-color: #fff;
+}

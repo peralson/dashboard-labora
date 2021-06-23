@@ -26,7 +26,7 @@ const AreYourSure = ({ onDelete, type, setOpen }) => (
   </Flex>
 );
 
-const DeleteButton = ({ onDelete, children, type, noHover }) => {
+const DeleteButton = ({ onDelete, children, type, noHover, ...rest }) => {
   const [open, setOpen] = useState(false);
   return (
     <Popup
@@ -43,6 +43,7 @@ const DeleteButton = ({ onDelete, children, type, noHover }) => {
         cursor={"pointer"}
         _hover={!noHover && { bg: "red.smooth" }}
         color={"red.full"}
+        {...rest}
       >
         {children}
       </Text>

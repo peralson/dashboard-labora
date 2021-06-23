@@ -12,7 +12,6 @@ const TeamSide = ({ id, type, totalMembers }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // (() => {
     fetch(
       `https://us-central1-partime-60670.cloudfunctions.net/api/job/${type}/${id}`,
       { headers: { "Content-Type": "application/json" } },
@@ -24,7 +23,6 @@ const TeamSide = ({ id, type, totalMembers }) => {
         setError(true);
       })
       .finally(() => setLoading(false));
-    // })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

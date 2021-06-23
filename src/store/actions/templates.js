@@ -5,12 +5,12 @@ export const fetchTemplates = () => {
     const token = getState().auth.idToken;
 
     const response = await fetch(
-      "https://us-central1-partime-60670.cloudfunctions.net/api/company/templates",
+      "https://us-central1-partime-60670.cloudfunctions.net/api/contract/company/templates",
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );

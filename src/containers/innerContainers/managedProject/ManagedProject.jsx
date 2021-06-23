@@ -98,10 +98,9 @@ const ManagedProject = ({
                   py={2}
                   textAlign={"center"}
                   borderRadius={10}
-                  borderColor={active ? "primary" : "darkLight"}
-                  color={active ? "primary" : "darkLight"}
+                  color={"primary"}
+                  bg={active ? "primaryLight" : "dark"}
                   cursor={"pointer"}
-                  borderWidth={1}
                   fontSize={14}
                   onClick={() => setActive(true)}
                 >
@@ -111,10 +110,9 @@ const ManagedProject = ({
                   py={2}
                   textAlign={"center"}
                   borderRadius={10}
-                  borderColor={!active ? "primary" : "darkLight"}
-                  color={!active ? "primary" : "darkLight"}
+                  color={"primary"}
+                  bg={!active ? "primaryLight" : "dark"}
                   cursor={"pointer"}
-                  borderWidth={1}
                   fontSize={14}
                   onClick={() => setActive(false)}
                 >

@@ -33,17 +33,26 @@ export const fetchCompany = () => {
 export const editCompany = (state) => {
   return async (dispatch, getState) => {
     const token = getState().auth.idToken;
-    const { id } = getState().company.company;
 
     const response = await fetch(
-      `https://us-central1-partime-60670.cloudfunctions.net/api/user/company/${id}`,
+      `https://us-central1-partime-60670.cloudfunctions.net/api/user/company/${state.id}`,
       {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+          general: {
+            name: state.name,
+            photo: state.newPhoto,
+          },
+          contact: {
+            mail: state.mail,
+            phoneNumber: state.phoneNumber,
+            location: state.location,
+          },
+        }),
       },
     );
 
@@ -54,9 +63,21 @@ export const editCompany = (state) => {
       throw new Error();
     }
 
-    dispatch({
-      type: EDIT_COMPANY,
-      company: state,
-    });
+    console.log(resData);
+
+    // dispatch({
+    //   type: EDIT_COMPANY,
+    //   payload: {
+    //     general: {
+    //       name: state.name,
+    //       photo: newLogo,
+    //     },
+    //     contact: {
+    //       mail: state.mail,
+    //       phoneNumber: state.phoneNumber,
+    //       location: state.location,
+    //     },
+    //   },
+    // });
   };
-};
+};;
