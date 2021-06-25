@@ -34,12 +34,12 @@ export const fetchAllContracts = () => {
 	};
 };
 
-export const fetchContract = (offerId) => {
+export const fetchContract = (jobId) => {
 	return async (dispatch, getState) => {
 		const token = getState().auth.idToken;
 
 		const response = await fetch(
-      `https://us-central1-partime-60670.cloudfunctions.net/api/contract/${offerId}?type=offer`,
+      `https://us-central1-partime-60670.cloudfunctions.net/api/contract/${jobId}?type=job`,
       {
         method: "GET",
         headers: {

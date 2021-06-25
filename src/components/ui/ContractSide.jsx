@@ -15,10 +15,9 @@ import FlexText from "./FlexText";
 
 const ContractSide = ({ data, fetchContract }) => {
 	const [link, setLink] = useState();
-
 	useEffect(() => {
 		const getLink = async () => {
-			setLink(await fetchContract(data.offerData.id));
+			setLink(await fetchContract(data.contractData.id_contract));
 		};
 		getLink();
 	}, [data.offerData.id, fetchContract]);

@@ -11,7 +11,7 @@ import FlexText from "./FlexText";
 import Separator from "./Separator";
 
 const OfferCostsSide = ({ offer }) => {
-  console.log('offer:',offer)
+
 	return (
 		<Flex flexDirection="column">
       <FlexText

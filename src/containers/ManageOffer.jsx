@@ -4,6 +4,7 @@ import { Flex, Box, Text, Grid } from "@chakra-ui/react";
 // Custom
 import { connect } from "react-redux";
 import { formattedSalary } from "../lib/formattedSalary";
+import { Link } from "react-router-dom";
 
 // Context
 import {
@@ -67,15 +68,17 @@ const ManageOffer = ({ match, history, pastProjects }) => {
 								<Text fontSize={14} lineHeight={1.5}>
 									Esta oferta pertenece al proyecto:
 								</Text>
-								<Text
-									color={"primary"}
-									ml={2}
-									fontSize={14}
-									lineHeight={1.35}
-									_hover={{ textDecoration: "underline" }}
-								>
-									{project.projectData.name}
-								</Text>
+								<Link to={`../../gestion/p/${project.id}`}>
+									<Text
+										color={"primary"}
+										ml={2}
+										fontSize={14}
+										lineHeight={1.35}
+										_hover={{ textDecoration: "underline" }}
+									>
+										{project.projectData.name}
+									</Text>
+								</Link>
 							</Flex>
 						)}
 						<Grid
