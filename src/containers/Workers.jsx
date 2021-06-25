@@ -29,6 +29,7 @@ import AccentButton from '../components/ui/AccentButton';
 import Documentation from '../components/main/Documentation';
 import Popup from '../components/ui/Popup';
 import ShareLink from '../components/modals/ShareLink';
+import CreateTags from '../components/modals/CreateTags';
 
 const Workers = ({
   fetchWorkers,
@@ -45,6 +46,8 @@ const Workers = ({
   const [workersError, setWorkersError] = useState(null);
   const [workersLoading, setWorkersLoading] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [createTagModalOpen, setCreateTagModalOpen] = useState(false);
+
 
   useEffect(() => {
     (async () => {
@@ -169,6 +172,18 @@ const Workers = ({
                   : 'Cerrar'}
               </Text>
             </Flex>
+            <Popup
+              title={'Crear etiquetas'}
+              body={
+                <CreateTags/>
+              }
+              show={createTagModalOpen}
+              handleShow={setCreateTagModalOpen}
+            >
+              <AccentButton onClick={() => setCreateTagModalOpen(true)}>
+                Crear etiquetas
+              </AccentButton>
+            </Popup>
             <Popup
               title={'Invitar trabajadores'}
               body={
