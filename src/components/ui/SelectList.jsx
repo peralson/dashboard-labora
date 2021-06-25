@@ -14,7 +14,7 @@ const SelectList = ({ placeholder, onChange, color, values, ...rest }) => (
 		{...rest}
 	>
 		{values.map((e) => (
-			<option key={e} value={e}>
+			<option key={e} value={e} style={{color: 'black'}}>
 				{e}
 			</option>
 		))}
