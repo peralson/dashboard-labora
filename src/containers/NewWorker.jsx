@@ -75,7 +75,6 @@ const NewWorker = ({ match, checkLink, registerWorker }) => {
 					categories: check.categories,
 					tags: check.tags,
 				});
-				console.log("respuesta:", values);
 				if (reg) {
 					setProcess(5);
 				}

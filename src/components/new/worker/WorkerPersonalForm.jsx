@@ -10,7 +10,7 @@ import "../../../assets/css/calendar.css";
 
 const WorkerPersonalForm = ({ handleProcess, formik }) => {
 	const isValid =
-		formik.values.birthday && formik.values.images.main;
+		formik.values.birthday && formik.values.images.main && formik.values.gender;
 
 	const handleCalendarValue = (d) => {
 		const { year, month, day } = d;
@@ -58,7 +58,7 @@ const WorkerPersonalForm = ({ handleProcess, formik }) => {
 			<SelectList
 				borderWidth={2}
 				borderColor={"darkLight"}
-				placeholder={formik.values.gender}
+				placeholder={"Selecciona género"}
 				onChange={formik.handleChange("gender")}
 				values={["Hombre", "Mujer"]}
 				mb={4}
