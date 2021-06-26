@@ -2,35 +2,46 @@ import React from "react";
 import { Flex, Text } from "@chakra-ui/react";
 
 // Components
+import CustomInput from "../CustomInput";
+import ImagePicker from "../ImagePicker";
 import Separator from "../../ui/Separator";
-import ImagePicker from "../../new/ImagePicker";
-import SelectList from "../../ui/SelectList";
 import { Calendar } from "react-multi-date-picker";
 import "../../../assets/css/calendar.css";
 
-const WorkerPersonalForm = ({ handleProcess, formik }) => {
+const WorkerLegalForm = ({ handleProcess, formik, loading }) => {
 	const isValid =
-		formik.values.birthday && formik.values.images.main;
+  formik.values.legal.dni.number &&
+  formik.values.legal.dni.number.length === 9 &&
+	formik.values.legal.dni.expiryDate &&
+	formik.values.legal.dni.front &&
+	formik.values.legal.dni.back;
 
 	const handleCalendarValue = (d) => {
 		const { year, month, day } = d;
 		formik.setFieldValue(
-			"birthday",
+			"legal.dni.expiryDate",
 			new Date(`${year} ${month.number} ${day}`).getTime()
 		);
 	};
-
+  
 	return (
 		<Flex flexDirection="column" w="400px">
 			<Text fontWeight={"bold"} lineHeight={2} mb={2}>
-				Información Personal
+				Información legal
 			</Text>
 			<Separator bottom={4} />
+			<CustomInput
+				title={"Número de DNI"}
+				placeholder={"DNI"}
+				onChange={formik.handleChange("legal.dni.number")}
+				value={formik.values.legal.dni.number}
+				mb={4}
+			/>
 			<Text fontWeight={"bold"} lineHeight={2} mb={2}>
-				Fecha de nacimiento
+				Fecha de caducidad
 			</Text>
 			<Calendar
-				value={formik.values.birthday}
+				value={formik.values.legal.dni.expiryDate}
 				minDate={new Date(1900, 1, 1)}
 				weekDays={["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"]}
 				months={[
@@ -52,21 +63,17 @@ const WorkerPersonalForm = ({ handleProcess, formik }) => {
 				locale={"es"}
 				onChange={(d) => handleCalendarValue(d)}
 			/>
-			<Text fontWeight={"bold"} lineHeight={2} my={2}>
-				Género
-			</Text>
-			<SelectList
-				borderWidth={2}
-				borderColor={"darkLight"}
-				placeholder={formik.values.gender}
-				onChange={formik.handleChange("gender")}
-				values={["Hombre", "Mujer"]}
-				mb={4}
+			<ImagePicker
+				title={"Imagen frontal"}
+				optional
+				onChange={formik.handleChange("legal.dni.front")}
+				my={4}
 			/>
 			<ImagePicker
-				title={"Imagen personal"}
+				title={"Imagen trasera"}
 				optional
-				onChange={formik.handleChange("images.main")}
+				onChange={formik.handleChange("legal.dni.back")}
+				mb={4}
 			/>
 			<Flex flexDirection="row" justifyContent="space-between" mt={8}>
 				<Flex
@@ -79,7 +86,7 @@ const WorkerPersonalForm = ({ handleProcess, formik }) => {
 					justifyContent="center"
 					px={4}
 					py={2}
-					onClick={() => handleProcess(2)}
+					onClick={() => handleProcess(3)}
 				>
 					Volver
 				</Flex>
@@ -91,16 +98,16 @@ const WorkerPersonalForm = ({ handleProcess, formik }) => {
 					fontSize={16}
 					alignItems={"center"}
 					justifyContent="center"
-          opacity={!isValid && 0.6}
+					opacity={!isValid && 0.6}
 					px={4}
 					py={2}
-					onClick={() => isValid ? handleProcess(4) : {}}
+					onClick={isValid && formik.submitForm}
 				>
-					Siguiente
+					{loading ? "Cargando..." : "Finalizar"}
 				</Flex>
 			</Flex>
 		</Flex>
 	);
 };
 
-export default WorkerPersonalForm;
+export default WorkerLegalForm;

@@ -153,11 +153,17 @@ export const registerWorker = ({
 						},
 					},
 					gender: workerData.gender,
-					bio: workerData.bio,
 					images: {
 						main: workerData.images.main,
-						profesional: workerData.images.profesional,
 					},
+          legal: {
+            dni: {
+              number: workerData.legal.dni.number,
+              front: workerData.legal.dni.front,
+              back: workerData.legal.dni.back,
+              expiryDate: workerData.legal.dni.expiryDate,
+            }
+          },
 					uid: uid,
 					listed: [listed],
 					categories: categories,
