@@ -3,10 +3,10 @@ export const EDIT_COMPANY = "EDIT_COMPANY";
 
 export const fetchCompany = () => {
   return async (dispatch, getState) => {
-    const token = getState().auth.idToken;
+    const token = localStorage.getItem("fbase_key");
 
     const response = await fetch(
-      "https://us-central1-partime-60670.cloudfunctions.net/api/user/company/myCompany",
+      "https://us-central1-partime-60670.cloudfunctions.net/api/company/myCompany",
       {
         method: "GET",
         headers: {
@@ -32,7 +32,7 @@ export const fetchCompany = () => {
 
 export const editCompany = (state) => {
   return async (dispatch, getState) => {
-    const token = getState().auth.idToken;
+    const token = localStorage.getItem("fbase_key");
 
     console.log({
       id: state.id,

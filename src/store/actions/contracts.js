@@ -2,7 +2,7 @@ export const FETCH_CONTRACTS = "FETCH_CONTRACTS";
 
 export const fetchAllContracts = () => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
 			"https://us-central1-partime-60670.cloudfunctions.net/api/contract/company",
@@ -21,6 +21,8 @@ export const fetchAllContracts = () => {
 
 		const resData = await response.json();
 
+		console.log(resData);
+
 		let contracts = [];
 
 		resData.body.forEach((contract) => {
@@ -36,7 +38,7 @@ export const fetchAllContracts = () => {
 
 export const fetchContract = (jobId) => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
       `https://us-central1-partime-60670.cloudfunctions.net/api/contract/${jobId}?type=job`,
@@ -60,7 +62,7 @@ export const fetchContract = (jobId) => {
 
 export const fetchWorkerContract = ({ offerId, userId }) => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
       `https://us-central1-partime-60670.cloudfunctions.net/api/contract/company/${offerId}/${userId}`,
@@ -84,18 +86,18 @@ export const fetchWorkerContract = ({ offerId, userId }) => {
 
 export const fetchContractsZip = (offerId) => {
 	return async (dispatch, getState) => {
-		// const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
-			`https://us-central1-partime-60670.cloudfunctions.net/api/contract/batchDocs/${offerId}`,
-			{
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					// "Authorization": `Bearer ${token}`,
-				},
-			}
-		);
+      `https://us-central1-partime-60670.cloudfunctions.net/api/contract/batchDocs/${offerId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
 
 		if (!response.ok && response.status === 404) return null;
 		if (!response.ok) throw new Error("Ha ocurrido un error.");

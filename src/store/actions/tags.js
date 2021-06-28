@@ -4,7 +4,7 @@ export const CREATE_TAGS = "CREATE_TAGS";
 
 export const fetchTags = () => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
 			"https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/tags",
@@ -38,7 +38,7 @@ export const fetchTags = () => {
 
 export const editTags = (action, userList, tagList) => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
 			`https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/tags/edit/${action}`,
@@ -77,7 +77,7 @@ export const editTags = (action, userList, tagList) => {
 
 export const createTags = (tagList) => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
 			`https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/tags/create`,

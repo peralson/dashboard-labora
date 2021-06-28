@@ -2,7 +2,7 @@ export const FETCH_PAYROLLS = "FETCH_PAYROLLS";
 
 export const fetchPayrolls = () => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
 			"https://us-central1-partime-60670.cloudfunctions.net/api/payroll/company",
@@ -20,6 +20,8 @@ export const fetchPayrolls = () => {
 
 		const resData = await response.json();
 
+		console.log(resData);
+
 		let payrolls = [];
 
 		resData.body.forEach((payroll) => {
@@ -35,18 +37,18 @@ export const fetchPayrolls = () => {
 
 export const fetchPayroll = (jobId) => {
 	return async (dispatch, getState) => {
-		// const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
-			`https://us-central1-partime-60670.cloudfunctions.net/api/payroll/${jobId}?type=job`,
-			{
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					// "Authorization": `Bearer ${token}`,
-				},
-			}
-		);
+      `https://us-central1-partime-60670.cloudfunctions.net/api/payroll/${jobId}?type=job`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
 
 		if (!response.ok && response.status === 404) return null;
 		if (!response.ok) throw new Error("Ha ocurrido un error.");
@@ -59,18 +61,18 @@ export const fetchPayroll = (jobId) => {
 
 export const fetchWorkerPayroll = ({ offerId, userId }) => {
 	return async (dispatch, getState) => {
-		// const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
-			`https://us-central1-partime-60670.cloudfunctions.net/api/payroll/company/${offerId}/${userId}`,
-			{
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					// "Authorization": `Bearer ${token}`,
-				},
-			}
-		);
+      `https://us-central1-partime-60670.cloudfunctions.net/api/payroll/company/${offerId}/${userId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
 
 		if (!response.ok && response.status === 404) return null;
 		if (!response.ok) throw new Error("Ha ocurrido un error.");

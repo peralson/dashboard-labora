@@ -13,7 +13,7 @@ export const EDIT_PROJECT = "EDIT_PROJECT";
 
 export const fetchProjects = () => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
 			"https://us-central1-partime-60670.cloudfunctions.net/api/event/fullEvents",
@@ -47,7 +47,7 @@ export const fetchProjects = () => {
 
 export const fetchPastProjects = () => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
 			"https://us-central1-partime-60670.cloudfunctions.net/api/event/fullEventsHistory",
@@ -79,7 +79,7 @@ export const fetchPastProjects = () => {
 
 export const createProject = (newProject) => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const sortedDates = newProject.dates.sort((a, b) => (a > b ? 1 : -1));
 
@@ -130,7 +130,7 @@ export const createProject = (newProject) => {
 
 export const deleteProject = (projectId) => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
 			`https://us-central1-partime-60670.cloudfunctions.net/api/event/${projectId}`,
@@ -159,7 +159,7 @@ export const deleteProject = (projectId) => {
 
 export const createProjectOffer = (projectId, offerData) => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
 			"https://us-central1-partime-60670.cloudfunctions.net/api/offer/",
@@ -226,7 +226,7 @@ export const createProjectOffer = (projectId, offerData) => {
 
 export const deleteProjectOffer = (projectId, offerId) => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
 			`https://us-central1-partime-60670.cloudfunctions.net/api/offer/${offerId}`,
@@ -316,7 +316,7 @@ export const createOfferSingle = ({ offerData, projectData }) => {
 
 export const editOffer = ({ offerData, projectData }) => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const currentProject = getState().projects.allProjects.find(
 			(p) => p.id === projectData.id
@@ -369,7 +369,7 @@ export const editOffer = ({ offerData, projectData }) => {
 
 export const editProject = (id, state, dates) => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
 			"https://us-central1-partime-60670.cloudfunctions.net/api/event",
@@ -410,7 +410,7 @@ export const editProject = (id, state, dates) => {
 
 export const editSingleOffer = (project, state) => {
 	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+		const token = localStorage.getItem("fbase_key");
 		const offer = project.projectOffers[0];
 
 		const response = await fetch(

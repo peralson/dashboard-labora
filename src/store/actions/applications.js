@@ -9,7 +9,7 @@ export const handleApplication = (
   action,
 ) => {
   return async (dispatch, getState) => {
-    const token = getState().auth.idToken;
+    const token = localStorage.getItem("fbase_key");
 
     const response = await fetch(
       `https://us-central1-partime-60670.cloudfunctions.net/api/application/${applicationId}?action=${action}`,

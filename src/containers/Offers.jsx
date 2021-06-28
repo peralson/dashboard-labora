@@ -3,6 +3,7 @@ import { Flex, Text } from '@chakra-ui/layout';
 
 // Context
 import { SelectedItem } from '../context/SelectedItemContext';
+import { useAuth } from "../context/AuthContext";
 
 // Lib
 import {
@@ -36,6 +37,8 @@ import BeCurious from '../components/ui/BeCurious';
 import ProjectOrOffer from '../components/modals/ProjectOrOffer';
 
 const Offers = ({ projects, fetchProjects }) => {
+  const { idToken } = useAuth();
+  
   const [selectedItem, setSelectedItem] = useState(null);
   const [loadingProjects, setLoadingProjects] = useState(false);
   const [projectsError, setProjectsError] = useState(null);
@@ -48,7 +51,7 @@ const Offers = ({ projects, fetchProjects }) => {
         setLoadingProjects(true);
       }
       try {
-        await fetchProjects();
+        await fetchProjects(idToken);
       } catch (error) {
         setProjectsError(error.message);
       } finally {

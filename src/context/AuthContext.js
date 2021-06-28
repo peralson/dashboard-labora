@@ -1,6 +1,5 @@
 import React, { useContext, createContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
-import { setAuthData } from "../store/actions/auth";
 
 const AuthContext = createContext();
 
@@ -38,12 +37,12 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setCurrentUser(user);
       if (user) {
-        const token = getIdTokenFromUser(user);
+        const token = await getIdTokenFromUser(user);
+        localStorage.setItem("fbase_key", token);
         setIdToken(token);
-        setAuthData(token);
       }
       setLoading(false);
     });

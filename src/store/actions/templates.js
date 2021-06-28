@@ -2,7 +2,7 @@ export const FETCH_TEMPLATES = 'FETCH_CONTRACT_TEMPLATES';
 
 export const fetchTemplates = () => {
   return async (dispatch, getState) => {
-    const token = getState().auth.idToken;
+    const token = localStorage.getItem("fbase_key");
 
     const response = await fetch(
       "https://us-central1-partime-60670.cloudfunctions.net/api/contract/company/templates",

@@ -12,7 +12,6 @@ import { firebaseReducer } from "react-redux-firebase";
 import ReduxThunk from "redux-thunk";
 
 // Reducers
-import authReducer from "./store/reducers/auth";
 import workersReducer from "./store/reducers/workers";
 import projectsReducer from "./store/reducers/projects";
 import contractsReducer from "./store/reducers/contracts";
@@ -28,7 +27,6 @@ import App from './routes/App';
 
 // Introducimos todos nuestros reducers en un global
 const rootReducer = combineReducers({
-  auth: authReducer,
   workers: workersReducer,
   projects: projectsReducer,
   contracts: contractsReducer,

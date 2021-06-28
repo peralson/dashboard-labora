@@ -10,11 +10,15 @@ import {
   MenuItem,
 } from '@chakra-ui/react';
 
-const MultipleSelectList = (props) => (
+const MultipleSelectList = ({
+  title,
+  values,
+  current,
+  onChange,
+  ...rest
+}) => (
   <Menu closeOnSelect={false}>
     <MenuButton
-      ml={props.ml}
-      {...props}
       border={"1px solid"}
       borderColor={"darkLight"}
       borderRadius={8}
@@ -23,8 +27,9 @@ const MultipleSelectList = (props) => (
       _hover={{ borderColor: "translucid" }}
       _active={{ borderColor: "translucid", bg: "darkLight" }}
       _focus={{ borderColor: "translucid" }}
+      {...rest}
     >
-      {props.title}
+      {title}
     </MenuButton>
     <MenuList
       bg={"darkLight"}
@@ -32,9 +37,9 @@ const MultipleSelectList = (props) => (
       _hover={{ borderColor: "none" }}
       _focus={{ borderColor: "none" }}
     >
-      {props.values.map((value) => (
+      {values.map((value, index) => (
         <MenuItem
-          key={value}
+          key={index}
           borderColor={"translucid"}
           _hover={{ borderColor: "translucid", bg: "translucid" }}
           _focus={{ borderColor: "translucid", bg: "translucid" }}
@@ -42,9 +47,9 @@ const MultipleSelectList = (props) => (
         >
           <Flex>
             <Checkbox
-              isChecked={props.current.includes(value)}
+              isChecked={current.includes(value)}
               name={value}
-              onChange={props.onChange}
+              onChange={onChange}
             />
             <Text ml={2} flex={1} fontSize={14}>
               {value}
