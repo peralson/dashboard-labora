@@ -3,9 +3,9 @@ import { Flex, Text } from '@chakra-ui/layout'
 import { Image } from '@chakra-ui/image';
 import eye from '../../assets/svg/eye.svg'
 
-const Documentation = ({ content }) => {
-	const [open, setOpen] = useState(false)
-	return (
+const Documentation = () => {
+  const [open, setOpen] = useState(false);
+  return (
     <Flex
       alignItems={"center"}
       py={2}
@@ -16,7 +16,7 @@ const Documentation = ({ content }) => {
       borderColor={"darkLight"}
       borderWidth={2}
     >
-      <Text flex={1} color="white" opacity={0.5}>
+      <Text flex={1} fontSize={14} opacity={0.6}>
         ¿Qué puedo hacer aquí?
       </Text>
       <Flex
@@ -26,7 +26,7 @@ const Documentation = ({ content }) => {
         py={1}
         px={2}
         cursor="pointer"
-        opacity={0.5}
+        opacity={0.6}
       >
         <Text color="primary" fontSize={14}>
           Próximamente
@@ -35,6 +35,6 @@ const Documentation = ({ content }) => {
       </Flex>
     </Flex>
   );
-}
+};
 
 export default Documentation

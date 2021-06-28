@@ -25,7 +25,7 @@ export const fetchCompany = () => {
 
     dispatch({
       type: FETCH_COMPANY,
-      company: resData.body[0],
+      company: resData.body,
     });
   };
 };
@@ -48,7 +48,7 @@ export const editCompany = (state) => {
     });
 
     const response = await fetch(
-      "https://us-central1-partime-60670.cloudfunctions.net/api/user/company/",
+      "https://us-central1-partime-60670.cloudfunctions.net/api/company/",
       {
         method: "PUT",
         headers: {

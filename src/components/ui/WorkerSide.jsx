@@ -37,12 +37,12 @@ const WorkerSide = ({ data }) => {
                 const catLength = data.categories.length;
                 return (
                   <Text
-                    key={category}
+                    key={index}
                     fontSize={12}
                     color={"accent"}
                     ml={index !== 0 && 1}
                   >
-                    {category.toUpperCase()}
+                    {category.data.name.toUpperCase()}
                     {index !== catLength - 1 && catLength > 1 && `,`}
                   </Text>
                 );
@@ -60,7 +60,7 @@ const WorkerSide = ({ data }) => {
           <Flex flexWrap={"wrap"}>
             {data.tags.map((tag, index) => (
               <Text
-                key={tag}
+                key={index}
                 fontSize={12}
                 px={2}
                 py={1}
@@ -69,7 +69,7 @@ const WorkerSide = ({ data }) => {
                 ml={index !== 0 && 1}
                 borderRadius={4}
               >
-                #{tag}
+                #{tag.data.name}
               </Text>
             ))}
           </Flex>

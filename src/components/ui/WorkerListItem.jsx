@@ -81,7 +81,7 @@ const WorkerListItem = ({ worker, handleCheck, checkedItems }) => {
               borderRadius={4}
               fontSize={11}
             >
-              {category}
+              {category.data.name}
             </Text>
           ))}
           {worker.categories.length > 2 && (
@@ -110,7 +110,7 @@ const WorkerListItem = ({ worker, handleCheck, checkedItems }) => {
               color={"primary"}
               fontSize={12}
             >
-              #{tag}
+              #{tag.data.name}
             </Text>
           ))}
           {worker.tags.length > 2 && (

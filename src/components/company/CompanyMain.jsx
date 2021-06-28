@@ -29,9 +29,11 @@ const CompanyMain = ({ general, contact }) => {
             <Text fontSize={21} fontWeight={"bold"}>
               {name}
             </Text>
-            <Text fontSize={14} mt={1} color={"grey.dark"} isTruncated>
-              {location.address}
-            </Text>
+            {location && (
+              <Text fontSize={14} mt={1} color={"grey.dark"} isTruncated>
+                {location.address}
+              </Text>
+            )}
           </Box>
           <Box>
             <Text 

@@ -147,49 +147,51 @@ const Workers = ({
   return (
     <SelectedWorker.Provider value={{ selectedWorker, setSelectedWorker }}>
       <Main>
-        <TopMain pb={0}>
+        <TopMain pb={workers.length !== 0 ? 0 : 3}>
           <Flex>
             <SearchBar
-              placeholder={'Busca trabajadores por su nombre'}
+              placeholder={"Busca trabajadores por su nombre"}
               onChange={(event) => setSearch(event.target.value)}
             />
-            <Flex
-              borderRadius={8}
-              _hover={{ cursor: 'pointer' }}
-              border={'1px solid'}
-              borderColor={'translucid'}
-              bg={(displayFilters || totalFilters > 0) && 'darkLight'}
-              ml={2}
-              alignItems={'center'}
-              px={4}
-              onClick={() => setDisplayFilters(!displayFilters)}
-            >
-              <Text lineHeight={0} fontSize={14}>
-                {!displayFilters
-                  ? totalFilters > 0
-                    ? `Filtros (${totalFilters})`
-                    : 'Filtros'
-                  : 'Cerrar'}
-              </Text>
-            </Flex>
+            {workers.length !== 0 && (
+              <>
+                <Flex
+                  borderRadius={8}
+                  _hover={{ cursor: "pointer" }}
+                  border={"1px solid"}
+                  borderColor={"translucid"}
+                  bg={(displayFilters || totalFilters > 0) && "darkLight"}
+                  ml={2}
+                  alignItems={"center"}
+                  px={4}
+                  onClick={() => setDisplayFilters(!displayFilters)}
+                >
+                  <Text lineHeight={0} fontSize={14}>
+                    {!displayFilters
+                      ? totalFilters > 0
+                        ? `Filtros (${totalFilters})`
+                        : "Filtros"
+                      : "Cerrar"}
+                  </Text>
+                </Flex>
+                <Popup
+                  title={"Crear etiquetas"}
+                  body={<CreateTags />}
+                  show={createTagModalOpen}
+                  handleShow={setCreateTagModalOpen}
+                >
+                  <AccentButton onClick={() => setCreateTagModalOpen(true)}>
+                    Crear etiquetas
+                  </AccentButton>
+                </Popup>
+              </>
+            )}
             <Popup
-              title={'Crear etiquetas'}
-              body={
-                <CreateTags/>
-              }
-              show={createTagModalOpen}
-              handleShow={setCreateTagModalOpen}
-            >
-              <AccentButton onClick={() => setCreateTagModalOpen(true)}>
-                Crear etiquetas
-              </AccentButton>
-            </Popup>
-            <Popup
-              title={'Invitar trabajadores'}
+              title={"Invitar trabajadores"}
               body={
                 <ShareLink
-                  categories={categories.map((e) => e.id)}
-                  tags={tags.map((e) => e.id)}
+                  categories={categories.map((cat) => cat.id)}
+                  tags={tags.map((tag) => tag.id)}
                 />
               }
               show={shareModalOpen}
@@ -201,15 +203,15 @@ const Workers = ({
             </Popup>
           </Flex>
           {displayFilters && (
-            <Flex mt={2} alignItems={'center'}>
+            <Flex mt={2} alignItems={"center"}>
               {currentCategories.length !== 0 && (
                 <MultipleSelectList
                   title={`Categorías${
                     filterCategories.length > 0
                       ? ` (${filterCategories.length})`
-                      : ''
+                      : ""
                   }`}
-                  bg={filterCategories.length !== 0 && 'darkLight'}
+                  bg={filterCategories.length !== 0 && "darkLight"}
                   current={filterCategories}
                   values={currentCategories}
                   onChange={handleCategories}
@@ -218,26 +220,26 @@ const Workers = ({
               {currentTags.length !== 0 && (
                 <MultipleSelectList
                   title={`Etiquetas${
-                    filterTags.length > 0 ? ` (${filterTags.length})` : ''
+                    filterTags.length > 0 ? ` (${filterTags.length})` : ""
                   }`}
                   ml={2}
-                  bg={filterTags.length !== 0 && 'darkLight'}
+                  bg={filterTags.length !== 0 && "darkLight"}
                   current={filterTags}
                   values={currentTags}
                   onChange={handleTags}
                 />
               )}
               {totalFilters !== 0 && (
-                <Flex flex={1} justifyContent={'flex-end'}>
+                <Flex flex={1} justifyContent={"flex-end"}>
                   <Text
-                    color={'red.full'}
+                    color={"red.full"}
                     fontSize={14}
                     ml={2}
                     borderRadius={8}
-                    _hover={{ bg: 'red.smooth' }}
-                    cursor={'pointer'}
-                    border={'1px solid'}
-                    borderColor={'translucid'}
+                    _hover={{ bg: "red.smooth" }}
+                    cursor={"pointer"}
+                    border={"1px solid"}
+                    borderColor={"translucid"}
                     px={4}
                     py={2}
                     onClick={() => {
@@ -252,21 +254,23 @@ const Workers = ({
               )}
             </Flex>
           )}
-          <WorkersTableGuide
-            isChecked={allChecked}
-            isIndeterminate={isIndeterminate}
-            handleGlobalCheck={handleGlobalCheck}
-            checkedItems={checkedItems}
-            tags={tags}
-            categories={categories}
-          />
+          {workers.length !== 0 && (
+            <WorkersTableGuide
+              isChecked={allChecked}
+              isIndeterminate={isIndeterminate}
+              handleGlobalCheck={handleGlobalCheck}
+              checkedItems={checkedItems}
+              tags={tags}
+              categories={categories}
+            />
+          )}
         </TopMain>
         {workersLoading ? (
-          <Text textAlign={'center'} py={10}>
+          <Text textAlign={"center"} py={10}>
             Cargando...
           </Text>
         ) : workersError ? (
-          <Text textAlign={'center'} py={10}>
+          <Text textAlign={"center"} py={10}>
             Ha ocurrido un error
           </Text>
         ) : (
@@ -283,7 +287,7 @@ const Workers = ({
           <SideBoxContainer>
             {!selectedWorker && (
               <BeCurious
-                text={'Prueba a seleccionar a uno o varios trabajadores'}
+                text={"Prueba a seleccionar a uno o varios trabajadores"}
               />
             )}
             {selectedWorker && <WorkerSide data={selectedWorker} />}
