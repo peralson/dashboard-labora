@@ -10,11 +10,11 @@ const SelectList = ({ placeholder, onChange, color, values, ...rest }) => (
 		borderColor="translucid"
 		_hover={{ borderColor: "translucid" }}
 		_focus={{ borderColor: "translucid" }}
-		color={color ? color : "black"}
+		color={color ? color : "white"}
 		{...rest}
 	>
 		{values.map((e) => (
-			<option key={e} value={e}>
+			<option key={e} value={e} style={{color: 'black'}}>
 				{e}
 			</option>
 		))}

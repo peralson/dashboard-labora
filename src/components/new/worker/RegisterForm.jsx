@@ -51,7 +51,6 @@ const RegisterForm = ({
 					handleUid(id);
           handleEmail(values.email)
           handleName(values.name)
-          console.log('ya estaria:',id, values.email, values.name)
 					handleProcess(2);
 				}
 			} catch (err) {

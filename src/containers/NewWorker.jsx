@@ -17,7 +17,8 @@ import { registerWorker } from "../store/actions/workers";
 import RegisterForm from "../components/new/worker/RegisterForm";
 import WorkerContactForm from "../components/new/worker/WorkerContactForm";
 import WorkerPersonalForm from "../components/new/worker/WorkerPersonalForm";
-import WorkerImagesForm from "../components/new/worker/WorkerImagesForm";
+import WorkerLegalForm from "../components/new/worker/WorkerLegalForm";
+import SuccessfulWorkerRegistartion from "../components/new/worker/SuccessfulWorkerRegistartion";
 
 const NewWorker = ({ match, checkLink, registerWorker }) => {
 	const { id } = match.params;
@@ -49,11 +50,17 @@ const NewWorker = ({ match, checkLink, registerWorker }) => {
 					lng: null,
 				},
 			},
+			legal: {
+				dni: {
+					number: null,
+					front: null,
+					back: null,
+					expiryDate: null,
+				},
+			},
 			gender: "",
-			bio: "",
 			images: {
 				main: null,
-				profesional: null,
 			},
 		},
 		onSubmit: async (values) => {
@@ -68,8 +75,9 @@ const NewWorker = ({ match, checkLink, registerWorker }) => {
 					categories: check.categories,
 					tags: check.tags,
 				});
-				console.log("respuesta:", reg);
-				// handleProcess(3);
+				if (reg) {
+					setProcess(5);
+				}
 			} catch (err) {
 				console.log("error:", err);
 			} finally {
@@ -79,8 +87,7 @@ const NewWorker = ({ match, checkLink, registerWorker }) => {
 	});
 
 	const title = () => {
-		//name = getCompany(check.id_company)
-		let msg = `Has sido invitado por la empresa [name] a `;
+		let msg = `Has sido invitado por ${check.companyName} para `;
 		if (check.categories.length > 1) {
 			msg += "sus listas de ";
 		} else {
@@ -138,20 +145,17 @@ const NewWorker = ({ match, checkLink, registerWorker }) => {
 								/>
 							</Flex>
 						) : process === 2 ? (
-							<WorkerContactForm
-								name={name}
-								email={email}
-								handleProcess={setProcess}
-								formik={formik}
-							/>
+							<WorkerContactForm handleProcess={setProcess} formik={formik} />
 						) : process === 3 ? (
 							<WorkerPersonalForm handleProcess={setProcess} formik={formik} />
 						) : process === 4 ? (
-							<WorkerImagesForm
+							<WorkerLegalForm
 								handleProcess={setProcess}
 								formik={formik}
 								loading={loading}
 							/>
+						) : process === 5 ? (
+							<SuccessfulWorkerRegistartion />
 						) : (
 							<Text>Algo salió mal :(</Text>
 						)}

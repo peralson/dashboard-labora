@@ -16,7 +16,7 @@ const OneOfferJob = ({ job }) => {
   const { setSelectedManageSide } = useContext(SelectedManageSide);
 
   const isActive = selectedItemManage && selectedItemManage.id === job.id;
-  console.log('job: ', job)
+
   return (
     <Flex
       _hover={{ borderColor: "white" }}

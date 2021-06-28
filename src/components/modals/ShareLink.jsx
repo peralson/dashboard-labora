@@ -24,13 +24,12 @@ import { inviteWorker } from "../../store/actions/workers";
 // Components
 import MultipleSelectList from "../ui/MultipleSelectList";
 import ErrorMessage from "../ui/ErrorMessage";
-import { Calendar } from "react-multi-date-picker";
-import "../../assets/css/calendar.css";
+import SelectList from "../ui/SelectList";
 
 const ShareLink = ({ categories, tags, inviteWorker }) => {
 	const [selectedCategories, setSelectedCategories] = useState([]);
 	const [selectedTags, setSelectedTags] = useState([]);
-	const [calendarValue, setCalendarValue] = useState();
+	const [expiration, setExpiration] = useState();
 	const [link, setLink] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -55,16 +54,32 @@ const ShareLink = ({ categories, tags, inviteWorker }) => {
 		}
 	};
 
+	const handleExpiration = (e) => {
+		const today = new Date();
+		switch (e.target.options.selectedIndex) {
+			case 1:
+				setExpiration(today.setDate(today.getDate() + 1));
+				break;
+			case 2:
+				setExpiration(today.setDate(today.getDate() + 7));
+				break;
+			case 3:
+				setExpiration(today.setDate(today.getDate() + 15));
+				break;
+			default:
+				setExpiration(null);
+		}
+	};
+
 	const handleLink = async () => {
-		if (calendarValue && selectedCategories.length > 0) {
+		if (expiration && selectedCategories.length > 0) {
 			try {
 				setLoading(true);
 				setError(null);
-				const { year, month, day } = calendarValue;
 				const id = await inviteWorker(
 					selectedCategories,
 					selectedTags,
-					new Date(`${year} ${month.number} ${day}`).getTime()
+					expiration
 				);
 				setLink(`${window.location.origin}/registro/${id}`);
 			} catch (err) {
@@ -139,28 +154,11 @@ const ShareLink = ({ categories, tags, inviteWorker }) => {
 				/>
 			</Flex>
 			<Text mb={2}>Fecha de caducidad del enlace:</Text>
-			<Calendar
-				value={calendarValue}
-				minDate={new Date()}
-				weekDays={["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"]}
-				months={[
-					"Enero",
-					"Febrero",
-					"Marzo",
-					"Abril",
-					"Mayo",
-					"Junio",
-					"Julio",
-					"Agosto",
-					"Septiembre",
-					"Octubre",
-					"Noviembre",
-					"Diciembre",
-				]}
-				weekStartDayIndex={0}
-				className={"red bg-dark"}
-				locale={"es"}
-				onChange={(d) => setCalendarValue(d)}
+			<SelectList
+				placeholder="Selecciona caducidad"
+				onChange={(e) => handleExpiration(e)}
+				values={["Mañana", "Una semana", "15 dias"]}
+				color="white"
 			/>
 			<Flex
 				_hover={{ cursor: "pointer" }}
@@ -219,7 +217,7 @@ const ShareLink = ({ categories, tags, inviteWorker }) => {
 										"Debes seleccionar al menos una categoría."}
 								</Text>
 								<Text>
-									{!calendarValue &&
+									{!expiration &&
 										"Debes seleccionar una fecha de caducidad para el enlace."}
 								</Text>
 							</Flex>
