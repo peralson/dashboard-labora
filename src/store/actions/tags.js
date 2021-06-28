@@ -79,15 +79,15 @@ export const createTags = (tagList) => {
 	return async (dispatch, getState) => {
 		const token = localStorage.getItem("fbase_key");
 
+		console.log(tagList);
+
 		const response = await fetch(
-			`https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/tags/create`,
+			`https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/tags`,
 			{
-				method: "PUT",
+				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
-					"Access-Control-Request-Method": "PUT",
-					"Access-Control-Request-Headers": true,
 				},
 				body: JSON.stringify({
 					tags: tagList,
@@ -95,11 +95,12 @@ export const createTags = (tagList) => {
 			}
 		);
 
+		const resData = await response.json();
+
 		if (!response.ok) {
 			console.log("ERROR");
-			const resData = await response.json();
 			console.error(resData);
-			throw new Error("Ha ocurrido un error.");
+			throw new Error();
 		}
 
 		dispatch({

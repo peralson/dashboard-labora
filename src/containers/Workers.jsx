@@ -102,21 +102,21 @@ const Workers = ({
 
     if (filterTags.length === 0 && filterCategories.length > 0) {
       return (
-        filterCategories.every((cat) => worker.categories.includes(cat)) &&
+        filterCategories.every((cat) => worker.categories.find(workerCat => cat === workerCat.data.name)) &&
         worker.workerData.name.toLowerCase().includes(search.toLowerCase())
       );
     }
 
     if (filterCategories.length === 0 && filterTags.length > 0) {
       return (
-        filterTags.every((tag) => worker.tags.includes(tag)) &&
+        filterTags.every((tag) => worker.tags.find(workerTag => tag === workerTag.data.name)) &&
         worker.workerData.name.toLowerCase().includes(search.toLowerCase())
       );
     }
 
     return (
-      filterCategories.every((cat) => worker.categories.includes(cat)) &&
-      filterTags.every((tag) => worker.tags.includes(tag)) &&
+      filterCategories.every((cat) => worker.categories.find(workerCat => cat === workerCat.data.name)) &&
+      filterTags.every((tag) => worker.tags.find(workerTag => tag === workerTag.data.name)) &&
       worker.workerData.name.toLowerCase().includes(search.toLowerCase())
     );
   });
@@ -158,7 +158,7 @@ const Workers = ({
                 <Flex
                   borderRadius={8}
                   _hover={{ cursor: "pointer" }}
-                  border={"1px solid"}
+                  borderWidth={1}
                   borderColor={"translucid"}
                   bg={(displayFilters || totalFilters > 0) && "darkLight"}
                   ml={2}
@@ -166,7 +166,7 @@ const Workers = ({
                   px={4}
                   onClick={() => setDisplayFilters(!displayFilters)}
                 >
-                  <Text lineHeight={0} fontSize={14}>
+                  <Text fontSize={14}>
                     {!displayFilters
                       ? totalFilters > 0
                         ? `Filtros (${totalFilters})`
@@ -212,8 +212,8 @@ const Workers = ({
                       : ""
                   }`}
                   bg={filterCategories.length !== 0 && "darkLight"}
-                  current={filterCategories}
-                  values={currentCategories}
+                  current={filterCategories} 
+                  values={currentCategories.map(e => e.data.name)}
                   onChange={handleCategories}
                 />
               )}
@@ -225,7 +225,7 @@ const Workers = ({
                   ml={2}
                   bg={filterTags.length !== 0 && "darkLight"}
                   current={filterTags}
-                  values={currentTags}
+                  values={currentTags.map(e => e.data.name)}
                   onChange={handleTags}
                 />
               )}

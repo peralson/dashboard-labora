@@ -48,9 +48,9 @@ const WorkersTableGuide = ({
             title={"Editar Etiquetas"}
             body={
               <EditWorkerLists
-                data={tags.map((e) => e.id)}
+                data={tags}
                 workers={checkedItems}
-                type="tag"
+                type={"tag"}
                 handleShow={setTagModalOpen}
               />
             }
@@ -76,7 +76,7 @@ const WorkersTableGuide = ({
             title={"Editar categorias"}
             body={
               <EditWorkerLists
-                data={categories.map((cat) => cat.id)}
+                data={categories}
                 workers={checkedItems}
                 type="categories"
                 handleShow={setCatModalOpen}

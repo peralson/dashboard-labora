@@ -117,9 +117,9 @@ const EditWorkerLists = ({
       <Grid templateColumns={"1fr 1fr"} gap={2}>
         {data.map((item, index) => (
           <Flex key={index}>
-            <Checkbox name={item} onChange={handleItems} />
+            <Checkbox name={item.name} onChange={handleItems} />
             <Text ml={2} flex={1}>
-              {item}
+              {item.name}
             </Text>
           </Flex>
         ))}
@@ -135,7 +135,7 @@ const EditWorkerLists = ({
           px={4}
           py={2}
           opacity={!isValid && 0.6}
-          onClick={isValid && handleSubmit}
+          onClick={isValid ? handleSubmit : undefined}
         >
           {loading
             ? `Editando ${title.toLowerCase()}...`

@@ -44,7 +44,7 @@ const CreateTags = ({ handleShow, createTags }) => {
 			setError(null);
 			setLoading(true);
 			try {
-				await createTags();
+				await createTags(tagArray);
 				handleShow(false);
 			} catch (error) {
 				setError(true);
@@ -66,12 +66,12 @@ const CreateTags = ({ handleShow, createTags }) => {
 					mb={4}
 				/>
 			)}
-			<Text fontSize={16}>Introduce las etiquetas separadas por comas:</Text>
+			<Text>
+				Introduce las etiquetas separadas por comas:
+			</Text>
 			<CustomInput
 				optional
-				bg="translucid"
-				_hover={{ borderColor: "none" }}
-				_focus={{ borderColor: "none" }}
+				bg={"translucid"}
 				onChange={(e) => handleTags(e)}
 			/>
 			<Flex mt={4} justifyContent={"flex-end"}>
