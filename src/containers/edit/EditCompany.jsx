@@ -14,6 +14,14 @@ import usePlacesAutocomplete, {
   getGeocode,
 } from "use-places-autocomplete";
 
+// import {
+//   Combobox,
+//   ComboboxInput,
+//   ComboboxPopover,
+//   ComboboxList,
+//   ComboboxOption,
+// } from "@reach/combobox";
+
 // SVG
 import back from "../../assets/svg/back.svg";
 import edit from "../../assets/svg/edit.svg";
@@ -37,6 +45,66 @@ import CustomImg from "../../components/ui/CustomImg";
 import ErrorMessage from "../../components/ui/ErrorMessage";
 
 const PlacesAutoComplete = ({ state, dispatch }) => {
+  // const {
+  //   ready,
+  //   value,
+  //   suggestions: { status, data },
+  //   setValue,
+  //   clearSuggestions
+  // } = usePlacesAutocomplete();
+
+  // const handleSelectPlace = async (address) => {
+  //   setValue(address, false);
+
+  //   try {
+  //     const results = await getGeocode({ address });
+  //     const { lat, lng } = await getLatLng(results[0]);
+  //     dispatch({
+  //       type: "setAddress",
+  //       payload: { address: address, lat: lat, lng: lng },
+  //     });
+  //   } catch (error) {
+  //     console.error("handleSelectPlace", error);
+  //   } finally {
+  //     clearSuggestions();
+  //   }
+  // };
+
+  // const handleSelect = (val) => {
+  //   setValue(val, false);
+  // };
+
+  // const renderSuggestions = () => {
+  //   const suggestions = data.map(({ place_id, description }) => (
+  //     <ComboboxOption key={place_id} value={description} />
+  //   ));
+
+  //   return (
+  //     <>
+  //       {suggestions}
+  //       <li className="logo">
+  //         <img
+  //           src="https://developers.google.com/maps/documentation/images/powered_by_google_on_white.png"
+  //           alt="Powered by Google"
+  //         />
+  //       </li>
+  //     </>
+  //   );
+  // };
+
+  // return (
+  //   <Combobox onSelect={handleSelect} aria-labelledby="demo">
+  //     <ComboboxInput
+  //       style={{ width: 300, maxWidth: "90%" }}
+  //       value={value}
+  //       onChange={handleSelectPlace}
+  //       disabled={!ready}
+  //     />
+  //     <ComboboxPopover>
+  //       <ComboboxList>{status === "OK" && renderSuggestions()}</ComboboxList>
+  //     </ComboboxPopover>
+  //   </Combobox>
+  // );
   const {
     ready,
     value,
@@ -126,6 +194,7 @@ const FileUpload = ({ name, current, acceptedFileTypes, dispatch }) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
+        console.log(reader);
         setImage(reader.result)
         dispatch({ type: "setLogo", payload: reader.result })
       }

@@ -105,6 +105,15 @@ const OneProject = ({
               borderRadius={20}
             />
           </Flex>
+          <Box mt={12}>
+            <Text mb={2} fontWeight={"bold"}>
+              Enlace de gestión
+            </Text>
+            <Text mb={4} color={"grey.dark"}>
+              Abre o comparte el siguiente enlace, desde el se podrá visualizar y gestionar los trabajadores de este proyecto.
+            </Text>
+            <CopyLinkBar id={id} />
+          </Box>
           <Text mt={10} mb={2} fontWeight={"bold"}>
             Sobre este proyecto
           </Text>
@@ -119,8 +128,7 @@ const OneProject = ({
               desc={"Días laborales del proyecto"}
               image={calendar}
             />
-          </Grid>
-          <CopyLinkBar id={id} /> 
+          </Grid> 
           <Flex mt={12} mb={4} alignItems={"center"} justifyContent={"space-between"}>
             <Text fontWeight={"bold"} mr={4}>
               Ofertas de este proyecto

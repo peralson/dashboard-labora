@@ -40,12 +40,16 @@ const ContractTemplateNew = () => (
     justifyContent={'center'}
     borderRadius={10}
     borderWidth={2}
-    _hover={{ borderColor: 'white' }}
-    borderColor={false ? 'white' : 'darkLight'}
+    // _hover={{ borderColor: 'white' }}
+    borderColor={'darkLight'}
+    opacity={0.5}
   >
     <Image src={plus} w={'32px'} mb={4} />
     <Text textAlign={'center'}>
       Nueva plantilla
+    </Text>
+    <Text textAlign={'center'} fontSize={14}>
+      Próximamente...
     </Text>
   </Flex>
 );

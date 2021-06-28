@@ -38,7 +38,7 @@ const LegalPayrolls = ({ projectId }) => {
             title={extra.name}
             optional
             type={"number"}
-            placeholder={`10 euros/hora`}
+            placeholder={`10 euros`}
             onChange={(e) =>
               dispatch({
                 type: "editExtraItem",

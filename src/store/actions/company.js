@@ -34,8 +34,21 @@ export const editCompany = (state) => {
   return async (dispatch, getState) => {
     const token = getState().auth.idToken;
 
+    console.log({
+      id: state.id,
+      general: {
+        name: state.name,
+        photo: state.newPhoto,
+      },
+      contact: {
+        mail: state.mail,
+        phoneNumber: state.phoneNumber,
+        location: state.location,
+      },
+    });
+
     const response = await fetch(
-      `https://us-central1-partime-60670.cloudfunctions.net/api/user/company/${state.id}`,
+      "https://us-central1-partime-60670.cloudfunctions.net/api/user/company/",
       {
         method: "PUT",
         headers: {
@@ -43,9 +56,10 @@ export const editCompany = (state) => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
+          id: state.id,
           general: {
             name: state.name,
-            photo: state.newPhoto,
+            photo: state.newPhoto ? state.newPhoto.split(";base64,")[1] : null,
           },
           contact: {
             mail: state.mail,

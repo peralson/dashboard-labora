@@ -141,6 +141,15 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
                 extra.amount > 0 && <CostItem key={index} name={extra.name} amount={extra.amount} />
             )}
           </Grid>
+          <Box mt={10}>
+            <Text mb={2} fontWeight={"bold"}>
+              Enlace de gestión
+            </Text>
+            <Text mb={4} color={"grey.dark"}>
+              Abre o comparte el siguiente enlace, desde el se podrá visualizar y gestionar los trabajadores de esta oferta.
+            </Text>
+            <CopyLinkBar id={project.id} />
+          </Box>
           <Text mt={10} mb={2} fontWeight={"bold"}>
             Sobre esta oferta de {offer.offerData.category}
           </Text>
@@ -172,7 +181,6 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
               />
             )}
           </Grid>
-          <CopyLinkBar id={project.id} />
           {offer.offerData.tags && offer.offerData.tags.length > 0 && (
             <Flex mt={6} alignItems={"center"} justifyContent={"space-between"}>
               <Text fontWeight={"bold"}>Etiquetas:</Text>

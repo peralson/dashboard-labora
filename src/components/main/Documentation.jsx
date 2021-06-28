@@ -16,7 +16,7 @@ const Documentation = ({ content }) => {
       borderColor={"darkLight"}
       borderWidth={2}
     >
-      <Text flex={1} color="white">
+      <Text flex={1} color="white" opacity={0.5}>
         ¿Qué puedo hacer aquí?
       </Text>
       <Flex
@@ -26,11 +26,12 @@ const Documentation = ({ content }) => {
         py={1}
         px={2}
         cursor="pointer"
+        opacity={0.5}
       >
         <Text color="primary" fontSize={14}>
-          Ver
+          Próximamente
         </Text>
-        <Image src={eye} ml={2} w={"15px"} />
+        <Image src={eye} ml={2} w={"15px"} display={"none"} />
       </Flex>
     </Flex>
   );

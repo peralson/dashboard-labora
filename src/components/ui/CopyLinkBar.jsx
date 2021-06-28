@@ -13,7 +13,6 @@ const CopyLinkBar = ({ id }) => {
 
   return (
     <Flex
-      mt={6}
       alignItems={"center"}
       borderRadius={10}
       borderWidth={1}
@@ -42,7 +41,7 @@ const CopyLinkBar = ({ id }) => {
         cursor={"pointer"}
         onClick={onCopiedHandler}
       >
-        {copied ? "🎉 ¡Enlace copiado! 🎉" : "Copiar enlace de gestión"}
+        {copied ? "🎉  ¡Ya lo tienes!  🎉" : "Copiar enlace de gestión"}
       </Text>
     </Flex>
   );
