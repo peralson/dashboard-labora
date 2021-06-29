@@ -55,7 +55,7 @@ const OnePastProject = ({ match, history, pastProjects }) => {
 							onGoBack={() =>
 								project.projectOffers.length !== 0
 									? history.goBack()
-									: history.push(`../../`)
+									: history.push(`../`)
 							}
 						>
 							Proyecto
