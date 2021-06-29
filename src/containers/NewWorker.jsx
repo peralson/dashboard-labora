@@ -39,6 +39,8 @@ const NewWorker = ({ match, checkLink, registerWorker }) => {
 		loadCheck();
 	}, [id, checkLink]);
 
+	console.log(check);
+
 	const formik = useFormik({
 		initialValues: {
 			birthday: null,
@@ -108,62 +110,62 @@ const NewWorker = ({ match, checkLink, registerWorker }) => {
 	};
 
 	return (
-		<Flex
-			display="flex"
-			justifyContent="center"
-			width={"100vw"}
-			px={6}
-			mx={"auto"}
-		>
-			<Flex
-				maxW={process ? "800px" : "400px"}
-				w="100%"
-				mt={8}
-				flexDirection="column"
-				alignItems="center"
-			>
-				<Box mb="8">
-					<Image src={Logo} alt="Logo de Labora" w="120px" />
-				</Box>
-				{loadingPage ? (
-					<Text>Cargando...</Text>
-				) : check === 404 ? (
-					<Text>Enlace incorrecto</Text>
-				) : check === 401 ? (
-					<Text>Este enlace ha caducado</Text>
-				) : (
-					<Flex flexDirection="column">
-						{process === 1 ? (
-							<Flex flexDirection="column">
-								<Text>{title()}</Text>
-								<RegisterForm
-									handleProcess={setProcess}
-									handleUid={setUid}
-									handleName={setName}
-									handleEmail={setEmail}
-									formik={formik}
-								/>
-							</Flex>
-						) : process === 2 ? (
-							<WorkerContactForm handleProcess={setProcess} formik={formik} />
-						) : process === 3 ? (
-							<WorkerPersonalForm handleProcess={setProcess} formik={formik} />
-						) : process === 4 ? (
-							<WorkerLegalForm
-								handleProcess={setProcess}
-								formik={formik}
-								loading={loading}
-							/>
-						) : process === 5 ? (
-							<SuccessfulWorkerRegistartion />
-						) : (
-							<Text>Algo salió mal :(</Text>
-						)}
-					</Flex>
-				)}
-			</Flex>
-		</Flex>
-	);
+    <Flex
+      display="flex"
+      justifyContent="center"
+      width={"100vw"}
+      px={6}
+      mx={"auto"}
+    >
+      <Flex
+        maxW={"400px"}
+        w={"100%"}
+        mt={8}
+        flexDirection="column"
+        alignItems="center"
+      >
+        <Box mb="8">
+          <Image src={Logo} alt="Logo de Labora" w="120px" />
+        </Box>
+        {loadingPage ? (
+          <Text>Cargando...</Text>
+        ) : check === 404 ? (
+          <Text>Enlace incorrecto</Text>
+        ) : check === 401 ? (
+          <Text>Este enlace ha caducado</Text>
+        ) : (
+          <Flex flexDirection="column">
+            {process === 1 ? (
+              <Flex flexDirection="column">
+                <Text>{title()}</Text>
+                <RegisterForm
+                  handleProcess={setProcess}
+                  handleUid={setUid}
+                  handleName={setName}
+                  handleEmail={setEmail}
+                  formik={formik}
+                />
+              </Flex>
+            ) : process === 2 ? (
+              <WorkerContactForm handleProcess={setProcess} formik={formik} />
+            ) : process === 3 ? (
+              <WorkerPersonalForm handleProcess={setProcess} formik={formik} />
+            ) : process === 4 ? (
+              <WorkerLegalForm
+                handleProcess={setProcess}
+                formik={formik}
+                loading={loading}
+              />
+            ) : process === 5 ? (
+              <SuccessfulWorkerRegistartion />
+            ) : (
+              <Text>Algo salió mal :(</Text>
+            )}
+          </Flex>
+        )}
+      </Flex>
+    </Flex>
+  );
 };
 
 const mapDispatchToProps = {

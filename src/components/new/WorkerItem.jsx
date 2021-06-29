@@ -35,9 +35,18 @@ const WorkerItem = ({ worker }) => (
     </Text>
     {worker.tags.length !== 0 && (
       <Flex flex={1} alignItems={"center"}>
-        {worker.tags.map((tag, index) => ( 
-          <Text key={index} fontSize={12} ml={index !== 0 && 1} py={1} px={2} borderRadius={4} bg={"darkLight"} color={"primary"}>
-            #{tag}
+        {worker.tags.map((tag, index) => (
+          <Text
+            key={index}
+            fontSize={12}
+            ml={index !== 0 && 1}
+            py={1}
+            px={2}
+            borderRadius={4}
+            bg={"darkLight"}
+            color={"primary"}
+          >
+            #{tag.data.name}
           </Text>
         ))}
       </Flex>

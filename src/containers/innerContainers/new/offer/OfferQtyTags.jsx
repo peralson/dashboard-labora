@@ -28,21 +28,25 @@ const OfferQtyTags = () => {
       fetch(
         `https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/myWorkers/category/${state.offerData.category}`,
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("fbase_key")}`,
+          },
         },
       )
         .then((data) => data.json())
         .then((workers) => {
-          let tagArray = []
+          let tagArray = [];
+          console.log(workers);
           workers.body.forEach((worker) => {
             worker.tags.forEach((tag) => {
               if (!tagArray.includes(tag)) {
-                tagArray.push(tag); 
+                tagArray.push(tag);
               }
             });
-          })
-          setTags(tagArray)
-          setWorkers(workers.body)
+          });
+          setTags(tagArray);
+          setWorkers(workers.body);
         })
         .catch(() => setError(true))
         .finally(() => setLoading(false));
@@ -71,8 +75,8 @@ const OfferQtyTags = () => {
   };
 
   const filteredWorkers = workers.filter((worker) => {
-    return (
-      filterTags.every((tag) => worker.tags.includes(tag))
+    return filterTags.every((tag) =>
+      worker.tags.find((workerTag) => workerTag.data.name === tag),
     );
   });
 
@@ -151,9 +155,9 @@ const OfferQtyTags = () => {
             flexDirection={"row-reverse"}
             justifyContent={"space-between"}
           >
-            {tags.length === 0
-              ? <Box></Box>
-              : (
+            {tags.length === 0 ? (
+              <Box></Box>
+            ) : (
               <MultipleSelectList
                 title={`Etiquetas${
                   filterTags.length > 0 ? ` (${filterTags.length})` : ""

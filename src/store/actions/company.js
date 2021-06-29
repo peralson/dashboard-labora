@@ -59,7 +59,7 @@ export const editCompany = (state) => {
           id: state.id,
           general: {
             name: state.name,
-            photo: state.newPhoto ? state.newPhoto.split(";base64,")[1] : null,
+            photo: state.newPhoto ? state.newPhoto : null,
           },
           contact: {
             mail: state.mail,

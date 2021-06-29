@@ -21,51 +21,51 @@ const WorkerContactForm = ({ handleProcess, formik }) => {
 		formik.values.contact.location.address;
 
 	return (
-		<Flex flexDirection="column" w="400px">
-			<Text fontWeight={"bold"} lineHeight={2} mb={2}>
-				Información de contacto
-			</Text>
-			<Separator bottom={4} />
-			<CustomInput
-				title={"Teléfono"}
-				placeholder={"Teléfono"}
-				onChange={formik.handleChange("contact.phoneNumber")}
-				value={formik.values.contact.phoneNumber}
-				mb={4}
-			/>
-			{!isLoaded ? (
-				<Text>Cargando...</Text>
-			) : loadError ? (
-				<Text>Ha ocurrido un error</Text>
-			) : (
-				<DirectionPicker
-					title={"Dirección"}
-					onChangeAddress={formik.handleChange("contact.location.address")}
-					onChangeLat={formik.handleChange("contact.location.lat")}
-					onChangeLng={formik.handleChange("contact.location.lng")}
-					placeholder={formik.values.contact.location.address}
-				/>
-			)}
-			<Flex flexDirection="row" justifyContent="flex-end">
-				<Flex
-					_hover={{ cursor: isValid && "pointer" }}
-					bg={"accent"}
-					borderRadius={8}
-					fontWeight="bold"
-					fontSize={16}
-					mt={8}
-					alignItems={"center"}
-					justifyContent="center"
-					opacity={!isValid && 0.6}
-					px={4}
-					py={2}
-					onClick={() => (isValid ? handleProcess(3) : {})}
-				>
-					Siguiente
-				</Flex>
-			</Flex>
-		</Flex>
-	);
+    <Flex flexDirection="column" w="400px">
+      <Text fontWeight={"bold"} lineHeight={2} mb={2}>
+        Información de contacto
+      </Text>
+      <Separator bottom={4} />
+      <CustomInput
+        title={"Teléfono"}
+        placeholder={"Teléfono"}
+        onChange={formik.handleChange("contact.phoneNumber")}
+        value={formik.values.contact.phoneNumber}
+        mb={4}
+      />
+      {!isLoaded ? (
+        <Text>Cargando...</Text>
+      ) : loadError ? (
+        <Text>Ha ocurrido un error</Text>
+      ) : (
+        <DirectionPicker
+          title={"Dirección"}
+          onChangeAddress={formik.handleChange("contact.location.address")}
+          onChangeLat={formik.handleChange("contact.location.lat")}
+          onChangeLng={formik.handleChange("contact.location.lng")}
+          placeholder={formik.values.contact.location.address}
+        />
+      )}
+      <Flex flexDirection="row" justifyContent="flex-end">
+        <Flex
+          _hover={{ cursor: isValid && "pointer" }}
+          bg={"accent"}
+          borderRadius={8}
+          fontWeight="bold"
+          fontSize={16}
+          mt={8}
+          alignItems={"center"}
+          justifyContent="center"
+          opacity={!isValid && 0.6}
+          px={4}
+          py={2}
+          onClick={() => (isValid ? handleProcess(3) : null)}
+        >
+          Siguiente
+        </Flex>
+      </Flex>
+    </Flex>
+  );
 };
 
 export default WorkerContactForm;

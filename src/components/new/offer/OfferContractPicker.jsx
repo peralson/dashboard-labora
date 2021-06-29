@@ -16,7 +16,12 @@ const OfferContractPicker = () => {
       (async () => {
         await fetch(
           "https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/categories",
-          { headers: { "Content-Type": "application/json" } },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("fbase_key")}`,
+            },
+          },
         )
           .then((res) => res.json())
           .then((data) => setContracts(data.body))

@@ -71,6 +71,8 @@ const NewOffer = ({ createOfferSingle, history }) => {
     }
   };
 
+  console.log(state);
+
   return (
     <NewOfferContext.Provider value={{ state, dispatch }}>
       <Main>
