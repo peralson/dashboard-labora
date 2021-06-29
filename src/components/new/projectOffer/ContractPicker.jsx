@@ -15,8 +15,14 @@ const ContractPicker = () => {
       setError(null);
       (async () => {
         await fetch(
-          "https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/categories",
-          { headers: { "Content-Type": "application/json" } },
+          "https://us-central1-partime-60670.cloudfunctions.net/api/contract/company/templates",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("fbase_key")}`,
+            },
+          },
         )
           .then((res) => res.json())
           .then((data) => setContracts(data.body))
@@ -32,7 +38,7 @@ const ContractPicker = () => {
       <Text mb={1} fontWeight={"bold"} lineHeight={2}>
         Modelo de contrato *
       </Text>
-      <Text mb={4} fontSize={14} color={"grey.dark"}>
+      <Text mb={4} color={"grey.dark"}>
         Selecciona, entre tus contratos modelo, el contrato por el que se regirá
         esta oferta de empleo.
       </Text>
@@ -42,11 +48,12 @@ const ContractPicker = () => {
         <Text>Error</Text>
       ) : (
         <Grid w={"100%"} templateColumns={"1fr 1fr 1fr"} columnGap={4}>
-          {contracts.map((contract) => (
+          {contracts.map((contract, index) => (
             <ContractItem
-              key={contract.id}
+              key={index}
               id={contract.id}
               name={contract.name}
+              file={contract.url}
             />
           ))}
         </Grid>

@@ -9,8 +9,10 @@ import "moment/locale/es";
 import ShiftsPicker from "./ShiftsPicker";
 
 const ScheduleItem = ({ date }) => {
-  const { dispatch } = useContext(NewProjectOfferContext);
-  const [pickedDate, setPickedDate] = useState(false);
+  const { state, dispatch } = useContext(NewProjectOfferContext);
+  const [pickedDate, setPickedDate] = useState(
+    state.schedule.some((sche) => sche.day === date),
+  );
 
   const handlePickDate = () => {
     if (pickedDate) {
@@ -32,7 +34,7 @@ const ScheduleItem = ({ date }) => {
     >
       <Flex alignItems={"center"}>
         <Text fontSize={14} fontWeight={"bold"} flex={1} mr={2}>
-          {moment(date._seconds * 1000).format("dddd, D MMMM YYYY")}
+          {moment(date._seconds).format("dddd, D MMMM YYYY")}
         </Text>
         <Flex
           h={"20px"}

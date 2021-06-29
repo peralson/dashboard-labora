@@ -37,11 +37,9 @@ const OfferItem = ({ offer, index }) => {
         <Flex alignItems="center" width="100%">
           <Box width="100%" flex="1">
             <Text fontSize={11} color="primary">
-              {offer.offerData.category.toUpperCase()}
+              {offer.offerData.category.data.name.toUpperCase()}
             </Text>
-            <Text fontSize={14}>
-              {offer.offerData.name}
-            </Text>
+            <Text fontSize={14}>{offer.offerData.name}</Text>
           </Box>
           <Text ml={4} fontSize={14} lineHeight={0.5} borderRadius={20}>
             {offer.offerData.already_assigned}/{offer.offerData.qty}
@@ -50,21 +48,23 @@ const OfferItem = ({ offer, index }) => {
         <Text
           fontSize={14}
           mt={6}
-          color={
-            notComplete
-              ? "red.full"
-              : "green"
-          }
+          color={notComplete ? "red.full" : "green"}
           borderRadius={4}
           lineHeight={1}
         >
-          {notComplete
-            ? totalApplications === 0
-              ? <Text opacity={0}>{"No tienes solicitudes"}</Text>
-              : `${totalApplications} ${totalApplications === 1
-                ? " solicitud pendiente"
-                : " solicitudes pendientes"}`
-            : "Completo"}
+          {notComplete ? (
+            totalApplications === 0 ? (
+              <Text opacity={0}>{"No tienes solicitudes"}</Text>
+            ) : (
+              `${totalApplications} ${
+                totalApplications === 1
+                  ? " solicitud pendiente"
+                  : " solicitudes pendientes"
+              }`
+            )
+          ) : (
+            "Completo"
+          )}
         </Text>
       </Flex>
     );

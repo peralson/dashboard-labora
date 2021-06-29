@@ -18,6 +18,7 @@ const LegalPayrolls = ({ projectId }) => {
           title={"Salario"}
           type={"number"}
           placeholder={`7,50 euros/hora`}
+          value={state.salary}
           onChange={(e) =>
             dispatch({ type: "editSalary", payload: e.target.value })
           }
@@ -26,6 +27,7 @@ const LegalPayrolls = ({ projectId }) => {
           title={"Horas extra"}
           type={"number"}
           placeholder={`12 euros/hora`}
+          value={state.extraSalary}
           onChange={(e) =>
             dispatch({ type: "editExtraSalary", payload: e.target.value })
           }
@@ -39,6 +41,7 @@ const LegalPayrolls = ({ projectId }) => {
             optional
             type={"number"}
             placeholder={`10 euros`}
+            value={state.extras.find(e => e.id === extra.id).amount} 
             onChange={(e) =>
               dispatch({
                 type: "editExtraItem",

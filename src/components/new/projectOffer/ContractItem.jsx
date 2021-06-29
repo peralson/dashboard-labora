@@ -7,7 +7,7 @@ import { NewProjectOfferContext } from "../../../context/newCreations";
 // Svg
 import eye from "../../../assets/svg/eye.svg";
 
-const ContractItem = ({ id, name }) => {
+const ContractItem = ({ id, name, file }) => {
   const { state, dispatch } = useContext(NewProjectOfferContext);
 
   const isActive = state.contractId === id;
@@ -29,7 +29,7 @@ const ContractItem = ({ id, name }) => {
       }}
     >
       <Text textAlign={"center"} fontSize={14} fontWeight={"bold"}>
-        Modelo {id}
+        Modelo {name}
       </Text>
       <Image
         src={"https://www.seas.es/blog/wp-content/uploads/2014/04/imagen1.jpg"}
@@ -40,7 +40,7 @@ const ContractItem = ({ id, name }) => {
         borderRadius={4}
       />
       <a
-        href={"https://www.seas.es/blog/wp-content/uploads/2014/04/imagen1.jpg"}
+        href={file}
         target="_blank"
         rel="noopener noreferrer"
       >

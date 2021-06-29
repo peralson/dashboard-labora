@@ -21,32 +21,36 @@ const QtyTags = () => {
   const [tags, setTags] = useState([]);
   const [filterTags, setFilterTags] = useState([]);
 
+  const parsedCategory = JSON.parse(state.category);
+
   useEffect(() => {
-    (() => {
-      setError(null);
-      setLoading(true);
-      fetch(
-        `https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/myWorkers/category/${state.category}`,
-        {
-          headers: { "Content-Type": "application/json" },
+    setError(null);
+    setLoading(true);
+    fetch(
+      `https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/myWorkers/category/${parsedCategory.id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("fbase_key")}`,
         },
-      )
-        .then((data) => data.json())
-        .then((workers) => {
-          let tagArray = []
-          workers.body.forEach((worker) => {
-            worker.tags.forEach((tag) => {
-              if (!tagArray.includes(tag)) {
-                tagArray.push(tag); 
-              }
-            });
-          })
-          setTags(tagArray)
-          setWorkers(workers.body)
-        })
-        .catch(() => setError(true))
-        .finally(() => setLoading(false));
-    })();
+      },
+    )
+      .then((data) => data.json())
+      .then((workers) => {
+        const tagArray = [];
+        workers.body.forEach((worker) => {
+          worker.tags.forEach((tag) => {
+            if (!tagArray.includes(tag)) {
+              tagArray.push(tag);
+            }
+          });
+        });
+
+        setTags(tagArray);
+        setWorkers(workers.body);
+      })
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -71,8 +75,8 @@ const QtyTags = () => {
   };
 
   const filteredWorkers = workers.filter((worker) => {
-    return (
-      filterTags.every((tag) => worker.tags.includes(tag))
+    return filterTags.every((tag) =>
+      worker.tags.find((workerTag) => workerTag.data.name === tag),
     );
   });
 
@@ -83,9 +87,13 @@ const QtyTags = () => {
   );
 
   useEffect(
-    () => dispatch({ type: "setTags", payload: filterTags }),
+    () => {
+      const dispatchedTags = tags.filter(t => filterTags.includes(t.data.name))
+      console.log(dispatchedTags);
+      dispatch({ type: "setTags", payload: dispatchedTags })
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [filterTags],
+    [filterTags]
   );
 
   return (
@@ -94,20 +102,44 @@ const QtyTags = () => {
         <Text mb={1} fontWeight={"bold"} lineHeight={2}>
           Cantidad de trabajadores *
         </Text>
-        <Text mb={4} color={"grey.dark"}> 
-          Selecciona el número de personas que vas a necesitar trabajando en esta oferta.
+        <Text mb={4} color={"grey.dark"}>
+          Selecciona el número de personas que vas a necesitar trabajando en
+          esta oferta.
         </Text>
-        <Flex w={"100%"} alignItems={"stretch"} justifyContent={"space-between"} borderRadius={8} overflow={"hidden"} borderWidth={2} borderColor={"darkLight"}>
-          <Flex alignItems={"center"} justifyContent={"center"} bg={"primary"} minW={"60px"} cursor={qtyNotOne && "pointer"} opacity={!qtyNotOne && 0.5} onClick={subtractQty}>
-            <Image src={minus} alt={"reducir personal"} w={"12px"}/>
+        <Flex
+          w={"100%"}
+          alignItems={"stretch"}
+          justifyContent={"space-between"}
+          borderRadius={8}
+          overflow={"hidden"}
+          borderWidth={2}
+          borderColor={"darkLight"}
+        >
+          <Flex
+            alignItems={"center"}
+            justifyContent={"center"}
+            bg={"primary"}
+            minW={"60px"}
+            cursor={qtyNotOne && "pointer"}
+            opacity={!qtyNotOne && 0.5}
+            onClick={subtractQty}
+          >
+            <Image src={minus} alt={"reducir personal"} w={"12px"} />
           </Flex>
           <Box flex={1}>
             <Text py={2} textAlign={"center"} fontWeight={"bold"} fontSize={16}>
               {state.qty}
             </Text>
           </Box>
-          <Flex alignItems={"center"} justifyContent={"center"} bg={"primary"} minW={"60px"} cursor={"pointer"} onClick={addQty}>
-            <Image src={plus} alt={"aumentar personal"} w={"12px"}/>
+          <Flex
+            alignItems={"center"}
+            justifyContent={"center"}
+            bg={"primary"}
+            minW={"60px"}
+            cursor={"pointer"}
+            onClick={addQty}
+          >
+            <Image src={plus} alt={"aumentar personal"} w={"12px"} />
           </Flex>
         </Flex>
       </Box>
@@ -116,7 +148,8 @@ const QtyTags = () => {
           Filtrado adicional por etiquetas
         </Text>
         <Text mb={2} color={"grey.dark"}>
-          En caso de ser necesario, selecciona etiquetas que limiten a los {state.category} con acceso a esta oferta.
+          En caso de ser necesario, selecciona etiquetas que limiten a los{" "}
+          {parsedCategory.name} con acceso a esta oferta.
         </Text>
         {state.totalWorkers > 0 && (
           <Flex
@@ -126,16 +159,16 @@ const QtyTags = () => {
             flexDirection={"row-reverse"}
             justifyContent={"space-between"}
           >
-            {tags.length === 0
-              ? <Box></Box>
-              : (
+            {tags.length === 0 ? (
+              <Box></Box>
+            ) : (
               <MultipleSelectList
                 title={`Etiquetas${
                   filterTags.length > 0 ? ` (${filterTags.length})` : ""
                 }`}
                 bg={filterTags.length !== 0 && "darkLight"}
                 current={filterTags}
-                values={tags}
+                values={tags.map(tag => tag.data.name)} 
                 onChange={handleTags}
               />
             )}
@@ -145,7 +178,7 @@ const QtyTags = () => {
           </Flex>
         )}
         {loading ? (
-          <Text>Cargando {state.category}...</Text>
+          <Text>Cargando {parsedCategory.name}...</Text>
         ) : error ? (
           <Text>Ha ocurrido un error</Text>
         ) : (

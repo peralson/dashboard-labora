@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 // Custom
 import { connect } from 'react-redux';
 import { deleteProjectOffer, deleteProject } from '../store/actions/projects'
-import { formattedSalary } from '../lib/formattedSalary';
 
 // Context
 import { SelectedItemIndie } from '../context/SelectedItemContext';
@@ -151,7 +150,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
             <CopyLinkBar id={project.id} />
           </Box>
           <Text mt={10} mb={2} fontWeight={"bold"}>
-            Sobre esta oferta de {offer.offerData.category}
+            Sobre esta oferta de {offer.offerData.category.data.name}
           </Text>
           {offer.offerData.description && (
             <Text mb={6} color={"grey.dark"} fontStyle={"italic"}>
@@ -197,7 +196,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
                     borderColor={"primaryLight"}
                     color={"primary"}
                   >
-                    {tag}
+                    {tag.data.name}
                   </Text>
                 ))}
               </Flex>
@@ -237,13 +236,7 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
               />
             )}
             {selectedItemIndie && selectedItemIndie === "Legal" && (
-              <LegalSide
-                id={offer.offerData.contractId}
-                model={offer.offerData.contractModel}
-                salary={formattedSalary(offer.offerData.salary) + "€"}
-                extraSalary={formattedSalary(offer.offerData.extraSalary) + "€"}
-                extras={offer.offerData.extras}
-              />
+              <LegalSide offerId={id} />
             )}
             {selectedItemIndie && selectedItemIndie === "Horario" && (
               <ScheduleSide schedules={offer.offerData.schedule} />

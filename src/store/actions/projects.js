@@ -12,7 +12,7 @@ export const EDIT_SINGLE_OFFER = "EDIT_SINGLE_OFFER";
 export const EDIT_PROJECT = "EDIT_PROJECT";
 
 export const fetchProjects = () => {
-	return async (dispatch, getState) => {
+	return async (dispatch) => {
 		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
@@ -46,7 +46,7 @@ export const fetchProjects = () => {
 };
 
 export const fetchPastProjects = () => {
-	return async (dispatch, getState) => {
+	return async (dispatch) => {
 		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
@@ -78,7 +78,7 @@ export const fetchPastProjects = () => {
 };
 
 export const createProject = (newProject) => {
-	return async (dispatch, getState) => {
+	return async (dispatch) => {
 		const token = localStorage.getItem("fbase_key");
 
 		const sortedDates = newProject.dates.sort((a, b) => (a > b ? 1 : -1));
@@ -129,7 +129,7 @@ export const createProject = (newProject) => {
 };
 
 export const deleteProject = (projectId) => {
-	return async (dispatch, getState) => {
+	return async (dispatch) => {
 		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
@@ -158,8 +158,11 @@ export const deleteProject = (projectId) => {
 };
 
 export const createProjectOffer = (projectId, offerData) => {
-	return async (dispatch, getState) => {
+	return async (dispatch) => {
 		const token = localStorage.getItem("fbase_key");
+		const parsedCategory = JSON.parse(offerData.category)
+		const tagsIds = offerData.tags.map(tag => tag.id)
+		const tagsNames = offerData.tags.map(tag => tag.data.name)
 
 		const response = await fetch(
 			"https://us-central1-partime-60670.cloudfunctions.net/api/offer/",
@@ -172,16 +175,15 @@ export const createProjectOffer = (projectId, offerData) => {
 				body: JSON.stringify({
 					id_event: projectId,
 					name: offerData.name,
-					category: offerData.category,
+					category: parsedCategory.id,
 					description: offerData.description,
-					requirements: {},
 					location: offerData.location,
 					salary: offerData.salary,
 					extraSalary: offerData.extraSalary,
 					schedule: formattedSchedule(offerData.schedule),
 					qty: offerData.qty,
 					contractId: offerData.contractId,
-					tags: offerData.tags,
+					tags: tagsIds,
 					extras: offerData.extras,
 				}),
 			}
@@ -205,7 +207,7 @@ export const createProjectOffer = (projectId, offerData) => {
 				id: offerId,
 				id_event: projectId,
 				name: offerData.name,
-				category: offerData.category,
+				category: parsedCategory.name,
 				description: offerData.description,
 				requirements: {},
 				location: offerData.location,
@@ -214,7 +216,7 @@ export const createProjectOffer = (projectId, offerData) => {
 				schedule: offerData.schedule,
 				qty: offerData.qty,
 				contractId: offerData.contractId,
-				tags: offerData.tags,
+				tags: tagsNames,
 				extras: offerData.extras,
 				already_assigned: 0,
 				jobs: 0,
@@ -225,7 +227,7 @@ export const createProjectOffer = (projectId, offerData) => {
 };
 
 export const deleteProjectOffer = (projectId, offerId) => {
-	return async (dispatch, getState) => {
+	return async (dispatch) => {
 		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
@@ -255,8 +257,8 @@ export const deleteProjectOffer = (projectId, offerId) => {
 };
 
 export const createOfferSingle = ({ offerData, projectData }) => {
-	return async (dispatch, getState) => {
-		const token = getState().auth.idToken;
+	return async (dispatch) => {
+		const token = localStorage.getItem("fbase_key");
 
 		const sortedDates = formattedDates(projectData.dates).sort((a, b) =>
 			a > b ? 1 : -1
@@ -368,7 +370,7 @@ export const editOffer = ({ offerData, projectData }) => {
 };
 
 export const editProject = (id, state, dates) => {
-	return async (dispatch, getState) => {
+	return async (dispatch) => {
 		const token = localStorage.getItem("fbase_key");
 
 		const response = await fetch(
@@ -409,7 +411,7 @@ export const editProject = (id, state, dates) => {
 };
 
 export const editSingleOffer = (project, state) => {
-	return async (dispatch, getState) => {
+	return async (dispatch) => {
 		const token = localStorage.getItem("fbase_key");
 		const offer = project.projectOffers[0];
 
@@ -456,14 +458,13 @@ export const editSingleOffer = (project, state) => {
 };
 
 export const fetchChecks = ({ jobId }) => {
-  return async (dispatch, getState) => {
+  return async () => {
 		const response = await fetch(
 			`https://us-central1-partime-60670.cloudfunctions.net/api/job/checkData/${jobId}`,
 			{
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
-					// "Authorization": `Bearer ${token}`,
 				},
 			}
 		);

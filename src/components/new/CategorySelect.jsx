@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Select, Text } from "@chakra-ui/react";
 
-const CategorySelect = ({ title, placeholder, onChange }) => {
+const CategorySelect = ({ title, value, placeholder, onChange }) => {
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -24,7 +24,7 @@ const CategorySelect = ({ title, placeholder, onChange }) => {
           .then((data) => setCategories(data.body))
           .catch((err) => setError(err.message))
           .finally(() => setLoading(false));
-      })(); 
+      })();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -39,6 +39,7 @@ const CategorySelect = ({ title, placeholder, onChange }) => {
           loading ? "Cargando..." : error ? "Ha habido un error" : placeholder
         }
         onChange={onChange}
+        value={value}
         borderRadius={8}
         borderWidth={2}
         borderColor={error ? "red.smooth" : "darkLight"}
@@ -47,9 +48,9 @@ const CategorySelect = ({ title, placeholder, onChange }) => {
         _hover={{ borderColor: "white" }}
         _focus={{ borderColor: "white" }}
       >
-        {categories.map(({ id }) => (
-          <option key={id} value={id}>
-            {id}
+        {categories.map((cat, index) => (
+          <option key={index} value={JSON.stringify(cat)}>
+            {cat.name}
           </option>
         ))}
       </Select>

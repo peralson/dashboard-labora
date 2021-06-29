@@ -8,8 +8,8 @@ export const initialState = {
   schedule: [],
   extras: EXTRAS,
   qty: 1,
-  salary: null,
-  extraSalary: null,
+  salary: "",
+  extraSalary: "",
   contractId: "",
   tags: [],
   totalWorkers: null,
@@ -27,7 +27,7 @@ export const validateForm = (state) => {
 export const validateNameDescCat = (state) => {
   const hasName = state.name !== "";
   const isNameLong = state.name.length >= 3;
-  const hasCategory = state.category.length > 0;
+  const hasCategory = state.category !== "";
 
   return {
     isNameDescCatValid: hasName && isNameLong && hasCategory,
