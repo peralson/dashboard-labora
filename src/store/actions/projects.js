@@ -259,6 +259,8 @@ export const deleteProjectOffer = (projectId, offerId) => {
 export const createOfferSingle = ({ offerData, projectData }) => {
 	return async (dispatch) => {
 		const token = localStorage.getItem("fbase_key");
+		const parsedCategory = JSON.parse(offerData.category)
+		const tagsIds = offerData.tags.map(tag => tag.id)
 
 		const sortedDates = formattedDates(projectData.dates).sort((a, b) =>
 			a > b ? 1 : -1
@@ -278,7 +280,7 @@ export const createOfferSingle = ({ offerData, projectData }) => {
 				},
 				body: JSON.stringify({
 					name: offerData.name,
-					category: offerData.category,
+					category: parsedCategory.id,
 					description: offerData.description,
 					requirements: {},
 					location: offerData.location,
@@ -287,7 +289,7 @@ export const createOfferSingle = ({ offerData, projectData }) => {
 					schedule: sortedSchedule,
 					qty: offerData.qty,
 					contractId: offerData.contractId,
-					tags: offerData.tags,
+					tags: tagsIds,
 					extras: offerData.extras,
 					projectData: {
 						name: null,

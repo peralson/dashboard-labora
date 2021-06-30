@@ -5,14 +5,14 @@ import { Grid, Text, Box, Flex, Image } from "@chakra-ui/react";
 import { NewOfferContext } from "../../../../context/newCreations";
 
 // SVG
-import plus from "../../../../assets/svg/plus-white.svg";
-import minus from "../../../../assets/svg/minus-white.svg";
+import plus from '../../../../assets/svg/plus-white.svg'
+import minus from '../../../../assets/svg/minus-white.svg'
 
 // Components
-import WorkerItem from "../../../../components/new/WorkerItem";
-import MultipleSelectList from "../../../../components/ui/MultipleSelectList";
+import WorkerItem from '../../../../components/new/WorkerItem'
+import MultipleSelectList from '../../../../components/ui/MultipleSelectList'
 
-const OfferQtyTags = () => {
+const QtyTags = () => {
   const { state, dispatch } = useContext(NewOfferContext);
 
   const [loading, setLoading] = useState(false);
@@ -21,36 +21,36 @@ const OfferQtyTags = () => {
   const [tags, setTags] = useState([]);
   const [filterTags, setFilterTags] = useState([]);
 
+  const parsedCategory = JSON.parse(state.offerData.category);
+
   useEffect(() => {
-    (() => {
-      setError(null);
-      setLoading(true);
-      fetch(
-        `https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/myWorkers/category/${state.offerData.category}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("fbase_key")}`,
-          },
+    setError(null);
+    setLoading(true);
+    fetch(
+      `https://us-central1-partime-60670.cloudfunctions.net/api/listOfWorkers/myWorkers/category/${parsedCategory.id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("fbase_key")}`,
         },
-      )
-        .then((data) => data.json())
-        .then((workers) => {
-          let tagArray = [];
-          console.log(workers);
-          workers.body.forEach((worker) => {
-            worker.tags.forEach((tag) => {
-              if (!tagArray.includes(tag)) {
-                tagArray.push(tag);
-              }
-            });
+      },
+    )
+      .then((data) => data.json())
+      .then((workers) => {
+        const tagArray = [];
+        workers.body.forEach((worker) => {
+          worker.tags.forEach((tag) => {
+            if (!tagArray.includes(tag)) {
+              tagArray.push(tag);
+            }
           });
-          setTags(tagArray);
-          setWorkers(workers.body);
-        })
-        .catch(() => setError(true))
-        .finally(() => setLoading(false));
-    })();
+        });
+
+        setTags(tagArray);
+        setWorkers(workers.body);
+      })
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -87,9 +87,12 @@ const OfferQtyTags = () => {
   );
 
   useEffect(
-    () => dispatch({ type: "setTags", payload: filterTags }),
+    () => {
+      const dispatchedTags = tags.filter(t => filterTags.includes(t.data.name))
+      dispatch({ type: "setTags", payload: dispatchedTags })
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [filterTags],
+    [filterTags]
   );
 
   return (
@@ -145,7 +148,7 @@ const OfferQtyTags = () => {
         </Text>
         <Text mb={2} color={"grey.dark"}>
           En caso de ser necesario, selecciona etiquetas que limiten a los{" "}
-          {state.offerData.category} con acceso a esta oferta.
+          {parsedCategory.name} con acceso a esta oferta.
         </Text>
         {state.offerData.totalWorkers > 0 && (
           <Flex
@@ -164,7 +167,7 @@ const OfferQtyTags = () => {
                 }`}
                 bg={filterTags.length !== 0 && "darkLight"}
                 current={filterTags}
-                values={tags}
+                values={tags.map(tag => tag.data.name)} 
                 onChange={handleTags}
               />
             )}
@@ -174,7 +177,7 @@ const OfferQtyTags = () => {
           </Flex>
         )}
         {loading ? (
-          <Text>Cargando {state.offerData.category}...</Text>
+          <Text>Cargando {parsedCategory.name}...</Text>
         ) : error ? (
           <Text>Ha ocurrido un error</Text>
         ) : (
@@ -187,4 +190,4 @@ const OfferQtyTags = () => {
   );
 };
 
-export default OfferQtyTags;
+export default QtyTags;

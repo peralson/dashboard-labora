@@ -36,7 +36,8 @@ const NameDescCatDates = () => {
         <CategorySelect
           title={"Categoría"}
           placeholder={"Selecciona una categoría"}
-          onChange={(e) =>
+          value={state.offerData.category}
+          onChange={(e) => 
             dispatch({ type: "setCategory", payload: e.target.value })
           }
         />

@@ -41,7 +41,7 @@ const LegalPayrolls = ({ projectId }) => {
             optional
             type={"number"}
             placeholder={`10 euros`}
-            value={state.extras.find(e => e.id === extra.id).amount} 
+            value={state.extras.find((e) => e.id === extra.id).amount}
             onChange={(e) =>
               dispatch({
                 type: "editExtraItem",
@@ -52,7 +52,7 @@ const LegalPayrolls = ({ projectId }) => {
           />
         ))}
       </Grid>
-      <ContractPicker projectId={projectId} />
+      <ContractPicker />
     </Grid>
   );
 };

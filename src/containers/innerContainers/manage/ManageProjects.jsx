@@ -47,9 +47,7 @@ const PastProjectCard = ({ data }) => {
       <Text flex={2} fontSize={12} mr={2}>
         {data.projectData.name
           ? data.projectData.name
-          : data.projectOffers[0].offerData.name
-          ? data.projectOffers[0].offerData.name
-          : 'Sin nombre'}
+          : data.projectOffers[0].offerData.name}
       </Text>
       <Text flex={3} fontSize={12} mr={2}>
         {data.projectData.location.address}
@@ -106,6 +104,8 @@ const ManageProjects = ({ search, pastProjects, fetchPastProjects }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log(pastProjects);
+
   const filteredPastProjects =
     pastProjects &&
     pastProjects.filter(
@@ -117,12 +117,12 @@ const ManageProjects = ({ search, pastProjects, fetchPastProjects }) => {
             offer.offerData.name.toLowerCase().includes(search)
           ) ||
           project.projectOffers.some((offer) =>
-            offer.offerData.category.toLowerCase().includes(search)
+            offer.offerData.category.data.name.toLowerCase().includes(search)
           )
         ) : (
           project.projectOffers[0].offerData.name.toLowerCase().includes(search) ||
           project.projectData.location.address.toLowerCase().includes(search) ||
-          project.projectOffers[0].offerData.category.toLowerCase().includes(search)
+          project.projectOffers[0].offerData.category.data.name.toLowerCase().includes(search)
         )
     );
 

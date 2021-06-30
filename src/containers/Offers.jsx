@@ -34,6 +34,7 @@ import Popup from '../components/ui/Popup';
 import AccentButton from '../components/ui/AccentButton';
 import MultipleSelectList from '../components/ui/MultipleSelectList';
 import BeCurious from '../components/ui/BeCurious';
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 import ProjectOrOffer from '../components/modals/ProjectOrOffer';
 
 const Offers = ({ projects, fetchProjects }) => {
@@ -186,9 +187,7 @@ const Offers = ({ projects, fetchProjects }) => {
           )}
         </TopMain>
         {loadingProjects ? (
-          <Text textAlign={"center"} py={10}>
-            Cargando...
-          </Text>
+          <LoadingSpinner />
         ) : projectsError ? (
           <Text textAlign={"center"}>Vaya! Ha ocurrido un error</Text>
         ) : (
@@ -200,7 +199,7 @@ const Offers = ({ projects, fetchProjects }) => {
           <Documentation />
           <SideBoxContainer>
             {selectedItem && selectedItem.offerData && (
-              <OfferSide data={selectedItem} isPast={false}/>
+              <OfferSide data={selectedItem} isPast={false} />
             )}
             {selectedItem && selectedItem.offerCategory && (
               <ApplicationSide data={selectedItem} />

@@ -43,7 +43,7 @@ const formIsValid = (
     state.extraSalary &&
     state.extraSalary >= state.salary * 1.1;
   const hasExtraSalaryOver = state.extraSalary >= currentExtraSalary;
-  const hasQty = state.qty >= currentAssigned;
+  const hasQty = state.qty >= currentAssigned && state.qty > 0;
 
   return {
     isValid:

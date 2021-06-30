@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Box, Flex, Grid, Text } from '@chakra-ui/layout';
-import { Link } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 
 // lib
 import {
@@ -23,6 +23,7 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
   const { selectedItem } = useContext(SelectedItem)
   const [offerName, setOfferName] = useState('')
   const { name, dates, location } = projectData
+  const history = useHistory();
 
   const totalApplications = countApplications(projectOffers)
   const allApplications = getAllApplications(projectOffers)
@@ -63,15 +64,20 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
       <Flex alignItems={"center"} justifyContent={"space-between"}>
         <Flex flexDirection={"column"} alignItems={"flex-start"} flex={1}>
           <Flex>
-            <Link
-              to={
-                name ? `/ofertas/p/${id}` : `/ofertas/o/${projectOffers[0].id}`
+            <Text
+              fontSize={21}
+              fontWeight="bold"
+              cursor={"pointer"}
+              onClick={() =>
+                history.push(
+                  name
+                    ? `/ofertas/p/${id}`
+                    : `/ofertas/o/${projectOffers[0].id}`,
+                )
               }
             >
-              <Text fontSize={21} fontWeight="bold" cursor={"pointer"}>
-                {name ? name : projectOffers[0].offerData.name}
-              </Text>
-            </Link>
+              {name ? name : projectOffers[0].offerData.name}
+            </Text>
           </Flex>
           <Text fontSize={14} color="primary">
             {location.address}
@@ -88,7 +94,7 @@ const ProjectItem = ({ id, projectData, projectOffers }) => {
               borderColor={"accentLight"}
               color={"accent"}
             >
-              {projectOffers[0].offerData.category}
+              {projectOffers[0].offerData.category.data.name}
             </Text>
           )}
         </Flex>

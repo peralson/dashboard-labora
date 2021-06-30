@@ -4,7 +4,7 @@ import { Box, Text, Grid } from "@chakra-ui/react";
 // Svg
 import ContractItem from "./ContractItem";
 
-const ContractPicker = () => {
+const ContractPicker = ({ indie }) => {
   const [contracts, setContracts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -50,6 +50,7 @@ const ContractPicker = () => {
         <Grid w={"100%"} templateColumns={"1fr 1fr 1fr"} columnGap={4}>
           {contracts.map((contract, index) => (
             <ContractItem
+              isIndie={indie}
               key={index}
               id={contract.id}
               name={contract.name}

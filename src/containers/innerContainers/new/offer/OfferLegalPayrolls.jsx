@@ -6,7 +6,7 @@ import { NewOfferContext } from "../../../../context/newCreations";
 
 // Components
 import CustomInput from "../../../../components/new/CustomInput";
-import OfferContractPicker from "../../../../components/new/offer/OfferContractPicker";
+import ContractPicker from "../../../../components/new/projectOffer/ContractPicker";
 
 const OfferLegalPayrolls = () => {
   const { state, dispatch } = useContext(NewOfferContext);
@@ -18,6 +18,7 @@ const OfferLegalPayrolls = () => {
           title={"Salario"}
           type={"number"}
           placeholder={`7,50 euros/hora`}
+          value={state.offerData.salary}
           onChange={(e) =>
             dispatch({ type: "editSalary", payload: e.target.value })
           }
@@ -26,6 +27,7 @@ const OfferLegalPayrolls = () => {
           title={"Horas extra"}
           type={"number"}
           placeholder={`12 euros/hora`}
+          value={state.offerData.extraSalary}
           onChange={(e) =>
             dispatch({ type: "editExtraSalary", payload: e.target.value })
           }
@@ -39,6 +41,7 @@ const OfferLegalPayrolls = () => {
             optional
             type={"number"}
             placeholder={`10 euros`}
+            value={state.offerData.extras.find(e => e.id === extra.id).amount} 
             onChange={(e) =>
               dispatch({
                 type: "editExtraItem",
@@ -49,7 +52,7 @@ const OfferLegalPayrolls = () => {
           />
         ))}
       </Grid>
-      <OfferContractPicker />
+      <ContractPicker indie />
     </Grid>
   );
 };

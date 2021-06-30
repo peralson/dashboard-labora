@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Box, Text, Input } from "@chakra-ui/react";
 
 // Context
@@ -11,7 +11,7 @@ import usePlacesAutocomplete, {
 } from "use-places-autocomplete";
 
 const OfferPlacesAutocompleteInput = ({ title, optional }) => {
-  const { dispatch } = useContext(NewOfferContext);
+  const { state, dispatch } = useContext(NewOfferContext);
 
   const {
     ready,
@@ -20,6 +20,13 @@ const OfferPlacesAutocompleteInput = ({ title, optional }) => {
     suggestions: { data, status },
     clearSuggestions,
   } = usePlacesAutocomplete();
+
+  useEffect(() => {
+    if (state.projectData.location.address.length > 0) {
+      setValue(state.projectData.location.address, false);
+    }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);;
 
   const handleSelect = async (address) => {
     setValue(address, false);

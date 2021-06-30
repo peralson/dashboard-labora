@@ -137,7 +137,7 @@ const formIsValid = (
     state.extraSalary &&
     state.extraSalary >= state.salary * 1.1;
   const hasExtraSalaryOver = state.extraSalary >= currentExtraSalary;
-  const hasQty = state.qty >= currentAssigned;
+  const hasQty = state.qty >= currentAssigned && state.qty > 0;
 
   return {
     isValid:
@@ -516,7 +516,8 @@ const EditSingleOffer = ({ match, history, projects, editSingleOffer }) => {
                 w={"100%"}
               >
                 <Text fontSize={14} lineHeight={1.6} mr={4}>
-                  Hay al menos {offer.offerData.already_assigned} trabajador
+                  Hay al menos {offer.offerData.already_assigned || 1}{" "}
+                  trabajador{offer.offerData.already_assigned > 1 ? "es" : ""}
                 </Text>
                 <Image src={hasQty ? correct : cancel} w={"12px"} />
               </Flex>

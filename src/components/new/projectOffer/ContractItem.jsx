@@ -2,15 +2,22 @@ import React, { useContext } from "react";
 import { Text, Flex, Image } from "@chakra-ui/react";
 
 // Custom
-import { NewProjectOfferContext } from "../../../context/newCreations";
+import {
+  NewProjectOfferContext,
+  NewOfferContext,
+} from "../../../context/newCreations";
 
-// Svg
+// SVG
 import eye from "../../../assets/svg/eye.svg";
 
-const ContractItem = ({ id, name, file }) => {
-  const { state, dispatch } = useContext(NewProjectOfferContext);
+const ContractItem = ({ id, name, file, isIndie }) => {
+  const { state, dispatch } = useContext(
+    isIndie ? NewOfferContext : NewProjectOfferContext,
+  );
 
-  const isActive = state.contractId === id;
+  const isActive = isIndie
+    ? state.offerData.contractId === id
+    : state.contractId === id;
 
   return (
     <Flex
@@ -39,11 +46,7 @@ const ContractItem = ({ id, name, file }) => {
         mt={3}
         borderRadius={4}
       />
-      <a
-        href={file}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a href={file} target="_blank" rel="noopener noreferrer">
         <Flex
           bg={"translucid"}
           py={1.5}

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Text, Flex } from "@chakra-ui/react";
 import { NewOfferContext } from "../../../context/newCreations";
 import { Calendar } from "react-multi-date-picker";
@@ -6,7 +6,14 @@ import "../../../assets/css/calendar.css";
 
 const OfferPickDates = () => {
   const [values, setValues] = useState([null, null]);
-  const { dispatch } = useContext(NewOfferContext);
+  const { state, dispatch } = useContext(NewOfferContext);
+  
+  useEffect(() => {
+    if (state.projectData.dates.length > 0) {
+      dispatch({ type: "setDates", payload: [] });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleChangleDate = (d) => {
     setValues(d);

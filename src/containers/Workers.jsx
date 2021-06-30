@@ -28,6 +28,7 @@ import BeCurious from '../components/ui/BeCurious';
 import AccentButton from '../components/ui/AccentButton';
 import Documentation from '../components/main/Documentation';
 import Popup from '../components/ui/Popup';
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 import ShareLink from '../components/modals/ShareLink';
 import CreateTags from '../components/modals/CreateTags';
 
@@ -212,8 +213,8 @@ const Workers = ({
                       : ""
                   }`}
                   bg={filterCategories.length !== 0 && "darkLight"}
-                  current={filterCategories} 
-                  values={currentCategories.map(e => e.data.name)}
+                  current={filterCategories}
+                  values={currentCategories.map((e) => e.data.name)}
                   onChange={handleCategories}
                 />
               )}
@@ -225,7 +226,7 @@ const Workers = ({
                   ml={2}
                   bg={filterTags.length !== 0 && "darkLight"}
                   current={filterTags}
-                  values={currentTags.map(e => e.data.name)}
+                  values={currentTags.map((e) => e.data.name)}
                   onChange={handleTags}
                 />
               )}
@@ -266,9 +267,7 @@ const Workers = ({
           )}
         </TopMain>
         {workersLoading ? (
-          <Text textAlign={"center"} py={10}>
-            Cargando...
-          </Text>
+          <LoadingSpinner />
         ) : workersError ? (
           <Text textAlign={"center"} py={10}>
             Ha ocurrido un error

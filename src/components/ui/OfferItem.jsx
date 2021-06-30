@@ -51,10 +51,11 @@ const OfferItem = ({ offer, index }) => {
           color={notComplete ? "red.full" : "green"}
           borderRadius={4}
           lineHeight={1}
+          opacity={totalApplications === 0 ? 0 : 1}
         >
           {notComplete ? (
             totalApplications === 0 ? (
-              <Text opacity={0}>{"No tienes solicitudes"}</Text>
+              "No tienes solicitudes"
             ) : (
               `${totalApplications} ${
                 totalApplications === 1
