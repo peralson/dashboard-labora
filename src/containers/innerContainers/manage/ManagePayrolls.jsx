@@ -10,6 +10,10 @@ import {
   SelectedManageSide,
 } from '../../../context/SelectedItemContext';
 
+// Components
+import NoContent from '../../../components/ui/NoContent'
+import LoadingSpinner from '../../../components/ui/LoadingSpinner'
+
 const PayrollCard = ({ data }) => {
   const { selectedItemManage, setSelectedItemManage } =
     useContext(SelectedItemManage);
@@ -93,19 +97,15 @@ const ManagePayrolls = ({ search, payrolls, fetchPayrolls }) => {
     );
 
   return loading ? (
-    <Text textAlign={'center'} py={10}>
-      Cargando...
-    </Text>
+    <LoadingSpinner />
   ) : error ? (
-    <Text textAlign={'center'} py={10}>
+    <Text textAlign={"center"} py={10}>
       Ha ocurrido un error
     </Text>
   ) : filteredPayrolls.length === 0 ? (
-    <Text textAlign={'center'} py={10}>
-      No hay ninguna nómina
-    </Text>
+    <NoContent what={"nóminas"} />
   ) : (
-    <Flex w='100%' flexDirection='column'>
+    <Flex w="100%" flexDirection="column">
       {filteredPayrolls.map((payroll, index) => (
         <PayrollCard key={index} data={payroll} />
       ))}

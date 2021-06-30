@@ -1,18 +1,10 @@
 /* eslint-disable no-dupe-keys */
 import React, { useState, useReducer } from "react";
-import { Grid, Box, Flex, Image, Text, Input } from "@chakra-ui/react";
+import { Grid, Box, Flex, Image, Text } from "@chakra-ui/react";
 
 // Custom
 import { connect } from "react-redux";
 import { editCompany } from "../../store/actions/company";
-
-// ENV & GMaps
-import { GMAPS_LIBRARIES } from "../../lib/Constants";
-import { useLoadScript } from "@react-google-maps/api";
-import usePlacesAutocomplete, {
-  getLatLng,
-  getGeocode,
-} from "use-places-autocomplete";
 
 // SVG
 import back from "../../assets/svg/back.svg";
@@ -35,88 +27,7 @@ import CustomInput from "../../components/new/CustomInput";
 import Separator from "../../components/ui/Separator";
 import CustomImg from "../../components/ui/CustomImg";
 import ErrorMessage from "../../components/ui/ErrorMessage";
-
-const PlacesAutoComplete = ({ state, dispatch }) => {
-  const {
-    ready,
-    value,
-    setValue,
-    suggestions: { data, status },
-    clearSuggestions,
-  } = usePlacesAutocomplete();
-
-  const handleSelectPlace = async (address) => {
-    setValue(address, false);
-
-    try {
-      const results = await getGeocode({ address });
-      const { lat, lng } = await getLatLng(results[0]);
-      dispatch({
-        type: "setAddress",
-        payload: { address: address, lat: lat, lng: lng },
-      });
-    } catch (error) {
-      console.error("handleSelectPlace", error);
-    } finally {
-      clearSuggestions();
-    }
-  };
-
-  return (
-    <Box>
-      <Text mb={2} fontWeight={"bold"}>
-        Dirección
-      </Text>
-      <Input
-        py={2}
-        px={3}
-        borderRadius={8}
-        borderWidth={2}
-        borderColor={"darkLight"}
-        placeholder={"Introduce la dirección del proyecto"}
-        _active={{ borderColor: "white" }}
-        _focus={{ borderColor: "white" }}
-        value={value || state.location.address}
-        onChange={(e) => {
-          setValue(e.target.value);
-          if (e.target.value === "") {
-            dispatch({
-              type: "setAddress",
-              payload: { address: "", lat: null, lng: null },
-            });
-          }
-        }}
-        disabled={!ready}
-      />
-      {data.length > 0 && (
-        <Box
-          borderWidth={2}
-          borderColor={"darkLight"}
-          borderTopWidth={0}
-          borderBottomRadius={10}
-        >
-          {status === "OK" &&
-            data.map(({ description }, index) => (
-              <Text
-                key={index}
-                p={2}
-                borderBottomWidth={1}
-                borderBottomColor={"translucid"}
-                lineHeight={2}
-                fontSize={14}
-                color={"grey.dark"}
-                _hover={{ bg: "translucid" }}
-                cursor={"pointer"}
-                onClick={() => handleSelectPlace(description)}
-              >
-                {description}
-              </Text>
-            ))}
-        </Box>
-      )}
-    </Box>
-  );
-};
+import PlacesAutocompleteComponent from "../../components/ui/PlacesAutocompleteComponent";
 
 const FileUpload = ({ name, current, acceptedFileTypes, dispatch }) => {
   const [image, setImage] = useState(current);
@@ -203,7 +114,7 @@ const reducer = (state, action) => {
       return { ...state, mail: action.payload };
 
     case "setAddress":
-      return { ...state, address: action.payload };
+      return { ...state, location: action.payload };
 
     default:
       return state;
@@ -211,11 +122,6 @@ const reducer = (state, action) => {
 };
 
 const EditCompany = ({ history, company, editCompany }) => {
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    libraries: GMAPS_LIBRARIES,
-  });
-
   const initialState = {
     id: company.id,
     name: company.companyData.general.name,
@@ -231,8 +137,15 @@ const EditCompany = ({ history, company, editCompany }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const { isValid, hasName, isNameLong, hasAddress, hasPhoto, hasPhoneNumber, hasEmail } =
-    formIsValid(state);
+  const {
+    isValid,
+    hasName,
+    isNameLong,
+    hasAddress,
+    hasPhoto,
+    hasPhoneNumber,
+    hasEmail,
+  } = formIsValid(state);
 
   const onSubmit = async () => {
     if (isValid) {
@@ -240,7 +153,7 @@ const EditCompany = ({ history, company, editCompany }) => {
       setError(null);
       try {
         await editCompany(state);
-        // history.push(`/empresa`);
+        history.push(`/empresa`);
       } catch (err) {
         setError(true);
       } finally {
@@ -314,17 +227,14 @@ const EditCompany = ({ history, company, editCompany }) => {
               value={state.mail}
               placeholder={"Correo de la empresa"}
               onChange={(e) =>
-                dispatch({ type: "setEmail", payload: e.target.value.toLowerCase() })
+                dispatch({
+                  type: "setEmail",
+                  payload: e.target.value.toLowerCase(),
+                })
               }
             />
           </Grid>
-          {!isLoaded ? (
-            <Text>Cargando...</Text>
-          ) : loadError ? (
-            <Text>Ha ocurrido un error</Text>
-          ) : (
-            <PlacesAutoComplete state={state} dispatch={dispatch} />
-          )}
+          <PlacesAutocompleteComponent state={state} dispatch={dispatch} />
         </Grid>
       </Main>
       <Side>

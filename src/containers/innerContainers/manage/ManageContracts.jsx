@@ -10,6 +10,10 @@ import {
   SelectedManageSide,
 } from '../../../context/SelectedItemContext';
 
+// Components
+import NoContent from '../../../components/ui/NoContent'
+import LoadingSpinner from '../../../components/ui/LoadingSpinner'
+
 const ContractCard = ({ data }) => {
   const { selectedItemManage, setSelectedItemManage } =
     useContext(SelectedItemManage);
@@ -91,19 +95,15 @@ const ManageContracts = ({ search, contracts, fetchAllContracts }) => {
     );
 
   return loading ? (
-    <Text textAlign={'center'} py={10}>
-      Cargando...
-    </Text>
+    <LoadingSpinner />
   ) : error ? (
-    <Text textAlign={'center'} py={10}>
+    <Text textAlign={"center"} py={10}>
       Ha ocurrido un error
     </Text>
   ) : filteredContracts.length === 0 ? (
-    <Text textAlign={'center'} py={10}>
-      No hay ningún contrato
-    </Text>
+    <NoContent what={"contratos"} />
   ) : (
-    <Flex w='100%' flexDirection='column'>
+    <Flex w="100%" flexDirection="column">
       {filteredContracts.map((contract, index) => (
         <ContractCard key={index} data={contract} />
       ))}

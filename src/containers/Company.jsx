@@ -16,6 +16,7 @@ import SideBoxContainer from "../components/ui/SideBoxContainer";
 import BeCurious from "../components/ui/BeCurious";
 import TopHeaderBar from "../components/ui/TopHeaderBar";
 import Separator from "../components/ui/Separator";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 import Documentation from "../components/main/Documentation";
 import CompanyMain from "../components/company/CompanyMain";
 import BlockContainer from "../components/company/BlockContainer";
@@ -46,10 +47,11 @@ const Company = ({ company, fetchCompany }) => {
             {loading
               ? "Cargando empresa..."
               : error
-                ? "Ha ocurrido un error"
-                : "Empresa"}
+              ? "Ha ocurrido un error"
+              : "Empresa"}
           </TopHeaderBar>
         </TopMain>
+        {loading && <LoadingSpinner />}
         {!loading && !error && (
           <Box mt={4}>
             <CompanyMain

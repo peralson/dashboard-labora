@@ -31,7 +31,7 @@ export const fetchCompany = () => {
 };
 
 export const editCompany = (state) => {
-  return async (dispatch, getState) => {
+  return async () => {
     const token = localStorage.getItem("fbase_key");
 
     console.log({
@@ -76,22 +76,5 @@ export const editCompany = (state) => {
       console.error("ERROR", resData);
       throw new Error();
     }
-
-    console.log(resData);
-
-    // dispatch({
-    //   type: EDIT_COMPANY,
-    //   payload: {
-    //     general: {
-    //       name: state.name,
-    //       photo: newLogo,
-    //     },
-    //     contact: {
-    //       mail: state.mail,
-    //       phoneNumber: state.phoneNumber,
-    //       location: state.location,
-    //     },
-    //   },
-    // });
   };
 };;

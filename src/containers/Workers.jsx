@@ -29,6 +29,7 @@ import AccentButton from '../components/ui/AccentButton';
 import Documentation from '../components/main/Documentation';
 import Popup from '../components/ui/Popup';
 import LoadingSpinner from "../components/ui/LoadingSpinner";
+import NoContent from "../components/ui/NoContent";
 import ShareLink from '../components/modals/ShareLink';
 import CreateTags from '../components/modals/CreateTags';
 
@@ -266,17 +267,42 @@ const Workers = ({
             />
           )}
         </TopMain>
-        {workersLoading ? (
-          <LoadingSpinner />
-        ) : workersError ? (
+        {workersLoading && <LoadingSpinner />}
+        {workersError && (
           <Text textAlign={"center"} py={10}>
             Ha ocurrido un error
           </Text>
-        ) : (
+        )}
+        {!workersLoading && !workersError && workers.length !== 0 && (
           <WorkersTable
             filteredWorkers={filteredWorkers}
             checkedItems={checkedItems}
             handleCheck={handleCheck}
+          />
+        )}
+        {!workersLoading && !workersError && workers.length === 0 && (
+          <NoContent
+            what={"trabajadores"}
+            how={
+              "Empieza invitando trabajadores a tus listas, luego serán estos a los que les llegarán tus ofertas de empleo"
+            }
+            otherComponent={(
+              <Popup
+                title={"Invitar trabajadores"}
+                body={
+                  <ShareLink
+                    categories={categories.map((cat) => cat.id)}
+                    tags={tags.map((tag) => tag.id)}
+                  />
+                }
+                show={shareModalOpen}
+                handleShow={setShareModalOpen}
+              >
+                <AccentButton py={5} px={6} mt={6} onClick={() => setShareModalOpen(true)}>
+                  Invitar trabajadores
+                </AccentButton>
+              </Popup>
+            )}
           />
         )}
       </Main>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Grid } from '@chakra-ui/layout';
 import ProjectItem from "./ProjectItem";
+import NoContent from "./NoContent";
 
 const ProjectsContainer = ({ filteredProjects }) => (
   <Box p={"8px 0px 32px 0px"}>
@@ -13,6 +14,16 @@ const ProjectsContainer = ({ filteredProjects }) => (
           projectOffers={project.projectOffers}
         />
       ))}
+      {filteredProjects.length === 0 && (
+        <NoContent
+          what={"ofertas."}
+          how={
+            "Puedes empezar por crear una oferta individual o un proyecto multi oferta"
+          }
+          cta={"Crear Oferta Individual"}
+          url={`../ofertas/nueva-oferta/`}
+        />
+      )}
     </Grid>
   </Box>
 );

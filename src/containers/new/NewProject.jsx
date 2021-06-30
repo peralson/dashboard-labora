@@ -17,10 +17,6 @@ import {
 // SVG
 import plus from "../../assets/svg/plus.svg";
 
-// ENV & GMaps
-import { GMAPS_LIBRARIES } from "../../lib/Constants";
-import { useLoadScript } from "@react-google-maps/api";
-
 // Components
 import Main from "../../components/main/Main";
 import TopMain from "../../components/main/TopMain";
@@ -31,19 +27,14 @@ import TopButton from "../../components/ui/TopButton";
 import SideBoxContainer from "../../components/ui/SideBoxContainer";
 import CustomInput from "../../components/new/CustomInput";
 import ProjectValidation from "../../components/new/project/ProjectValidation";
-import PlacesAutocompleteInput from "../../components/new/PlacesAutocompleteInput";
 import ProjectPickDates from "../../components/new/project/ProjectPickDates";
+import PlacesAutocompleteComponent from "../../components/ui/PlacesAutocompleteComponent";
 
 const NewProject = ({ history, createProject }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { isValid } = validateForm(state);
-
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    libraries: GMAPS_LIBRARIES,
-  });
 
   const handleCreateProject = async () => {
     setError(null)
@@ -105,13 +96,7 @@ const NewProject = ({ history, createProject }) => {
               dispatch({ type: "editName", payload: e.target.value })
             }
           />
-          {!isLoaded ? (
-            <Text>Cargando...</Text>
-          ) : loadError ? (
-            <Text>Ha ocurrido un error</Text>
-          ) : (
-            <PlacesAutocompleteInput title={"Dirección"} />
-          )}
+          <PlacesAutocompleteComponent state={state} dispatch={dispatch} />
           <CustomInput
             title={"Descripción"}
             optional

@@ -1,26 +1,17 @@
 import React, { useContext } from "react";
-import { Grid, Text } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 
 // Context
 import { NewOfferContext } from "../../../../context/newCreations";
-
-// ENV & GMaps
-import { GMAPS_LIBRARIES } from "../../../../lib/Constants";
-import { useLoadScript } from "@react-google-maps/api";
 
 // Components
 import CustomInput from "../../../../components/new/CustomInput";
 import CategorySelect from "../../../../components/new/CategorySelect";
 import OfferPickDates from "../../../../components/new/offer/OfferPickDates";
-import OfferPlacesAutocompleteInput from "../../../../components/new/offer/OfferPlacesAutocompleteInput";
+import PlacesAutocompleteComponent from "../../../../components/ui/PlacesAutocompleteComponent";
 
 const NameDescCatDates = () => {
   const { state, dispatch } = useContext(NewOfferContext);
-
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    libraries: GMAPS_LIBRARIES,
-  });
 
   return (
     <Grid w={"100%"} maxW={"600px"} mx={"auto"} rowGap={4} my={4}>
@@ -37,21 +28,12 @@ const NameDescCatDates = () => {
           title={"Categoría"}
           placeholder={"Selecciona una categoría"}
           value={state.offerData.category}
-          onChange={(e) => 
+          onChange={(e) =>
             dispatch({ type: "setCategory", payload: e.target.value })
           }
         />
       </Grid>
-      {!isLoaded ? (
-        <Text>Cargando...</Text>
-      ) : loadError ? (
-        <Text>Ha ocurrido un error</Text>
-      ) : (
-        <OfferPlacesAutocompleteInput
-          title={"Dirección"}
-          placeholder={"Introduce la dirección"}
-        />
-      )}
+      <PlacesAutocompleteComponent state={state} dispatch={dispatch} indie />
       <CustomInput
         title={"Descripción"}
         optional

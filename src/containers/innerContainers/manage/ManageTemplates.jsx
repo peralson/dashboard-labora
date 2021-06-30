@@ -9,6 +9,10 @@ import { fetchTemplates } from '../../../store/actions/templates';
 import legal from '../../../assets/svg/legal.svg';
 import plus from '../../../assets/svg/plus.svg';
 
+// Components
+import NoContent from '../../../components/ui/NoContent'
+import LoadingSpinner from '../../../components/ui/LoadingSpinner'
+
 const ContractTemplateCard = ({ data }) => (
   <Flex
     as={"a"}
@@ -80,15 +84,15 @@ const ManageTemplates = ({ search, templates, fetchTemplates }) => {
   );
 
   return loading ? (
-    <Text textAlign={'center'} py={10}>
-      Cargando...
-    </Text>
+    <LoadingSpinner />
   ) : error ? (
-    <Text textAlign={'center'} py={10}>
+    <Text textAlign={"center"} py={10}>
       Ha ocurrido un error
     </Text>
+  ) : filteredTemplates.length === 0 ? (
+    <NoContent what={"plantillas de contrato"} />
   ) : (
-    <Grid w={'100%'} templateColumns={'1fr 1fr 1fr 1fr'} gap={4} mt={4}>
+    <Grid w={"100%"} templateColumns={"1fr 1fr 1fr 1fr"} gap={4} mt={4}>
       {filteredTemplates.map((template, index) => (
         <ContractTemplateCard key={index} data={template} />
       ))}

@@ -15,6 +15,10 @@ import 'moment/locale/es';
 import { connect } from 'react-redux';
 import { fetchPastProjects } from '../../../store/actions/projects';
 
+// Components
+import NoContent from '../../../components/ui/NoContent'
+import LoadingSpinner from '../../../components/ui/LoadingSpinner'
+
 const PastProjectCard = ({ data }) => {
   const { selectedItemManage, setSelectedItemManage } =
     useContext(SelectedItemManage);
@@ -104,8 +108,6 @@ const ManageProjects = ({ search, pastProjects, fetchPastProjects }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(pastProjects);
-
   const filteredPastProjects =
     pastProjects &&
     pastProjects.filter(
@@ -127,19 +129,15 @@ const ManageProjects = ({ search, pastProjects, fetchPastProjects }) => {
     );
 
   return loading ? (
-    <Text textAlign={'center'} py={10}>
-      Cargando...
-    </Text>
+    <LoadingSpinner />
   ) : error ? (
-    <Text textAlign={'center'} py={10}>
+    <Text textAlign={"center"} py={10}>
       Ha ocurrido un error
     </Text>
   ) : pastProjects.length === 0 ? (
-    <Text textAlign={'center'} py={10}>
-      No hay ningún proyecto pasado
-    </Text>
+    <NoContent what={"proyectos pasados"} />
   ) : (
-    <Flex w='100%' flexDirection='column'>
+    <Flex w="100%" flexDirection="column">
       {pastProjects &&
         filteredPastProjects.map((item, index) => (
           <PastProjectCard key={index} data={item} />

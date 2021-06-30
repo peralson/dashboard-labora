@@ -1,0 +1,37 @@
+.autocomplete {
+	width: 100%;
+	padding: 8px 12px;
+	border-radius: 10px;
+	font-size: 16px;
+	background-color: #191735;
+	color: #ffffff;
+	border: 2px solid #282950;
+}
+
+.autocomplete:active,
+.autocomplete:hover,
+.autocomplete:visited,
+.autocomplete:focus {
+	border: 2px solid #ffffff;
+}
+
+.popover {
+	width: 100%;
+	background-color: #191735;
+	margin-top: 8px;
+	border: 2px solid #282950;
+	border-top: none;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.popover-list__option {
+	font-size: 16px;
+	padding: 8px 12px;
+	text-decoration: none;
+	list-style: none;
+}
+
+.popover-list__option[aria-selected="true"] {
+	background-color: #282950;
+}

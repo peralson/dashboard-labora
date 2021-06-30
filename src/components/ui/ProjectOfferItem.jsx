@@ -51,11 +51,12 @@ const ProjectOfferItem = ({ offer, context }) => {
         }
         borderRadius={4}
         lineHeight={1}
+        opacity={offer.offerApplications.length === 0 ? 0 : 1}
       >
         {offer.offerData.already_assigned !== offer.offerData.qty ? (
           <>
             {offer.offerApplications.length === 0 ? (
-              <Text opacity={0}>{"No tienes solicitudes"}</Text>
+              "No tienes solicitudes"
             ) : (
               <>
                 {offer.offerApplications.length}
