@@ -20,7 +20,7 @@ import usePlacesAutocomplete, {
   getGeocode,
 } from "use-places-autocomplete";
 
-const PlacesAutocomplete = ({ state, dispatch, indie }) => {
+const PlacesAutocomplete = ({ locationState, dispatch }) => {
   const {
     ready,
     value,
@@ -28,10 +28,6 @@ const PlacesAutocomplete = ({ state, dispatch, indie }) => {
     setValue,
     clearSuggestions,
   } = usePlacesAutocomplete();
-
-  const currentLocation = indie
-    ? state.projectData.location.address
-    : state.location.address;
 
   const handleSelectPlace = async (address) => {
     setValue(address, false);
@@ -55,7 +51,7 @@ const PlacesAutocomplete = ({ state, dispatch, indie }) => {
       <ComboboxInput
         className={"autocomplete"}
         placeholder={"Introduce una dirección"}
-        value={value || currentLocation}
+        value={value || locationState}
         onChange={(e) => {
           if (e.target.value === "") {
             dispatch({
@@ -87,7 +83,7 @@ const PlacesAutocomplete = ({ state, dispatch, indie }) => {
   );
 };
 
-const PlacesAutocompleteComponent = ({ state, dispatch, indie }) => {
+const PlacesAutocompleteComponent = ({ locationState, dispatch }) => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     libraries: GMAPS_LIBRARIES,
@@ -104,7 +100,10 @@ const PlacesAutocompleteComponent = ({ state, dispatch, indie }) => {
           <Text mb={2} fontWeight={"bold"}>
             Dirección
           </Text>
-          <PlacesAutocomplete state={state} dispatch={dispatch} indie />
+          <PlacesAutocomplete
+            locationState={locationState}
+            dispatch={dispatch}
+          />
         </Box>
       )}
     </>

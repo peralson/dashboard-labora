@@ -33,7 +33,10 @@ const NameDescCatDates = () => {
           }
         />
       </Grid>
-      <PlacesAutocompleteComponent state={state} dispatch={dispatch} indie />
+      <PlacesAutocompleteComponent
+        locationState={state.projectData.location.address}
+        dispatch={dispatch}
+      />
       <CustomInput
         title={"Descripción"}
         optional

@@ -24,6 +24,7 @@ import LegalRepSide from "../components/company/LegalRepSide";
 import LegalCompanySide from '../components/company/LegalCompanySide';
 import ContactSide from '../components/company/ContactSide';
 import LegalPicker from '../components/company/LegalPicker';
+import AdminItem from '../components/company/AdminItem';
 
 const Company = ({ company, fetchCompany }) => {
   const [value, setValue] = useState(null);
@@ -80,17 +81,17 @@ const Company = ({ company, fetchCompany }) => {
             <Separator top={8} bottom={6} />
             <BlockContainer
               title={"Administradores"}
-              cta={"Crear nuevo"}
-              onClick={() => {}}
               desc={
                 "Autoriza personal de tu empresa a gestionar los procesos de creación de ofertas y contratación de personal."
               }
-            ></BlockContainer>
+            >
+              {company.admins.map((admin, index) => (
+                <AdminItem key={index} mt={index !== 0 && 2} admin={admin.data.general} />
+              ))} 
+            </BlockContainer>
             <Separator top={8} bottom={6} />
             <BlockContainer
-              title={"Trabajadores"}
-              cta={"Editar"}
-              onClick={() => {}}
+              title={"Categorías"}
               desc={
                 "Categorías habilitadas la empresa para el desarrollo de sus actividades."
               }

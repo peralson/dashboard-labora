@@ -231,7 +231,10 @@ const EditSingleOffer = ({ match, history, projects, editSingleOffer }) => {
               }
             />
           </Grid>
-          <PlacesAutocompleteComponent state={state} dispatch={dispatch} />
+          <PlacesAutocompleteComponent
+            locationState={state.location.address}
+            dispatch={dispatch}
+          />
           <Box>
             <Text mb={1} fontWeight={"bold"} lineHeight={2}>
               Cantidad de trabajadores *

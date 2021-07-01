@@ -133,7 +133,10 @@ const EditProject = ({ match, history, projects, editProject }) => {
               dispatch({ type: "setName", payload: e.target.value })
             }
           />
-          <PlacesAutocompleteComponent state={state} dispatch={dispatch} />
+          <PlacesAutocompleteComponent
+            locationState={state.location.address}
+            dispatch={dispatch}
+          />
           <CustomInput
             multiline
             optional

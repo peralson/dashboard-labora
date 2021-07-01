@@ -96,7 +96,10 @@ const NewProject = ({ history, createProject }) => {
               dispatch({ type: "editName", payload: e.target.value })
             }
           />
-          <PlacesAutocompleteComponent state={state} dispatch={dispatch} />
+          <PlacesAutocompleteComponent
+            dispatch={dispatch}
+            locationState={state.location.address}
+          />
           <CustomInput
             title={"Descripción"}
             optional

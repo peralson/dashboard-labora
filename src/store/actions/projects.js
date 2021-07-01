@@ -162,7 +162,6 @@ export const createProjectOffer = (projectId, offerData) => {
 		const token = localStorage.getItem("fbase_key");
 		const parsedCategory = JSON.parse(offerData.category)
 		const tagsIds = offerData.tags.map(tag => tag.id)
-		const tagsNames = offerData.tags.map(tag => tag.data.name)
 
 		const response = await fetch(
 			"https://us-central1-partime-60670.cloudfunctions.net/api/offer/",
@@ -189,14 +188,14 @@ export const createProjectOffer = (projectId, offerData) => {
 			}
 		);
 
+		const resData = await response.json();
+
 		if (!response.ok) {
 			console.log("ERROR");
-			const resData = await response.json();
 			console.error(resData);
 			throw new Error("Ha habido un problema...");
 		}
-
-		const resData = await response.json();
+		
 		const offerId = resData.body;
 
 		dispatch({
@@ -207,16 +206,20 @@ export const createProjectOffer = (projectId, offerData) => {
 				id: offerId,
 				id_event: projectId,
 				name: offerData.name,
-				category: parsedCategory.name,
+				category: {
+					id: parsedCategory.id,
+					data: {
+						name: parsedCategory.name
+					}
+				},
 				description: offerData.description,
-				requirements: {},
 				location: offerData.location,
 				salary: offerData.salary,
 				extraSalary: offerData.extraSalary,
 				schedule: offerData.schedule,
 				qty: offerData.qty,
 				contractId: offerData.contractId,
-				tags: tagsNames,
+				tags: offerData.tags,
 				extras: offerData.extras,
 				already_assigned: 0,
 				jobs: 0,

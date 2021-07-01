@@ -72,6 +72,8 @@ const OneOffer = ({ match, history, projects, deleteProjectOffer, deleteProject 
     }
   };
 
+  console.log(offer.offerData);
+
   return (
     <SelectedItemIndie.Provider
       value={{ selectedItemIndie, setSelectedItemIndie }}

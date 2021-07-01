@@ -3,6 +3,7 @@ import { Box, Text, Grid } from "@chakra-ui/react";
 
 // Svg
 import ContractItem from "./ContractItem";
+import LoadingSpinner from "../../ui/LoadingSpinner";
 
 const ContractPicker = ({ indie }) => {
   const [contracts, setContracts] = useState([]);
@@ -43,7 +44,7 @@ const ContractPicker = ({ indie }) => {
         esta oferta de empleo.
       </Text>
       {loading ? (
-        <Text>Loading</Text>
+        <LoadingSpinner />
       ) : error ? (
         <Text>Error</Text>
       ) : (

@@ -11,6 +11,7 @@ import minus from '../../../../assets/svg/minus-white.svg'
 // Components
 import WorkerItem from '../../../../components/new/WorkerItem'
 import MultipleSelectList from '../../../../components/ui/MultipleSelectList'
+import LoadingSpinner from "../../../../components/ui/LoadingSpinner";
 
 const QtyTags = () => {
   const { state, dispatch } = useContext(NewOfferContext);
@@ -167,7 +168,7 @@ const QtyTags = () => {
                 }`}
                 bg={filterTags.length !== 0 && "darkLight"}
                 current={filterTags}
-                values={tags.map(tag => tag.data.name)} 
+                values={tags.map((tag) => tag.data.name)}
                 onChange={handleTags}
               />
             )}
@@ -177,7 +178,7 @@ const QtyTags = () => {
           </Flex>
         )}
         {loading ? (
-          <Text>Cargando {parsedCategory.name}...</Text>
+          <LoadingSpinner />
         ) : error ? (
           <Text>Ha ocurrido un error</Text>
         ) : (
